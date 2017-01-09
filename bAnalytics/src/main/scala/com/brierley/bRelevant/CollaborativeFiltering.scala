@@ -77,10 +77,11 @@ object CollaborativeFiltering {
 
     val predictions = model.transform(numCustProdRank)
 
-//    val readablePredictions = predictions
-//      .select("*")
-//      .join(custList, predictions("CustNum") === custList("CustNum"))
-//      .join(prodList, predictions("ProdNum") === prodList("ProdNum"))
+    val readablePredictions = predictions
+      .select("*")
+      .join(custList, "CustNum")
+      .join(prodList, "ProdNum")
+      .select("*")
     // .drop("ProdNum")
     // .drop("CustNum")
 
@@ -90,7 +91,7 @@ object CollaborativeFiltering {
 
     val outputLocation = "users/Analytics/" + args(2) + "/" + sc.appName + "/" + printTime
 
-    predictions.write.parquet(outputLocation + "/results/" + args(1))
+    readablePredictions.write.parquet(outputLocation + "/results/" + args(1))
     model.save(outputLocation + "/models/" + args(1) + "Model")
 
 
