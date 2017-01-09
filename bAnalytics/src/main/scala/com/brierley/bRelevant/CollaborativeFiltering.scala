@@ -25,7 +25,10 @@ object CollaborativeFiltering {
 
     //we don't need custProdMetric (getDFs._1) for explicit ratings, it could be used for implicit
     val custProdRank = getDFs._2
-      .select("CUST_ID", "PRODUCT_CATEGORY_DESCR", "Ranking_Metric")
+      .withColumn("Double_Rank_Metric", getDFs._2("Ranking_Metric").cast("Double"))
+      .select("CUST_ID", "PRODUCT_CATEGORY_DESCR", "Double_Rank_Metric")
+      .withColumnRenamed("Double_Rank_Metric", "Ranking_Metric")
+
     custProdRank.cache()
 
     val prodList = custProdRank
@@ -74,19 +77,20 @@ object CollaborativeFiltering {
 
     val predictions = model.transform(numCustProdRank)
 
-    val readablePredictions = predictions
-      .join(custList, predictions("CustNum") === custList("CustNum"))
-      .join(prodList, predictions("ProdNum") === prodList("ProdNum"))
-      .drop("ProdNum")
-      .drop("CustNum")
+//    val readablePredictions = predictions
+//      .select("*")
+//      .join(custList, predictions("CustNum") === custList("CustNum"))
+//      .join(prodList, predictions("ProdNum") === prodList("ProdNum"))
+    // .drop("ProdNum")
+    // .drop("CustNum")
 
     val time = Calendar.getInstance().getTime()
     val formatTime = new SimpleDateFormat("YYYYMMDDHHmmss")
     val printTime = formatTime.format(time)
 
-    val outputLocation = "users/Analytics/" + args(2) + "/" + sc.appName +  "/" + printTime
+    val outputLocation = "users/Analytics/" + args(2) + "/" + sc.appName + "/" + printTime
 
-    readablePredictions.write.parquet(outputLocation + "/results/" + args(1))
+    predictions.write.parquet(outputLocation + "/results/" + args(1))
     model.save(outputLocation + "/models/" + args(1) + "Model")
 
 
