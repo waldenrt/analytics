@@ -40,6 +40,8 @@ object bRelevantCollFilter {
     val sqlContext = new HiveContext(sc)
 
     CollaborativeFiltering.run(args, sc, sqlContext)
+
+    sc.stop()
   }
 
 }

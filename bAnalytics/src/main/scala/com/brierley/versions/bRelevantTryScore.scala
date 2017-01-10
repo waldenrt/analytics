@@ -39,5 +39,7 @@ object bRelevantTryScore {
     val sqlContext = new HiveContext(sc)
 
     TryScores.run(args, sc, sqlContext)
+
+    sc.stop()
   }
 }
