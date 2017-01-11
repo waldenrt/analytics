@@ -1,10 +1,11 @@
 package com.brierley.utils
 
 import org.apache.spark.sql.functions.udf
+import java.sql.Date
 
 object DataframeUtils {
 
-  def productRecencyFunc(cutoffDate: String, purchaseDate: String):Long = {
+  def productRecencyFunc(cutoffDate: String, purchaseDate: Date):Long = {
 
     import java.util.concurrent.TimeUnit
 
@@ -12,9 +13,9 @@ object DataframeUtils {
     val regularDateFormat = new java.text.SimpleDateFormat("MM/dd/yyyy")
 
     val cutOffDate = regularDateFormat.parse(cutoffDate)
-    val purchasedDate = oracleDateFormat.parse(purchaseDate)
+    //val purchasedDate = oracleDateFormat.parse(purchaseDate)
 
-    val difference = cutOffDate.getTime - purchasedDate.getTime
+    val difference = cutOffDate.getTime - purchaseDate.getTime
 
     TimeUnit.MILLISECONDS.toDays(difference)
 
@@ -224,7 +225,7 @@ object DataframeUtils {
         + (array(14) * coefficients(14))
       )))
 
-  val productRecency = udf(productRecencyFunc(_:String,_:String))
+  val productRecency = udf(productRecencyFunc(_:String,_:Date))
   val metric = udf(metricFunc(_:Double,_:Double,_:Double))
   val chiSquare = udf(chiSquareFunc(_:Double,_:Double,_:Double,_:Double,_:Double,_:Double,_:Double,_:Double))
   val laplace = udf(laplaceFunc(_:Double,_:Double))

@@ -19,23 +19,16 @@ object bRelevant {
     //should we cache this one?
   }
 
-  def createProductList(transFile: DataFrame): DataFrame = {
-    transFile
-      .select("PRODUCT_CATEGORY_DESCR")
-      .distinct()
-      .withColumn("RowNumber",
-        functions.row_number()
-          .over(Window.partitionBy("PRODUCT_CATEGORY_DESCR")
-            .orderBy("PRODUCT_CATEGORY_DESCR")))
-  }
-
   def createBasket(transFile: DataFrame, cutoffDate: String): DataFrame = {
     transFile
+      .withColumn("FormatDate", to_date(unix_timestamp(transFile("TXN_BUSINESS_DATE"), "dd-MMM-yy").cast("timestamp")))
+      .drop("TXN_BUSINESS_DATE")
+      .withColumnRenamed("FormatDate", "TXN_BUSINESS_DATE")
       .groupBy("CAPTURED_LOYALTY_ID", "PRODUCT_CATEGORY_DESCR")
       .agg(
         countDistinct("TXN_HEADER_ID").as("times_purchased"),
-        sum("UNITS").as("CustProdPurchased").as("cust_prod_qty"),
-        sum("LINE_AMT_AFTER_DISC").as("CustProdSales").as("cust_prod_sales"),
+        sum("UNITS").as("cust_prod_qty"),
+        sum("LINE_AMT_AFTER_DISC").as("cust_prod_sales"),
         productRecency(lit(cutoffDate), max("TXN_BUSINESS_DATE")).as("cust_prod_min_rec")
       )
   }
@@ -55,6 +48,7 @@ object bRelevant {
       .select("*")
       .join(customer, basket("CAPTURED_LOYALTY_ID") === customer("CUST_ID"))
       .withColumn("metric", metric(basket("times_purchased"), basket("cust_prod_min_rec"), basket("cust_prod_sales")))
+      .drop("CAPTURED_LOYALTY_ID")
   }
 
   def createProdRank(custProdMetric: DataFrame): DataFrame = {
@@ -110,7 +104,6 @@ object bRelevant {
       .load(fullPathandName)
 
     val transFile = createTransFile(transFileTemp)
-    val productList = createProductList(transFile) // needed for ALS
     val basket = createBasket(transFile, cutoffDate)
     val customer = createCustomer(transFile)
 
