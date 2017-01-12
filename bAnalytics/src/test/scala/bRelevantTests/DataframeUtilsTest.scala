@@ -21,13 +21,13 @@ class bRelevantTransformationTest extends FunSuite with DataFrameSuiteBase {
 
   val formatDate = new SimpleDateFormat("dd-MMM-yy")
 
-    val begMonth2: Date = new Date(formatDate.parse("03-FEB-15").getTime)
-    val midMonth2: Date = new Date(formatDate.parse("15-FEB-15").getTime)
-    val endMonth2: Date = new Date(formatDate.parse("25-FEB-15").getTime)
+  val begMonth2: Date = new Date(formatDate.parse("03-FEB-15").getTime)
+  val midMonth2: Date = new Date(formatDate.parse("15-FEB-15").getTime)
+  val endMonth2: Date = new Date(formatDate.parse("25-FEB-15").getTime)
 
-    val begMonth3_4: Date =new Date(formatDate.parse("04-MAR-15").getTime)
-    val begMonth3_6: Date =new Date(formatDate.parse("06-MAR-15").getTime)
-    val midMonth3: Date = new Date(formatDate.parse("14-MAR-15").getTime)
+  val begMonth3_4: Date = new Date(formatDate.parse("04-MAR-15").getTime)
+  val begMonth3_6: Date = new Date(formatDate.parse("06-MAR-15").getTime)
+  val midMonth3: Date = new Date(formatDate.parse("14-MAR-15").getTime)
 
 
   val cutoffDateBeg2: String = "02/05/2015"
@@ -35,10 +35,10 @@ class bRelevantTransformationTest extends FunSuite with DataFrameSuiteBase {
   val cutoffDateMid3: String = "03/15/2015"
   val cutoffDateEnd10: String = "10/31/2015"
 
-    val begMonth10: Date = new Date(formatDate.parse("02-OCT-15").getTime)
-    val midMonth10: Date = new Date(formatDate.parse("17-OCT-15").getTime)
-    val endMonth10: Date = new Date(formatDate.parse("30-OCT-15").getTime)
-    val lastMonth10: Date = new Date(formatDate.parse("31-OCT-15").getTime)
+  val begMonth10: Date = new Date(formatDate.parse("02-OCT-15").getTime)
+  val midMonth10: Date = new Date(formatDate.parse("17-OCT-15").getTime)
+  val endMonth10: Date = new Date(formatDate.parse("30-OCT-15").getTime)
+  val lastMonth10: Date = new Date(formatDate.parse("31-OCT-15").getTime)
 
   test("productRecencyFunc with begMonth2 and cutoffDateBeg2") {
     val recency = DataframeUtils.productRecencyFunc(cutoffDateBeg2, begMonth2)
@@ -57,20 +57,16 @@ class bRelevantTransformationTest extends FunSuite with DataFrameSuiteBase {
   }
 
   test("productRecencyFunc with begMonth3 and endMonth2") {
-    println("String cutoffdate going into func: " + cutoffDateMid3)
-    println("endMonth2 Date going into func: " + endMonth2.toString)
-    println("begMonth3_4 Date going into func: " + begMonth3_4.toString)
-    println("midMonth3 Date going into func: " + midMonth3.toString)
-    println("begMonth3_6 Date going into func: " + begMonth3_6.toString)
+
     val recency = DataframeUtils.productRecencyFunc(cutoffDateMid3, endMonth2)
     val recency1 = DataframeUtils.productRecencyFunc(cutoffDateMid3, begMonth3_4)
     val recency2 = DataframeUtils.productRecencyFunc(cutoffDateMid3, midMonth3)
     val recency3 = DataframeUtils.productRecencyFunc(cutoffDateMid3, begMonth3_6)
 
-    //assert(recency === 18)
+    assert(recency === 18)
     assert(recency2 === 1)
-    assert(recency3 === 9) //-- says 8
-    assert(recency1 === 11) //-- says it should be 10??
+    assert(recency3 === 9)
+    assert(recency1 === 11)
   }
 
   test("productRecencyFunc with allMonth10 and endMonth10") {
@@ -84,6 +80,17 @@ class bRelevantTransformationTest extends FunSuite with DataFrameSuiteBase {
     assert(recency3 === 1)
     assert(recency4 === 0)
 
+  }
+
+  test("metricFunc: purchased = 3, rec = 2, sales =1.99"){
+    val metric = DataframeUtils.metricFunc(3, 2, 1.99)
+
+    assert(metric === 2.985)
+  }
+
+  test("metricfunc: purchased =5, rec = 0, sales = 5.45"){
+    val metric = DataframeUtils.metricFunc(5, 0, 5.45)
+    assert(metric === 5.45)
   }
 
 

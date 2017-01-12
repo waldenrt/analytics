@@ -44,7 +44,7 @@ class bRelevantTransformationTest extends FunSuite with DataFrameSuiteBase {
     val tempBasket = sc.parallelize(List(
       ("BEFE8D05-2171-49C1-8A04-EF595B67721B", "CSD", 1, 1, 1.59, 2),
       ("BEFE8D05-2171-49C1-8A04-EF595B67721B", "TATER TOTS", 2, 2, 4.58, 2),
-      ("BBEB02D0-9E89-495B-A15B-4404F4572B11", "TEA", 2, 2, 3.19, 2),
+      ("BBEB02D0-9E89-495B-A15B-4404F4572B11", "TEA", 2, 2, 3.19, 1),
       ("4496DD25-5BF4-4092-BB15-0F29127CBA7C", "SPECIALTY DRINK", 1, 1, 3.49, 11),
       ("BEFE8D05-2171-49C1-8A04-EF595B67721B", "BREAKFAST TOASTERS", 1, 1, 2.89, 2),
       ("BBEB02D0-9E89-495B-A15B-4404F4572B11", "CSD", 1, 1, 2.29, 1),
@@ -60,7 +60,7 @@ class bRelevantTransformationTest extends FunSuite with DataFrameSuiteBase {
     )).toDF("CUST_ID", "cust_ttl_num_bask", "number_products_purchased")
 
     val partialCustProdMetric = sc.parallelize(List(
-      ("TEA", 2, 2, 3.19, 2, "BBEB02D0-9E89-495B-A15B-4404F4572B11", 2, 2, 3.19),
+      ("TEA", 2, 2, 3.19, 1, "BBEB02D0-9E89-495B-A15B-4404F4572B11", 2, 2, 6.38),
       ("CSD", 1, 1, 2.29, 1, "BBEB02D0-9E89-495B-A15B-4404F4572B11", 2, 2, 2.29),
       ("BREAKFAST BURRITOS", 1, 2, 2.38, 11, "73581B69-97AE-49B6-8BC3-02A9BD529D5E", 1, 1, 0.21636363636363637),
       ("CSD", 1, 1, 1.59, 2, "BEFE8D05-2171-49C1-8A04-EF595B67721B", 2, 3, 0.795),
@@ -198,7 +198,7 @@ class bRelevantTransformationTest extends FunSuite with DataFrameSuiteBase {
           val attempt = custProdMetric.select("CAPTURED_LOYALTY_ID")
         }
 
-      val metrics = List(3.19, 2.29, 0.21636363636363637, 0.795, 4.58, 1.445, 0.3172727272727273, 0.24454545454545454)
+      val metrics = List(6.38, 2.29, 0.21636363636363637, 0.795, 4.58, 1.445, 0.3172727272727273, 0.24454545454545454)
 
       val colMetrics = custProdMetric
         .select("metric").map(_ (0)).collect()
@@ -214,7 +214,7 @@ class bRelevantTransformationTest extends FunSuite with DataFrameSuiteBase {
       prodRank.show()
 
       val rankMetric = List(1, 1, 2, 1, 1, 2, 3, 2)
-      val rfm = Array("111", "101", "202", "201", "101", "202", "333", "122")
+      val rfm = Array("111", "101", "202", "101", "101", "202", "333", "222")
 
       val rankMetricCol = prodRank
         .select("Ranking_Metric").map(_ (0)).collect()

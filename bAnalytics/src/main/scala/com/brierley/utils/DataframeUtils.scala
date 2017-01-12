@@ -8,17 +8,12 @@ import org.apache.spark.sql.functions.udf
 import java.sql.Date
 
 
-
 object DataframeUtils {
 
   def productRecencyFunc(cutoffDate: String, purchaseDate: Date): Long = {
-
     val cutOff: LocalDate = LocalDate.parse(cutoffDate, DateTimeFormatter.ofPattern("MM/dd/yyyy"))
 
-    val difference = ChronoUnit.DAYS.between(purchaseDate.toLocalDate,cutOff)
-    println(difference)
-    (difference)
-
+    ChronoUnit.DAYS.between(purchaseDate.toLocalDate, cutOff)
   }
 
   def metricFunc(timePurchased: Double, prodRecency: Double, prodSales: Double): Double = {
