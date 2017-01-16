@@ -1,6 +1,7 @@
 package com.brierley.bRelevant
 
-import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 import org.apache.log4j.Logger
 import org.apache.spark.SparkContext
@@ -16,6 +17,24 @@ import java.util.Calendar
   */
 object CollaborativeFiltering {
 
+  def getCustProdRank(bRelevantDFs: (DataFrame, DataFrame)): DataFrame = {
+    //we don't need custProdMetric (getDFs._1) for explicit ratings, it could be used for implicit
+    val custProdRank = bRelevantDFs._2
+      .withColumn("Double_Rank_Metric", bRelevantDFs._2("Ranking_Metric").cast("Double"))
+      .select("CUST_ID", "CustNum", "PRODUCT_CATEGORY_DESCR","ProdNum", "Double_Rank_Metric")
+      .withColumnRenamed("Double_Rank_Metric", "Ranking_Metric")
+
+    custProdRank.cache()
+    (custProdRank)
+  }
+
+  def createNumCustProdRank(custProdRank: DataFrame): DataFrame = {
+
+    custProdRank
+      .select("CustNum", "ProdNum", "Ranking_Metric")
+
+  }
+
   def run(args: Array[String], sc: SparkContext, sqlContext: HiveContext): Unit = {
 
     val logger = Logger.getLogger(this.getClass)
@@ -23,34 +42,9 @@ object CollaborativeFiltering {
     //getting the base DataFrames from bRelevant
     val getDFs = bRelevant.run(args, sc, sqlContext)
 
-    //we don't need custProdMetric (getDFs._1) for explicit ratings, it could be used for implicit
-    val custProdRank = getDFs._2
-      .withColumn("Double_Rank_Metric", getDFs._2("Ranking_Metric").cast("Double"))
-      .select("CUST_ID", "PRODUCT_CATEGORY_DESCR", "Double_Rank_Metric")
-      .withColumnRenamed("Double_Rank_Metric", "Ranking_Metric")
+    val custProdRank = getCustProdRank(getDFs)
 
-    custProdRank.cache()
-
-    val prodList = custProdRank
-      .select("PRODUCT_CATEGORY_DESCR")
-      .distinct()
-      .withColumn("ProdNum",
-        functions.row_number()
-          .over(Window.partitionBy("PRODUCT_CATEGORY_DESCR")
-            .orderBy("PRODUCT_CATEGORY_DESCR")))
-
-    val custList = custProdRank
-      .select("CUST_ID")
-      .distinct()
-      .withColumn("CustNum", functions.row_number()
-        .over(Window.partitionBy("CUST_ID")
-          .orderBy("CUST_ID")))
-
-    val numCustProdRank = custProdRank
-      .select("*")
-      .join(custList, custProdRank("CUST_ID") === custList("CUST_ID"))
-      .join(prodList, custProdRank("PRODUCT_CATEGORY_DESCR") === prodList("PRODUCT_CATEGORY_DESCR"))
-      .select("CustNum", "ProdNum", "Ranking_Metric")
+    val numCustProdRank = createNumCustProdRank(custProdRank)
 
     val Array(training, test) = numCustProdRank.randomSplit(Array(0.8, 0.2))
 
@@ -78,18 +72,13 @@ object CollaborativeFiltering {
     val predictions = model.transform(numCustProdRank)
 
     val readablePredictions = predictions
-      .select("*")
-      .join(custList, "CustNum")
-      .join(prodList, "ProdNum")
-      .select("*")
-    // .drop("ProdNum")
-    // .drop("CustNum")
+      .join(custProdRank, "CustNum")
+      // .drop("ProdNum")
+      .drop("CustNum")
 
-    val time = Calendar.getInstance().getTime()
-    val formatTime = new SimpleDateFormat("YYYYMMDDHHmmss")
-    val printTime = formatTime.format(time)
+    val currentTime = LocalDateTime.now.format(DateTimeFormatter.ofPattern("YYYYMMDDHHmmss"))
 
-    val outputLocation = "users/Analytics/" + args(2) + "/" + sc.appName + "/" + printTime
+    val outputLocation = "users/Analytics/" + args(2) + "/" + sc.appName + "/" + currentTime
 
     readablePredictions.write.parquet(outputLocation + "/results/" + args(1))
     model.save(outputLocation + "/models/" + args(1) + "Model")
