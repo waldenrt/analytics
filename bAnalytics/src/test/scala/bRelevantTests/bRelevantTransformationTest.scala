@@ -286,4 +286,37 @@ class bRelevantTransformationTest extends FunSuite with DataFrameSuiteBase {
       assert(rfm === rfmCol)
     }
   }
+
+  test("all transformations one after the other given only transFileTemp"){
+    new TestDataCreation {
+      val cList = bRelevant.createCustList(transFileTemp)
+      val pList = bRelevant.createProdList(transFileTemp)
+
+      val tFile = bRelevant.createTransFile(transFileTemp, cList, pList)
+
+      val bask = bRelevant.createBasket(tFile, cutOffDate)
+
+      val cust = bRelevant.createCustomer(tFile)
+
+      val cpMetric = bRelevant.createCustProdMetric(bask, cust)
+
+      val cpRank = bRelevant.createProdRank(cpMetric)
+
+      val custNum = cpRank
+        .where("CUST_ID = 'BEFE8D05-2171-49C1-8A04-EF595B67721B'")
+        .select("CustNum")
+        .first
+        .getInt(0)
+
+      assert(custNum === 4)
+
+      val prodNum = cpRank
+        .where("PRODUCT_CATEGORY_DESCR = 'TEA'")
+        .select("ProdNum")
+        .first
+        .getInt(0)
+
+      assert(prodNum === 7)
+    }
+  }
 }

@@ -28,7 +28,7 @@ object bRelevant {
     transFileTemp
       .select("PRODUCT_CATEGORY_DESCR")
       .distinct()
-      .withColumn("PROD_ID", functions.row_number()
+      .withColumn("ProdNum", functions.row_number()
         .over(Window.orderBy("PRODUCT_CATEGORY_DESCR")))
   }
 

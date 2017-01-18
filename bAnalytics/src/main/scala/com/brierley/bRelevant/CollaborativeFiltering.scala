@@ -21,7 +21,7 @@ object CollaborativeFiltering {
     //we don't need custProdMetric (getDFs._1) for explicit ratings, it could be used for implicit
     val custProdRank = bRelevantDFs._2
       .withColumn("Double_Rank_Metric", bRelevantDFs._2("Ranking_Metric").cast("Double"))
-      .select("CUST_ID", "CustNum", "PRODUCT_CATEGORY_DESCR","ProdNum", "Double_Rank_Metric")
+      .select("CUST_ID", "CustNum", "PRODUCT_CATEGORY_DESCR", "ProdNum", "Double_Rank_Metric")
       .withColumnRenamed("Double_Rank_Metric", "Ranking_Metric")
 
     custProdRank.cache()
@@ -32,6 +32,8 @@ object CollaborativeFiltering {
 
     custProdRank
       .select("CustNum", "ProdNum", "Ranking_Metric")
+      .withColumnRenamed("ProdNum", "Prod_ID")
+      .withColumnRenamed("Ranking_Metric", "Ranking")
 
   }
 
@@ -53,8 +55,8 @@ object CollaborativeFiltering {
       .setMaxIter(args(4).toInt)
       .setRegParam(args(5).toDouble)
       .setUserCol("CustNum")
-      .setItemCol("ProdNum")
-      .setRatingCol("Ranking_Metric")
+      .setItemCol("Prod_ID")
+      .setRatingCol("Ranking")
 
     val model = als.fit(training)
 
@@ -63,7 +65,7 @@ object CollaborativeFiltering {
     //does anyone want this accuracy value?
     val evaluator = new RegressionEvaluator()
       .setMetricName("rmse")
-      .setLabelCol("Ranking_Metric")
+      .setLabelCol("Ranking")
       .setPredictionCol("prediction")
 
     val rmse = evaluator.evaluate(testPredictions)
@@ -73,7 +75,8 @@ object CollaborativeFiltering {
 
     val readablePredictions = predictions
       .join(custProdRank, "CustNum")
-      // .drop("ProdNum")
+      .drop("ProdNum")
+      .drop("Ranking")
       .drop("CustNum")
 
     val currentTime = LocalDateTime.now.format(DateTimeFormatter.ofPattern("YYYYMMDDHHmmss"))
