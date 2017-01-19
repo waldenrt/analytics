@@ -58,7 +58,7 @@ class CollaborativeFilteringTest extends FunSuite with DataFrameSuiteBase {
       ("4496DD25-5BF4-4092-BB15-0F29127CBA7C", 1, "SPECIALTY DRINK", 5, 2.0),
       ("BEFE8D05-2171-49C1-8A04-EF595B67721B", 4, "TATER TOTS", 6, 3.0),
       ("BBEB02D0-9E89-495B-A15B-4404F4572B11", 3, "TEA", 7, 2.0)
-    )).toDF("CUST_ID", "CustNum", "PRODUCT_CATEGORY_DESCR", "ProdNum", "Ranking_Metric")
+    )).toDF("CUST_ID", "CustNum", "PRODUCT_CATEGORY_DESCR", "ProdNum", "Double_Rank_Metric")
 
   }
 
@@ -70,11 +70,11 @@ class CollaborativeFilteringTest extends FunSuite with DataFrameSuiteBase {
 
       val cust2 = custProdRank
         .where("CustNum = 2")
-        .select("Ranking_Metric")
+        .select("Double_Rank_Metric")
         .first
         .getDouble(0)
 
-        assert (cust2 === 1.0)
+      assert(cust2 === 1.0)
     }
   }
 
@@ -86,13 +86,43 @@ class CollaborativeFilteringTest extends FunSuite with DataFrameSuiteBase {
       numCustProdRank.show
 
       intercept[AnalysisException] {
-        val attempt = numCustProdRank.select("CAPTURED_LOYALTY_ID")
+        numCustProdRank.select("CAPTURED_LOYALTY_ID")
       }
 
-        intercept[AnalysisException] {
-          numCustProdRank.select("PRODUCT_CATEGORY_DESCR")
-        }
-
+      intercept[AnalysisException] {
+        numCustProdRank.select("PRODUCT_CATEGORY_DESCR")
       }
+
     }
   }
+
+  test("createCustNumList given cfCustProdRank") {
+    new TestData {
+      val testCustList = CollaborativeFiltering.createCustNumList(cfCustProdRank)
+
+      testCustList.show
+
+      val bbCust = testCustList
+        .where("CUST_ID = 'BBEB02D0-9E89-495B-A15B-4404F4572B11'")
+        .select("CustNum")
+        .first
+        .getInt(0)
+
+      assert(3 === bbCust)
+    }
+  }
+
+  test("createProdNumList given cfCustProdRank") {
+    new TestData {
+      val testProdList = CollaborativeFiltering.createProdNumList(cfCustProdRank)
+
+      val teaNum = testProdList
+        .where("PRODUCT_CATEGORY_DESCR = 'TEA'")
+        .select("ProdNum")
+        .first
+        .getInt(0)
+
+      assert(7 === teaNum)
+    }
+  }
+}

@@ -22,7 +22,6 @@ object CollaborativeFiltering {
     val custProdRank = bRelevantDFs._2
       .withColumn("Double_Rank_Metric", bRelevantDFs._2("Ranking_Metric").cast("Double"))
       .select("CUST_ID", "CustNum", "PRODUCT_CATEGORY_DESCR", "ProdNum", "Double_Rank_Metric")
-      .withColumnRenamed("Double_Rank_Metric", "Ranking_Metric")
 
     custProdRank.cache()
     (custProdRank)
@@ -31,10 +30,19 @@ object CollaborativeFiltering {
   def createNumCustProdRank(custProdRank: DataFrame): DataFrame = {
 
     custProdRank
-      .select("CustNum", "ProdNum", "Ranking_Metric")
-      .withColumnRenamed("ProdNum", "Prod_ID")
-      .withColumnRenamed("Ranking_Metric", "Ranking")
+      .select("CustNum", "ProdNum", "Double_Rank_Metric")
+      .withColumnRenamed("Double_Rank_Metric", "Ranking")
 
+  }
+
+  def createCustNumList(custProdRank: DataFrame): DataFrame = {
+    custProdRank
+      .select("CustNum", "CUST_ID")
+  }
+
+  def createProdNumList(custProdRank: DataFrame): DataFrame = {
+    custProdRank
+      .select("ProdNum", "PRODUCT_CATEGORY_DESCR")
   }
 
   def run(args: Array[String], sc: SparkContext, sqlContext: HiveContext): Unit = {
@@ -48,6 +56,9 @@ object CollaborativeFiltering {
 
     val numCustProdRank = createNumCustProdRank(custProdRank)
 
+    val custNums = createCustNumList(custProdRank)
+    val prodNums = createProdNumList(custProdRank)
+
     val Array(training, test) = numCustProdRank.randomSplit(Array(0.8, 0.2))
 
     //they can play with values to tweak performance/accuracy
@@ -55,14 +66,14 @@ object CollaborativeFiltering {
       .setMaxIter(args(4).toInt)
       .setRegParam(args(5).toDouble)
       .setUserCol("CustNum")
-      .setItemCol("Prod_ID")
+      .setItemCol("ProdNum")
       .setRatingCol("Ranking")
 
     val model = als.fit(training)
 
     val testPredictions = model.transform(test)
 
-    //does anyone want this accuracy value?
+    //does anyone want this accuracy value? -- returns NaN
     val evaluator = new RegressionEvaluator()
       .setMetricName("rmse")
       .setLabelCol("Ranking")
@@ -74,17 +85,18 @@ object CollaborativeFiltering {
     val predictions = model.transform(numCustProdRank)
 
     val readablePredictions = predictions
-      .join(custProdRank, "CustNum")
-      .drop("ProdNum")
-      .drop("Ranking")
-      .drop("CustNum")
+      .join(custNums, "CustNum")
+      .join(prodNums, "ProdNum")
 
     val currentTime = LocalDateTime.now.format(DateTimeFormatter.ofPattern("YYYYMMDDHHmmss"))
 
     val outputLocation = "users/Analytics/" + args(2) + "/" + sc.appName + "/" + currentTime
 
-    readablePredictions.write.parquet(outputLocation + "/results/" + args(1))
-    model.save(outputLocation + "/models/" + args(1) + "Model")
+    readablePredictions.write.format("com.databricks.spark.csv").save("User/Documents/bRelevant/" + args(2) + "/CollFiltering.csv")
+    //readablePredictions.write.parquet(outputLocation + "/results/" + args(1))
+    //model.save(outputLocation + "/models/" + args(1) + "Model")
+
+    readablePredictions.limit(50).show
 
 
   }
