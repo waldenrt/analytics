@@ -37,7 +37,6 @@ object bRelevant {
       .join(custList, "CAPTURED_LOYALTY_ID")
       .join(prodList, "PRODUCT_CATEGORY_DESCR")
       .repartition(transFileTemp("CAPTURED_LOYALTY_ID"))
-    //should we cache this one?
   }
 
   def createBasket(transFile: DataFrame, cutoffDate: String): DataFrame = {
@@ -124,6 +123,7 @@ object bRelevant {
     val prodList = createProdList(transFileTemp)
 
     val transFile = createTransFile(transFileTemp, custList, prodList)
+      .cache()
     val basket = createBasket(transFile, cutoffDate)
     val customer = createCustomer(transFile)
 

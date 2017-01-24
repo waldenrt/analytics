@@ -109,6 +109,13 @@ class CollaborativeFilteringTest extends FunSuite with DataFrameSuiteBase {
         .getInt(0)
 
       assert(3 === bbCust)
+
+      val countCust = testCustList
+        .where("CUST_ID = 'BBEB02D0-9E89-495B-A15B-4404F4572B11'")
+        .select("CustNum")
+        .count()
+
+      assert(1 === countCust)
     }
   }
 
@@ -123,6 +130,13 @@ class CollaborativeFilteringTest extends FunSuite with DataFrameSuiteBase {
         .getInt(0)
 
       assert(7 === teaNum)
+
+      val teaCount = testProdList
+        .where("PRODUCT_CATEGORY_DESCR = 'TEA'")
+        .select("ProdNum")
+        .count()
+
+      assert(1 === teaCount)
     }
   }
 }

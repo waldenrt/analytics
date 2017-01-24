@@ -38,11 +38,13 @@ object CollaborativeFiltering {
   def createCustNumList(custProdRank: DataFrame): DataFrame = {
     custProdRank
       .select("CustNum", "CUST_ID")
+      .distinct()
   }
 
   def createProdNumList(custProdRank: DataFrame): DataFrame = {
     custProdRank
       .select("ProdNum", "PRODUCT_CATEGORY_DESCR")
+      .distinct()
   }
 
   def run(args: Array[String], sc: SparkContext, sqlContext: HiveContext): Unit = {
@@ -73,13 +75,15 @@ object CollaborativeFiltering {
 
     val testPredictions = model.transform(test)
 
-    //does anyone want this accuracy value? -- returns NaN
+    val trainPredictions = model.transform(training)
+
+    //does anyone want this accuracy value? -- returns NaN -- there is a jira ticket open around what to do about this
     val evaluator = new RegressionEvaluator()
       .setMetricName("rmse")
       .setLabelCol("Ranking")
       .setPredictionCol("prediction")
 
-    val rmse = evaluator.evaluate(testPredictions)
+    val rmse = evaluator.evaluate(trainPredictions)
     logger.info("RMSE value for dataset: " + rmse)
 
     val predictions = model.transform(numCustProdRank)
@@ -92,12 +96,10 @@ object CollaborativeFiltering {
 
     val outputLocation = "users/Analytics/" + args(2) + "/" + sc.appName + "/" + currentTime
 
-    readablePredictions.write.format("com.databricks.spark.csv").save("User/Documents/bRelevant/" + args(2) + "/CollFiltering.csv")
+    readablePredictions.write.format("com.databricks.spark.csv").save("results/" + args(2) + "/CollFiltering")
+    model.write.overwrite().save("model/" + args(2))
     //readablePredictions.write.parquet(outputLocation + "/results/" + args(1))
     //model.save(outputLocation + "/models/" + args(1) + "Model")
-
-    readablePredictions.limit(50).show
-
 
   }
 
