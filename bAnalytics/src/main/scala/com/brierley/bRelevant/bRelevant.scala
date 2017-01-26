@@ -1,5 +1,8 @@
 package com.brierley.bRelevant
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 import com.brierley.utils.DataframeUtils._
 import org.apache.log4j.Logger
 import org.apache.spark.sql.expressions.Window
@@ -13,29 +16,45 @@ import org.apache.spark.SparkContext
   */
 object bRelevant {
 
+  def createCustList(transFileTemp: DataFrame): DataFrame = {
+    transFileTemp
+      .select("CAPTURED_LOYALTY_ID")
+      .distinct()
+      .withColumn("CustNum", functions.row_number()
+        .over(Window.orderBy("CAPTURED_LOYALTY_ID")))
+  }
 
-  def createTransFile(transFileTemp: DataFrame): DataFrame = {
-    transFileTemp.repartition(transFileTemp("CAPTURED_LOYALTY_ID"))
-    //should we cache this one?
+  def createProdList(transFileTemp: DataFrame): DataFrame = {
+    transFileTemp
+      .select("PRODUCT_CATEGORY_DESCR")
+      .distinct()
+      .withColumn("ProdNum", functions.row_number()
+        .over(Window.orderBy("PRODUCT_CATEGORY_DESCR")))
+  }
+
+  def createTransFile(transFileTemp: DataFrame, custList: DataFrame, prodList: DataFrame): DataFrame = {
+    transFileTemp
+      .join(custList, "CAPTURED_LOYALTY_ID")
+      .join(prodList, "PRODUCT_CATEGORY_DESCR")
+      .repartition(transFileTemp("CAPTURED_LOYALTY_ID"))
   }
 
   def createBasket(transFile: DataFrame, cutoffDate: String): DataFrame = {
     transFile
       .withColumn("FormatDate", to_date(unix_timestamp(transFile("TXN_BUSINESS_DATE"), "dd-MMM-yy").cast("timestamp")))
       .drop("TXN_BUSINESS_DATE")
-      .withColumnRenamed("FormatDate", "TXN_BUSINESS_DATE")
-      .groupBy("CAPTURED_LOYALTY_ID", "PRODUCT_CATEGORY_DESCR")
+      .groupBy("CAPTURED_LOYALTY_ID", "PRODUCT_CATEGORY_DESCR", "ProdNum")
       .agg(
         countDistinct("TXN_HEADER_ID").as("times_purchased"),
         sum("UNITS").as("cust_prod_qty"),
         sum("LINE_AMT_AFTER_DISC").as("cust_prod_sales"),
-        productRecency(lit(cutoffDate), max("TXN_BUSINESS_DATE")).as("cust_prod_min_rec")
+        productRecency(lit(cutoffDate), max("FormatDate")).as("cust_prod_min_rec")
       )
   }
 
   def createCustomer(transFile: DataFrame): DataFrame = {
     transFile
-      .groupBy("CAPTURED_LOYALTY_ID")
+      .groupBy("CAPTURED_LOYALTY_ID", "CustNum")
       .agg(
         countDistinct("TXN_HEADER_ID").as("cust_ttl_num_bask"),
         countDistinct("PRODUCT_CATEGORY_DESCR").as("number_products_purchased")
@@ -82,15 +101,12 @@ object bRelevant {
         )
       )
       .orderBy("PRODUCT_CATEGORY_DESCR")
-
   }
-
 
   def run(args: Array[String], sc: SparkContext, sqlContext: HiveContext): (DataFrame, DataFrame) = {
 
     val logger = Logger.getLogger(this.getClass)
 
-    //want this as an optional arg
     val cutoffDate = args(3)
     val fullPathandName = args(0)
 
@@ -103,7 +119,11 @@ object bRelevant {
       .option("delimiter", "|")
       .load(fullPathandName)
 
-    val transFile = createTransFile(transFileTemp)
+    val custList = createCustList(transFileTemp)
+    val prodList = createProdList(transFileTemp)
+
+    val transFile = createTransFile(transFileTemp, custList, prodList)
+      .cache()
     val basket = createBasket(transFile, cutoffDate)
     val customer = createCustomer(transFile)
 
@@ -118,6 +138,5 @@ object bRelevant {
     (custProdMetric, custProdRank)
 
   }
-
 
 }
