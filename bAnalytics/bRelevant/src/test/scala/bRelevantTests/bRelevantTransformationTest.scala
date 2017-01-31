@@ -1,14 +1,11 @@
 
 package com.brierley.bRelevant
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.FunSuite
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
-import org.apache.spark.sql.hive.HiveContext
 import org.apache.spark.sql._
-import org.apache.spark.sql.types.DataTypes.DateType
-import org.apache.spark.sql.catalyst.expressions
+import org.junit.runner.RunWith
+import org.scalatest.FunSuite
+import org.scalatest.junit.JUnitRunner
 
 /**
   * Created by amerrill on 1/10/17.
