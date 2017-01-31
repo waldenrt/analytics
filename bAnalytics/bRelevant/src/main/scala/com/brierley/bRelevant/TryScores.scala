@@ -13,6 +13,7 @@ import org.apache.spark.sql.functions._
 import com.brierley.utils.DataframeUtils._
 import org.apache.spark.ml.feature.Normalizer
 import org.apache.spark.sql.functions.lit
+import org.apache.spark.storage.StorageLevel
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -38,7 +39,7 @@ object TryScores {
 
     val custRBar = custProdRank
       .select("*")
-      .groupBy("CAPTURED_LOYALTY_ID")
+      .groupBy("CUST_ID")
       .agg(
         (avg("Ranking_Metric") * (max("number_products_purchased") / totalProductCountValue)).as("R_BAR"),
         (avg("RFM_Term") * (max("number_products_purchased") / totalProductCountValue)).as("R_BAR_RFM")
@@ -49,7 +50,7 @@ object TryScores {
     val itemLHS = custProdRank
       .select("*")
       .join(custRBar)
-      .select(custProdRank("CAPTURED_LOYALTY_ID").as("CUST_ID"),
+      .select(custProdRank("CUST_ID"),
         custProdRank("PRODUCT_CATEGORY_DESCR").as("LHS"),
         (custProdRank("Ranking_Metric") - custRBar("R_BAR")).as("R_LEFT"),
         (custProdRank("RFM_TERM") - custRBar("R_BAR_RFM")).as("R_LEFT_RFM")
@@ -60,7 +61,7 @@ object TryScores {
     val itemRHS = custProdRank
       .select("*")
       .join(custRBar)
-      .select(custProdRank("CAPTURED_LOYALTY_ID").as("CUST_ID"),
+      .select(custProdRank("CUST_ID"),
         custProdRank("PRODUCT_CATEGORY_DESCR").as("RHS"),
         (custProdRank("Ranking_Metric") - custRBar("R_BAR")).as("R_RIGHT"),
         (custProdRank("RFM_TERM") - custRBar("R_BAR_RFM")).as("R_RIGHT_RFM")
@@ -103,7 +104,7 @@ object TryScores {
         "NUM_RHS")
       .withColumnRenamed("PRODUCT_CATEGORY_DESCR", "RHS")
 
-    val numBasket = custProdRank.agg(countDistinct("CAPTURED_LOYALTY_ID")).collect()
+    val numBasket = custProdRank.agg(countDistinct("CUST_ID")).collect()
     val numBasketArray = numBasket.map(t => t(0))
     val numBasketValue = numBasketArray(0).asInstanceOf[Long]
 
@@ -155,90 +156,94 @@ object TryScores {
       .orderBy("LHS")
 
     logger.info("Creating the arule item with measure file")
+//add filtering before calculations
+    val filtered_arule = arule_1w_step2
+      .filter((arule_1w_step2("LIFT") > 1) && (arule_1w_step2("CONFIDENCE") > .001) && (arule_1w_step2("NUM_LHS_RHS") >150))
 
     val arule_item_with_measure =
-      arule_1w_step2.select("*")
+      filtered_arule
+        .select("*")
         .withColumn("CHI_SQUARE",
-          chiSquare(arule_1w_step2("EXP_LHS_RHS"),
-            arule_1w_step2("NUM_LHS_RHS"),
-            arule_1w_step2("EXP_LHS_NO_RHS"),
-            arule_1w_step2("NUM_LHS_NO_RHS"),
-            arule_1w_step2("EXP_NO_LHS_RHS"),
-            arule_1w_step2("NUM_NO_LHS_RHS"),
-            arule_1w_step2("EXP_NO_LHS_NO_RHS"),
-            arule_1w_step2("NUM_NO_LHS_NO_RHS")))
+          chiSquare(filtered_arule("EXP_LHS_RHS"),
+            filtered_arule("NUM_LHS_RHS"),
+            filtered_arule("EXP_LHS_NO_RHS"),
+            filtered_arule("NUM_LHS_NO_RHS"),
+            filtered_arule("EXP_NO_LHS_RHS"),
+            filtered_arule("NUM_NO_LHS_RHS"),
+            filtered_arule("EXP_NO_LHS_NO_RHS"),
+            filtered_arule("NUM_NO_LHS_NO_RHS")))
         .withColumn("LAPLACE",
-          laplace(arule_1w_step2("NUM_LHS_RHS"),
-            arule_1w_step2("NUM_LHS")))
+          laplace(filtered_arule("NUM_LHS_RHS"),
+            filtered_arule("NUM_LHS")))
         .withColumn("CONVICTION",
-          conviction(arule_1w_step2("NUM_BASKET"),
-            arule_1w_step2("NUM_LHS_NO_RHS"),
-            arule_1w_step2("NUM_LHS"),
-            arule_1w_step2("NUM_NO_RHS")))
+          conviction(filtered_arule("NUM_BASKET"),
+            filtered_arule("NUM_LHS_NO_RHS"),
+            filtered_arule("NUM_LHS"),
+            filtered_arule("NUM_NO_RHS")))
         .withColumn("ADDED_VALUE",
-          addedValue(arule_1w_step2("NUM_LHS_RHS"),
-            arule_1w_step2("NUM_LHS"),
-            arule_1w_step2("NUM_RHS"),
-            arule_1w_step2("NUM_BASKET")))
+          addedValue(filtered_arule("NUM_LHS_RHS"),
+            filtered_arule("NUM_LHS"),
+            filtered_arule("NUM_RHS"),
+            filtered_arule("NUM_BASKET")))
         .withColumn("CERTAINTY_FACTOR",
-          certaintyFactor(arule_1w_step2("NUM_LHS_RHS"),
-            arule_1w_step2("NUM_LHS"),
-            arule_1w_step2("NUM_RHS"),
-            arule_1w_step2("NUM_BASKET")))
+          certaintyFactor(filtered_arule("NUM_LHS_RHS"),
+            filtered_arule("NUM_LHS"),
+            filtered_arule("NUM_RHS"),
+            filtered_arule("NUM_BASKET")))
         .withColumn("J_MEASURE",
-          jMeasure(arule_1w_step2("NUM_BASKET"),
-            arule_1w_step2("NUM_LHS_NO_RHS"),
-            arule_1w_step2("NUM_LHS_RHS"),
-            arule_1w_step2("NUM_LHS"),
-            arule_1w_step2("NUM_RHS"),
-            arule_1w_step2("NUM_NO_RHS")))
+          jMeasure(filtered_arule("NUM_BASKET"),
+            filtered_arule("NUM_LHS_NO_RHS"),
+            filtered_arule("NUM_LHS_RHS"),
+            filtered_arule("NUM_LHS"),
+            filtered_arule("NUM_RHS"),
+            filtered_arule("NUM_NO_RHS")))
         .withColumn("GINI_INDEX",
-          giniIndex(arule_1w_step2("NUM_LHS"),
-            arule_1w_step2("NUM_BASKET"),
-            arule_1w_step2("NUM_LHS_RHS"),
-            arule_1w_step2("NUM_LHS_NO_RHS"),
-            arule_1w_step2("NUM_RHS"),
-            arule_1w_step2("NUM_NO_LHS"),
-            arule_1w_step2("NUM_NO_LHS_NO_RHS"),
-            arule_1w_step2("NUM_NO_RHS"),
-            arule_1w_step2("NUM_NO_LHS_RHS")))
+          giniIndex(filtered_arule("NUM_LHS"),
+            filtered_arule("NUM_BASKET"),
+            filtered_arule("NUM_LHS_RHS"),
+            filtered_arule("NUM_LHS_NO_RHS"),
+            filtered_arule("NUM_RHS"),
+            filtered_arule("NUM_NO_LHS"),
+            filtered_arule("NUM_NO_LHS_NO_RHS"),
+            filtered_arule("NUM_NO_RHS"),
+            filtered_arule("NUM_NO_LHS_RHS")))
         .withColumn("JACCARD",
-          jaccard(arule_1w_step2("NUM_LHS_RHS"),
-            arule_1w_step2("NUM_LHS"),
-            arule_1w_step2("NUM_RHS")))
+          jaccard(filtered_arule("NUM_LHS_RHS"),
+            filtered_arule("NUM_LHS"),
+            filtered_arule("NUM_RHS")))
         .withColumn("SHAPIRO",
-          shapiro(arule_1w_step2("NUM_LHS_RHS"),
-            arule_1w_step2("NUM_BASKET"),
-            arule_1w_step2("NUM_RHS"),
-            arule_1w_step2("NUM_LHS")))
+          shapiro(filtered_arule("NUM_LHS_RHS"),
+            filtered_arule("NUM_BASKET"),
+            filtered_arule("NUM_RHS"),
+            filtered_arule("NUM_LHS")))
         .withColumn("COSINE",
-          cosine(arule_1w_step2("NUM_LHS_RHS"),
-            arule_1w_step2("NUM_LHS"),
-            arule_1w_step2("NUM_RHS")))
+          cosine(filtered_arule("NUM_LHS_RHS"),
+            filtered_arule("NUM_LHS"),
+            filtered_arule("NUM_RHS")))
         .withColumn("CORRELATION",
-          correlation(arule_1w_step2("NUM_LHS_RHS"),
-            arule_1w_step2("NUM_BASKET"),
-            arule_1w_step2("NUM_LHS"),
-            arule_1w_step2("NUM_RHS"),
-            arule_1w_step2("NUM_NO_LHS"),
-            arule_1w_step2("NUM_NO_RHS")))
+          correlation(filtered_arule("NUM_LHS_RHS"),
+            filtered_arule("NUM_BASKET"),
+            filtered_arule("NUM_LHS"),
+            filtered_arule("NUM_RHS"),
+            filtered_arule("NUM_NO_LHS"),
+            filtered_arule("NUM_NO_RHS")))
         .withColumn("ODDS_RATIO",
-          oddsRatio(arule_1w_step2("NUM_LHS_NO_RHS"),
-            arule_1w_step2("NUM_NO_LHS_RHS"),
-            arule_1w_step2("NUM_LHS_RHS"),
-            arule_1w_step2("NUM_NO_LHS_NO_RHS")))
+          oddsRatio(filtered_arule("NUM_LHS_NO_RHS"),
+            filtered_arule("NUM_NO_LHS_RHS"),
+            filtered_arule("NUM_LHS_RHS"),
+            filtered_arule("NUM_NO_LHS_NO_RHS")))
         .withColumn("SIM_SCORE",
-          simScore(arule_1w_step2("LIFT"),
-            arule_1w_step2("COS_SIM"),
-            arule_1w_step2("SUPPORT"),
-            arule_1w_step2("NUM_RHS")))
+          simScore(filtered_arule("LIFT"),
+            filtered_arule("COS_SIM"),
+            filtered_arule("SUPPORT"),
+            filtered_arule("NUM_RHS")))
         .orderBy("LHS")
 
     logger.info("Creating the cust_lhs_rhs file")
 
     val cust_lhs_rhs = custProdRank
       .join(arule_item_with_measure, custProdRank("PRODUCT_CATEGORY_DESCR") === arule_item_with_measure("LHS"))
-      .select(custProdRank("CAPTURED_LOYALTY_ID").as("CUST_ID"),
+      .select(custProdRank("CUST_ID"),
         custProdRank("PRODUCT_CATEGORY_DESCR").as("LHS"),
         custProdRank("CUST_PROD_SALES"),
         custProdRank("CUST_PROD_MIN_REC"),
@@ -266,9 +271,9 @@ object TryScores {
         arule_item_with_measure("SIM_SCORE"),
         arule_item_with_measure("TOTAL").as("REC_COUNT")
       )
-      .cache()
+      .persist(StorageLevel.MEMORY_AND_DISK)
 
-    val recProduct = cust_lhs_rhs
+/*    val recProduct = cust_lhs_rhs
       .select("CUST_ID", "RHS")
       .orderBy("CUST_ID", "RHS")
       .rdd
@@ -282,15 +287,35 @@ object TryScores {
       .select("CUST_ID", "RHS")
       .withColumn("TARGET",
         if (recProductBroadcast
-          .value
+          .value//returns broadcasted map
           .get(cust_lhs_rhs("CUST_ID")).get
           .contains(cust_lhs_rhs("LHS"))) {
           lit(1)
         } else {
           lit(0)
         }
-      )
+      )*/
 
+    val yesTarget = custProdRank
+      .select("CUST_ID", "PRODUCT_CATEGORY_DESCR")
+      .withColumn("TARGET",lit(1.0))
+
+    val cust_lhs_rhs_with_target_temp = cust_lhs_rhs
+      .join(yesTarget,
+        cust_lhs_rhs("CUST_ID") === yesTarget("CUST_ID") &&
+          cust_lhs_rhs("RHS") === yesTarget("PRODUCT_CATEGORY_DESCR"), "left_outer")
+      .drop(yesTarget("CUST_ID"))
+      .drop(yesTarget("PRODUCT_CATEGORY_DESCR"))
+
+    val cust_lhs_rhs_with_target = cust_lhs_rhs_with_target_temp
+      .na.fill(0.0, Seq("TARGET"))
+
+    val rhsTarget = cust_lhs_rhs_with_target
+      .select(
+        "CUST_ID",
+        "RHS",
+        "TARGET")
+      .distinct()
 
     logger.info("Creating the suggOffers file")
 
@@ -404,20 +429,23 @@ object TryScores {
           (cust_lhs_rhs("CUST_PROD_MIN_REC") + 1)).as("AVG_RF")
       )
 
-    val suggOffersWithTarget = suggOffers
+/*    val suggOffersWithTarget = suggOffers
       .join(cust_lhs_rhs_with_target,
         suggOffers("CUST_ID") === cust_lhs_rhs_with_target("CUST_ID") &&
           suggOffers("RHS") === cust_lhs_rhs_with_target("RHS"))
       .drop(cust_lhs_rhs_with_target("CUST_ID"))
       .drop(cust_lhs_rhs_with_target("RHS"))
-      .cache()
+      .cache()*/
 
-    logger.info("Running the logistic regression process")
-
-    val stages = new ArrayBuffer[PipelineStage]()
-
-    val assembler = new VectorAssembler().setInputCols(
-      Array(
+    val suggOffersWithTarget = suggOffers
+      .join(rhsTarget,
+        suggOffers("CUST_ID") === rhsTarget("CUST_ID") &&
+          suggOffers("RHS") === rhsTarget("RHS"))
+      .drop(rhsTarget("CUST_ID"))
+      .drop(rhsTarget("RHS"))
+      .select(
+        "CUST_ID",
+        "RHS",
         "RFM_SIM_SCR_MSI",
         "RFM_SIM_SCR_FAE",
         "SUPPORT_SIM_SCR",
@@ -435,7 +463,33 @@ object TryScores {
         "COSINE_SIM_SCR",
         "CORRELATION_SIM_SCR",
         "ODDS_RATIO_SIM_SCR",
-        "avg_rf"))
+        "AVG_RF",
+        "TARGET")
+      .cache()
+
+    logger.info("Running the logistic regression process")
+
+    val stages = new ArrayBuffer[PipelineStage]()
+
+    val assembler = new VectorAssembler().setInputCols(
+      Array(
+        "RFM_SIM_SCR_MSI",
+        "RFM_SIM_SCR_FAE",
+       // "SUPPORT_SIM_SCR",
+       // "CONFIDENCE_SIM_SCR",
+        "LIFT_SIM_SCR",
+        "CHI_SQUARE_SIM_SCR",
+        "LAPLACE_SIM_SCR",
+        "CONVICTION_SIM_SCR",
+        "ADDED_VALUE_SIM_SCR",
+        "CERTAINTY_FACTOR_SIM_SCR",
+        "J_MEASURE_SIM_SCR",
+        "GINI_INDEX_SIM_SCR",
+        "JACCARD_SIM_SCR",
+        "SHAPIRO_SIM_SCR",
+        "COSINE_SIM_SCR",
+        "CORRELATION_SIM_SCR",
+        "ODDS_RATIO_SIM_SCR"))
       .setOutputCol("features_temp")
 
     val normalizer = new Normalizer().setInputCol("features_temp").setOutputCol("features")
@@ -455,19 +509,19 @@ object TryScores {
     val lorModel = model.stages.last.asInstanceOf[LogisticRegressionModel]
 
     val intercept = lorModel.intercept
-    val weights = lorModel.coefficients.toArray
+    val weights = lorModel.coefficients.toArray.toSeq
 
-    val betas = new ArrayBuffer[Double]()
+    /*val betas = new ArrayBuffer[Double]()
 
     betas += intercept
     betas += weights(0)
     betas += weights(1)
     betas += weights(2)
-    betas += weights(3)
+    betas += weights(3)*/
 
     logger.info("Getting recommended offers")
 
-    val reccomendOffers = suggOffersWithTarget
+    /*val recommendOffers = suggOffersWithTarget
       .withColumn("TRYSCORE",
         tryScore(lit(betas),
           suggOffersWithTarget("RFM_SIM_SCR_FAE"),
@@ -475,15 +529,41 @@ object TryScores {
           suggOffersWithTarget("LAPLACE_SIM_SCR"),
           suggOffersWithTarget("CORRELATION_SIM_SCR")))
       .orderBy("CUST_ID", "RHS", "TRYSCORE")
+      .select("CUST_ID", "RHS", "TRYSCORE")*/
+
+    val recommendOffers = suggOffersWithTarget
+      .withColumn("TRYSCORE",
+        tryScore2(
+          weights,
+          intercept)
+        (array(
+          "RFM_SIM_SCR_MSI",
+          "RFM_SIM_SCR_FAE",
+          "LIFT_SIM_SCR",
+          "CHI_SQUARE_SIM_SCR",
+          "LAPLACE_SIM_SCR",
+          "CONVICTION_SIM_SCR",
+          "ADDED_VALUE_SIM_SCR",
+          "CERTAINTY_FACTOR_SIM_SCR",
+          "J_MEASURE_SIM_SCR",
+          "GINI_INDEX_SIM_SCR",
+          "JACCARD_SIM_SCR",
+          "SHAPIRO_SIM_SCR",
+          "COSINE_SIM_SCR",
+          "CORRELATION_SIM_SCR",
+          "ODDS_RATIO_SIM_SCR"
+        )))
+      .orderBy(col("CUST_ID"),col("TRYSCORE").desc)
       .select("CUST_ID", "RHS", "TRYSCORE")
 
     val time = Calendar.getInstance().getTime()
     val formatTime = new SimpleDateFormat("YYYYMMDDHHmmss")
     val printTime = formatTime.format(time)
 
-    val outputLocation = "users/Analytics/" + args(2) + "/" + sc.appName +  "/" + printTime
+    val outputLocation = "users/Analytics/" + args(2) + "/" + sc.appName + "/" + printTime
 
-    reccomendOffers.write.parquet(outputLocation + "/tryScores/" + args(1))
+    //recommendOffers.write.parquet(outputLocation + "/tryScores/" + args(1))
+    recommendOffers.write.format(outputLocation + "/tryScores/" + args(1))
 
   }
 }
