@@ -31,9 +31,13 @@ object TryScores {
     val (custProdMetric, custProdRank) = bRelevant.run(args, sc, sqlContext)
     custProdRank.cache()
 
-    val totalProductCount = custProdMetric.agg(countDistinct("PRODUCT_CATEGORY_DESCR")).collect()
-    val totalProductCountArray = totalProductCount.map(t => t(0))
-    val totalProductCountValue = totalProductCountArray(0).asInstanceOf[Long]
+    val totalProductCountValue = custProdMetric
+      .select("PRODUCT_CATEGORY_DESCR")
+      .distinct()
+      .count()
+    //.agg(countDistinct("PRODUCT_CATEGORY_DESCR")).collect()
+    //val totalProductCountArray = totalProductCount.map(t => t(0))
+    //val totalProductCountValue = totalProductCountArray(0).asInstanceOf[Long]
 
     logger.info("Creating the custRBar file")
 
@@ -104,9 +108,14 @@ object TryScores {
         "NUM_RHS")
       .withColumnRenamed("PRODUCT_CATEGORY_DESCR", "RHS")
 
-    val numBasket = custProdRank.agg(countDistinct("CUST_ID")).collect()
-    val numBasketArray = numBasket.map(t => t(0))
-    val numBasketValue = numBasketArray(0).asInstanceOf[Long]
+    val numBasketValue = custProdRank
+      .select("CUST_ID")
+      .distinct()
+      .count()
+
+    //agg(countDistinct("CUST_ID")).collect()
+    //val numBasketArray = numBasket.map(t => t(0))
+    //val numBasketValue = numBasketArray(0).asInstanceOf[Long]
 
     logger.info("Creating the arule_1w_step2 file")
 
@@ -156,9 +165,10 @@ object TryScores {
       .orderBy("LHS")
 
     logger.info("Creating the arule item with measure file")
-//add filtering before calculations
+    //add filtering before calculations
     val filtered_arule = arule_1w_step2
-      .filter((arule_1w_step2("LIFT") > 1) && (arule_1w_step2("CONFIDENCE") > .001) && (arule_1w_step2("NUM_LHS_RHS") >150))
+      .filter(arule_1w_step2("LIFT") > 1)
+      //&& (arule_1w_step2("CONFIDENCE") > .001) && (arule_1w_step2("NUM_LHS_RHS") >150)
 
     val arule_item_with_measure =
       filtered_arule
@@ -271,34 +281,10 @@ object TryScores {
         arule_item_with_measure("SIM_SCORE"),
         arule_item_with_measure("TOTAL").as("REC_COUNT")
       )
-      .persist(StorageLevel.MEMORY_AND_DISK)
-
-/*    val recProduct = cust_lhs_rhs
-      .select("CUST_ID", "RHS")
-      .orderBy("CUST_ID", "RHS")
-      .rdd
-      .map(tokens => (tokens(0), List(tokens(1))))
-      .reduceByKey((a, b) => a ::: b)
-      .collectAsMap()
-
-    val recProductBroadcast = sc.broadcast(recProduct)
-
-    val cust_lhs_rhs_with_target = cust_lhs_rhs
-      .select("CUST_ID", "RHS")
-      .withColumn("TARGET",
-        if (recProductBroadcast
-          .value//returns broadcasted map
-          .get(cust_lhs_rhs("CUST_ID")).get
-          .contains(cust_lhs_rhs("LHS"))) {
-          lit(1)
-        } else {
-          lit(0)
-        }
-      )*/
 
     val yesTarget = custProdRank
       .select("CUST_ID", "PRODUCT_CATEGORY_DESCR")
-      .withColumn("TARGET",lit(1.0))
+      .withColumn("TARGET", lit(1.0))
 
     val cust_lhs_rhs_with_target_temp = cust_lhs_rhs
       .join(yesTarget,
@@ -429,14 +415,6 @@ object TryScores {
           (cust_lhs_rhs("CUST_PROD_MIN_REC") + 1)).as("AVG_RF")
       )
 
-/*    val suggOffersWithTarget = suggOffers
-      .join(cust_lhs_rhs_with_target,
-        suggOffers("CUST_ID") === cust_lhs_rhs_with_target("CUST_ID") &&
-          suggOffers("RHS") === cust_lhs_rhs_with_target("RHS"))
-      .drop(cust_lhs_rhs_with_target("CUST_ID"))
-      .drop(cust_lhs_rhs_with_target("RHS"))
-      .cache()*/
-
     val suggOffersWithTarget = suggOffers
       .join(rhsTarget,
         suggOffers("CUST_ID") === rhsTarget("CUST_ID") &&
@@ -465,7 +443,6 @@ object TryScores {
         "ODDS_RATIO_SIM_SCR",
         "AVG_RF",
         "TARGET")
-      .cache()
 
     logger.info("Running the logistic regression process")
 
@@ -475,8 +452,8 @@ object TryScores {
       Array(
         "RFM_SIM_SCR_MSI",
         "RFM_SIM_SCR_FAE",
-       // "SUPPORT_SIM_SCR",
-       // "CONFIDENCE_SIM_SCR",
+        // "SUPPORT_SIM_SCR",
+        // "CONFIDENCE_SIM_SCR",
         "LIFT_SIM_SCR",
         "CHI_SQUARE_SIM_SCR",
         "LAPLACE_SIM_SCR",
@@ -553,17 +530,19 @@ object TryScores {
           "CORRELATION_SIM_SCR",
           "ODDS_RATIO_SIM_SCR"
         )))
-      .orderBy(col("CUST_ID"),col("TRYSCORE").desc)
+      .orderBy(col("CUST_ID"), col("TRYSCORE").desc)
       .select("CUST_ID", "RHS", "TRYSCORE")
 
     val time = Calendar.getInstance().getTime()
     val formatTime = new SimpleDateFormat("YYYYMMDDHHmmss")
     val printTime = formatTime.format(time)
 
-    val outputLocation = "users/Analytics/" + args(2) + "/" + sc.appName + "/" + printTime
+    //val outputLocation = "hdfs:///user/Analytics/" + args(2) + "/" + sc.appName + "/" + printTime
+
+    //val outputLocation = "hdfs:///user/amerrill/" + printTime
 
     //recommendOffers.write.parquet(outputLocation + "/tryScores/" + args(1))
-    recommendOffers.write.format(outputLocation + "/tryScores/" + args(1))
+    recommendOffers.write.format("com.databricks.spark.csv").save(/*outputLocation + */"tryScores/" + args(1))
 
   }
 }
