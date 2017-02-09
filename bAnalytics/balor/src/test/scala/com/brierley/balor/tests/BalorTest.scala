@@ -93,5 +93,18 @@ class BalorTest extends FunSuite with DataFrameSuiteBase{
 
   }
 
+  //test current balor -1 (ie.  current: oct, nov, dec need to test: sept, oct, nov)
+
+  test("Only data for a single balor calculation"){
+
+  }
+
+  test("Data for 2 balor calculations (aka 4 periods worth of data"){
+
+  }
+
+  test("Data for 3 + balor calculations (aka 5 periods plus a couple extra days)"){
+
+  }
 
 }
