@@ -21,65 +21,78 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
     import sqlCtx.implicits._
 
     val singleUserSingleTrans = sc.parallelize(List(
-      ("customerA", "txn1-custA-May", "05/05/2015", 8, 331.95, 300.00)
-    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "ItemsPurchased", "TXN_AMT", "QualifiedTotal")
+      ("customerA", "txn1-custA-May", "05/05/2015", 8, 331.95, 30.00, "hi", "bye")
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT", "EXTRA1", "EXTRA2")
+
+    val singleUserSingleTransNoItem= sc.parallelize(List(
+      ("customerA", "txn1-custA-May", "05/05/2015", 331.95, 30.00, "hi", "bye")
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "DISC_AMT", "EXTRA1", "EXTRA2")
+
+    val singleUserSingleTransNoDisc= sc.parallelize(List(
+      ("customerA", "txn1-custA-May", "05/05/2015", 8, 331.95, "hi", "bye")
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "EXTRA1", "EXTRA2")
+
+    val singleUserSingleTransNoItemNoDisc= sc.parallelize(List(
+      ("customerA", "txn1-custA-May", "05/05/2015", 331.95, "hi", "bye")
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "EXTRA1", "EXTRA2")
 
     val singleUser2TransJan = sc.parallelize(List(
-      ("customerA", "txn1-custA-Jan1", "01/03/2015", 1, 5.00, 5.00),
-      ("customerA", "txn2-custA-Jan2", "01/04/2015", 1, 7.50, 7.50)
-    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "ItemsPurchased", "TXN_AMT", "QualifiedTotal")
+      ("customerA", "txn1-custA-Jan1", "01/03/2015", 1, 5.00, 1.00, "one", "two"),
+      ("customerA", "txn2-custA-Jan2", "01/04/2015", 1, 7.50, 4.50, "one", "two")
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT","EXTRA1", "EXTRA2")
 
     val singleUserMultiTransJan = sc.parallelize(List(
-      ("customerA", "txn1-custA-Jan1", "01/03/2015", 1, 5.00, 5.00),
-      ("customerA", "txn2-custA-Jan2", "01/04/2015", 1, 7.50, 7.50),
-      ("customerA", "txn3-custA-Jan2", "01/04/2015", 4, 22.12, 22.12),
-      ("customerA", "txn4-custA-Jan3", "01/05/2015", 3, 10.40, 10.40),
-      ("customerA", "txn5-custA-Jan4", "01/10/2015", 2, 12.11, 12.11)
-    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "ItemsPurchased", "TXN_AMT", "QualifiedTotal")
+      ("customerA", "txn1-custA-Jan1", "01/03/2015", 1, 5.00, 5.00, 2, 5),
+      ("customerA", "txn2-custA-Jan2", "01/04/2015", 1, 7.50, 7.50, 1, 5),
+      ("customerA", "txn3-custA-Jan2", "01/04/2015", 4, 22.12, 22.12, 5, 2),
+      ("customerA", "txn4-custA-Jan3", "01/05/2015", 3, 10.40, 10.40, 7, 1),
+      ("customerA", "txn5-custA-Jan4", "01/10/2015", 2, 12.11, 12.11, 6, 1)
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT","EXTRA1", "EXTRA2")
 
     //dropping extra columns, including only required from this point on
     val singleUserMultiTransSummer = sc.parallelize(List(
-      ("customerA", "txn1-custA-Jun1", "06/05/2015", 23.45),
-      ("customerA", "txn2-custA-Jun2", "06/09/2015", 12.50),
-      ("customerA", "txn3-custA-Jun3", "06/25/2015", 15.50),
-      ("customerA", "txn4-custA-Jul1", "07/03/2015", 123.13),
-      ("customerA", "txn5-custA-Jul2", "07/05/2015", 12.23)
-    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT")
+      ("customerA", "txn1-custA-Jun1", "06/05/2015", 23.45, 3, 2.01),
+      ("customerA", "txn2-custA-Jun2", "06/09/2015", 12.50, 5, 1.50),
+      ("customerA", "txn3-custA-Jun3", "06/25/2015", 15.50, 2, 3.20),
+      ("customerA", "txn4-custA-Jul1", "07/03/2015", 123.13, 13, 13.51),
+      ("customerA", "txn5-custA-Jul2", "07/05/2015", 12.23, 1, 2.35)
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
 
     val singleUserMultiTransLeap = sc.parallelize(List(
-      ("customerA", "txn1-custA-Feb1", "02/15/2016", 12.34),
-      ("customerA", "txn2-custA-Feb2", "02/22/2016", 22.10),
-      ("customerA", "txn3-custA-Feb3", "02/29/2016", 10.50),
-      ("customerA", "txn4-custA-Mar1", "03/02/2016", 25.45),
-      ("customerA", "txn5-custA-Mar2", "03/05/2016", 1.50)
-    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT")
+      ("customerA", "txn1-custA-Feb1", "02/15/2016", 12.34, 1, 2.35),
+      ("customerA", "txn2-custA-Feb2", "02/22/2016", 22.10, 1, 2.35),
+      ("customerA", "txn3-custA-Feb3", "02/29/2016", 10.50, 1, 2.35),
+      ("customerA", "txn4-custA-Mar1", "03/02/2016", 25.45, 1, 2.35),
+      ("customerA", "txn5-custA-Mar2", "03/05/2016", 1.50, 1, 2.35)
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
 
     val singleUserMultiTransSavings = sc.parallelize(List(
-      ("customerA", "txn1-custA-Mar1", "03/10/2016", 10.50),
-      ("customerA", "txn2-custA-Mar2", "03/13/2016", 12.25),
-      ("customerA", "txn3-custA-Mar3", "03/15/2016", 20.40),
-      ("customerA", "txn4-custA-Apr1", "04/23/2016", 13.24),
-      ("customerA", "txn5-custA-May1", "05/15/2016", 14.54),
-      ("customerA", "txn6-custA-Jun1", "06/30/2016", 20.50),
-      ("customerA", "txn7-custA-Jul1", "07/15/2016", 35.42),
-      ("customerA", "txn8-custA-Aug1", "08/24/2016", 54.60),
-      ("customerA", "txn9-custA-Sep1", "09/28/2016", 32.15),
-      ("customerA", "txn10-custA-Oct1", "10/17/2016", 12.85),
-      ("customerA", "txn11-custA-Oct1", "10/17/2016", 45.32),
-      ("customerA", "txn12-custA-Nov1", "11/04/2016", 98.21),
-      ("customerA", "txn13-custA-Nov2", "11/08/2016", 54.81)
-    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT")
+      ("customerA", "txn1-custA-Mar1", "03/10/2016", 10.50, 1, 2.35),
+      ("customerA", "txn2-custA-Mar2", "03/13/2016", 12.25, 1, 2.35),
+      ("customerA", "txn3-custA-Mar3", "03/15/2016", 20.40, 1, 2.35),
+      ("customerA", "txn4-custA-Apr1", "04/23/2016", 13.24, 1, 2.35),
+      ("customerA", "txn5-custA-May1", "05/15/2016", 14.54, 1, 2.35),
+      ("customerA", "txn6-custA-Jun1", "06/30/2016", 20.50, 1, 2.35),
+      ("customerA", "txn7-custA-Jul1", "07/15/2016", 35.42, 1, 2.35),
+      ("customerA", "txn8-custA-Aug1", "08/24/2016", 54.60, 1, 2.35),
+      ("customerA", "txn9-custA-Sep1", "09/28/2016", 32.15, 1, 2.35),
+      ("customerA", "txn10-custA-Oct1", "10/17/2016", 12.85, 1, 2.35),
+      ("customerA", "txn11-custA-Oct1", "10/17/2016", 45.32, 1, 2.35),
+      ("customerA", "txn12-custA-Nov1", "11/04/2016", 98.21, 1, 2.35),
+      ("customerA", "txn13-custA-Nov2", "11/08/2016", 54.81, 1, 2.35)
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
 
     val singleUserMultiTransYearGap = sc.parallelize(List(
-      ("customerA", "txn1-custA-Dec1", "12/24/2015", 12.34),
-      ("customerA", "txn2-custA-Dec2", "12/30/2015", 22.10),
-      ("customerA", "txn3-custA-Jan1", "01/03/2016", 10.50),
-      ("customerA", "txn4-custA-Jan2", "01/09/2016", 25.45),
-      ("customerA", "txn5-custA-Jan3", "01/09/2016", 1.50)
-    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT")
+      ("customerA", "txn1-custA-Dec1", "12/24/2015", 12.34, 1, 2.35),
+      ("customerA", "txn2-custA-Dec2", "12/30/2015", 22.10, 1, 2.35),
+      ("customerA", "txn3-custA-Jan1", "01/03/2016", 10.50, 1, 2.35),
+      ("customerA", "txn4-custA-Jan2", "01/09/2016", 25.45, 1, 2.35),
+      ("customerA", "txn5-custA-Jan3", "01/09/2016", 1.50, 1, 2.35)
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
 
   }
 
+  //Only including required columns for cadence calcs from this point on (ITEM_QTY and DISC_AMT are optional)
   trait MultiUserData {
     val sqlCtx = sqlContext
 
@@ -269,6 +282,9 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "Cadence") //5.6
   }
 
+
+
+  //INITIAL DATA PREPARATION TEST
   test("Dataframe initial transform: Cadence column added, extra columns dropped") {
     new SingleUserData {
 
@@ -276,13 +292,28 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
       val cadenceCols = cadenceDF.columns
 
-      val columns = Array("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "Cadence")
+      //since reloading initial file in BalorApp, only need cust_id, txn_id, and txn_date, others are not needed for cadence calc
+      val columns = Array("CUST_ID", "TXN_ID", "TXN_DATE", "Cadence")
 
       assert(cadenceCols === columns)
-
     }
   }
 
+  test("Option for , delimited"){
+
+  }
+
+  test("Option for | delimited"){
+
+  }
+
+  test("Option for ; delimited"){
+
+  }
+
+  test("Option for /t delimited"){
+
+  }
 
   //SINGLE USER TESTS
 

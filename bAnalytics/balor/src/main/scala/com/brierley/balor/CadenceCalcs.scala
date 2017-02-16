@@ -7,12 +7,18 @@ import org.apache.spark.sql.DataFrame
   */
 object CadenceCalcs {
 
-  def daysSinceLastVisit(initialDF: DataFrame): DataFrame = ???
+  def dateFormat(initialDF: DataFrame): DataFrame = ???
+
+  def daysSinceLastVisit(dateDF: DataFrame): DataFrame = ???
 
   def calculateCadenceValue(daysDF: DataFrame): Double = ???
 
   def normalizeCadenceValue(cadence: Double): Int = ???
 
+  def calcNumTimePeriods(cadenceValue: Int, cadenceDF: DataFrame): Int = ???
+
   def createFreqTable(daysDF: DataFrame): DataFrame = ???
 
 }
+
+
