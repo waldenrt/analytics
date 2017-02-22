@@ -20,7 +20,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     import sqlCtx.implicits._
 
     //dd-MM-yyyy
-    val leapSavingsDate1 = sc.parallelize(List(
+    val ddmmyyyyDash = sc.parallelize(List(
       ("customerA", "txn1-custA-Feb1", "15-02-2016", 12.34, 1, 2.35),
       ("customerA", "txn2-custA-Feb2", "22-2-2016", 22.10, 1, 2.35),
       ("customerA", "txn3-custA-Feb3", "29-02-2016", 10.50, 1, 2.35),
@@ -32,7 +32,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
 
     //dd/MM/yyyy
-    val leapSavingsDate2 = sc.parallelize(List(
+    val ddmmyyyySlash = sc.parallelize(List(
       ("customerA", "txn1-custA-Feb1", "15/2/2016", 12.34, 1, 2.35),
       ("customerA", "txn2-custA-Feb2", "22/02/2016", 22.10, 1, 2.35),
       ("customerA", "txn3-custA-Feb3", "29/02/2016", 10.50, 1, 2.35),
@@ -44,7 +44,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
 
     //yyyy-MM-dd
-    val leapSavingsDate3 = sc.parallelize(List(
+    val yyyymmddDash = sc.parallelize(List(
       ("customerA", "txn1-custA-Feb1", "2016-2-15", 12.34, 1, 2.35),
       ("customerA", "txn2-custA-Feb2", "2016-02-22", 22.10, 1, 2.35),
       ("customerA", "txn3-custA-Feb3", "2016-02-29", 10.50, 1, 2.35),
@@ -56,7 +56,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
 
     //yyyy/MM/dd
-    val leapSavingsDate4 = sc.parallelize(List(
+    val yyyymmddSlash = sc.parallelize(List(
       ("customerA", "txn1-custA-Feb1", "2016/2/15", 12.34, 1, 2.35),
       ("customerA", "txn2-custA-Feb2", "2016/02/22", 22.10, 1, 2.35),
       ("customerA", "txn3-custA-Feb3", "2016/02/29", 10.50, 1, 2.35),
@@ -68,7 +68,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
 
     //MM-dd-yyyy
-    val leapSavingsDate5 = sc.parallelize(List(
+    val mmddyyyyDash = sc.parallelize(List(
       ("customerA", "txn1-custA-Feb1", "2-15-2016", 12.34, 1, 2.35),
       ("customerA", "txn2-custA-Feb2", "02-22-2016", 22.10, 1, 2.35),
       ("customerA", "txn3-custA-Feb3", "02-29-2016", 10.50, 1, 2.35),
@@ -80,7 +80,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
 
     //MM/dd/yyyy
-    val leapSavingsDate6 = sc.parallelize(List(
+    val mmddyyyySlash = sc.parallelize(List(
       ("customerA", "txn1-custA-Feb1", "2/15/2016", 12.34, 1, 2.35),
       ("customerA", "txn2-custA-Feb2", "02/22/2016", 22.10, 1, 2.35),
       ("customerA", "txn3-custA-Feb3", "02/29/2016", 10.50, 1, 2.35),
@@ -110,7 +110,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
   test("Date format of MM/dd/yyyy"){
 
     new TransformDateData {
-      val trans = DateUtils.convertDateMonthSlash(leapSavingsDate6)
+      val trans = DateUtils.convertDateMonthSlash(mmddyyyySlash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
 
       assertDataFrameEquals(trans, dateResults)
@@ -119,7 +119,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
 
   test("Date format of MM-dd-yyyy"){
     new TransformDateData {
-      val trans = DateUtils.convertDateMonthDash(leapSavingsDate5)
+      val trans = DateUtils.convertDateMonthDash(mmddyyyyDash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
 
       assertDataFrameEquals(trans, dateResults)
@@ -128,7 +128,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
 
   test("Date format of dd-MM-yyyy"){
     new TransformDateData {
-      val trans = DateUtils.convertDateDayDash(leapSavingsDate1)
+      val trans = DateUtils.convertDateDayDash(ddmmyyyyDash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
 
       assertDataFrameEquals(trans, dateResults)
@@ -137,7 +137,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
 
   test("Date format of dd/MM/yyyy"){
     new TransformDateData {
-      val trans = DateUtils.convertDateDaySlash(leapSavingsDate2)
+      val trans = DateUtils.convertDateDaySlash(ddmmyyyySlash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
 
       assertDataFrameEquals(trans, dateResults)
@@ -146,7 +146,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
 
   test("Date format of yyyy-MM-dd"){
     new TransformDateData {
-      val trans = DateUtils.convertDateYearDash(leapSavingsDate3)
+      val trans = DateUtils.convertDateYearDash(yyyymmddDash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
 
       assertDataFrameEquals(trans, dateResults)
@@ -155,7 +155,61 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
 
   test("Date format of yyyy/MM/dd"){
     new TransformDateData {
-      val trans = DateUtils.convertDateYearSlash(leapSavingsDate4)
+      val trans = DateUtils.convertDateYearSlash(yyyymmddSlash)
+        .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
+
+      assertDataFrameEquals(trans, dateResults)
+    }
+  }
+
+  test("Determine format of MM-dd-yyyy, has enough data"){
+    new TransformDateData {
+      val trans = DateUtils.determineFormat(mmddyyyyDash)
+        .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
+
+      assertDataFrameEquals(trans, dateResults)
+    }
+  }
+
+  test("Determine format of MM/dd/yyyy, has enough data"){
+    new TransformDateData {
+      val trans = DateUtils.determineFormat(mmddyyyySlash)
+        .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
+
+      assertDataFrameEquals(trans, dateResults)
+    }
+  }
+
+  test("Determine format of dd-MM-yyyy, has enough data"){
+    new TransformDateData {
+      val trans = DateUtils.determineFormat(ddmmyyyyDash)
+        .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
+
+      assertDataFrameEquals(trans, dateResults)
+    }
+  }
+
+  test("Determine format of dd/MM/yyyy, has enough data"){
+    new TransformDateData {
+      val trans = DateUtils.determineFormat(ddmmyyyySlash)
+        .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
+
+      assertDataFrameEquals(trans, dateResults)
+    }
+  }
+
+  test("Determine format of yyyy/MM/dd, has enough data"){
+    new TransformDateData {
+      val trans = DateUtils.determineFormat(yyyymmddSlash)
+        .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
+
+      assertDataFrameEquals(trans, dateResults)
+    }
+  }
+
+  test("Determine format of yyyy-MM-dd, has enough data"){
+    new TransformDateData {
+      val trans = DateUtils.determineFormat(yyyymmddDash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
 
       assertDataFrameEquals(trans, dateResults)
