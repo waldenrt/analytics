@@ -7,7 +7,9 @@ import org.apache.spark.sql.DataFrame
   */
 object BalorApp {
 
-  def calcTimePeriod(initialDF: DataFrame, cadence: Int): DataFrame = ???
+  def dateFormat(initialDF: DataFrame): DataFrame = ???
+
+  def calcTimePeriod(dateDF: DataFrame, cadence: Int): DataFrame = ???
 
   def assignSegmentLabel(timePeriodDF: DataFrame): DataFrame = ???
 

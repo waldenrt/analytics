@@ -2,10 +2,13 @@ package com.brierley.balor.tests
 
 import com.brierley.balor.CadenceCalcs
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
-import org.apache.spark.sql._
+import org.apache.spark.sql.Row
+import org.apache.spark.sql.functions.{to_date, unix_timestamp}
+import org.apache.spark.sql.types.{IntegerType, LongType, StructField, StructType}
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
+import org.scalatest.Matchers._
 
 /**
   * Created by amerrill on 1/31/17.
@@ -21,25 +24,30 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
     import sqlCtx.implicits._
 
     val singleUserSingleTrans = sc.parallelize(List(
-      ("customerA", "txn1-custA-May", "05/05/2015", 8, 331.95, 30.00, "hi", "bye")
+      ("customerA", "txn1-custA-May", "2015-05-05", 8, 331.95, 30.00, "hi", "bye")
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT", "EXTRA1", "EXTRA2")
+      .withColumn("Date", $"TXN_DATE".cast("date"))
 
-    val singleUserSingleTransNoItem= sc.parallelize(List(
-      ("customerA", "txn1-custA-May", "05/05/2015", 331.95, 30.00, "hi", "bye")
+    val singleUserSingleTransNoItem = sc.parallelize(List(
+      ("customerA", "txn1-custA-May", "2015-05-05", 331.95, 30.00, "hi", "bye")
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "DISC_AMT", "EXTRA1", "EXTRA2")
+      .withColumn("Date", $"TXN_DATE".cast("date"))
 
-    val singleUserSingleTransNoDisc= sc.parallelize(List(
-      ("customerA", "txn1-custA-May", "05/05/2015", 8, 331.95, "hi", "bye")
+    val singleUserSingleTransNoDisc = sc.parallelize(List(
+      ("customerA", "txn1-custA-May", "2015-05-05", 8, 331.95, "hi", "bye")
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "EXTRA1", "EXTRA2")
+      .withColumn("Date", $"TXN_DATE".cast("date"))
 
-    val singleUserSingleTransNoItemNoDisc= sc.parallelize(List(
-      ("customerA", "txn1-custA-May", "05/05/2015", 331.95, "hi", "bye")
+    val singleUserSingleTransNoItemNoDisc = sc.parallelize(List(
+      ("customerA", "txn1-custA-May", "2015-05-05", 331.95, "hi", "bye")
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "EXTRA1", "EXTRA2")
+      .withColumn("Date", $"TXN_DATE".cast("date"))
 
     val singleUser2TransJan = sc.parallelize(List(
       ("customerA", "txn1-custA-Jan1", "01/03/2015", 1, 5.00, 1.00, "one", "two"),
       ("customerA", "txn2-custA-Jan2", "01/04/2015", 1, 7.50, 4.50, "one", "two")
-    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT","EXTRA1", "EXTRA2")
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT", "EXTRA1", "EXTRA2")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val singleUserMultiTransJan = sc.parallelize(List(
       ("customerA", "txn1-custA-Jan1", "01/03/2015", 1, 5.00, 5.00, 2, 5),
@@ -47,7 +55,8 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("customerA", "txn3-custA-Jan2", "01/04/2015", 4, 22.12, 22.12, 5, 2),
       ("customerA", "txn4-custA-Jan3", "01/05/2015", 3, 10.40, 10.40, 7, 1),
       ("customerA", "txn5-custA-Jan4", "01/10/2015", 2, 12.11, 12.11, 6, 1)
-    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT","EXTRA1", "EXTRA2")
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT", "EXTRA1", "EXTRA2")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     //dropping extra columns, including only required from this point on
     val singleUserMultiTransSummer = sc.parallelize(List(
@@ -57,6 +66,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("customerA", "txn4-custA-Jul1", "07/03/2015", 123.13, 13, 13.51),
       ("customerA", "txn5-custA-Jul2", "07/05/2015", 12.23, 1, 2.35)
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val singleUserMultiTransLeap = sc.parallelize(List(
       ("customerA", "txn1-custA-Feb1", "02/15/2016", 12.34, 1, 2.35),
@@ -65,6 +75,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("customerA", "txn4-custA-Mar1", "03/02/2016", 25.45, 1, 2.35),
       ("customerA", "txn5-custA-Mar2", "03/05/2016", 1.50, 1, 2.35)
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val singleUserMultiTransSavings = sc.parallelize(List(
       ("customerA", "txn1-custA-Mar1", "03/10/2016", 10.50, 1, 2.35),
@@ -81,6 +92,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("customerA", "txn12-custA-Nov1", "11/04/2016", 98.21, 1, 2.35),
       ("customerA", "txn13-custA-Nov2", "11/08/2016", 54.81, 1, 2.35)
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val singleUserMultiTransYearGap = sc.parallelize(List(
       ("customerA", "txn1-custA-Dec1", "12/24/2015", 12.34, 1, 2.35),
@@ -89,6 +101,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("customerA", "txn4-custA-Jan2", "01/09/2016", 25.45, 1, 2.35),
       ("customerA", "txn5-custA-Jan3", "01/09/2016", 1.50, 1, 2.35)
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
   }
 
@@ -103,6 +116,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("custA", "txn2-custA-Jun2", "06/10/2016", 23.14),
       ("custB", "txn1-custB-Jun1", "06/14/2016", 26.16)
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val multiUserDoubleNov = sc.parallelize(List(
       ("custA", "txn1-custA-Nov1", "11/04/2016", 34.24),
@@ -110,6 +124,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("custA", "txn2-custA-Nov2", "11/10/2016", 23.14),
       ("custB", "txn2-custB-Nov2", "11/10/2016", 98.32)
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val multiUserMultiTransMultiMonth = sc.parallelize(List(
       ("custA", "txn1-custA-Jan1", "01/18/2016", 2.18),
@@ -125,6 +140,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("custB", "txn5-custB-Mar2", "03/30/2016", 87.15),
       ("custC", "txn3-custC-Mar1", "03/30/2016", 32.57)
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val multiUserMultiTransMultiYear = sc.parallelize(List(
       ("custA", "txn1-custA-Nov1", "11/18/2015", 2.18),
@@ -142,6 +158,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("custC", "txn4-custC-Jan1", "01/30/2016", 43.12),
       ("custC", "txn5-custC-Feb1", "02/10/2016", 160.23)
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val everythingMixed = sc.parallelize(List(
       ("custA", "txn1-custA-Nov1", "11/18/2015", 2.18),
@@ -164,6 +181,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("custF", "txn3-custF-Jan1", "01/30/2016", 12.53),
       ("custC", "txn5-custC-Feb1", "02/10/2016", 160.23)
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
   }
 
   trait CadenceNormalizingData {
@@ -194,6 +212,8 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
     import sqlCtx.implicits._
 
+    val percentile = 0.8
+
     val singleUser6Days = sc.parallelize(List(
       ("customerA", "txn1-custA-Jun1", "06/05/2015", 23.45, 0),
       ("customerA", "txn2-custA-Jun2", "06/09/2015", 12.50, 4),
@@ -202,6 +222,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("customerA", "txn5-custA-Jul2", "07/05/2015", 12.23, 2),
       ("customerA", "txn6-custA-Jul3", "07/09/2015", 51.13, 4)
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "Cadence")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val singleUser6Txns4Days = sc.parallelize(List(
       ("customerA", "txn1-custA-Jun1", "06/05/2015", 23.45, 0),
@@ -211,6 +232,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("customerA", "txn5-custA-Jul2", "07/03/2015", 12.23, 0),
       ("customerA", "txn6-custA-Jul3", "07/09/2015", 51.13, 6)
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "Cadence")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val singleUserRepeats = sc.parallelize(List(
       ("customerA", "txn1-custA-Jun1", "06/05/2015", 23.45, 0),
@@ -231,6 +253,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("customerA", "txn16-custA-Jul7", "07/20/2015", 24.14, 3),
       ("customerA", "txn17-custA-Jul7", "07/20/2015", 36.16, 0)
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "Cadence")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val multiUserNoRepeats = sc.parallelize(List(
       ("custA", "txn1-custA-Oct1", "10/04/2016", 25.14, 0),
@@ -244,7 +267,8 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("custB", "txn4-custB-Oct6", "10/12/2016", 25.16, 1),
       ("custB", "txn5-custB-Oct7", "10/20/2016", 24.62, 8),
       ("custA", "txn3-custA-Oct7", "10/20/2016", 72.13, 12)
-    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "Cadence") // 4
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "Cadence")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val multiUserNewAndReturning = sc.parallelize(List(
       ("custA", "txn1-custA-Oct1", "10/04/2016", 25.14, 0),
@@ -262,6 +286,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("custB", "txn6-custB-Oct7", "10/20/2016", 15.72, 0),
       ("custC", "txn4-custC-Oct8", "10/31/2016", 51.52, 19)
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "Cadence") // 6.4
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val multiUserMultiTxns = sc.parallelize(List(
       ("custA", "txn1-custA-Oct1", "10/04/2016", 25.14, 0),
@@ -279,9 +304,35 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("custD", "txn3-custD-Oct7", "10/20/2016", 39.05, 0),
       ("custB", "txn6-custB-Oct7", "10/20/2016", 15.72, 0),
       ("custC", "txn4-custC-Oct8", "10/31/2016", 51.52, 19)
-    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "Cadence") //5.6
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "Cadence")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
   }
 
+  trait FreqTableData {
+    val sqlCtx = sqlContext
+
+    import sqlCtx.implicits._
+
+    val noZeros = sc.parallelize(List(
+      2, 4, 4, 8, 16
+    )).toDF("Cadence")
+
+    val trueZeros = sc.parallelize(List(
+      0, 4, 6, 8, 16
+    )).toDF("Cadence")
+
+    val lots = sc.parallelize(List(
+      0, 0, 0, 0, 0, 1, 2, 2, 3, 3, 3, 4, 6, 8, 16
+    )).toDF("Cadence")
+
+    val schema = StructType(Array(
+      StructField("Cadence", IntegerType, true),
+      StructField("Frequency", LongType, false),
+      StructField("CumFrequency", LongType, true)
+    ))
+
+
+  }
 
 
   //INITIAL DATA PREPARATION TEST
@@ -293,25 +344,25 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       val cadenceCols = cadenceDF.columns
 
       //since reloading initial file in BalorApp, only need cust_id, txn_id, and txn_date, others are not needed for cadence calc
-      val columns = Array("CUST_ID", "TXN_ID", "TXN_DATE", "Cadence")
+      val columns = Array("CUST_ID", "TXN_ID", "TXN_DATE", "Date", "Cadence")
 
       assert(cadenceCols === columns)
     }
   }
 
-  test("Option for , delimited"){
+  test("Option for , delimited") {
 
   }
 
-  test("Option for | delimited"){
+  test("Option for | delimited") {
 
   }
 
-  test("Option for ; delimited"){
+  test("Option for ; delimited") {
 
   }
 
-  test("Option for /t delimited"){
+  test("Option for /t delimited") {
 
   }
 
@@ -320,12 +371,11 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
   test("Single User, single transaction cadence = 0") {
     new SingleUserData {
       val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUserSingleTrans)
-      val cadence = cadenceDF
-        .select("Cadence")
-        .first()
-        .getInt(0)
 
-      assert(cadence === 0)
+      val cadence = cadenceDF
+        .select("Cadence").map(_ (0)).collect()
+
+      assert(cadence === List(0))
     }
   }
 
@@ -385,7 +435,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       val cadence = cadenceDF
         .select("Cadence").map(_ (0)).collect()
 
-      assert(cadence === List(0, 6, 4, 5, 0))
+      assert(cadence === List(0, 1, 0, 1, 5))
 
     }
   }
@@ -400,12 +450,10 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
         .select("Cadence").map(_ (0)).collect()
       val custBCadence = cadenceDF
         .where("CUST_ID = 'custB'")
-        .select("Cadence")
-        .first()
-        .getInt(0)
+        .select("Cadence").map(_ (0)).collect()
 
       assert(custACadence === List(0, 6))
-      assert(custBCadence === 0)
+      assert(custBCadence === List(0))
     }
   }
 
@@ -426,7 +474,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("Multiple Users, multiple transactions, single year") {
     new MultiUserData {
-      val cadenceDF = CadenceCalcs.daysSinceLastVisit(multiUserDoubleNov)
+      val cadenceDF = CadenceCalcs.daysSinceLastVisit(multiUserMultiTransMultiMonth)
       val custACadence = cadenceDF
         .where("CUST_ID = 'custA'")
         .select("Cadence").map(_ (0)).collect()
@@ -438,14 +486,14 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
         .select("Cadence").map(_ (0)).collect()
 
       assert(custACadence === List(0, 27, 8, 19))
-      assert(custBCadence === List(0, 9, 27, 20, 17))
+      assert(custBCadence === List(0, 9, 27, 19, 17))
       assert(custCCadence === List(0, 33, 45))
     }
   }
 
   test("Multiple Users, multiple transactions, multiple years") {
     new MultiUserData {
-      val cadenceDF = CadenceCalcs.daysSinceLastVisit(multiUserDoubleNov)
+      val cadenceDF = CadenceCalcs.daysSinceLastVisit(multiUserMultiTransMultiYear)
       val custACadence = cadenceDF
         .where("CUST_ID = 'custA'")
         .select("Cadence").map(_ (0)).collect()
@@ -458,13 +506,13 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
       assert(custACadence === List(0, 26, 8, 21))
       assert(custBCadence === List(0, 9, 26, 21, 17))
-      assert(custCCadence === List(0, 32, 46, 0, 11))
+      assert(custCCadence === List(0, 32, 47, 0, 11))
     }
   }
 
   test("Everything mixed together") {
     new MultiUserData {
-      val cadenceDF = CadenceCalcs.daysSinceLastVisit(multiUserDoubleNov)
+      val cadenceDF = CadenceCalcs.daysSinceLastVisit(everythingMixed)
       val custACadence = cadenceDF
         .where("CUST_ID = 'custA'")
         .select("Cadence").map(_ (0)).collect()
@@ -476,23 +524,19 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
         .select("Cadence").map(_ (0)).collect()
       val custDCadence = cadenceDF
         .where("CUST_ID = 'custD'")
-        .select("Cadence")
-        .first()
-        .getInt(0)
+        .select("Cadence").map(_ (0)).collect()
       val custECadence = cadenceDF
         .where("CUST_ID = 'custE'")
-        .select("Cadence")
-        .first()
-        .getInt(0)
+        .select("Cadence").map(_ (0)).collect()
       val custFCadence = cadenceDF
         .where("CUST_ID = 'custF'")
         .select("Cadence").map(_ (0)).collect()
 
       assert(custACadence === List(0, 26, 8, 21))
       assert(custBCadence === List(0, 9, 26, 21, 17))
-      assert(custCCadence === List(0, 32, 46, 0, 11))
-      assert(custDCadence === 0)
-      assert(custECadence === 0)
+      assert(custCCadence === List(0, 32, 47, 0, 11))
+      assert(custDCadence === List(0))
+      assert(custECadence === List(0))
       assert(custFCadence === List(0, 0, 0))
     }
 
@@ -502,44 +546,45 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("Single user, no multi visits on same day") {
     new DaysData {
-      val cadence = CadenceCalcs.calculateCadenceValue(singleUser6Days)
-      assert(cadence === 9.6)
+      val (cadence, cadenceDF) = CadenceCalcs.calculateCadenceValue(singleUser6Days, percentile, sqlCtx)
+      assert(cadence === 9.6 +- .01)
     }
   }
 
   test("Single user, multi visits on same day (not first)") {
     new DaysData {
-      val cadence = CadenceCalcs.calculateCadenceValue(singleUser6Txns4Days)
-      assert(cadence === 9.6)
+      val (cadence, cadenceDF) = CadenceCalcs.calculateCadenceValue(singleUser6Txns4Days, percentile, sqlCtx)
+      assert(cadence === 9.6 +- .01)
     }
   }
 
   test("Single user, multi visits, first and later") {
     new DaysData {
-      val cadence = CadenceCalcs.calculateCadenceValue(singleUserRepeats)
-      assert(cadence === 4.4)
+      val (cadence, cadenceDF) = CadenceCalcs.calculateCadenceValue(singleUserRepeats, percentile, sqlCtx)
+      assert(cadence === 4.4 +- .01)
     }
   }
 
   test("MultiUser, multi visits, no repeats") {
     new DaysData {
-      val cadence = CadenceCalcs.calculateCadenceValue(multiUserNoRepeats)
-      assert(cadence === 4)
+      val (cadence, cadenceDF) = CadenceCalcs.calculateCadenceValue(multiUserNoRepeats, percentile, sqlCtx)
+      assert(cadence === 6.4 +- .01)
+
     }
   }
 
   test("MultiUser, 1 w/ single visit, 1 w/ multi visits on only day of visits, others normal") {
     new DaysData {
-      val cadence = CadenceCalcs.calculateCadenceValue(multiUserNewAndReturning)
-      assert(cadence === 6.4)
+      val (cadence, cadenceDF) = CadenceCalcs.calculateCadenceValue(multiUserNewAndReturning, percentile, sqlCtx)
+      assert(cadence === 6.4 +- .01)
       //if cadence = 4.8 then not removing only day repeats properly
     }
   }
 
   test("MultiUser, repeats for all users (single day and multi day)") {
     new DaysData {
-      val cadence = CadenceCalcs.calculateCadenceValue(multiUserMultiTxns)
-      assert(cadence === 5.6)
+      val (cadence, cadenceDF) = CadenceCalcs.calculateCadenceValue(multiUserMultiTxns, percentile, sqlCtx)
+      assert(cadence === 5.6 +- .01)
     }
   }
 
@@ -615,4 +660,94 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
     }
   }
 
+  //CALCULATE NUM TIME PERIODS
+
+  test("timePeriods = 0, cadence = 30days") {
+    new DaysData {
+      val timePeriods = CadenceCalcs.calcNumTimePeriods(30, multiUserNewAndReturning)
+
+      assert(timePeriods === 0)
+    }
+  }
+
+  test("timePeriods = 1, cadence = 30 days") {
+    new DaysData {
+      val timePeriods = CadenceCalcs.calcNumTimePeriods(30, singleUser6Txns4Days)
+
+      assert(timePeriods === 1)
+    }
+  }
+
+  test("timePeriods = 3, cadence = 7 days") {
+    new DaysData {
+      val timePeriods = CadenceCalcs.calcNumTimePeriods(7, multiUserNewAndReturning)
+
+      assert(timePeriods === 3)
+    }
+  }
+
+  test("timePeriods = 6, cadence = 7 days") {
+    new DaysData {
+      val timePeriods = CadenceCalcs.calcNumTimePeriods(7, singleUserRepeats)
+    }
+
+  }
+
+  //FREQ TABLE
+
+  test("no zeros in cadenceDF, total = 5") {
+    new FreqTableData {
+
+      val freqTable = CadenceCalcs.createFreqTable(noZeros)
+
+      val trueTable = sc.parallelize(List(
+        Row(2, 1.toLong, 1.toLong),
+        Row(4, 2.toLong, 3.toLong),
+        Row(8, 1.toLong, 4.toLong),
+        Row(16, 1.toLong, 5.toLong)
+      ))
+
+      val trueTableDF = sqlCtx.createDataFrame(trueTable, schema)
+
+      assertDataFrameEquals(freqTable, trueTableDF)
+    }
+  }
+
+  test("1 true zero in cadenceDF, total = 5") {
+    new FreqTableData {
+
+      val freqTable = CadenceCalcs.createFreqTable(trueZeros)
+
+      val trueTable = sc.parallelize(List(
+        Row(0, 1.toLong, 1.toLong),
+        Row(4, 1.toLong, 2.toLong),
+        Row(6, 1.toLong, 3.toLong),
+        Row(8, 1.toLong, 4.toLong),
+        Row(16, 1.toLong, 5.toLong)
+      ))
+      val trueTableDF = sqlCtx.createDataFrame(trueTable, schema)
+      assertDataFrameEquals(freqTable, trueTableDF)
+    }
+  }
+
+  test("15 values with multiple doubles") {
+    new FreqTableData {
+
+      val freqTable = CadenceCalcs.createFreqTable(lots)
+
+      val trueTable = sc.parallelize(List(
+        Row(0, 5.toLong, 5.toLong),
+        Row(1, 1.toLong, 6.toLong),
+        Row(2, 2.toLong, 8.toLong),
+        Row(3, 3.toLong, 11.toLong),
+        Row(4, 1.toLong, 12.toLong),
+        Row(6, 1.toLong, 13.toLong),
+        Row(8, 1.toLong, 14.toLong),
+        Row(16, 1.toLong, 15.toLong)
+      ))
+      val trueTableDF = sqlCtx.createDataFrame(trueTable, schema)
+
+      assertDataFrameEquals(freqTable, trueTableDF)
+    }
+  }
 }
