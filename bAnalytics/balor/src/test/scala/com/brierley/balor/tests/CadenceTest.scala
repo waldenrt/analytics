@@ -1,6 +1,7 @@
 package com.brierley.balor.tests
 
 import com.brierley.balor.CadenceCalcs
+import com.brierley.utils._
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.functions.{to_date, unix_timestamp}
@@ -225,7 +226,8 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val singleUser6Txns4Days = sc.parallelize(List(
-      ("customerA", "txn1-custA-Jun1", "06/05/2015", 23.45, 0),
+      ("customerA", "txn0-custA-Jun0", "06/01/2015", 43.12, 0),
+      ("customerA", "txn1-custA-Jun1", "06/05/2015", 23.45, 4),
       ("customerA", "txn2-custA-Jun2", "06/09/2015", 12.50, 4),
       ("customerA", "txn3-custA-Jun3", "06/25/2015", 15.50, 16),
       ("customerA", "txn4-custA-Jul1", "07/03/2015", 123.13, 8),
@@ -306,6 +308,28 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       ("custC", "txn4-custC-Oct8", "10/31/2016", 51.52, 19)
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "Cadence")
       .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
+
+    val twoMonthOfData = sc.parallelize(List(
+      ("custA", "txn1-custA-Oct1", "10/01/2016", 25.14, 0),
+      ("custB", "txn1-custB-Oct1", "10/04/2016", 62.15, 0),
+      ("custB", "txn2-custB-Oct2", "10/07/2016", 36.16, 3),
+      ("custC", "txn1-custC-Oct3", "10/08/2016", 17.31, 0),
+      ("custC", "txn2-custC-Oct4", "10/10/2016", 87.25, 2),
+      ("custC", "txn5-custC-Oct4", "10/10/2016", 13.61, 0),
+      ("custB", "txn3-custB-Oct5", "10/11/2016", 91.25, 4),
+      ("custC", "txn3-custC-Oct6", "10/12/2016", 72.15, 2),
+      ("custB", "txn4-custB-Oct6", "10/12/2016", 25.16, 1),
+      ("custB", "txn5-custB-Oct7", "10/20/2016", 24.62, 8),
+      ("custD", "txn1-custD-Oct7", "10/20/2016", 25.83, 0),
+      ("custD", "txn2-custD-Oct7", "10/20/2016", 15.97, 0),
+      ("custD", "txn3-custD-Oct7", "10/20/2016", 39.05, 0),
+      ("custB", "txn6-custB-Oct7", "10/20/2016", 15.72, 0),
+      ("custC", "txn4-custC-Oct8", "10/31/2016", 51.52, 19),
+      ("custC", "txn5-custC-Nov1", "11/01/2016", 43.21, 1),
+      ("custD", "txn4-custD-Nov2", "11/10/2016", 24.13, 21),
+      ("custC", "txn6-custC-Nov3", "11/30/2016", 12.41, 29)
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "Cadence")
+      .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
   }
 
   trait FreqTableData {
@@ -325,8 +349,14 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       0, 0, 0, 0, 0, 1, 2, 2, 3, 3, 3, 4, 6, 8, 16
     )).toDF("Cadence")
 
-    val schema = StructType(Array(
+    val cadenceSchema = StructType(Array(
       StructField("Cadence", IntegerType, true),
+      StructField("Frequency", LongType, false),
+      StructField("CumFrequency", LongType, true)
+    ))
+
+    val binSchema = StructType(Array(
+      StructField("Bin", IntegerType, true),
       StructField("Frequency", LongType, false),
       StructField("CumFrequency", LongType, true)
     ))
@@ -554,7 +584,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
   test("Single user, multi visits on same day (not first)") {
     new DaysData {
       val (cadence, cadenceDF) = CadenceCalcs.calculateCadenceValue(singleUser6Txns4Days, percentile, sqlCtx)
-      assert(cadence === 9.6 +- .01)
+      assert(cadence === 8.0 +- .01)
     }
   }
 
@@ -593,70 +623,70 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
   test("cadence = 5 days, should round to 7 days") {
     new CadenceNormalizingData {
       val seven = CadenceCalcs.normalizeCadenceValue(fiveDays)
-      assert(seven === 7)
+      assert(seven === OneWeek)
     }
   }
 
   test("cadence = 7 days, no rounding") {
     new CadenceNormalizingData {
       val seven = CadenceCalcs.normalizeCadenceValue(sevenDays)
-      assert(seven === 7)
+      assert(seven === OneWeek)
     }
   }
 
   test("cadence = 8 days, should round to 14 days") {
     new CadenceNormalizingData {
       val fourteen = CadenceCalcs.normalizeCadenceValue(eightDays)
-      assert(fourteen === 14)
+      assert(fourteen === TwoWeeks)
     }
   }
 
   test("cadence = 13 days, should round to 14 days") {
     new CadenceNormalizingData {
       val fourteen = CadenceCalcs.normalizeCadenceValue(thirteenDays)
-      assert(fourteen === 14)
+      assert(fourteen === TwoWeeks)
     }
   }
 
   test("cadence = 14 days, no rounding") {
     new CadenceNormalizingData {
       val fourteen = CadenceCalcs.normalizeCadenceValue(fourteenDays)
-      assert(fourteen === 14)
+      assert(fourteen === TwoWeeks)
     }
   }
 
   test("cadence = 24 days, should round to 30 days") {
     new CadenceNormalizingData {
       val thirty = CadenceCalcs.normalizeCadenceValue(twentyFourDays)
-      assert(thirty === 30)
+      assert(thirty === OneMonth)
     }
   }
 
   test("cadence = 45 days, should round to 60 days") {
     new CadenceNormalizingData {
       val sixty = CadenceCalcs.normalizeCadenceValue(fortyFiveDays)
-      assert(sixty === 60)
+      assert(sixty === TwoMonths)
     }
   }
 
   test("cadence = 90 days, should round to 92 days") {
     new CadenceNormalizingData {
       val ninetyTwo = CadenceCalcs.normalizeCadenceValue(ninetyDays)
-      assert(ninetyTwo === 92)
+      assert(ninetyTwo === ThreeMonths)
     }
   }
 
   test("cadence = 145 days, should round to 183 days") {
     new CadenceNormalizingData {
       val sixMonths = CadenceCalcs.normalizeCadenceValue(roundTo183)
-      assert(sixMonths === 183)
+      assert(sixMonths === SixMonths)
     }
   }
 
   test("cadence = 245 days, should round to 365 days") {
     new CadenceNormalizingData {
       val oneYear = CadenceCalcs.normalizeCadenceValue(roundTo365Days)
-      assert(oneYear === 365)
+      assert(oneYear === OneYear)
     }
   }
 
@@ -664,7 +694,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("timePeriods = 0, cadence = 30days") {
     new DaysData {
-      val timePeriods = CadenceCalcs.calcNumTimePeriods(30, multiUserNewAndReturning)
+      val timePeriods = CadenceCalcs.calcNumTimePeriods(OneMonth, multiUserNewAndReturning)
 
       assert(timePeriods === 0)
     }
@@ -672,15 +702,23 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("timePeriods = 1, cadence = 30 days") {
     new DaysData {
-      val timePeriods = CadenceCalcs.calcNumTimePeriods(30, singleUser6Txns4Days)
+      val timePeriods = CadenceCalcs.calcNumTimePeriods(OneMonth, singleUser6Txns4Days)
 
       assert(timePeriods === 1)
     }
   }
 
+  test("timePeriods = 2, cadence = 30 days"){
+    new DaysData {
+      val timePeriods = CadenceCalcs.calcNumTimePeriods(OneMonth, twoMonthOfData)
+
+      assert(timePeriods === 2)
+    }
+  }
+
   test("timePeriods = 3, cadence = 7 days") {
     new DaysData {
-      val timePeriods = CadenceCalcs.calcNumTimePeriods(7, multiUserNewAndReturning)
+      val timePeriods = CadenceCalcs.calcNumTimePeriods(OneWeek, multiUserNewAndReturning)
 
       assert(timePeriods === 3)
     }
@@ -688,7 +726,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("timePeriods = 6, cadence = 7 days") {
     new DaysData {
-      val timePeriods = CadenceCalcs.calcNumTimePeriods(7, singleUserRepeats)
+      val timePeriods = CadenceCalcs.calcNumTimePeriods(OneWeek, singleUserRepeats)
     }
 
   }
@@ -698,7 +736,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
   test("no zeros in cadenceDF, total = 5") {
     new FreqTableData {
 
-      val freqTable = CadenceCalcs.createFreqTable(noZeros)
+      val freqTable = CadenceCalcs.createFreqTable(noZeros,OneWeek)
 
       val trueTable = sc.parallelize(List(
         Row(2, 1.toLong, 1.toLong),
@@ -707,7 +745,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
         Row(16, 1.toLong, 5.toLong)
       ))
 
-      val trueTableDF = sqlCtx.createDataFrame(trueTable, schema)
+      val trueTableDF = sqlCtx.createDataFrame(trueTable, cadenceSchema)
 
       assertDataFrameEquals(freqTable, trueTableDF)
     }
@@ -716,7 +754,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
   test("1 true zero in cadenceDF, total = 5") {
     new FreqTableData {
 
-      val freqTable = CadenceCalcs.createFreqTable(trueZeros)
+      val freqTable = CadenceCalcs.createFreqTable(trueZeros,OneWeek)
 
       val trueTable = sc.parallelize(List(
         Row(0, 1.toLong, 1.toLong),
@@ -725,27 +763,22 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
         Row(8, 1.toLong, 4.toLong),
         Row(16, 1.toLong, 5.toLong)
       ))
-      val trueTableDF = sqlCtx.createDataFrame(trueTable, schema)
+      val trueTableDF = sqlCtx.createDataFrame(trueTable, cadenceSchema)
       assertDataFrameEquals(freqTable, trueTableDF)
     }
   }
 
-  test("15 values with multiple doubles") {
+  test("15 values with multiple doubles, binning count") {
     new FreqTableData {
 
-      val freqTable = CadenceCalcs.createFreqTable(lots)
+      val freqTable = CadenceCalcs.createFreqTable(lots,TwoMonths)
 
       val trueTable = sc.parallelize(List(
-        Row(0, 5.toLong, 5.toLong),
-        Row(1, 1.toLong, 6.toLong),
-        Row(2, 2.toLong, 8.toLong),
-        Row(3, 3.toLong, 11.toLong),
-        Row(4, 1.toLong, 12.toLong),
-        Row(6, 1.toLong, 13.toLong),
-        Row(8, 1.toLong, 14.toLong),
-        Row(16, 1.toLong, 15.toLong)
+        Row(1, 13.toLong, 13.toLong),
+        Row(2, 1.toLong, 14.toLong),
+        Row(3, 1.toLong, 15.toLong)
       ))
-      val trueTableDF = sqlCtx.createDataFrame(trueTable, schema)
+      val trueTableDF = sqlCtx.createDataFrame(trueTable, binSchema)
 
       assertDataFrameEquals(freqTable, trueTableDF)
     }

@@ -1,7 +1,5 @@
 package com.brierley.balor.tests
 
-import java.sql.Date
-
 import com.brierley.utils.DateUtils
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import org.junit.runner.RunWith
@@ -13,10 +11,11 @@ import org.scalatest.junit.JUnitRunner
   */
 
 @RunWith(classOf[JUnitRunner])
-class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
+class DateUtilsTest extends FunSuite with DataFrameSuiteBase {
 
-  trait TransformDateData{
+  trait TransformDateData {
     val sqlCtx = sqlContext
+
     import sqlCtx.implicits._
 
     //dd-MM-yyyy
@@ -107,7 +106,68 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
 
   }
 
-  test("Date format of MM/dd/yyyy"){
+  trait TrimToWholeMonthData {
+    val sqlCtx = sqlContext
+
+    import sqlCtx.implicits._
+
+    val trimBegOnly = sc.parallelize(List(
+      ("customerA", "txn1-custA-Feb1", "2016-02-15", 12.34, 1, 2.35),
+      ("customerA", "txn2-custA-Feb2", "2016-02-22", 22.10, 1, 2.35),
+      ("customerA", "txn3-custA-Feb3", "2016-02-29", 10.50, 1, 2.35),
+      ("customerA", "txn4-custA-Mar1", "2016-03-02", 25.45, 1, 2.35),
+      ("customerA", "txn5-custA-Mar2", "2016-03-05", 1.50, 1, 2.35),
+      ("customerA", "txn6-custA-Mar3", "2016-03-12", 3.25, 2, 2.13),
+      ("customerA", "txn7-custA-Mar4", "2016-03-13", 4.36, 4, 1.24),
+      ("customerA", "txn8-custA-Mar5", "2016-03-14", 3.42, 1, 1.21),
+      ("customerA", "txn9-custA-Mar6", "2016-03-31", 4.52, 2, 2.12)
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
+      .withColumn("Date", $"TXN_DATE".cast("date"))
+
+    val trimEndOnly = sc.parallelize(List(
+      ("customerA", "txn0-custA-Feb0", "2016-02-01", 34.52, 1, 0.00),
+      ("customerA", "txn1-custA-Feb1", "2016-02-15", 12.34, 1, 2.35),
+      ("customerA", "txn2-custA-Feb2", "2016-02-22", 22.10, 1, 2.35),
+      ("customerA", "txn3-custA-Feb3", "2016-02-29", 10.50, 1, 2.35),
+      ("customerA", "txn4-custA-Mar1", "2016-03-02", 25.45, 1, 2.35),
+      ("customerA", "txn5-custA-Mar2", "2016-03-05", 1.50, 1, 2.35),
+      ("customerA", "txn6-custA-Mar3", "2016-03-12", 3.25, 2, 2.13),
+      ("customerA", "txn7-custA-Mar4", "2016-03-13", 4.36, 4, 1.24),
+      ("customerA", "txn8-custA-Mar5", "2016-03-14", 3.42, 1, 1.21)
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
+      .withColumn("Date", $"TXN_DATE".cast("date"))
+
+    val trimBoth = sc.parallelize(List(
+      ("customerA", "txn1-custA-Feb1", "2016-02-15", 12.34, 1, 2.35),
+      ("customerA", "txn2-custA-Feb2", "2016-02-22", 22.10, 1, 2.35),
+      ("customerA", "txn3-custA-Feb3", "2016-02-29", 10.50, 1, 2.35),
+      ("customerA", "txn4-custA-Mar1", "2016-03-02", 25.45, 1, 2.35),
+      ("customerA", "txn5-custA-Mar2", "2016-03-05", 1.50, 1, 2.35),
+      ("customerA", "txn6-custA-Mar3", "2016-03-12", 3.25, 2, 2.13),
+      ("customerA", "txn7-custA-Mar4", "2016-03-13", 4.36, 4, 1.24),
+      ("customerA", "txn8-custA-Mar5", "2016-03-14", 3.42, 1, 1.21),
+      ("customerA", "txn9-custA-Mar6", "2016-03-31", 4.52, 2, 2.12),
+      ("customerA", "txn10-custA-Apr1", "2016-04-01", 5.24, 1, 1.24)
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
+      .withColumn("Date", $"TXN_DATE".cast("date"))
+
+    val noTrim = sc.parallelize(List(
+      ("customerA", "txn0-custA-Feb0", "2016-02-01", 34.52, 1, 0.00),
+      ("customerA", "txn1-custA-Feb1", "2016-02-15", 12.34, 1, 2.35),
+      ("customerA", "txn2-custA-Feb2", "2016-02-22", 22.10, 1, 2.35),
+      ("customerA", "txn3-custA-Feb3", "2016-02-29", 10.50, 1, 2.35),
+      ("customerA", "txn4-custA-Mar1", "2016-03-02", 25.45, 1, 2.35),
+      ("customerA", "txn5-custA-Mar2", "2016-03-05", 1.50, 1, 2.35),
+      ("customerA", "txn6-custA-Mar3", "2016-03-12", 3.25, 2, 2.13),
+      ("customerA", "txn7-custA-Mar4", "2016-03-13", 4.36, 4, 1.24),
+      ("customerA", "txn8-custA-Mar5", "2016-03-14", 3.42, 1, 1.21),
+      ("customerA", "txn9-custA-Mar6", "2016-03-31", 4.52, 2, 2.12)
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
+      .withColumn("Date", $"TXN_DATE".cast("date"))
+
+  }
+
+  test("Date format of MM/dd/yyyy") {
 
     new TransformDateData {
       val trans = DateUtils.convertDateMonthSlash(mmddyyyySlash)
@@ -117,7 +177,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     }
   }
 
-  test("Date format of MM-dd-yyyy"){
+  test("Date format of MM-dd-yyyy") {
     new TransformDateData {
       val trans = DateUtils.convertDateMonthDash(mmddyyyyDash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
@@ -126,7 +186,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     }
   }
 
-  test("Date format of dd-MM-yyyy"){
+  test("Date format of dd-MM-yyyy") {
     new TransformDateData {
       val trans = DateUtils.convertDateDayDash(ddmmyyyyDash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
@@ -135,7 +195,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     }
   }
 
-  test("Date format of dd/MM/yyyy"){
+  test("Date format of dd/MM/yyyy") {
     new TransformDateData {
       val trans = DateUtils.convertDateDaySlash(ddmmyyyySlash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
@@ -144,7 +204,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     }
   }
 
-  test("Date format of yyyy-MM-dd"){
+  test("Date format of yyyy-MM-dd") {
     new TransformDateData {
       val trans = DateUtils.convertDateYearDash(yyyymmddDash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
@@ -153,7 +213,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     }
   }
 
-  test("Date format of yyyy/MM/dd"){
+  test("Date format of yyyy/MM/dd") {
     new TransformDateData {
       val trans = DateUtils.convertDateYearSlash(yyyymmddSlash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
@@ -162,7 +222,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     }
   }
 
-  test("Determine format of MM-dd-yyyy, has enough data"){
+  test("Determine format of MM-dd-yyyy, has enough data") {
     new TransformDateData {
       val trans = DateUtils.determineFormat(mmddyyyyDash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
@@ -171,7 +231,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     }
   }
 
-  test("Determine format of MM/dd/yyyy, has enough data"){
+  test("Determine format of MM/dd/yyyy, has enough data") {
     new TransformDateData {
       val trans = DateUtils.determineFormat(mmddyyyySlash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
@@ -180,7 +240,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     }
   }
 
-  test("Determine format of dd-MM-yyyy, has enough data"){
+  test("Determine format of dd-MM-yyyy, has enough data") {
     new TransformDateData {
       val trans = DateUtils.determineFormat(ddmmyyyyDash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
@@ -189,7 +249,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     }
   }
 
-  test("Determine format of dd/MM/yyyy, has enough data"){
+  test("Determine format of dd/MM/yyyy, has enough data") {
     new TransformDateData {
       val trans = DateUtils.determineFormat(ddmmyyyySlash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
@@ -198,7 +258,7 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     }
   }
 
-  test("Determine format of yyyy/MM/dd, has enough data"){
+  test("Determine format of yyyy/MM/dd, has enough data") {
     new TransformDateData {
       val trans = DateUtils.determineFormat(yyyymmddSlash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
@@ -207,12 +267,51 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase{
     }
   }
 
-  test("Determine format of yyyy-MM-dd, has enough data"){
+  test("Determine format of yyyy-MM-dd, has enough data") {
     new TransformDateData {
       val trans = DateUtils.determineFormat(yyyymmddDash)
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
 
       assertDataFrameEquals(trans, dateResults)
+    }
+  }
+
+
+  //TRIM TO WHOLE MONTH TESTS
+
+  test("Trim extra from beginning") {
+    new TrimToWholeMonthData {
+      val trimDF = DateUtils.trimToWholeMonth(trimBegOnly)
+      val count = trimDF.count()
+
+      assert(count === 6)
+    }
+  }
+
+  test("Trim extra from end") {
+    new TrimToWholeMonthData {
+      val trimDF = DateUtils.trimToWholeMonth(trimEndOnly)
+      val count = trimDF.count()
+
+      assert(count === 4)
+    }
+  }
+
+  test("Trim extra from beginning and end") {
+    new TrimToWholeMonthData {
+      val trimDF = DateUtils.trimToWholeMonth(trimBoth)
+      val count = trimDF.count()
+
+      assert(count === 6)
+    }
+  }
+
+  test("No trimming required, return same DF") {
+    new TrimToWholeMonthData {
+      val trimDF = DateUtils.trimToWholeMonth(noTrim)
+      val count = trimDF.count()
+
+      assert(count === 10)
     }
   }
 

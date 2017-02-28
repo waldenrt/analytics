@@ -1,11 +1,12 @@
 package com.brierley.balor
 
-import com.brierley.utils.DateUtils
+import com.brierley.utils._
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.{DataFrame, SQLContext, functions}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.hive.HiveContext
+import org.apache.spark.sql.types.IntegerType
 
 /**
   * Created by amerrill on 1/30/17.
@@ -13,7 +14,6 @@ import org.apache.spark.sql.hive.HiveContext
 object CadenceCalcs {
 
   def daysSinceLastVisit(dateDF: DataFrame): DataFrame = {
-
     val custWindow = Window
       .partitionBy("CUST_ID")
       .orderBy("Date")
@@ -44,48 +44,88 @@ object CadenceCalcs {
     (percentiles.select("80th").head().getDouble(0), validTxns)
   }
 
-  def normalizeCadenceValue(cadence: Double): Int = {
+  def normalizeCadenceValue(cadence: Double): CadenceValues = {
 
     cadence match {
-      case a if a > 183 => 365
-      case b if b > 92 => 183
-      case c if c > 60 => 92
-      case d if d > 30 => 60
-      case e if e > 14 => 30
-      case f if f > 7 => 14
-      case g if g <= 7 => 7
+      case a if a > 183 => OneYear
+      case b if b > 92 => SixMonths
+      case c if c > 60 => ThreeMonths
+      case d if d > 30 => TwoMonths
+      case e if e > 14 => OneMonth
+      case f if f > 7 => TwoWeeks
+      case g if g <= 7 => OneWeek
     }
   }
 
-  def calcNumTimePeriods(cadenceValue: Int, dateDF: DataFrame): Int = {
+  def calcNumTimePeriods(cadenceValue: CadenceValues, dateDF: DataFrame): Int = {
 
+    if (cadenceValue >= OneMonth) {
+      val trimDF = DateUtils.trimToWholeMonth(dateDF)
+      if (trimDF.count() == 0) return 0
+
+      val minMaxMonthsDF = trimDF
+        .select(min("Date"), max("Date"))
+        .withColumn("Months", months_between(col("max(Date)"), col("min(Date)")))
+      val difference = minMaxMonthsDF
+        .select("Months")
+        .head().getDouble(0).toInt
+
+      cadenceValue match {
+        case OneMonth => return difference + 1
+        case TwoMonths => return difference / 2 + 1
+        case ThreeMonths => return difference / 3 + 1
+        case SixMonths => return difference / 6 + 1
+        case OneYear => return difference / 12 + 1
+      }
+    }
     val minMaxDate = dateDF.select(min("Date"), max("Date"))
     val difference = minMaxDate
       .select(datediff(minMaxDate("max(Date)"), minMaxDate("min(Date)")))
       .head().getInt(0)
 
-    (difference / cadenceValue)
+    cadenceValue match {
+      case OneWeek => return difference / 7
+      case TwoWeeks => return difference / 14
+    }
 
   }
 
-  def createFreqTable(cadenceDF: DataFrame): DataFrame = {
-    cadenceDF.show()
-    val freqDF = cadenceDF
-      .select("Cadence")
+  def createFreqTable(cadenceDF: DataFrame, cadenceValue: CadenceValues): DataFrame = {
+
+    if (cadenceValue < OneMonth) {
+      val freqDF = cadenceDF
+        .select("Cadence")
         .groupBy("Cadence")
-      .agg(count(cadenceDF("Cadence")).as("Frequency"))
+        .agg(count(cadenceDF("Cadence")).as("Frequency"))
+      val cadenceWindow = Window.orderBy("Cadence")
 
-    val cadenceWindow = Window.orderBy("Cadence")
+      val runningTotal = sum("Frequency").over(cadenceWindow).as("CumFrequency")
+      val cumFreqDF = freqDF
+        .select(freqDF("*"), runningTotal).orderBy("Cadence")
+      return cumFreqDF
+    }
 
-    val runningTotal = sum("Frequency").over(cadenceWindow).as("CumFrequency")
-    val cumFreqDF = freqDF
-      .select(freqDF("*"), runningTotal).orderBy("Cadence")
+    else {
+      val binDF = cadenceDF
+        .select("*")
+        .withColumn("Bin", ((cadenceDF("Cadence") + 7) / 7).cast(IntegerType))
 
-    cumFreqDF.show()
-    cumFreqDF
+      val binSumDF = binDF
+        .select("Bin")
+        .groupBy("Bin")
+        .agg(count(binDF("Bin")).as("Frequency"))
+
+      val binWindow = Window.orderBy("Bin")
+      val binTotal = sum("Frequency").over(binWindow).as("CumFrequency")
+      val cumBinDF = binSumDF
+        .select(binSumDF("*"), binTotal).orderBy("Bin")
+
+      return cumBinDF
+    }
+
   }
 
-  def main(args: Array[String]): (Int, Int, DataFrame) = {
+  def main(args: Array[String]): (CadenceValues, Int, DataFrame) = {
 
     if (args.length < 3) {
       //TODO return exception
@@ -126,7 +166,7 @@ object CadenceCalcs {
 
     val timePeriods = calcNumTimePeriods(cadence, dateDF)
 
-    val freqTable = createFreqTable(cadenceDF)
+    val freqTable = createFreqTable(cadenceDF, cadence)
 
 
     sc.stop()

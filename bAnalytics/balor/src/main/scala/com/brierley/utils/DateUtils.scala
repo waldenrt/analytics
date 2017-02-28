@@ -2,7 +2,8 @@ package com.brierley.utils
 
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions._
-//{unix_timestamp, to_date}
+import java.sql.Date
+import java.time.temporal.TemporalAdjusters._
 
 /**
   * Created by amerrill on 2/14/17.
@@ -53,7 +54,7 @@ object DateUtils {
     val Count6 = dateOnly.filter(dateOnly("TXN_DATE").rlike(yyyyMMddDashRegEx6)).count()
 
     //if there are no 0 before single digits then the month count will incorrectly match the day count, check day counts first
-    totalDates match{
+    totalDates match {
       case Count3 => convertDateDaySlash(initialDF)
       case Count4 => convertDateDayDash(initialDF)
       case Count1 => convertDateMonthSlash(initialDF)
@@ -64,5 +65,42 @@ object DateUtils {
     }
 
   }
-  
+
+  def trimToWholeMonth(dateDF: DataFrame): DataFrame = {
+    val dayOfMonthDF = dateDF.select("Date")
+      .withColumn("day", dayofmonth(dateDF("Date")))
+      .withColumn("lastDay", last_day(dateDF("Date")))
+
+    val maxMin = dayOfMonthDF
+      .select(max("lastDay"), max("Date"), min("Date"))
+      .withColumn("minDay", dayofmonth(col("min(Date)")))
+      .withColumn("minLastDay", last_day(col("min(Date)")))
+      .withColumn("maxDiff", datediff(col("max(lastDay)"), col("max(Date)")))
+      .head()
+
+    val maxLastDate = maxMin.getAs[java.sql.Date](0).toLocalDate
+    val minDay = maxMin.getInt(3)
+    val minLastDay = maxMin.getAs[java.sql.Date](4)
+    val maxDiff = maxMin.getInt(5)
+
+    val prevMonthEnd = Date.valueOf(maxLastDate.`with`(firstDayOfMonth()))
+
+    if (minDay > 1 && maxDiff > 0) {
+      dateDF
+        .select("*")
+        .where(dateDF("Date") > minLastDay && dateDF("Date") < prevMonthEnd)
+    }
+    else if (minDay > 1) {
+      dateDF
+        .select("*")
+        .where(dateDF("Date") > minLastDay)
+    }
+    else if (maxDiff > 0) {
+      dateDF
+        .select("*")
+        .where(dateDF("Date") < prevMonthEnd)
+    }
+    else dateDF
+  }
+
 }
