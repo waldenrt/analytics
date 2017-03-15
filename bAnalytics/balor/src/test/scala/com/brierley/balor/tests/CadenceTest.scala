@@ -18,6 +18,25 @@ import org.scalatest.Matchers._
 @RunWith(classOf[JUnitRunner])
 class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
+  trait fileLocations{
+    val sqlCtx = sqlContext
+
+    val commaFile = "src/test/resources/BALORcomma.csv"
+    val barFile = "src/test/resources/BALORbar.txt"
+    val tabFile = "src/test/resources/BALORtab.txt"
+    val semiFile = "src/test/resources/BALORsemicolon.txt"
+    val barFileNoHeader = "src/test/resources/BALORbarBad.txt"
+
+    val comma = ","
+    val bar ="|"
+    val tab = "\t"
+    val semi = ";"
+
+    val rowCount = 19
+
+    val colNames = List("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "AMT_QUALIFIED", "DISC_AMT")
+  }
+
 
   trait SingleUserData {
     val sqlCtx = sqlContext
@@ -381,19 +400,43 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
   }
 
   test("Option for , delimited") {
+    new fileLocations {
+      val orgFile = CadenceCalcs.loadFile(sqlCtx, comma, commaFile)
+      val cols = orgFile.columns
 
+      assert(orgFile.count() === rowCount)
+      assert(cols === colNames)
+    }
   }
 
   test("Option for | delimited") {
+    new fileLocations {
+      val orgFile = CadenceCalcs.loadFile(sqlCtx, bar, barFile)
+      val cols = orgFile.columns
 
+      assert(orgFile.count() === rowCount)
+      assert(cols === colNames)
+    }
   }
 
   test("Option for ; delimited") {
+    new fileLocations {
+      val orgFile = CadenceCalcs.loadFile(sqlCtx, semi, semiFile)
+      val cols = orgFile.columns
 
+      assert(orgFile.count() === rowCount)
+      assert(cols === colNames)
+    }
   }
 
   test("Option for /t delimited") {
+    new fileLocations {
+      val orgFile = CadenceCalcs.loadFile(sqlCtx, tab, tabFile)
+      val cols = orgFile.columns
 
+      assert(orgFile.count() === rowCount)
+      assert(cols === colNames)
+    }
   }
 
   //SINGLE USER TESTS

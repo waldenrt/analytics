@@ -103,4 +103,14 @@ object DateUtils {
     else dateDF
   }
 
+  def trimWeeks(dateDF: DataFrame, numDays: Int): DataFrame = {
+    val maxMinDF = dateDF
+      .select(max("Date"), min("Date"))
+      .withColumn("End", datediff(col("max(Date)"),col("min(Date)"))/numDays)
+
+    dateDF
+      .join(maxMinDF)
+      .filter(((datediff(col("max(Date)"),dateDF("Date"))+1)/numDays) <= col("End"))
+  }
+
 }
