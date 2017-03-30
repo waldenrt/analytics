@@ -1,47 +1,52 @@
 package com.brierley.balor
 
-import com.brierley.utils.{CadenceValues, DateUtils, OneWeek, TwoWeeks}
+import java.io.File
+import java.sql.Date
+
+import com.brierley.avro.schemas.{Balor, TimePeriodData}
+import com.brierley.utils._
 import com.brierley.utils.BalorUDFs._
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.expressions.Window
-import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.sql.hive.HiveContext
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.IntegerType
 import org.apache.spark.storage.StorageLevel
-
-import com.databricks.spark.avro._
+import org.apache.avro.Schema
+import org.apache.avro.file.{DataFileReader, DataFileWriter}
+import org.apache.avro.generic.{GenericData, GenericDatumWriter, GenericRecord}
+import org.apache.avro.specific.{SpecificDatumReader, SpecificDatumWriter}
 
 /**
   * Created by amerrill on 1/30/17.
   */
 object BalorApp {
 
-  def calcTimePeriod(dateDF: DataFrame, cadence: CadenceValues): DataFrame = {
+  def calcTimePeriod(dateDF: DataFrame, cadence: CadenceValues): (DataFrame, DataFrame) = {
 
     def weekTimePeriod(dateDF: DataFrame): DataFrame = {
-      val maxDateDF = dateDF.select(max("Date"))
       dateDF
-        .select("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT", "Date")
-        .join(maxDateDF)
-        .withColumn("TimePeriod", (datediff(col("max(Date)"), dateDF("Date")) / cadence.periodDivisor).cast(IntegerType) + 1)
+        .select("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT", "Date", "max(Date)")
+        .withColumn("TimePeriod", (datediff(dateDF("max(Date)"), dateDF("Date")) / cadence.periodDivisor).cast(IntegerType) + 1)
         .sort("TimePeriod")
-        .select("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date", "TimePeriod")
+        .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date", "TimePeriod")
     }
 
-    def monthTimePeriod(dateDF: DataFrame): DataFrame = {
-      val maxDateDF = dateDF.select(max("Date"))
-        .withColumn("MaxMonth", month(col("max(Date)")))
-        .withColumn("MaxYear", year(col("max(Date)")))
+    def monthTimePeriod(trimDF: DataFrame): DataFrame = {
+      val maxDateDF = trimDF.select(max("Date"))
 
-      dateDF
+
+      trimDF
         .select("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT", "Date")
+        .withColumn("max(Date)", lit(maxDateDF.select("max(Date)").first().getDate(0)))
         .withColumn("Month", month(dateDF("Date")))
         .withColumn("Year", year(dateDF("Date")))
-        .join(maxDateDF)
+        .withColumn("MaxMonth", month(col("max(Date)")))
+        .withColumn("MaxYear", year(col("max(Date)")))
         .withColumn("TimePeriod", (((col("MaxMonth") - col("Month")) + (col("MaxYear") - col("Year")) * 12) / cadence.periodDivisor).cast(IntegerType) + 1)
         .sort("TimePeriod")
-        .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "TimePeriod")
+        .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date", "TimePeriod")
     }
 
     val timePeriodsDF = cadence match {
@@ -57,7 +62,10 @@ object BalorApp {
         sum("ITEM_QTY").as("ITEM_QTY"),
         sum("DISC_AMT").as("DISC_AMT"))
 
-    returnDF
+    val begEndDateDF = timePeriodsDF
+      .select(min("Date"), max("Date"))
+
+    (returnDF, begEndDateDF)
   }
 
   def assignSegmentLabel(timePeriodDF: DataFrame): DataFrame = {
@@ -70,7 +78,7 @@ object BalorApp {
     val labelDF = timePeriodDF
       .withColumn("Label", nonLapsedLabel(timePeriodDF("TimePeriod"), sum("TimePeriod").over(custWindow)))
       .sort("TimePeriod")
-      .select("CUST_ID", "TXN_COUNT", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "TimePeriod", "Label")
+      .select("TimePeriod", "Label", "CUST_ID", "TXN_COUNT", "TXN_AMT", "DISC_AMT", "ITEM_QTY")
 
     val lapsedWindow = Window
       .partitionBy("CUST_ID")
@@ -83,7 +91,7 @@ object BalorApp {
       .withColumn("LapsedTimePeriod", labelDF("TimePeriod") - 1)
       .drop("TimePeriod")
       .withColumnRenamed("LapsedTimePeriod", "TimePeriod")
-      .select("CUST_ID", "TXN_COUNT", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "TimePeriod", "Label")
+      .select("TimePeriod", "Label", "CUST_ID", "TXN_COUNT", "TXN_AMT", "DISC_AMT", "ITEM_QTY")
 
     val completeDF = labelDF
       .unionAll(lapsedDF)
@@ -97,13 +105,13 @@ object BalorApp {
   def counts(labelDF: DataFrame): DataFrame = {
 
     val maxTP = labelDF
-        .select(max("TimePeriod")).head().getInt(0)
+      .select(max("TimePeriod")).head().getInt(0)
 
     val pivotDF = labelDF
-      .filter(labelDF("TimePeriod") < (maxTP-1))
+      .filter(labelDF("TimePeriod") < (maxTP - 1))
       .groupBy("TimePeriod")
       .pivot("Label", Seq("New", "Reactivated", "Returning", "Lapsed"))
-      .agg(sum("TXN_AMT"), sum("DISC_AMT"), sum("ITEM_QTY"), count("CUST_ID"), sum("TXN_COUNT"))
+      .agg(count("CUST_ID"), sum("TXN_COUNT"), sum("TXN_AMT"), sum("DISC_AMT"), sum("ITEM_QTY"))
 
     pivotDF
       .withColumnRenamed("New_count(CUST_ID)", "newCustCount")
@@ -130,14 +138,89 @@ object BalorApp {
 
   def calcBalorRatios(countsDF: DataFrame): DataFrame = {
     val balorDF = countsDF
-      .withColumn("CustBalor", balorCount(countsDF("newCustCount"),countsDF("reactCustCount"),
+      .withColumn("custBalor", balorCount(countsDF("newCustCount"), countsDF("reactCustCount"),
         countsDF("lapsedCustCount")))
-      .withColumn("TxnBalor", balorCount(countsDF("newTxnCount"), countsDF("reactTxnCount"),
+      .withColumn("txnBalor", balorCount(countsDF("newTxnCount"), countsDF("reactTxnCount"),
         countsDF("lapsedTxnCount")))
-      .withColumn("SpendBalor", balorMoney(countsDF("newTxnAmt"), countsDF("reactTxnAmt"),
+      .withColumn("spendBalor", balorMoney(countsDF("newTxnAmt"), countsDF("reactTxnAmt"),
         countsDF("lapsedTxnAmt")))
 
     balorDF
+  }
+
+  def createBalorAvro(jobKey: String, txnCount: Long, minMaxDateDF: DataFrame, balorDF: DataFrame): GenericRecord = {
+   // val schema = new Schema.Parser().parse(new File("src/main/avro/balorAvroSchema.avsc"))
+
+    val balor = new Balor()
+    balor.setJobKey(jobKey)
+    balor.setNumRecords(txnCount)
+    balor.put("completionTime", "fakeTime")
+
+    val minDate = minMaxDateDF
+        .select("min(Date)")
+      .head()
+      .getDate(0)
+      .toString
+
+    val maxDate = minMaxDateDF
+      .select("max(Date)")
+      .head()
+      .getDate(0)
+      .toString
+
+    balor.setMinDateBalor(minDate)
+    balor.setMaxDateBalor(maxDate)
+
+    val tempList = new java.util.ArrayList[TimePeriodData]
+
+    def mapTimePeriodData(tpdRow: Row): Unit = {
+        val tpd = new TimePeriodData()
+        tpd.setTimePeriod(tpdRow.getInt(0))
+        tpd.setNewCustCount(tpdRow.getLong(1))
+        tpd.setNewTxnCount(tpdRow.getLong(2))
+        tpd.setNewTxnAmt(tpdRow.getDouble(3))
+        tpd.setNewDiscAmt(tpdRow.getDouble(4))
+        tpd.setNewItemQty(tpdRow.getDouble(5))
+
+        tpd.setReactCustCount(tpdRow.getLong(6))
+        tpd.setReactTxnCount(tpdRow.getLong(7))
+        tpd.setReactTxnAmt(tpdRow.getDouble(8))
+        tpd.setReactDiscAmt(tpdRow.getDouble(9))
+        tpd.setReactItemQty(tpdRow.getDouble(10))
+
+        tpd.setReturnCustCount(tpdRow.getLong(11))
+        tpd.setReturnTxnCount(tpdRow.getLong(12))
+        tpd.setReturnTxnAmt(tpdRow.getDouble(13))
+        tpd.setReturnDiscAmt(tpdRow.getDouble(14))
+        tpd.setReturnItemQty(tpdRow.getDouble(15))
+
+        tpd.setLapsedCustCount(tpdRow.getLong(16))
+        tpd.setLapsedTxnCount(tpdRow.getLong(17))
+        tpd.setLapsedTxnAmt(tpdRow.getDouble(18))
+        tpd.setLapsedDiscAmt(tpdRow.getDouble(19))
+        tpd.setLapsedItemQty(tpdRow.getDouble(20))
+
+        tpd.setCustBalor(tpdRow.getDouble(21))
+        tpd.setTxnBalor(tpdRow.getDouble(22))
+        tpd.setSpendBalor(tpdRow.getDouble(23))
+
+        tempList.add(tpd)
+    }
+
+    balorDF.collect().foreach(e => mapTimePeriodData(e))
+
+    balor.setBalorSets(tempList)
+
+/*
+    val file = new File("tmp/balor.avro")
+    val datumWriter = new SpecificDatumWriter[Balor](schema)
+    val fileWriter = new DataFileWriter[Balor](datumWriter)
+    fileWriter.create(schema, file)
+    fileWriter.append(balor)
+    fileWriter.close()
+*/
+
+    balor
   }
 
   def main(args: Array[String]): Unit = {
@@ -148,10 +231,21 @@ object BalorApp {
 
     val fileLocation = args(0)
     val delimiter = args(1)
-    val cadenceIndex = args(2).toInt
-    //val cadenceval = CadenceValues
-    val cadence = OneWeek
-    //TODO figure out how to cast this to CadenceValues
+    val jobKey = args(2)
+    val cadenceIndex = args(3).toInt
+
+    val cadence = cadenceIndex match {
+      case 7 => OneYear
+      case 6 => SixMonths
+      case 5 => ThreeMonths
+      case 4 => TwoMonths
+      case 3 => OneMonth
+      case 2 => TwoWeeks
+      case 1 => OneWeek
+      //TODO throw exception for any other case
+        // case _ => Throw me!
+    }
+
     val jobName = "BalorApp"
     val conf = new SparkConf().setAppName(jobName)
       .set("spark.driver.maxResultSize", "3g")
@@ -170,8 +264,11 @@ object BalorApp {
       .load(fileLocation)
 
     val dateDF = DateUtils.determineFormat(orgFile)
+    dateDF.persist(StorageLevel.MEMORY_AND_DISK)
 
-    val timePeriodDF = calcTimePeriod(dateDF, cadence)
+
+    val (timePeriodDF, minMaxDF) = calcTimePeriod(dateDF, cadence)
+    timePeriodDF.persist(StorageLevel.MEMORY_AND_DISK)
 
     //want to count num of transactions that are actually being included in the BALOR calcs
     val txnCount = timePeriodDF.count()
@@ -182,11 +279,15 @@ object BalorApp {
 
     val balorDF = calcBalorRatios(countsDF)
 
-    val avroDF = balorDF.write.avro("tmp/balor")
-    val readDF = sqlCtx.read.avro("tmp/balor")
-    readDF.show()
-    readDF.printSchema()
-  }
+    val avro = createBalorAvro(jobKey, txnCount, minMaxDF, balorDF)
 
+    //TODO write to kafka, for now this will be used to QA results
+    //balorDF.write.parquet("tmp/balor")
+
+    println(s"Balor avro output: $avro")
+
+    sc.stop()
+
+  }
 
 }

@@ -106,10 +106,11 @@ object DateUtils {
   def trimWeeks(dateDF: DataFrame, numDays: Int): DataFrame = {
     val maxMinDF = dateDF
       .select(max("Date"), min("Date"))
-      .withColumn("End", datediff(col("max(Date)"),col("min(Date)"))/numDays)
 
     dateDF
-      .join(maxMinDF)
+      .withColumn("max(Date)", lit(maxMinDF.select("max(Date)").first().getDate(0)))
+      .withColumn("min(Date)", lit(maxMinDF.select("min(Date)").first().getDate(0)))
+      .withColumn("End", datediff(col("max(Date)"),col("min(Date)"))/numDays)
       .filter(((datediff(col("max(Date)"),dateDF("Date"))+1)/numDays) <= col("End"))
   }
 

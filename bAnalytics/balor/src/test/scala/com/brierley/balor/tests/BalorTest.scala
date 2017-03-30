@@ -10,9 +10,6 @@ import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
 
-import com.databricks.spark.avro._
-
-
 /**
   * Created by amerrill on 1/31/17.
   */
@@ -302,12 +299,19 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       "returnCustCount", "returnTxnCount", "returnTxnAmt", "returnDiscAmt", "returnItemCount",
       "lapsedCustCount", "lapsedTxnCount", "lapsedTxnAmt", "lapsedDiscAmt", "lapsedItemCount")
 
+    val minMaxDateDF = sc.parallelize(List(
+      ("2015-03-03", "2015-06-06")
+    )).toDF("min", "max")
+      .withColumn("min(Date)", $"min".cast("date"))
+      .withColumn("max(Date)", $"max".cast("date"))
+      .select("min(Date)", "max(Date)")
+
   }
 
   //TIME PERIOD TESTS
   test("TimePeriod column added, extra columns dropped") {
     new TimePeriodData {
-      val periodDF = BalorApp.calcTimePeriod(singleUserJanFebMar2015, TwoWeeks)
+      val (periodDF, minMaxDF) = BalorApp.calcTimePeriod(singleUserJanFebMar2015, TwoWeeks)
       val periodColumns = periodDF.columns
       val columns = Array("TimePeriod", "CUST_ID", "TXN_COUNT", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
 
@@ -318,7 +322,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
 
   test("Time Period (month) around daylight savings start") {
     new TimePeriodData {
-      val periodDF = BalorApp.calcTimePeriod(singleUserJanFebMar2015, OneMonth)
+      val (periodDF, minMaxDF) = BalorApp.calcTimePeriod(singleUserJanFebMar2015, OneMonth)
       val timePeriods = periodDF.select("TimePeriod").map(_ (0)).collect()
 
       assert(timePeriods === List(1, 2, 3))
@@ -351,7 +355,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
 
   test("Time Period (month) breaks around Leap Day") {
     new TimePeriodData {
-      val periodDF = BalorApp.calcTimePeriod(singleUserJanFebMar2016, OneMonth)
+      val (periodDF, minMaxDF) = BalorApp.calcTimePeriod(singleUserJanFebMar2016, OneMonth)
       val timePeriods = periodDF.select("TimePeriod").map(_ (0)).collect()
 
       assert(timePeriods === List(1, 2, 3))
@@ -384,7 +388,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
 
   test("Time Period (2 weeks) breaks around Leap Day") {
     new TimePeriodData {
-      val periodDF = BalorApp.calcTimePeriod(singleUser2weeksFeb2016, TwoWeeks)
+      val (periodDF, minMaxDF) = BalorApp.calcTimePeriod(singleUser2weeksFeb2016, TwoWeeks)
       val timePeriods = periodDF.select("TimePeriod").map(_ (0)).collect()
 
       //jan 31 entry should be dropped
@@ -396,7 +400,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
 
   test("Time Period = month, 4 months of data, with newest being extra") {
     new TimePeriodData {
-      val periodDF = BalorApp.calcTimePeriod(fourMonthsPlusNewest, OneMonth)
+      val (periodDF, minMaxDF) = BalorApp.calcTimePeriod(fourMonthsPlusNewest, OneMonth)
       val period4 = periodDF.where("TimePeriod = 4").select("TimePeriod").count()
       val period3 = periodDF.where("TimePeriod = 3").select("TimePeriod").count()
       val period2 = periodDF.where("TimePeriod = 2").select("TimePeriod").count()
@@ -415,7 +419,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
 
   test("Time Period = month, 4 months of data, with oldest being extra") {
     new TimePeriodData {
-      val periodDF = BalorApp.calcTimePeriod(fourMonthsPlusOldest, OneMonth)
+      val (periodDF, minMaxDF) = BalorApp.calcTimePeriod(fourMonthsPlusOldest, OneMonth)
       val period4 = periodDF.where("TimePeriod = 4").select("TimePeriod").count()
       val period3 = periodDF.where("TimePeriod = 3").select("TimePeriod").count()
       val period2 = periodDF.where("TimePeriod = 2").select("TimePeriod").count()
@@ -431,7 +435,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
 
   test("Time Period = month 2 1/2 months of data") {
     new TimePeriodData {
-      val periodDF = BalorApp.calcTimePeriod(twoMonthsPlus, OneMonth)
+      val (periodDF, minMaxDF) = BalorApp.calcTimePeriod(twoMonthsPlus, OneMonth)
       val timePeriods = periodDF.select("TimePeriod").map(_ (0)).collect()
 
       assert(periodDF.count() === 8)
@@ -445,7 +449,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
     new ClassLabelData {
       val labelDF = BalorApp.assignSegmentLabel(threeOverTwo)
       val labelCols = labelDF.columns
-      val columns = Array("CUST_ID", "TXN_COUNT", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "TimePeriod", "Label")
+      val columns = Array("TimePeriod", "Label", "CUST_ID", "TXN_COUNT", "TXN_AMT", "DISC_AMT", "ITEM_QTY")
 
       assert(labelCols === columns)
     }
@@ -508,11 +512,12 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       val countDF = BalorApp.counts(singleSimpleBalorSet)
       val countCols = countDF.columns
 
-      val columns = Array("TimePeriod", "newTxnAmt", "newDiscAmt", "newItemCount", "newCustCount", "newTxnCount",
-        "reactTxnAmt", "reactDiscAmt", "reactItemCount", "reactCustCount", "reactTxnCount",
-        "returnTxnAmt", "returnDiscAmt", "returnItemCount", "returnCustCount", "returnTxnCount",
-        "lapsedTxnAmt", "lapsedDiscAmt", "lapsedItemCount", "lapsedCustCount", "lapsedTxnCount")
+      val columns = Array("TimePeriod", "newCustCount", "newTxnCount", "newTxnAmt", "newDiscAmt", "newItemCount",
+        "reactCustCount", "reactTxnCount", "reactTxnAmt", "reactDiscAmt", "reactItemCount",
+        "returnCustCount", "returnTxnCount", "returnTxnAmt", "returnDiscAmt", "returnItemCount",
+        "lapsedCustCount", "lapsedTxnCount", "lapsedTxnAmt", "lapsedDiscAmt", "lapsedItemCount")
 
+      countDF.show()
       assert(countCols === columns)
     }
   }
@@ -526,9 +531,11 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
         .where(countDF("TimePeriod") === 1)
         .head()
 
-      val realCounts = Row(1, 10.0, 0.0, 4, 1, 1, 15.0, 5.0, 6, 1, 1, 15.0, 2.5, 6, 1, 1, null, null, null, 0, null)
+      val realCounts = Row(1, 1, 1, 10.0, 0.0, 4, 1, 1, 15.0, 5.0, 6, 1, 1, 15.0, 2.5, 6, 0, null, null, null, null)
 
       assert(counts === realCounts)
+
+      countDF.show()
     }
   }
 
@@ -550,7 +557,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
     new BalorData {
 
       val balorDF = BalorApp.calcBalorRatios(threeOverTwo)
-      val balors = balorDF.select("CustBalor", "TxnBalor", "SpendBalor").head()
+      val balors = balorDF.select("custBalor", "txnBalor", "spendBalor").head()
 
       val realBalor = Row(1.5, 2, 1.8)
 
@@ -562,8 +569,8 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
     new BalorData {
 
       val balorDF = BalorApp.calcBalorRatios(twoBalorSets)
-      val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("CustBalor", "TxnBalor", "SpendBalor").head()
-      val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("CustBalor", "TxnBalor", "SpendBalor").head()
+      val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("custBalor", "txnBalor", "spendBalor").head()
+      val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("custBalor", "txnBalor", "spendBalor").head()
 
       val realBalor1 = Row(1.5, 2, 1.8)
 
@@ -578,9 +585,9 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
     new BalorData {
 
       val balorDF = BalorApp.calcBalorRatios(threeBalorSetsOneOverZero)
-      val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("CustBalor", "TxnBalor", "SpendBalor").head()
-      val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("CustBalor", "TxnBalor", "SpendBalor").head()
-      val balor3 = balorDF.where(balorDF("TimePeriod") === 3).select("CustBalor", "TxnBalor", "SpendBalor").head()
+      val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("custBalor", "txnBalor", "spendBalor").head()
+      val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("custBalor", "txnBalor", "spendBalor").head()
+      val balor3 = balorDF.where(balorDF("TimePeriod") === 3).select("custBalor", "txnBalor", "spendBalor").head()
 
       val realBalor1 = Row(1.5, 2.0, 1.8)
       val realBalor2 = Row(2.0, 2.0, 2)
@@ -590,6 +597,11 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       assert(realBalor2 === balor2)
       assert(realBalor3 === balor3)
 
+      balorDF.show()
+
+      val rec = BalorApp.createBalorAvro("TestKey", 5, minMaxDateDF, balorDF)
+
+      println("this is the return object from the method call " + rec.toString)
 
     }
   }
