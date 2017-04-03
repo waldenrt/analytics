@@ -291,9 +291,9 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       "lapsedCustCount", "lapsedTxnCount", "lapsedTxnAmt", "lapsedDiscAmt", "lapsedItemCount")
 
     val threeBalorSetsOneOverZero = sc.parallelize(List(
-      (1, 2, 3, 30.00, 0.00, 12, 1, 1, 15.00, 5.00, 6, 1, 1, 15.00, 2.50, 6, 2, 2, 25.00, 2.50, 10),
-      (2, 1, 1, 10.00, 0.00, 4, 1, 1, 15.00, 5.00, 6, 1, 1, 15.00, 2.50, 6, 1, 1, 12.50, 2.50, 5),
-      (3, 1, 1, 10.00, 0.00, 4, 1, 1, 15.00, 5.00, 6, 1, 1, 15.00, 2.50, 6, 0, 1, 12.50, 2.50, 5)
+      (1, 2.toLong, 3.toLong, 30.00, 0.00, 12, 1.toLong, 1.toLong, 15.00, 5.00, 6, 1.toLong, 1.toLong, 15.00, 2.50, 6, 2.toLong, 2.toLong, 25.00, 2.50, 10),
+      (2, 1.toLong, 1.toLong, 10.00, 0.00, 4, 1.toLong, 1.toLong, 15.00, 5.00, 6, 1.toLong, 1.toLong, 15.00, 2.50, 6, 1.toLong, 1.toLong, 12.50, 2.50, 5),
+      (3, 1.toLong, 1.toLong, 10.00, 0.00, 4, 1.toLong, 1.toLong, 15.00, 5.00, 6, 1.toLong, 1.toLong, 15.00, 2.50, 6, 0.toLong, 1.toLong, 12.50, 2.50, 5)
     )).toDF("TimePeriod", "newCustCount", "newTxnCount", "newTxnAmt", "newDiscAmt", "newItemCount",
       "reactCustCount", "reactTxnCount", "reactTxnAmt", "reactDiscAmt", "reactItemCount",
       "returnCustCount", "returnTxnCount", "returnTxnAmt", "returnDiscAmt", "returnItemCount",
@@ -599,9 +599,9 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
 
       balorDF.show()
 
-      val rec = BalorApp.createBalorAvro("TestKey", 5, minMaxDateDF, balorDF)
+      //val rec = BalorApp.createBalorAvro("TestKey", 5, minMaxDateDF, balorDF)
 
-      println("this is the return object from the method call " + rec.toString)
+      //println("this is the return object from the method call " + rec.toString)
 
     }
   }

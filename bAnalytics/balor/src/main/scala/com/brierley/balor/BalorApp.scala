@@ -1,6 +1,6 @@
 package com.brierley.balor
 
-import java.io.File
+import java.io.{ByteArrayOutputStream, File}
 import java.sql.Date
 
 import com.brierley.avro.schemas.{Balor, TimePeriodData}
@@ -8,7 +8,7 @@ import com.brierley.utils._
 import com.brierley.utils.BalorUDFs._
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.expressions.Window
-import org.apache.spark.sql.{DataFrame, Row}
+import org.apache.spark.sql.{AnalysisException, DataFrame, Row}
 import org.apache.spark.sql.hive.HiveContext
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.IntegerType
@@ -16,12 +16,61 @@ import org.apache.spark.storage.StorageLevel
 import org.apache.avro.Schema
 import org.apache.avro.file.{DataFileReader, DataFileWriter}
 import org.apache.avro.generic.{GenericData, GenericDatumWriter, GenericRecord}
+import org.apache.avro.io.EncoderFactory
 import org.apache.avro.specific.{SpecificDatumReader, SpecificDatumWriter}
 
 /**
   * Created by amerrill on 1/30/17.
   */
 object BalorApp {
+
+  def loadFile(sqlCtx: HiveContext, delimiter: String, fileLocation: String): DataFrame = {
+
+    def handleAnalysisException(e: AnalysisException, orgFile: DataFrame): DataFrame = {
+      //TODO return exception to UI
+      println("Incorrect header row or header row is missing.")
+      orgFile
+    }
+
+    def handleException(e: Throwable, orgFile: DataFrame): DataFrame = {
+      //TODO return exception to UI
+      println(s"Unknown Exception: $e")
+      orgFile
+    }
+
+    val orgFile = sqlCtx
+      .read
+      .format("com.databricks.spark.csv")
+      .option("header", "true")
+      .option("delimiter", delimiter)
+      .load(fileLocation)
+
+    val cols = orgFile.columns
+
+    if (cols.contains("DISC_AMT") && cols.contains("ITEM_QTY")) {
+      orgFile
+        .select("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "DISC_AMT", "ITEM_QTY")
+        .na.drop()
+    } else if (cols.contains("DISC_AMT")) {
+      orgFile
+        .select("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "DISC_AMT")
+        .withColumn("ITEM_QTY", lit(0.toDouble))
+        .na.drop()
+    } else if (cols.contains("ITEM_QTY")) {
+      orgFile
+        .select("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY")
+        .withColumn("DISC_AMT", lit(0.toDouble))
+        .na.drop()
+    } else {
+      orgFile
+        .select("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT")
+        .withColumn("ITEM_QTY", lit(0.toDouble))
+        .withColumn("DISC_AMT", lit(0.toDouble))
+        .na.drop()
+    }
+
+
+  }
 
   def calcTimePeriod(dateDF: DataFrame, cadence: CadenceValues): (DataFrame, DataFrame) = {
 
@@ -149,7 +198,7 @@ object BalorApp {
   }
 
   def createBalorAvro(jobKey: String, txnCount: Long, minMaxDateDF: DataFrame, balorDF: DataFrame): GenericRecord = {
-   // val schema = new Schema.Parser().parse(new File("src/main/avro/balorAvroSchema.avsc"))
+    // val schema = new Schema.Parser().parse(new File("/src/main/avro/balorAvroSchema.avsc"))
 
     val balor = new Balor()
     balor.setJobKey(jobKey)
@@ -157,7 +206,7 @@ object BalorApp {
     balor.put("completionTime", "fakeTime")
 
     val minDate = minMaxDateDF
-        .select("min(Date)")
+      .select("min(Date)")
       .head()
       .getDate(0)
       .toString
@@ -174,51 +223,52 @@ object BalorApp {
     val tempList = new java.util.ArrayList[TimePeriodData]
 
     def mapTimePeriodData(tpdRow: Row): Unit = {
-        val tpd = new TimePeriodData()
-        tpd.setTimePeriod(tpdRow.getInt(0))
-        tpd.setNewCustCount(tpdRow.getLong(1))
-        tpd.setNewTxnCount(tpdRow.getLong(2))
-        tpd.setNewTxnAmt(tpdRow.getDouble(3))
-        tpd.setNewDiscAmt(tpdRow.getDouble(4))
-        tpd.setNewItemQty(tpdRow.getDouble(5))
+      val tpd = new TimePeriodData()
+      tpd.setTimePeriod(tpdRow.getInt(0))
+      tpd.setNewCustCount(tpdRow.getLong(1))
+      tpd.setNewTxnCount(tpdRow.getLong(2))
+      tpd.setNewTxnAmt(tpdRow.getDouble(3))
+      tpd.setNewDiscAmt(tpdRow.getDouble(4))
+      tpd.setNewItemQty(tpdRow.getDouble(5))
 
-        tpd.setReactCustCount(tpdRow.getLong(6))
-        tpd.setReactTxnCount(tpdRow.getLong(7))
-        tpd.setReactTxnAmt(tpdRow.getDouble(8))
-        tpd.setReactDiscAmt(tpdRow.getDouble(9))
-        tpd.setReactItemQty(tpdRow.getDouble(10))
+      tpd.setReactCustCount(tpdRow.getLong(6))
+      tpd.setReactTxnCount(tpdRow.getLong(7))
+      tpd.setReactTxnAmt(tpdRow.getDouble(8))
+      tpd.setReactDiscAmt(tpdRow.getDouble(9))
+      tpd.setReactItemQty(tpdRow.getDouble(10))
 
-        tpd.setReturnCustCount(tpdRow.getLong(11))
-        tpd.setReturnTxnCount(tpdRow.getLong(12))
-        tpd.setReturnTxnAmt(tpdRow.getDouble(13))
-        tpd.setReturnDiscAmt(tpdRow.getDouble(14))
-        tpd.setReturnItemQty(tpdRow.getDouble(15))
+      tpd.setReturnCustCount(tpdRow.getLong(11))
+      tpd.setReturnTxnCount(tpdRow.getLong(12))
+      tpd.setReturnTxnAmt(tpdRow.getDouble(13))
+      tpd.setReturnDiscAmt(tpdRow.getDouble(14))
+      tpd.setReturnItemQty(tpdRow.getDouble(15))
 
-        tpd.setLapsedCustCount(tpdRow.getLong(16))
-        tpd.setLapsedTxnCount(tpdRow.getLong(17))
-        tpd.setLapsedTxnAmt(tpdRow.getDouble(18))
-        tpd.setLapsedDiscAmt(tpdRow.getDouble(19))
-        tpd.setLapsedItemQty(tpdRow.getDouble(20))
+      tpd.setLapsedCustCount(tpdRow.getLong(16))
+      tpd.setLapsedTxnCount(tpdRow.getLong(17))
+      tpd.setLapsedTxnAmt(tpdRow.getDouble(18))
+      tpd.setLapsedDiscAmt(tpdRow.getDouble(19))
+      tpd.setLapsedItemQty(tpdRow.getDouble(20))
 
-        tpd.setCustBalor(tpdRow.getDouble(21))
-        tpd.setTxnBalor(tpdRow.getDouble(22))
-        tpd.setSpendBalor(tpdRow.getDouble(23))
+      tpd.setCustBalor(tpdRow.getDouble(21))
+      tpd.setTxnBalor(tpdRow.getDouble(22))
+      tpd.setSpendBalor(tpdRow.getDouble(23))
 
-        tempList.add(tpd)
+      tempList.add(tpd)
     }
 
     balorDF.collect().foreach(e => mapTimePeriodData(e))
 
     balor.setBalorSets(tempList)
 
-/*
-    val file = new File("tmp/balor.avro")
-    val datumWriter = new SpecificDatumWriter[Balor](schema)
-    val fileWriter = new DataFileWriter[Balor](datumWriter)
-    fileWriter.create(schema, file)
-    fileWriter.append(balor)
-    fileWriter.close()
-*/
+
+    val out = new ByteArrayOutputStream()
+    val datumWriter = new SpecificDatumWriter[Balor](Balor.getClassSchema())
+    val encoder = EncoderFactory.get().binaryEncoder(out, null)
+    datumWriter.write(balor, encoder)
+    encoder.flush()
+    out.close()
+
+    BalorProducer.sendBalor(out.toByteArray, "BalorApp")
 
     balor
   }
@@ -243,7 +293,7 @@ object BalorApp {
       case 2 => TwoWeeks
       case 1 => OneWeek
       //TODO throw exception for any other case
-        // case _ => Throw me!
+      // case _ => Throw me!
     }
 
     val jobName = "BalorApp"
@@ -256,12 +306,7 @@ object BalorApp {
     val sc = new SparkContext(conf)
     val sqlCtx = new HiveContext(sc)
 
-    val orgFile = sqlCtx
-      .read
-      .format("com.databricks.spark.csv")
-      .option("header", "true")
-      .option("delimiter", delimiter)
-      .load(fileLocation)
+    val orgFile = loadFile(sqlCtx, delimiter, fileLocation)
 
     val dateDF = DateUtils.determineFormat(orgFile)
     dateDF.persist(StorageLevel.MEMORY_AND_DISK)
@@ -280,9 +325,6 @@ object BalorApp {
     val balorDF = calcBalorRatios(countsDF)
 
     val avro = createBalorAvro(jobKey, txnCount, minMaxDF, balorDF)
-
-    //TODO write to kafka, for now this will be used to QA results
-    //balorDF.write.parquet("tmp/balor")
 
     println(s"Balor avro output: $avro")
 

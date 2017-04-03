@@ -1,8 +1,12 @@
 package com.brierley.balor
 
+import java.io.ByteArrayOutputStream
+
 import com.brierley.avro.schemas.{Cadence, FreqRow}
 import com.brierley.utils._
 import org.apache.avro.generic.GenericRecord
+import org.apache.avro.io.EncoderFactory
+import org.apache.avro.specific.SpecificDatumWriter
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql._
@@ -225,6 +229,15 @@ object CadenceCalcs {
 
     freqTable.collect().foreach(f => mapFreqRow(f))
     cadAvro.setFreqTable(tempList)
+
+    val out = new ByteArrayOutputStream()
+    val datumWriter = new SpecificDatumWriter[Cadence](Cadence.getClassSchema())
+    val encoder = EncoderFactory.get().binaryEncoder(out, null)
+    datumWriter.write(cadAvro, encoder)
+    encoder.flush()
+    out.close()
+
+    BalorProducer.sendBalor(out.toByteArray, "CadenceCalcs")
 
 
     cadAvro
