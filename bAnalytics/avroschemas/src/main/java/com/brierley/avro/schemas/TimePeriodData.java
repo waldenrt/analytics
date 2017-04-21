@@ -10,8 +10,8 @@ import org.apache.avro.specific.SpecificData;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 6963304012204813611L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"TimePeriodData\",\"namespace\":\"com.brierley.avro.schemas\",\"fields\":[{\"name\":\"timePeriod\",\"type\":\"int\",\"doc\":\"The Balor time period, calculated ascending\"},{\"name\":\"newCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered new in the given Balor time period.  To be considered new the cust_id must not appear in the previous 2 cadence periods\"},{\"name\":\"newTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newItemQty\",\"type\":\"double\",\"doc\":\"The total number of items purchased by all NEW customers in the given Balor time period.\"},{\"name\":\"reactCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered REACTIVATED in the given Balor time period.  To be considered reactivated the cust_id must appear in the current and t-2 time period\"},{\"name\":\"reactTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactItemQty\",\"type\":\"double\",\"doc\":\"The total number of items purchased by all REACTIVATED customers in the given Balor time period.\"},{\"name\":\"returnCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered RETURNING in the given Balor time period.  To be considered returning the cust_id must appear in the 2 most recent time periods, or all 3\"},{\"name\":\"returnTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnItemQty\",\"type\":\"double\",\"doc\":\"The total number of items purchased by all RETURNING customers in the given Balor time period.\"},{\"name\":\"lapsedCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered LAPSED in the given Balor time period.  To be considered lapsed the cust_id cannot appear in the current time period\"},{\"name\":\"lapsedTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedItemQty\",\"type\":\"double\",\"doc\":\"The total number of items purchased by all LAPSED customers in the given Balor time period.\"},{\"name\":\"custBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for customer counts. ratio calculated: (new + reactivated) / lapsed\"},{\"name\":\"txnBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for transaction counts per customer segment. ratio calculated: (new + reactivated) / lapsed\"},{\"name\":\"spendBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for the total spend for each customer segment. ratio calculated: (new + reactivated) / lapsed\"}]}");
+  private static final long serialVersionUID = -6581360510469890175L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"TimePeriodData\",\"namespace\":\"com.brierley.avro.schemas\",\"fields\":[{\"name\":\"timePeriod\",\"type\":\"int\",\"doc\":\"The Balor time period, calculated ascending\"},{\"name\":\"newCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered new in the given Balor time period.  To be considered new the cust_id must not appear in the previous 2 cadence periods\"},{\"name\":\"newTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all NEW customers in the given Balor time period.\"},{\"name\":\"reactCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered REACTIVATED in the given Balor time period.  To be considered reactivated the cust_id must appear in the current and t-2 time period\"},{\"name\":\"reactTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all REACTIVATED customers in the given Balor time period.\"},{\"name\":\"returnCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered RETURNING in the given Balor time period.  To be considered returning the cust_id must appear in the 2 most recent time periods, or all 3\"},{\"name\":\"returnTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all RETURNING customers in the given Balor time period.\"},{\"name\":\"lapsedCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered LAPSED in the given Balor time period.  To be considered lapsed the cust_id cannot appear in the current time period\"},{\"name\":\"lapsedTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all LAPSED customers in the given Balor time period.\"},{\"name\":\"custBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for customer counts. ratio calculated: (new + reactivated) / lapsed\"},{\"name\":\"txnBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for transaction counts per customer segment. ratio calculated: (new + reactivated) / lapsed\"},{\"name\":\"spendBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for the total spend for each customer segment. ratio calculated: (new + reactivated) / lapsed\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** The Balor time period, calculated ascending */
   @Deprecated public int timePeriod;
@@ -24,7 +24,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
   /** The total discount amount of transactions made by NEW customers in the given Balor time period. */
   @Deprecated public double newDiscAmt;
   /** The total number of items purchased by all NEW customers in the given Balor time period. */
-  @Deprecated public double newItemQty;
+  @Deprecated public long newItemQty;
   /** The count of customers that are considered REACTIVATED in the given Balor time period.  To be considered reactivated the cust_id must appear in the current and t-2 time period */
   @Deprecated public long reactCustCount;
   /** The number of transactions made by REACTIVATED customers in the given Balor time period. */
@@ -34,7 +34,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
   /** The total discount amount of transactions made by REACTIVATED customers in the given Balor time period. */
   @Deprecated public double reactDiscAmt;
   /** The total number of items purchased by all REACTIVATED customers in the given Balor time period. */
-  @Deprecated public double reactItemQty;
+  @Deprecated public long reactItemQty;
   /** The count of customers that are considered RETURNING in the given Balor time period.  To be considered returning the cust_id must appear in the 2 most recent time periods, or all 3 */
   @Deprecated public long returnCustCount;
   /** The number of transactions made by RETURNING customers in the given Balor time period. */
@@ -44,7 +44,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
   /** The total discount amount of transactions made by RETURNING customers in the given Balor time period. */
   @Deprecated public double returnDiscAmt;
   /** The total number of items purchased by all RETURNING customers in the given Balor time period. */
-  @Deprecated public double returnItemQty;
+  @Deprecated public long returnItemQty;
   /** The count of customers that are considered LAPSED in the given Balor time period.  To be considered lapsed the cust_id cannot appear in the current time period */
   @Deprecated public long lapsedCustCount;
   /** The number of transactions made by LAPSED customers in the given Balor time period. */
@@ -54,7 +54,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
   /** The total discount amount of transactions made by LAPSED customers in the given Balor time period. */
   @Deprecated public double lapsedDiscAmt;
   /** The total number of items purchased by all LAPSED customers in the given Balor time period. */
-  @Deprecated public double lapsedItemQty;
+  @Deprecated public long lapsedItemQty;
   /** The balor ratio for customer counts. ratio calculated: (new + reactivated) / lapsed */
   @Deprecated public double custBalor;
   /** The balor ratio for transaction counts per customer segment. ratio calculated: (new + reactivated) / lapsed */
@@ -96,7 +96,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
    * @param txnBalor The balor ratio for transaction counts per customer segment. ratio calculated: (new + reactivated) / lapsed
    * @param spendBalor The balor ratio for the total spend for each customer segment. ratio calculated: (new + reactivated) / lapsed
    */
-  public TimePeriodData(java.lang.Integer timePeriod, java.lang.Long newCustCount, java.lang.Long newTxnCount, java.lang.Double newTxnAmt, java.lang.Double newDiscAmt, java.lang.Double newItemQty, java.lang.Long reactCustCount, java.lang.Long reactTxnCount, java.lang.Double reactTxnAmt, java.lang.Double reactDiscAmt, java.lang.Double reactItemQty, java.lang.Long returnCustCount, java.lang.Long returnTxnCount, java.lang.Double returnTxnAmt, java.lang.Double returnDiscAmt, java.lang.Double returnItemQty, java.lang.Long lapsedCustCount, java.lang.Long lapsedTxnCount, java.lang.Double lapsedTxnAmt, java.lang.Double lapsedDiscAmt, java.lang.Double lapsedItemQty, java.lang.Double custBalor, java.lang.Double txnBalor, java.lang.Double spendBalor) {
+  public TimePeriodData(java.lang.Integer timePeriod, java.lang.Long newCustCount, java.lang.Long newTxnCount, java.lang.Double newTxnAmt, java.lang.Double newDiscAmt, java.lang.Long newItemQty, java.lang.Long reactCustCount, java.lang.Long reactTxnCount, java.lang.Double reactTxnAmt, java.lang.Double reactDiscAmt, java.lang.Long reactItemQty, java.lang.Long returnCustCount, java.lang.Long returnTxnCount, java.lang.Double returnTxnAmt, java.lang.Double returnDiscAmt, java.lang.Long returnItemQty, java.lang.Long lapsedCustCount, java.lang.Long lapsedTxnCount, java.lang.Double lapsedTxnAmt, java.lang.Double lapsedDiscAmt, java.lang.Long lapsedItemQty, java.lang.Double custBalor, java.lang.Double txnBalor, java.lang.Double spendBalor) {
     this.timePeriod = timePeriod;
     this.newCustCount = newCustCount;
     this.newTxnCount = newTxnCount;
@@ -164,22 +164,22 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
     case 2: newTxnCount = (java.lang.Long)value$; break;
     case 3: newTxnAmt = (java.lang.Double)value$; break;
     case 4: newDiscAmt = (java.lang.Double)value$; break;
-    case 5: newItemQty = (java.lang.Double)value$; break;
+    case 5: newItemQty = (java.lang.Long)value$; break;
     case 6: reactCustCount = (java.lang.Long)value$; break;
     case 7: reactTxnCount = (java.lang.Long)value$; break;
     case 8: reactTxnAmt = (java.lang.Double)value$; break;
     case 9: reactDiscAmt = (java.lang.Double)value$; break;
-    case 10: reactItemQty = (java.lang.Double)value$; break;
+    case 10: reactItemQty = (java.lang.Long)value$; break;
     case 11: returnCustCount = (java.lang.Long)value$; break;
     case 12: returnTxnCount = (java.lang.Long)value$; break;
     case 13: returnTxnAmt = (java.lang.Double)value$; break;
     case 14: returnDiscAmt = (java.lang.Double)value$; break;
-    case 15: returnItemQty = (java.lang.Double)value$; break;
+    case 15: returnItemQty = (java.lang.Long)value$; break;
     case 16: lapsedCustCount = (java.lang.Long)value$; break;
     case 17: lapsedTxnCount = (java.lang.Long)value$; break;
     case 18: lapsedTxnAmt = (java.lang.Double)value$; break;
     case 19: lapsedDiscAmt = (java.lang.Double)value$; break;
-    case 20: lapsedItemQty = (java.lang.Double)value$; break;
+    case 20: lapsedItemQty = (java.lang.Long)value$; break;
     case 21: custBalor = (java.lang.Double)value$; break;
     case 22: txnBalor = (java.lang.Double)value$; break;
     case 23: spendBalor = (java.lang.Double)value$; break;
@@ -276,7 +276,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
    * Gets the value of the 'newItemQty' field.
    * @return The total number of items purchased by all NEW customers in the given Balor time period.
    */
-  public java.lang.Double getNewItemQty() {
+  public java.lang.Long getNewItemQty() {
     return newItemQty;
   }
 
@@ -285,7 +285,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
    * The total number of items purchased by all NEW customers in the given Balor time period.
    * @param value the value to set.
    */
-  public void setNewItemQty(java.lang.Double value) {
+  public void setNewItemQty(java.lang.Long value) {
     this.newItemQty = value;
   }
 
@@ -361,7 +361,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
    * Gets the value of the 'reactItemQty' field.
    * @return The total number of items purchased by all REACTIVATED customers in the given Balor time period.
    */
-  public java.lang.Double getReactItemQty() {
+  public java.lang.Long getReactItemQty() {
     return reactItemQty;
   }
 
@@ -370,7 +370,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
    * The total number of items purchased by all REACTIVATED customers in the given Balor time period.
    * @param value the value to set.
    */
-  public void setReactItemQty(java.lang.Double value) {
+  public void setReactItemQty(java.lang.Long value) {
     this.reactItemQty = value;
   }
 
@@ -446,7 +446,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
    * Gets the value of the 'returnItemQty' field.
    * @return The total number of items purchased by all RETURNING customers in the given Balor time period.
    */
-  public java.lang.Double getReturnItemQty() {
+  public java.lang.Long getReturnItemQty() {
     return returnItemQty;
   }
 
@@ -455,7 +455,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
    * The total number of items purchased by all RETURNING customers in the given Balor time period.
    * @param value the value to set.
    */
-  public void setReturnItemQty(java.lang.Double value) {
+  public void setReturnItemQty(java.lang.Long value) {
     this.returnItemQty = value;
   }
 
@@ -531,7 +531,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
    * Gets the value of the 'lapsedItemQty' field.
    * @return The total number of items purchased by all LAPSED customers in the given Balor time period.
    */
-  public java.lang.Double getLapsedItemQty() {
+  public java.lang.Long getLapsedItemQty() {
     return lapsedItemQty;
   }
 
@@ -540,7 +540,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
    * The total number of items purchased by all LAPSED customers in the given Balor time period.
    * @param value the value to set.
    */
-  public void setLapsedItemQty(java.lang.Double value) {
+  public void setLapsedItemQty(java.lang.Long value) {
     this.lapsedItemQty = value;
   }
 
@@ -638,7 +638,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
     /** The total discount amount of transactions made by NEW customers in the given Balor time period. */
     private double newDiscAmt;
     /** The total number of items purchased by all NEW customers in the given Balor time period. */
-    private double newItemQty;
+    private long newItemQty;
     /** The count of customers that are considered REACTIVATED in the given Balor time period.  To be considered reactivated the cust_id must appear in the current and t-2 time period */
     private long reactCustCount;
     /** The number of transactions made by REACTIVATED customers in the given Balor time period. */
@@ -648,7 +648,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
     /** The total discount amount of transactions made by REACTIVATED customers in the given Balor time period. */
     private double reactDiscAmt;
     /** The total number of items purchased by all REACTIVATED customers in the given Balor time period. */
-    private double reactItemQty;
+    private long reactItemQty;
     /** The count of customers that are considered RETURNING in the given Balor time period.  To be considered returning the cust_id must appear in the 2 most recent time periods, or all 3 */
     private long returnCustCount;
     /** The number of transactions made by RETURNING customers in the given Balor time period. */
@@ -658,7 +658,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
     /** The total discount amount of transactions made by RETURNING customers in the given Balor time period. */
     private double returnDiscAmt;
     /** The total number of items purchased by all RETURNING customers in the given Balor time period. */
-    private double returnItemQty;
+    private long returnItemQty;
     /** The count of customers that are considered LAPSED in the given Balor time period.  To be considered lapsed the cust_id cannot appear in the current time period */
     private long lapsedCustCount;
     /** The number of transactions made by LAPSED customers in the given Balor time period. */
@@ -668,7 +668,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
     /** The total discount amount of transactions made by LAPSED customers in the given Balor time period. */
     private double lapsedDiscAmt;
     /** The total number of items purchased by all LAPSED customers in the given Balor time period. */
-    private double lapsedItemQty;
+    private long lapsedItemQty;
     /** The balor ratio for customer counts. ratio calculated: (new + reactivated) / lapsed */
     private double custBalor;
     /** The balor ratio for transaction counts per customer segment. ratio calculated: (new + reactivated) / lapsed */
@@ -1104,7 +1104,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * The total number of items purchased by all NEW customers in the given Balor time period.
       * @return The value.
       */
-    public java.lang.Double getNewItemQty() {
+    public java.lang.Long getNewItemQty() {
       return newItemQty;
     }
 
@@ -1114,7 +1114,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @param value The value of 'newItemQty'.
       * @return This builder.
       */
-    public com.brierley.avro.schemas.TimePeriodData.Builder setNewItemQty(double value) {
+    public com.brierley.avro.schemas.TimePeriodData.Builder setNewItemQty(long value) {
       validate(fields()[5], value);
       this.newItemQty = value;
       fieldSetFlags()[5] = true;
@@ -1314,7 +1314,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * The total number of items purchased by all REACTIVATED customers in the given Balor time period.
       * @return The value.
       */
-    public java.lang.Double getReactItemQty() {
+    public java.lang.Long getReactItemQty() {
       return reactItemQty;
     }
 
@@ -1324,7 +1324,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @param value The value of 'reactItemQty'.
       * @return This builder.
       */
-    public com.brierley.avro.schemas.TimePeriodData.Builder setReactItemQty(double value) {
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReactItemQty(long value) {
       validate(fields()[10], value);
       this.reactItemQty = value;
       fieldSetFlags()[10] = true;
@@ -1524,7 +1524,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * The total number of items purchased by all RETURNING customers in the given Balor time period.
       * @return The value.
       */
-    public java.lang.Double getReturnItemQty() {
+    public java.lang.Long getReturnItemQty() {
       return returnItemQty;
     }
 
@@ -1534,7 +1534,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @param value The value of 'returnItemQty'.
       * @return This builder.
       */
-    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnItemQty(double value) {
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnItemQty(long value) {
       validate(fields()[15], value);
       this.returnItemQty = value;
       fieldSetFlags()[15] = true;
@@ -1734,7 +1734,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * The total number of items purchased by all LAPSED customers in the given Balor time period.
       * @return The value.
       */
-    public java.lang.Double getLapsedItemQty() {
+    public java.lang.Long getLapsedItemQty() {
       return lapsedItemQty;
     }
 
@@ -1744,7 +1744,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @param value The value of 'lapsedItemQty'.
       * @return This builder.
       */
-    public com.brierley.avro.schemas.TimePeriodData.Builder setLapsedItemQty(double value) {
+    public com.brierley.avro.schemas.TimePeriodData.Builder setLapsedItemQty(long value) {
       validate(fields()[20], value);
       this.lapsedItemQty = value;
       fieldSetFlags()[20] = true;
@@ -1906,22 +1906,22 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
         record.newTxnCount = fieldSetFlags()[2] ? this.newTxnCount : (java.lang.Long) defaultValue(fields()[2]);
         record.newTxnAmt = fieldSetFlags()[3] ? this.newTxnAmt : (java.lang.Double) defaultValue(fields()[3]);
         record.newDiscAmt = fieldSetFlags()[4] ? this.newDiscAmt : (java.lang.Double) defaultValue(fields()[4]);
-        record.newItemQty = fieldSetFlags()[5] ? this.newItemQty : (java.lang.Double) defaultValue(fields()[5]);
+        record.newItemQty = fieldSetFlags()[5] ? this.newItemQty : (java.lang.Long) defaultValue(fields()[5]);
         record.reactCustCount = fieldSetFlags()[6] ? this.reactCustCount : (java.lang.Long) defaultValue(fields()[6]);
         record.reactTxnCount = fieldSetFlags()[7] ? this.reactTxnCount : (java.lang.Long) defaultValue(fields()[7]);
         record.reactTxnAmt = fieldSetFlags()[8] ? this.reactTxnAmt : (java.lang.Double) defaultValue(fields()[8]);
         record.reactDiscAmt = fieldSetFlags()[9] ? this.reactDiscAmt : (java.lang.Double) defaultValue(fields()[9]);
-        record.reactItemQty = fieldSetFlags()[10] ? this.reactItemQty : (java.lang.Double) defaultValue(fields()[10]);
+        record.reactItemQty = fieldSetFlags()[10] ? this.reactItemQty : (java.lang.Long) defaultValue(fields()[10]);
         record.returnCustCount = fieldSetFlags()[11] ? this.returnCustCount : (java.lang.Long) defaultValue(fields()[11]);
         record.returnTxnCount = fieldSetFlags()[12] ? this.returnTxnCount : (java.lang.Long) defaultValue(fields()[12]);
         record.returnTxnAmt = fieldSetFlags()[13] ? this.returnTxnAmt : (java.lang.Double) defaultValue(fields()[13]);
         record.returnDiscAmt = fieldSetFlags()[14] ? this.returnDiscAmt : (java.lang.Double) defaultValue(fields()[14]);
-        record.returnItemQty = fieldSetFlags()[15] ? this.returnItemQty : (java.lang.Double) defaultValue(fields()[15]);
+        record.returnItemQty = fieldSetFlags()[15] ? this.returnItemQty : (java.lang.Long) defaultValue(fields()[15]);
         record.lapsedCustCount = fieldSetFlags()[16] ? this.lapsedCustCount : (java.lang.Long) defaultValue(fields()[16]);
         record.lapsedTxnCount = fieldSetFlags()[17] ? this.lapsedTxnCount : (java.lang.Long) defaultValue(fields()[17]);
         record.lapsedTxnAmt = fieldSetFlags()[18] ? this.lapsedTxnAmt : (java.lang.Double) defaultValue(fields()[18]);
         record.lapsedDiscAmt = fieldSetFlags()[19] ? this.lapsedDiscAmt : (java.lang.Double) defaultValue(fields()[19]);
-        record.lapsedItemQty = fieldSetFlags()[20] ? this.lapsedItemQty : (java.lang.Double) defaultValue(fields()[20]);
+        record.lapsedItemQty = fieldSetFlags()[20] ? this.lapsedItemQty : (java.lang.Long) defaultValue(fields()[20]);
         record.custBalor = fieldSetFlags()[21] ? this.custBalor : (java.lang.Double) defaultValue(fields()[21]);
         record.txnBalor = fieldSetFlags()[22] ? this.txnBalor : (java.lang.Double) defaultValue(fields()[22]);
         record.spendBalor = fieldSetFlags()[23] ? this.spendBalor : (java.lang.Double) defaultValue(fields()[23]);

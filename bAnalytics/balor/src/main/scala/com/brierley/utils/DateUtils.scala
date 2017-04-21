@@ -5,6 +5,10 @@ import org.apache.spark.sql.functions._
 import java.sql.Date
 import java.time.temporal.TemporalAdjusters._
 
+import org.apache.spark.storage.StorageLevel
+
+import scala.util.{Failure, Try}
+
 /**
   * Created by amerrill on 2/14/17.
   */
@@ -34,7 +38,7 @@ object DateUtils {
     initialDF.withColumn("Date", to_date(unix_timestamp(initialDF("TXN_DATE"), "yyyy-MM-dd").cast("timestamp")))
   }
 
-  def determineFormat(initialDF: DataFrame): DataFrame = {
+  def determineFormat(initialDF: DataFrame): Try[DataFrame] = Try {
     val MMddyyyySlashRegEx1 = """([0-1][0-9]|[0-9])/([0-3][0-9]|[0-9])/[0-9]{4}"""
     val MMddyyyyDashRegEx2 = """([0-1][0-9]|[0-9])-([0-3][0-9]|[0-9])-[0-9]{4}"""
     val ddMMyyyySlashRegEx3 = """([0-3][0-9]|[0-9])/([0-1][0-9]|[0-9])/[0-9]{4}"""
@@ -42,11 +46,42 @@ object DateUtils {
     val yyyyMMddSlashRegEx5 = """[0-9]{4}/([0-1][0-9]|[0-9])/([0-3][0-9]|[0-9])"""
     val yyyyMMddDashRegEx6 = """[0-9]{4}-([0-1][0-9]|[0-9])-([0-3][0-9]|[0-9])"""
 
-    val dateOnly = initialDF.select("TXN_DATE").distinct()
+    val dateOnly = initialDF.select("TXN_DATE").distinct().limit(30)
+    dateOnly.persist(StorageLevel.MEMORY_AND_DISK)
 
     val totalDates = dateOnly.count()
 
-    val Count1 = dateOnly.filter(dateOnly("TXN_DATE").rlike(MMddyyyySlashRegEx1)).count()
+    if (totalDates == dateOnly.filter(dateOnly("TXN_DATE").rlike(ddMMyyyySlashRegEx3)).count()) {
+      val dateDF = convertDateDaySlash(initialDF)
+      dateDF.persist(StorageLevel.MEMORY_AND_DISK)
+      return Try(dateDF)
+    } else if (totalDates == dateOnly.filter(dateOnly("TXN_DATE").rlike(ddMMyyyyDashRegEx4)).count()) {
+      val dateDF = convertDateDayDash(initialDF)
+      dateDF.persist(StorageLevel.MEMORY_AND_DISK)
+      return Try(dateDF)
+    } else if (totalDates == dateOnly.filter(dateOnly("TXN_DATE").rlike(MMddyyyySlashRegEx1)).count()) {
+      val dateDF = convertDateMonthSlash(initialDF)
+      dateDF.persist(StorageLevel.MEMORY_AND_DISK)
+      return Try(dateDF)
+    } else if (totalDates == dateOnly.filter(dateOnly("TXN_DATE").rlike(MMddyyyyDashRegEx2)).count()) {
+      val dateDF = convertDateMonthDash(initialDF)
+      dateDF.persist(StorageLevel.MEMORY_AND_DISK)
+      return Try(dateDF)
+    } else if (totalDates == dateOnly.filter(dateOnly("TXN_DATE").rlike(yyyyMMddSlashRegEx5)).count()) {
+      val dateDF = convertDateYearSlash(initialDF)
+      dateDF.persist(StorageLevel.MEMORY_AND_DISK)
+      return Try(dateDF)
+    } else if (totalDates == dateOnly.filter(dateOnly("TXN_DATE").rlike(yyyyMMddDashRegEx6)).count()) {
+      val dateDF = convertDateYearDash(initialDF)
+      dateDF.persist(StorageLevel.MEMORY_AND_DISK)
+      return Try(dateDF)
+    } else {
+      return new Failure(new NumberFormatException("Bad Date Format"))
+    }
+
+
+    //this requires to filter for every format and then count in order to use the match
+    /*val Count1 = dateOnly.filter(dateOnly("TXN_DATE").rlike(MMddyyyySlashRegEx1)).count()
     val Count2 = dateOnly.filter(dateOnly("TXN_DATE").rlike(MMddyyyyDashRegEx2)).count()
     val Count3 = dateOnly.filter(dateOnly("TXN_DATE").rlike(ddMMyyyySlashRegEx3)).count()
     val Count4 = dateOnly.filter(dateOnly("TXN_DATE").rlike(ddMMyyyyDashRegEx4)).count()
@@ -54,15 +89,18 @@ object DateUtils {
     val Count6 = dateOnly.filter(dateOnly("TXN_DATE").rlike(yyyyMMddDashRegEx6)).count()
 
     //if there are no 0 before single digits then the month count will incorrectly match the day count, check day counts first
-    totalDates match {
+    val dateDF = totalDates match {
       case Count3 => convertDateDaySlash(initialDF)
       case Count4 => convertDateDayDash(initialDF)
       case Count1 => convertDateMonthSlash(initialDF)
       case Count2 => convertDateMonthDash(initialDF)
       case Count5 => convertDateYearSlash(initialDF)
       case Count6 => convertDateYearDash(initialDF)
-      case _ => initialDF //TODO return error about incorrect dates
+      case _ => return new Failure(new Throwable("BadDateFormat"))
     }
+
+    dateDF.persist(StorageLevel.MEMORY_AND_DISK)
+    dateDF*/
 
   }
 
@@ -110,8 +148,8 @@ object DateUtils {
     dateDF
       .withColumn("max(Date)", lit(maxMinDF.select("max(Date)").first().getDate(0)))
       .withColumn("min(Date)", lit(maxMinDF.select("min(Date)").first().getDate(0)))
-      .withColumn("End", datediff(col("max(Date)"),col("min(Date)"))/numDays)
-      .filter(((datediff(col("max(Date)"),dateDF("Date"))+1)/numDays) <= col("End"))
+      .withColumn("End", datediff(col("max(Date)"), col("min(Date)")) / numDays)
+      .filter(((datediff(col("max(Date)"), dateDF("Date")) + 1) / numDays) <= col("End"))
   }
 
 }

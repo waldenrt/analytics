@@ -29,6 +29,8 @@
         <scala.version>2.10.5</scala.version>
         <scala.compat.version>2.10</scala.compat.version>
         <spark.version>1.6.0</spark.version>
+        <kafka.version>0.10.2.0-cp1</kafka.version>
+        <confluent.version>3.2.0</confluent.version>
     </properties>
 
     <dependencies>
@@ -110,8 +112,18 @@
 
         <dependency>
             <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka_${scala.compat.version}</artifactId>
+            <version>${kafka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-avro-serializer</artifactId>
+            <version>${confluent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
-            <version>0.8.2.2</version>
+            <version>${kafka.version}</version>
         </dependency>
 
     </dependencies>
@@ -175,6 +187,14 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.avro</groupId>
                 <artifactId>avro-maven-plugin</artifactId>
                 <version>1.8.1</version>
@@ -186,7 +206,7 @@
                         </goals>
                         <configuration>
                             <sourceDirectory>${project.basedir}/src/main/avro/</sourceDirectory>
-                            <outputDirectory>${project.basedir}/src/main/scala/</outputDirectory>
+                            <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -201,4 +221,11 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>confluent</id>
+            <url>http://packages.confluent.io/maven/</url>
+        </repository>
+    </repositories>
 </project>

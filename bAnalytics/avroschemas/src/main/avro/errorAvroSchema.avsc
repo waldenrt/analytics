@@ -1,0 +1,41 @@
+{	
+	"type": "record",
+	"namespace": "com.brierley.avro.schemas",
+	"name": "Error",
+	"fields": [
+		{"name": "jobKey",
+		 "type": "string",
+		 "doc": "unique job identifier to find results in hbase"},
+		 
+		{"name": "jobType",
+		 "type": "string",
+		 "doc": "Jar that is throwing the error, i.e. Balor, Cadence, bRelevant, Decile, etc"},
+		 
+		{"name": "errorInfo",
+		 "type": {"type": "array",
+		 	"items": {
+		 		"name": "exception",
+		 		"type": "record",
+		 		"fields": [
+		 			{"name": "className",
+		 			 "type": "string",
+		 			 "doc": "The class that is throwing the error"},
+		 			 
+		 			{"name": "methodName", 
+		 			 "type": "string",
+		 			 "doc": "The method that is throwing the error"},
+		 			 
+		 			{"name": "exceptionMsg",
+		 			 "type": "string", 
+		 			 "doc": "The main message of the exception, can be user defined, or the title of the exception"},
+		 			
+		 			{"name": "stackTrace",
+		 			 "type": "string",
+		 			 "doc": "The StackTrace for system thrown exceptions, optional"},
+		 			 
+		 			{"name": "exceptionType",
+		 			 "type": "string",
+		 			 "doc": "What kind of exception is it, validation, system, user, etc."}]
+		 		}}
+		 }	
+	]}

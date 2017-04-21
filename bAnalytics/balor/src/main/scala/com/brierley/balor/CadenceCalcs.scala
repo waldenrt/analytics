@@ -1,38 +1,25 @@
 package com.brierley.balor
 
-import java.io.ByteArrayOutputStream
+import java.time.LocalDateTime
+import java.util
 
-import com.brierley.avro.schemas.{Cadence, FreqRow}
+import com.brierley.avro.schemas.{Cadence, Error, FreqRow, exception}
 import com.brierley.utils._
-import org.apache.avro.generic.GenericRecord
-import org.apache.avro.io.EncoderFactory
-import org.apache.avro.specific.SpecificDatumWriter
-import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql._
+import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.hive.HiveContext
 import org.apache.spark.sql.types.IntegerType
-import org.apache.spark.storage.StorageLevel
+import org.apache.spark.{SparkConf, SparkContext}
+
+import scala.util.{Failure, Success, Try}
 
 /**
   * Created by amerrill on 1/30/17.
   */
 object CadenceCalcs {
 
-  def loadFile(sqlCtx: HiveContext, delimiter: String, fileLocation: String): DataFrame = {
-
-    def handleAnalysisException(e: AnalysisException, orgFile: DataFrame): DataFrame = {
-      //TODO return exception to UI
-      println("Incorrect header row or header row is missing.")
-      orgFile
-    }
-
-    def handleException(e: Throwable, orgFile: DataFrame): DataFrame = {
-      //TODO return exception to UI
-      println(s"Unknown Exception: $e")
-      orgFile
-    }
+  def loadFile(sqlCtx: HiveContext, delimiter: String, fileLocation: String): Try[DataFrame] = Try{
 
     val orgFile = sqlCtx
       .read
@@ -41,41 +28,31 @@ object CadenceCalcs {
       .option("delimiter", delimiter)
       .load(fileLocation)
 
-    try {
-      orgFile
-        .select("CUST_ID", "TXN_ID", "TXN_DATE")
-        .filter(orgFile("TXN_ID").isNotNull)
-    }
-    catch
-      {
-        case analysis: AnalysisException => handleAnalysisException(analysis, orgFile)
-        case unknown => handleException(unknown, orgFile)
-      }
-    finally{
-      return orgFile
-    }
+    orgFile
+      .select("CUST_ID", "TXN_ID", "TXN_DATE")
+      .na.drop(Seq("CUST_ID", "TXN_ID", "TXN_DATE"))
 
   }
 
-  def basicCounts(orgDF: DataFrame): (Long, Long) = {
-    val rowCount = orgDF.count()
+  def basicCounts(orgDF: DataFrame): Try[Long] = Try {
+
     val singleVisitCount = orgDF
       .groupBy("CUST_ID")
       .agg(count("TXN_ID"))
       .filter(col("count(TXN_ID)") === 1)
       .count()
 
-    (rowCount, singleVisitCount)
+    singleVisitCount
   }
 
-  def dateInfo(dateDF: DataFrame): DataFrame = {
+  def dateInfo(dateDF: DataFrame): Try[DataFrame] = Try {
     val begEndDates = dateDF
       .select(min("Date"), max("Date"))
 
     begEndDates
   }
 
-  def daysSinceLastVisit(dateDF: DataFrame): DataFrame = {
+  def daysSinceLastVisit(dateDF: DataFrame): Try[DataFrame] = Try {
     val custWindow = Window
       .partitionBy("CUST_ID")
       .orderBy("Date")
@@ -106,7 +83,7 @@ object CadenceCalcs {
     (percentiles.select("80th").head().getDouble(0), validTxns)
   }
 
-  def normalizeCadenceValue(cadence: Double): CadenceValues = {
+  def normalizeCadenceValue(cadence: Double): Try[CadenceValues] = Try {
 
     cadence match {
       case a if a > 183 => OneYear
@@ -119,11 +96,11 @@ object CadenceCalcs {
     }
   }
 
-  def calcNumTimePeriods(cadenceValue: CadenceValues, dateDF: DataFrame): Int = {
+  def calcNumTimePeriods(cadenceValue: CadenceValues, dateDF: DataFrame): Try[Int] = Try {
 
     if (cadenceValue >= OneMonth) {
       val trimDF = DateUtils.trimToWholeMonth(dateDF)
-      if (trimDF.count() == 0) return 0
+      if (trimDF.count() == 0) return Try(0)
 
       val minMaxMonthsDF = trimDF
         .select(min("Date"), max("Date"))
@@ -133,11 +110,11 @@ object CadenceCalcs {
         .head().getDouble(0).toInt
 
       cadenceValue match {
-        case OneMonth => return difference + 1
-        case TwoMonths => return difference / 2 + 1
-        case ThreeMonths => return difference / 3 + 1
-        case SixMonths => return difference / 6 + 1
-        case OneYear => return difference / 12 + 1
+        case OneMonth => return Try(difference + 1)
+        case TwoMonths => return Try(difference / 2 + 1)
+        case ThreeMonths => return Try(difference / 3 + 1)
+        case SixMonths => return Try(difference / 6 + 1)
+        case OneYear => return Try(difference / 12 + 1)
       }
     } else {
       val minMaxDate = dateDF.select(min("Date"), max("Date"))
@@ -146,14 +123,14 @@ object CadenceCalcs {
         .head().getInt(0)
 
       cadenceValue match {
-        case OneWeek => return difference / 7
-        case TwoWeeks => return difference / 14
+        case OneWeek => return Try(difference / 7)
+        case TwoWeeks => return Try(difference / 14)
       }
     }
 
   }
 
-  def createFreqTable(cadenceDF: DataFrame, cadenceValue: CadenceValues): DataFrame = {
+  def createFreqTable(cadenceDF: DataFrame, cadenceValue: CadenceValues): Try[DataFrame] = Try {
 
     if (cadenceValue < TwoMonths) {
       val freqDF = cadenceDF
@@ -167,8 +144,9 @@ object CadenceCalcs {
       val runningTotal = sum("Frequency").over(cadenceWindow).as("CumFrequency")
       val cumFreqDF = freqDF
         .select(freqDF("*"), runningTotal).orderBy("Cadence")
-      return cumFreqDF
+      (cumFreqDF)
     }
+
     else {
       val binDF = cadenceDF
         .select("*")
@@ -184,13 +162,13 @@ object CadenceCalcs {
       val cumBinDF = binSumDF
         .select(binSumDF("*"), binTotal).orderBy("Bin")
 
-      return cumBinDF
+      (cumBinDF)
     }
 
   }
 
   def createCadenceAvro(jobKey: String, numRecords: Long, singleVisit: Long, rawCadence: Double, normalCadence: String,
-                        numTimePeriods: Int, percentile: Double, minMaxDF: DataFrame, freqTable: DataFrame): GenericRecord = {
+                        numTimePeriods: Int, percentile: Double, minMaxDF: DataFrame, freqTable: DataFrame): Try[Cadence] = Try {
 
     val cadAvro = new Cadence()
     cadAvro.setJobKey(jobKey)
@@ -200,6 +178,7 @@ object CadenceCalcs {
     cadAvro.setNormalizedCadence(normalCadence)
     cadAvro.setNumTimePeriods(numTimePeriods)
     cadAvro.setPercentile(percentile)
+    cadAvro.setCompletionTime(LocalDateTime.now().toString)
 
     val minDate = minMaxDF
       .select("min(Date)")
@@ -230,24 +209,35 @@ object CadenceCalcs {
     freqTable.collect().foreach(f => mapFreqRow(f))
     cadAvro.setFreqTable(tempList)
 
-    val out = new ByteArrayOutputStream()
-    val datumWriter = new SpecificDatumWriter[Cadence](Cadence.getClassSchema())
-    val encoder = EncoderFactory.get().binaryEncoder(out, null)
-    datumWriter.write(cadAvro, encoder)
-    encoder.flush()
-    out.close()
-
-    BalorProducer.sendBalor(out.toByteArray, "CadenceCalcs")
-
-
     cadAvro
+
+  }
+
+  def sendCadError(jobKey: String, className: String, methodName:String, msg: String, exType: String): Unit = {
+    val error = new Error()
+    error.setJobKey(jobKey)
+    error.setJobType("Cadence")
+
+    val ex = new exception()
+    ex.setClassName(className)
+    ex.setMethodName(methodName)
+    ex.setExceptionMsg(msg)
+    ex.setExceptionType(exType)
+
+    val tempList = new util.ArrayList[exception]
+    tempList.add(ex)
+
+    error.setErrorInfo(tempList)
+
+    BalorProducer.sendError(error)
 
   }
 
   def main(args: Array[String]): Unit = {
 
     if (args.length < 4) {
-      //TODO return exception
+      sendCadError("Unknown", "CadenceCalcs", "MainMethod", "Incorrect Usage, not enough args.", "User")
+      System.exit(-1)
     }
 
     val fileLocation = args(0)
@@ -256,7 +246,8 @@ object CadenceCalcs {
 
     val percentile = args(3).toDouble
     if (percentile < .75 || percentile > .95) {
-      //TODO return exception about given percentile
+      sendCadError(jobKey, "CadenceCalcs", "MainMethod", "Incorrect Usage, percentile is out of range .75 - .95", "User")
+      System.exit(-1)
     }
 
     val jobName = "CadenceCalcs"
@@ -269,31 +260,49 @@ object CadenceCalcs {
     val sc = new SparkContext(conf)
     val sqlCtx = new HiveContext(sc)
 
-    val orgFile = loadFile(sqlCtx, delimiter, fileLocation)
+    val results = for {
 
-    val (rowCount, singleVisitCount) = basicCounts(orgFile)
+      orgFile <- loadFile(sqlCtx, delimiter, fileLocation)
 
-    val dateDF = DateUtils.determineFormat(orgFile)
+      singleVisitCount <- basicCounts(orgFile)
 
-    dateDF.persist(StorageLevel.MEMORY_AND_DISK)
+      rowCount = orgFile.count()
 
-    val minMaxDateDF = dateInfo(dateDF)
+      dateDF <- DateUtils.determineFormat(orgFile)
 
-    val daysDF = daysSinceLastVisit(dateDF)
+      minMaxDateDF <- dateInfo(dateDF)
 
-    val (rawCadence, cadenceDF) = calculateCadenceValue(daysDF, percentile, sqlCtx)
+      daysDF <- daysSinceLastVisit(dateDF)
 
-    val cadence = normalizeCadenceValue(rawCadence)
+      (rawCadence, cadenceDF) = calculateCadenceValue(daysDF, percentile, sqlCtx)
 
-    val timePeriods = calcNumTimePeriods(cadence, dateDF)
+      cadence <- normalizeCadenceValue(rawCadence)
 
-    val freqTable = createFreqTable(cadenceDF, cadence)
+      timePeriods <- calcNumTimePeriods(cadence, dateDF)
 
-    val cadenceAvro = createCadenceAvro(jobKey, rowCount, singleVisitCount, rawCadence, cadence.name, timePeriods, percentile, minMaxDateDF, freqTable)
+      freqTable <- createFreqTable(cadenceDF, cadence)
 
-    println(s"Cadence Avro output: $cadenceAvro")
+      cadenceAvro <- createCadenceAvro(jobKey, rowCount, singleVisitCount, rawCadence, cadence.name, timePeriods, percentile, minMaxDateDF, freqTable)
 
-    sc.stop()
+    } yield cadenceAvro
+
+    results match {
+      case Success(avro) => {
+        BalorProducer.sendBalor("CadenceCalcs", avro)
+        println(avro)
+        sc.stop()
+      }
+      case Failure(ex) => {
+        ex match {
+          case i: MatchError => sendCadError(jobKey, "Cadence", "calcNumTimePeriods","Invalid CadenceValue from enum", "System")
+          case j: AnalysisException => sendCadError(jobKey, "Cadence","loadFile" ,"Incorrect File Format, check column names and delimiter", "User")
+          case k: NumberFormatException => sendCadError(jobKey, "DateUtils", "determineFormat", k.getMessage, "User")
+          case e => sendCadError(jobKey, "Cadence", "unknown", ex.toString, "System")
+        }
+        sc.stop()
+        System.exit(-1)
+      }
+    }
 
   }
 

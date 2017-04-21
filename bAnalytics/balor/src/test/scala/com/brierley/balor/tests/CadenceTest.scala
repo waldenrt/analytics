@@ -11,6 +11,8 @@ import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.Matchers._
 
+import scala.util.{Failure, Success}
+
 /**
   * Created by amerrill on 1/31/17.
   */
@@ -18,8 +20,10 @@ import org.scalatest.Matchers._
 @RunWith(classOf[JUnitRunner])
 class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
-  trait fileLocations{
+  trait fileLocations {
     val sqlCtx = sqlContext
+
+    import sqlCtx.implicits._
 
     val commaFile = "src/test/resources/BALORcomma.csv"
     val barFile = "src/test/resources/BALORbar.txt"
@@ -28,13 +32,17 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
     val barFileNoHeader = "src/test/resources/BALORbarBad.txt"
 
     val comma = ","
-    val bar ="|"
+    val bar = "|"
     val tab = "\t"
     val semi = ";"
 
     val rowCount = 19
 
-    val colNames = List("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "AMT_QUALIFIED", "DISC_AMT")
+    val colNames = List("CUST_ID", "TXN_ID", "TXN_DATE")
+
+    val noZeros = sc.parallelize(List(
+      2, 4, 4, 8, 16
+    )).toDF("Cadence")
   }
 
 
@@ -394,7 +402,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
   test("Dataframe initial transform: Cadence column added, extra columns dropped") {
     new SingleUserData {
 
-      val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUserSingleTrans)
+      val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUserSingleTrans) getOrElse singleUserSingleTrans
 
       val cadenceCols = cadenceDF.columns
 
@@ -408,16 +416,25 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
   test("Option for , delimited") {
     new fileLocations {
       val orgFile = CadenceCalcs.loadFile(sqlCtx, comma, commaFile)
-      val cols = orgFile.columns
 
-      assert(orgFile.count() === rowCount)
-      assert(cols === colNames)
+      orgFile match {
+        case Success(df) => {
+          val cols = df.columns
+
+          assert(df.count() === rowCount)
+          assert(cols === colNames)
+        }
+        case Failure(ex) => {
+          println(ex.toString)
+          fail("Method returned a failure in try instead of Success(DF)")
+        }
+      }
     }
   }
 
   test("Option for | delimited") {
     new fileLocations {
-      val orgFile = CadenceCalcs.loadFile(sqlCtx, bar, barFile)
+      val orgFile = CadenceCalcs.loadFile(sqlCtx, bar, barFile) getOrElse noZeros
       val cols = orgFile.columns
 
       assert(orgFile.count() === rowCount)
@@ -427,7 +444,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("Option for ; delimited") {
     new fileLocations {
-      val orgFile = CadenceCalcs.loadFile(sqlCtx, semi, semiFile)
+      val orgFile = CadenceCalcs.loadFile(sqlCtx, semi, semiFile) getOrElse noZeros
       val cols = orgFile.columns
 
       assert(orgFile.count() === rowCount)
@@ -437,7 +454,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("Option for /t delimited") {
     new fileLocations {
-      val orgFile = CadenceCalcs.loadFile(sqlCtx, tab, tabFile)
+      val orgFile = CadenceCalcs.loadFile(sqlCtx, tab, tabFile) getOrElse noZeros
       val cols = orgFile.columns
 
       assert(orgFile.count() === rowCount)
@@ -445,13 +462,14 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
     }
   }
 
-  test("No Header Row in file"){
+  test("No Header Row in file") {
     new fileLocations {
       val orgFile = CadenceCalcs.loadFile(sqlCtx, bar, barFileNoHeader)
-      val cols = orgFile.columns
 
-      //assert(cols === colNames)
-
+      orgFile match{
+        case Success(df) => fail("should have been a failure if no header row is present")
+        case Failure(ex) => assert(true)
+      }
     }
   }
 
@@ -459,7 +477,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("Single User, single transaction cadence = 0") {
     new SingleUserData {
-      val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUserSingleTrans)
+      val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUserSingleTrans) getOrElse singleUserSingleTrans
 
       val cadence = cadenceDF
         .select("Cadence").map(_ (0)).collect()
@@ -470,7 +488,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("Single User, 2 transactions, different days") {
     new SingleUserData {
-      val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUser2TransJan)
+      val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUser2TransJan) getOrElse singleUser2TransJan
       val cadence = cadenceDF
         .select("Cadence").map(_ (0)).collect()
 
@@ -480,7 +498,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("Single User, multiple transactions (same and different days), January") {
     new SingleUserData {
-      val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUserMultiTransJan)
+      val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUserMultiTransJan) getOrElse singleUserMultiTransJan
       val cadence = cadenceDF
         .select("Cadence").map(_ (0)).collect()
 
@@ -490,7 +508,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("Single User, multiple transactions, June-July") {
     new SingleUserData {
-      val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUserMultiTransSummer)
+      val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUserMultiTransSummer) getOrElse singleUserMultiTransSummer
       val cadence = cadenceDF
         .select("Cadence").map(_ (0)).collect()
 
@@ -500,7 +518,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("Single User, multiple transactions, leap year, Feb-March") {
     new SingleUserData {
-      val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUserMultiTransLeap)
+      val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUserMultiTransLeap) getOrElse singleUserMultiTransLeap
       val cadence = cadenceDF
         .select("Cadence").map(_ (0)).collect()
 
@@ -510,7 +528,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("Single User, multiple transactions, Daylight savings start and end") {
     new SingleUserData {
-      val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUserMultiTransSavings)
+      val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUserMultiTransSavings) getOrElse singleUserMultiTransSavings
       val cadence = cadenceDF
         .select("Cadence").map(_ (0)).collect()
 
@@ -520,7 +538,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("Single User, multiple transactions, 2015-2016") {
     new SingleUserData {
-      val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUserMultiTransJan)
+      val cadenceDF = CadenceCalcs.daysSinceLastVisit(singleUserMultiTransJan) getOrElse singleUserMultiTransJan
       val cadence = cadenceDF
         .select("Cadence").map(_ (0)).collect()
 
@@ -533,7 +551,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("Multiple Users, 1 with single transaction, 1 with 2 transactions") {
     new MultiUserData {
-      val cadenceDF = CadenceCalcs.daysSinceLastVisit(multiUserSingleAndDouble)
+      val cadenceDF = CadenceCalcs.daysSinceLastVisit(multiUserSingleAndDouble) getOrElse multiUserSingleAndDouble
       val custACadence = cadenceDF
         .where("CUST_ID = 'custA'")
         .select("Cadence").map(_ (0)).collect()
@@ -548,7 +566,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("Multiple Users, both with 2 transactions, single month") {
     new MultiUserData {
-      val cadenceDF = CadenceCalcs.daysSinceLastVisit(multiUserDoubleNov)
+      val cadenceDF = CadenceCalcs.daysSinceLastVisit(multiUserDoubleNov) getOrElse multiUserSingleAndDouble
       val custACadence = cadenceDF
         .where("CUST_ID = 'custA'")
         .select("Cadence").map(_ (0)).collect()
@@ -563,7 +581,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("Multiple Users, multiple transactions, single year") {
     new MultiUserData {
-      val cadenceDF = CadenceCalcs.daysSinceLastVisit(multiUserMultiTransMultiMonth)
+      val cadenceDF = CadenceCalcs.daysSinceLastVisit(multiUserMultiTransMultiMonth) getOrElse multiUserSingleAndDouble
       val custACadence = cadenceDF
         .where("CUST_ID = 'custA'")
         .select("Cadence").map(_ (0)).collect()
@@ -582,7 +600,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("Multiple Users, multiple transactions, multiple years") {
     new MultiUserData {
-      val cadenceDF = CadenceCalcs.daysSinceLastVisit(multiUserMultiTransMultiYear)
+      val cadenceDF = CadenceCalcs.daysSinceLastVisit(multiUserMultiTransMultiYear) getOrElse multiUserSingleAndDouble
       val custACadence = cadenceDF
         .where("CUST_ID = 'custA'")
         .select("Cadence").map(_ (0)).collect()
@@ -601,7 +619,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
   test("Everything mixed together") {
     new MultiUserData {
-      val cadenceDF = CadenceCalcs.daysSinceLastVisit(everythingMixed)
+      val cadenceDF = CadenceCalcs.daysSinceLastVisit(everythingMixed) getOrElse multiUserSingleAndDouble
       val custACadence = cadenceDF
         .where("CUST_ID = 'custA'")
         .select("Cadence").map(_ (0)).collect()
@@ -682,70 +700,70 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
   test("cadence = 5 days, should round to 7 days") {
     new CadenceNormalizingData {
       val seven = CadenceCalcs.normalizeCadenceValue(fiveDays)
-      assert(seven === OneWeek)
+      assert(seven === Success(OneWeek))
     }
   }
 
   test("cadence = 7 days, no rounding") {
     new CadenceNormalizingData {
       val seven = CadenceCalcs.normalizeCadenceValue(sevenDays)
-      assert(seven === OneWeek)
+      assert(seven === Success(OneWeek))
     }
   }
 
   test("cadence = 8 days, should round to 14 days") {
     new CadenceNormalizingData {
       val fourteen = CadenceCalcs.normalizeCadenceValue(eightDays)
-      assert(fourteen === TwoWeeks)
+      assert(fourteen === Success(TwoWeeks))
     }
   }
 
   test("cadence = 13 days, should round to 14 days") {
     new CadenceNormalizingData {
       val fourteen = CadenceCalcs.normalizeCadenceValue(thirteenDays)
-      assert(fourteen === TwoWeeks)
+      assert(fourteen === Success(TwoWeeks))
     }
   }
 
   test("cadence = 14 days, no rounding") {
     new CadenceNormalizingData {
       val fourteen = CadenceCalcs.normalizeCadenceValue(fourteenDays)
-      assert(fourteen === TwoWeeks)
+      assert(fourteen === Success(TwoWeeks))
     }
   }
 
   test("cadence = 24 days, should round to 30 days") {
     new CadenceNormalizingData {
       val thirty = CadenceCalcs.normalizeCadenceValue(twentyFourDays)
-      assert(thirty === OneMonth)
+      assert(thirty === Success(OneMonth))
     }
   }
 
   test("cadence = 45 days, should round to 60 days") {
     new CadenceNormalizingData {
       val sixty = CadenceCalcs.normalizeCadenceValue(fortyFiveDays)
-      assert(sixty === TwoMonths)
+      assert(sixty === Success(TwoMonths))
     }
   }
 
   test("cadence = 90 days, should round to 92 days") {
     new CadenceNormalizingData {
       val ninetyTwo = CadenceCalcs.normalizeCadenceValue(ninetyDays)
-      assert(ninetyTwo === ThreeMonths)
+      assert(ninetyTwo === Success(ThreeMonths))
     }
   }
 
   test("cadence = 145 days, should round to 183 days") {
     new CadenceNormalizingData {
       val sixMonths = CadenceCalcs.normalizeCadenceValue(roundTo183)
-      assert(sixMonths === SixMonths)
+      assert(sixMonths === Success(SixMonths))
     }
   }
 
   test("cadence = 245 days, should round to 365 days") {
     new CadenceNormalizingData {
       val oneYear = CadenceCalcs.normalizeCadenceValue(roundTo365Days)
-      assert(oneYear === OneYear)
+      assert(oneYear === Success(OneYear))
     }
   }
 
@@ -755,7 +773,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
     new DaysData {
       val timePeriods = CadenceCalcs.calcNumTimePeriods(OneMonth, multiUserNewAndReturning)
 
-      assert(timePeriods === 0)
+      assert(timePeriods === Success(0))
     }
   }
 
@@ -763,15 +781,15 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
     new DaysData {
       val timePeriods = CadenceCalcs.calcNumTimePeriods(OneMonth, singleUser6Txns4Days)
 
-      assert(timePeriods === 1)
+      assert(timePeriods === Success(1))
     }
   }
 
-  test("timePeriods = 2, cadence = 30 days"){
+  test("timePeriods = 2, cadence = 30 days") {
     new DaysData {
       val timePeriods = CadenceCalcs.calcNumTimePeriods(OneMonth, twoMonthOfData)
 
-      assert(timePeriods === 2)
+      assert(timePeriods === Success(2))
     }
   }
 
@@ -779,13 +797,14 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
     new DaysData {
       val timePeriods = CadenceCalcs.calcNumTimePeriods(OneWeek, multiUserNewAndReturning)
 
-      assert(timePeriods === 3)
+      assert(timePeriods === Success(3))
     }
   }
 
   test("timePeriods = 6, cadence = 7 days") {
     new DaysData {
       val timePeriods = CadenceCalcs.calcNumTimePeriods(OneWeek, singleUserRepeats)
+      assert(timePeriods === Success(6))
     }
 
   }
@@ -795,7 +814,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
   test("no zeros in cadenceDF, total = 5") {
     new FreqTableData {
 
-      val freqTable = CadenceCalcs.createFreqTable(noZeros,OneWeek)
+      val freqTable = CadenceCalcs.createFreqTable(noZeros, OneWeek) getOrElse noZeros
 
       val trueTable = sc.parallelize(List(
         Row(2, 1.toLong, 1.toLong),
@@ -813,7 +832,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
   test("1 true zero in cadenceDF, total = 5") {
     new FreqTableData {
 
-      val freqTable = CadenceCalcs.createFreqTable(trueZeros,OneWeek)
+      val freqTable = CadenceCalcs.createFreqTable(trueZeros, OneWeek) getOrElse noZeros
 
       val trueTable = sc.parallelize(List(
         Row(0, 1.toLong, 1.toLong),
@@ -830,7 +849,7 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
   test("15 values with multiple doubles, binning count") {
     new FreqTableData {
 
-      val freqTable = CadenceCalcs.createFreqTable(lots,TwoMonths)
+      val freqTable = CadenceCalcs.createFreqTable(lots, TwoMonths) getOrElse noZeros
 
       val trueTable = sc.parallelize(List(
         Row(1, 13.toLong, 13.toLong),
@@ -841,8 +860,8 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
       assertDataFrameEquals(freqTable, trueTableDF)
 
-      val cadAvro = CadenceCalcs.createCadenceAvro("TestJob", 15, 0, 1.5, "One Week", 2, .80, minMaxDateDF, freqTable)
-    println(cadAvro)
+      //val cadAvro = CadenceCalcs.createCadenceAvro("TestJob", 15, 0, 1.5, "One Week", 2, .80, minMaxDateDF, freqTable)
+      //println(cadAvro)
     }
   }
 }

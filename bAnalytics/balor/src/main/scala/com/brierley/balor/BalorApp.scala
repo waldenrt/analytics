@@ -1,42 +1,27 @@
 package com.brierley.balor
 
-import java.io.{ByteArrayOutputStream, File}
-import java.sql.Date
+import java.time.LocalDateTime
+import java.util
 
-import com.brierley.avro.schemas.{Balor, TimePeriodData}
-import com.brierley.utils._
+import com.brierley.avro.schemas.{Balor, Error, TimePeriodData, exception}
 import com.brierley.utils.BalorUDFs._
-import org.apache.spark.{SparkConf, SparkContext}
+import com.brierley.utils.{BalorProducer, _}
 import org.apache.spark.sql.expressions.Window
-import org.apache.spark.sql.{AnalysisException, DataFrame, Row}
-import org.apache.spark.sql.hive.HiveContext
 import org.apache.spark.sql.functions._
+import org.apache.spark.sql.hive.HiveContext
 import org.apache.spark.sql.types.IntegerType
+import org.apache.spark.sql.{AnalysisException, DataFrame, Row}
 import org.apache.spark.storage.StorageLevel
-import org.apache.avro.Schema
-import org.apache.avro.file.{DataFileReader, DataFileWriter}
-import org.apache.avro.generic.{GenericData, GenericDatumWriter, GenericRecord}
-import org.apache.avro.io.EncoderFactory
-import org.apache.avro.specific.{SpecificDatumReader, SpecificDatumWriter}
+import org.apache.spark.{SparkConf, SparkContext}
+
+import scala.util.{Failure, Success, Try}
 
 /**
   * Created by amerrill on 1/30/17.
   */
 object BalorApp {
 
-  def loadFile(sqlCtx: HiveContext, delimiter: String, fileLocation: String): DataFrame = {
-
-    def handleAnalysisException(e: AnalysisException, orgFile: DataFrame): DataFrame = {
-      //TODO return exception to UI
-      println("Incorrect header row or header row is missing.")
-      orgFile
-    }
-
-    def handleException(e: Throwable, orgFile: DataFrame): DataFrame = {
-      //TODO return exception to UI
-      println(s"Unknown Exception: $e")
-      orgFile
-    }
+  def loadFile(sqlCtx: HiveContext, delimiter: String, fileLocation: String): Try[DataFrame] = Try {
 
     val orgFile = sqlCtx
       .read
@@ -50,29 +35,31 @@ object BalorApp {
     if (cols.contains("DISC_AMT") && cols.contains("ITEM_QTY")) {
       orgFile
         .select("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "DISC_AMT", "ITEM_QTY")
-        .na.drop()
+        .withColumn("ITEM_QTY", orgFile("ITEM_QTY").cast(IntegerType))
+        .na.fill(0, Seq("DISC_AMT", "ITEM_QTY"))
+        .na.drop(Seq("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT"))
     } else if (cols.contains("DISC_AMT")) {
       orgFile
         .select("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "DISC_AMT")
-        .withColumn("ITEM_QTY", lit(0.toDouble))
-        .na.drop()
+        .withColumn("ITEM_QTY", lit(0))
+        .na.drop(Seq("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT"))
     } else if (cols.contains("ITEM_QTY")) {
       orgFile
         .select("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY")
         .withColumn("DISC_AMT", lit(0.toDouble))
-        .na.drop()
+        .withColumn("ITEM_QTY", orgFile("ITEM_QTY").cast(IntegerType))
+        .na.drop(Seq("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT"))
     } else {
       orgFile
         .select("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT")
-        .withColumn("ITEM_QTY", lit(0.toDouble))
+        .withColumn("ITEM_QTY", lit(0))
         .withColumn("DISC_AMT", lit(0.toDouble))
-        .na.drop()
+        .na.drop(Seq("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT"))
     }
-
 
   }
 
-  def calcTimePeriod(dateDF: DataFrame, cadence: CadenceValues): (DataFrame, DataFrame) = {
+  def calcTimePeriod(dateDF: DataFrame, cadence: CadenceValues): Try[DataFrame] = Try {
 
     def weekTimePeriod(dateDF: DataFrame): DataFrame = {
       dateDF
@@ -80,11 +67,11 @@ object BalorApp {
         .withColumn("TimePeriod", (datediff(dateDF("max(Date)"), dateDF("Date")) / cadence.periodDivisor).cast(IntegerType) + 1)
         .sort("TimePeriod")
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date", "TimePeriod")
+
     }
 
     def monthTimePeriod(trimDF: DataFrame): DataFrame = {
       val maxDateDF = trimDF.select(max("Date"))
-
 
       trimDF
         .select("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT", "Date")
@@ -93,39 +80,48 @@ object BalorApp {
         .withColumn("Year", year(dateDF("Date")))
         .withColumn("MaxMonth", month(col("max(Date)")))
         .withColumn("MaxYear", year(col("max(Date)")))
-        .withColumn("TimePeriod", (((col("MaxMonth") - col("Month")) + (col("MaxYear") - col("Year")) * 12) / cadence.periodDivisor).cast(IntegerType) + 1)
+        .withColumn("TimePeriod", ((col("MaxMonth") - col("Month")) + (col("MaxYear") - col("Year")) * 12).cast(IntegerType) + 1)
         .sort("TimePeriod")
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date", "TimePeriod")
     }
 
-    val timePeriodsDF = cadence match {
+    val timePeriodDF = cadence match {
       case OneWeek => weekTimePeriod(DateUtils.trimWeeks(dateDF, cadence.periodDivisor))
       case TwoWeeks => weekTimePeriod(DateUtils.trimWeeks(dateDF, cadence.periodDivisor))
       case _ => monthTimePeriod(DateUtils.trimToWholeMonth(dateDF))
     }
 
-    val returnDF = timePeriodsDF
+    timePeriodDF.persist(StorageLevel.MEMORY_AND_DISK)
+    timePeriodDF
+
+  }
+
+  def minMaxDates(timePeriodDF: DataFrame): Try[DataFrame] = Try {
+    timePeriodDF
+      .select(min("Date"), max("Date"))
+
+  }
+
+  def countTxns(timePeriodDF: DataFrame): Try[Long] = Try {
+    timePeriodDF.count()
+  }
+
+  def assignSegmentLabel(timePeriodDF: DataFrame): Try[DataFrame] = Try {
+
+    val returnDF = timePeriodDF
       .groupBy("TimePeriod", "CUST_ID")
       .agg(count("TXN_ID").as("TXN_COUNT"),
         sum("TXN_AMT").as("TXN_AMT"),
         sum("ITEM_QTY").as("ITEM_QTY"),
         sum("DISC_AMT").as("DISC_AMT"))
 
-    val begEndDateDF = timePeriodsDF
-      .select(min("Date"), max("Date"))
-
-    (returnDF, begEndDateDF)
-  }
-
-  def assignSegmentLabel(timePeriodDF: DataFrame): DataFrame = {
-
     val custWindow = Window
       .partitionBy("CUST_ID")
       .orderBy("TimePeriod")
       .rangeBetween(0, 2)
 
-    val labelDF = timePeriodDF
-      .withColumn("Label", nonLapsedLabel(timePeriodDF("TimePeriod"), sum("TimePeriod").over(custWindow)))
+    val labelDF = returnDF
+      .withColumn("Label", nonLapsedLabel(returnDF("TimePeriod"), sum("TimePeriod").over(custWindow)))
       .sort("TimePeriod")
       .select("TimePeriod", "Label", "CUST_ID", "TXN_COUNT", "TXN_AMT", "DISC_AMT", "ITEM_QTY")
 
@@ -151,7 +147,7 @@ object BalorApp {
     completeDF
   }
 
-  def counts(labelDF: DataFrame): DataFrame = {
+  def counts(labelDF: DataFrame): Try[DataFrame] = Try {
 
     val maxTP = labelDF
       .select(max("TimePeriod")).head().getInt(0)
@@ -185,7 +181,7 @@ object BalorApp {
       .withColumnRenamed("Returning_sum(ITEM_QTY)", "returnItemCount")
   }
 
-  def calcBalorRatios(countsDF: DataFrame): DataFrame = {
+  def calcBalorRatios(countsDF: DataFrame): Try[DataFrame] = Try {
     val balorDF = countsDF
       .withColumn("custBalor", balorCount(countsDF("newCustCount"), countsDF("reactCustCount"),
         countsDF("lapsedCustCount")))
@@ -197,13 +193,12 @@ object BalorApp {
     balorDF
   }
 
-  def createBalorAvro(jobKey: String, txnCount: Long, minMaxDateDF: DataFrame, balorDF: DataFrame): GenericRecord = {
-    // val schema = new Schema.Parser().parse(new File("/src/main/avro/balorAvroSchema.avsc"))
+  def createBalorAvro(jobKey: String, txnCount: Long, minMaxDateDF: DataFrame, balorDF: DataFrame): Try[Balor] = Try {
 
     val balor = new Balor()
     balor.setJobKey(jobKey)
     balor.setNumRecords(txnCount)
-    balor.put("completionTime", "fakeTime")
+    balor.put("completionTime", LocalDateTime.now().toString)
 
     val minDate = minMaxDateDF
       .select("min(Date)")
@@ -229,25 +224,25 @@ object BalorApp {
       tpd.setNewTxnCount(tpdRow.getLong(2))
       tpd.setNewTxnAmt(tpdRow.getDouble(3))
       tpd.setNewDiscAmt(tpdRow.getDouble(4))
-      tpd.setNewItemQty(tpdRow.getDouble(5))
+      tpd.setNewItemQty(tpdRow.getLong(5))
 
       tpd.setReactCustCount(tpdRow.getLong(6))
       tpd.setReactTxnCount(tpdRow.getLong(7))
       tpd.setReactTxnAmt(tpdRow.getDouble(8))
       tpd.setReactDiscAmt(tpdRow.getDouble(9))
-      tpd.setReactItemQty(tpdRow.getDouble(10))
+      tpd.setReactItemQty(tpdRow.getLong(10))
 
       tpd.setReturnCustCount(tpdRow.getLong(11))
       tpd.setReturnTxnCount(tpdRow.getLong(12))
       tpd.setReturnTxnAmt(tpdRow.getDouble(13))
       tpd.setReturnDiscAmt(tpdRow.getDouble(14))
-      tpd.setReturnItemQty(tpdRow.getDouble(15))
+      tpd.setReturnItemQty(tpdRow.getLong(15))
 
       tpd.setLapsedCustCount(tpdRow.getLong(16))
       tpd.setLapsedTxnCount(tpdRow.getLong(17))
       tpd.setLapsedTxnAmt(tpdRow.getDouble(18))
       tpd.setLapsedDiscAmt(tpdRow.getDouble(19))
-      tpd.setLapsedItemQty(tpdRow.getDouble(20))
+      tpd.setLapsedItemQty(tpdRow.getLong(20))
 
       tpd.setCustBalor(tpdRow.getDouble(21))
       tpd.setTxnBalor(tpdRow.getDouble(22))
@@ -260,41 +255,40 @@ object BalorApp {
 
     balor.setBalorSets(tempList)
 
-
-    val out = new ByteArrayOutputStream()
-    val datumWriter = new SpecificDatumWriter[Balor](Balor.getClassSchema())
-    val encoder = EncoderFactory.get().binaryEncoder(out, null)
-    datumWriter.write(balor, encoder)
-    encoder.flush()
-    out.close()
-
-    BalorProducer.sendBalor(out.toByteArray, "BalorApp")
-
     balor
+  }
+
+  def sendBalorError(jobKey: String, className: String, methodName:String, msg: String, exType: String): Unit = {
+    val error = new Error()
+    error.setJobKey(jobKey)
+    error.setJobType("Balor")
+
+    val ex = new exception()
+    ex.setClassName(className)
+    ex.setMethodName(methodName)
+    ex.setExceptionMsg(msg)
+    ex.setExceptionType(exType)
+
+    val tempList = new util.ArrayList[exception]
+    tempList.add(ex)
+
+    error.setErrorInfo(tempList)
+
+    BalorProducer.sendError(error)
+
   }
 
   def main(args: Array[String]): Unit = {
 
     if (args.length < 4) {
-      //TODO return exception
+      sendBalorError("Unknown", "BalorApp", "MainMethod", "Incorrect Usage, not enough args.", "User")
+      System.exit(-1)
     }
 
     val fileLocation = args(0)
     val delimiter = args(1)
     val jobKey = args(2)
     val cadenceIndex = args(3).toInt
-
-    val cadence = cadenceIndex match {
-      case 7 => OneYear
-      case 6 => SixMonths
-      case 5 => ThreeMonths
-      case 4 => TwoMonths
-      case 3 => OneMonth
-      case 2 => TwoWeeks
-      case 1 => OneWeek
-      //TODO throw exception for any other case
-      // case _ => Throw me!
-    }
 
     val jobName = "BalorApp"
     val conf = new SparkConf().setAppName(jobName)
@@ -306,30 +300,54 @@ object BalorApp {
     val sc = new SparkContext(conf)
     val sqlCtx = new HiveContext(sc)
 
-    val orgFile = loadFile(sqlCtx, delimiter, fileLocation)
+    val finalDF = for {
+      cadence <- Try(cadenceIndex match {
+        case 7 => OneYear
+        case 6 => SixMonths
+        case 5 => ThreeMonths
+        case 4 => TwoMonths
+        case 3 => OneMonth
+        case 2 => TwoWeeks
+        case 1 => OneWeek
+      })
+      orgFile <- loadFile(sqlCtx, delimiter, fileLocation)
 
-    val dateDF = DateUtils.determineFormat(orgFile)
-    dateDF.persist(StorageLevel.MEMORY_AND_DISK)
+      dateDF <- DateUtils.determineFormat(orgFile)
 
+      timePeriodDF <- calcTimePeriod(dateDF, cadence)
 
-    val (timePeriodDF, minMaxDF) = calcTimePeriod(dateDF, cadence)
-    timePeriodDF.persist(StorageLevel.MEMORY_AND_DISK)
+      minMaxDF <- minMaxDates(timePeriodDF)
 
-    //want to count num of transactions that are actually being included in the BALOR calcs
-    val txnCount = timePeriodDF.count()
+      txnCount <- countTxns(timePeriodDF)
 
-    val labelDF = assignSegmentLabel(timePeriodDF)
+      labelDF <- assignSegmentLabel(timePeriodDF)
 
-    val countsDF = counts(labelDF)
+      countsDF <- counts(labelDF)
 
-    val balorDF = calcBalorRatios(countsDF)
+      balorDF <- calcBalorRatios(countsDF)
 
-    val avro = createBalorAvro(jobKey, txnCount, minMaxDF, balorDF)
+      avro <- createBalorAvro(jobKey, txnCount, minMaxDF, balorDF)
+    } yield avro
 
-    println(s"Balor avro output: $avro")
+    finalDF match {
+      case Success(avro) => {
+        println(s"was a success: $avro")
+        BalorProducer.sendBalor("Balor", avro)
+        sc.stop()
+      }
+      case Failure(ex) => {
+        println(s"something went wrong: $ex")
+        ex match {
+          case i: MatchError => sendBalorError(jobKey, "BalorApp", "MainMethod", "Invalid CadenceValue, must be 1-7", "User")
+          case j: AnalysisException => sendBalorError(jobKey, "BalorApp","loadFile" ,"Incorrect File Format, check column names and delimiter", "User")
+          case k: NumberFormatException => sendBalorError(jobKey, "DateUtils", "determineFormat", k.getMessage, "User")
+          case ex => sendBalorError(jobKey, "BalorApp", "unknown", ex.toString, "System")
+        }
 
-    sc.stop()
-
+        sc.stop()
+        System.exit(-1)
+      }
+    }
   }
 
 }

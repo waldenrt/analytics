@@ -90,6 +90,18 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase {
       ("customerA", "txn8-custA-Mar5", "03/14/2016", 3.42, 1, 1.21)
     )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
 
+    //MM/dd/yyyy -- wrong one thrown in
+    val badFormat = sc.parallelize(List(
+      ("customerA", "txn1-custA-Feb1", "2/15/2016", 12.34, 1, 2.35),
+      ("customerA", "txn2-custA-Feb2", "02-22-2016", 22.10, 1, 2.35),
+      ("customerA", "txn3-custA-Feb3", "02/29/2016", 10.50, 1, 2.35),
+      ("customerA", "txn4-custA-Mar1", "03/2/2016", 25.45, 1, 2.35),
+      ("customerA", "txn5-custA-Mar2", "3/5/2016", 1.50, 1, 2.35),
+      ("customerA", "txn6-custA-Mar3", "03/12/2016", 3.25, 2, 2.13),
+      ("customerA", "txn7-custA-Mar4", "03/13/2016", 4.36, 4, 1.24),
+      ("customerA", "txn8-custA-Mar5", "03/14/2016", 3.42, 1, 1.21)
+    )).toDF("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "ITEM_QTY", "DISC_AMT")
+
     val dateinput = sc.parallelize(List(
       ("customerA", "txn1-custA-Feb1", "2016-02-15", 12.34, 1, 2.35),
       ("customerA", "txn2-custA-Feb2", "2016-02-22", 22.10, 1, 2.35),
@@ -224,8 +236,8 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase {
 
   test("Determine format of MM-dd-yyyy, has enough data") {
     new TransformDateData {
-      val trans = DateUtils.determineFormat(mmddyyyyDash)
-        .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
+      val transTry = DateUtils.determineFormat(mmddyyyyDash) getOrElse dateinput
+      val trans = transTry.select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
 
       assertDataFrameEquals(trans, dateResults)
     }
@@ -233,8 +245,8 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase {
 
   test("Determine format of MM/dd/yyyy, has enough data") {
     new TransformDateData {
-      val trans = DateUtils.determineFormat(mmddyyyySlash)
-        .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
+      val transTry = DateUtils.determineFormat(mmddyyyySlash) getOrElse dateinput
+      val trans = transTry.select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
 
       assertDataFrameEquals(trans, dateResults)
     }
@@ -242,8 +254,8 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase {
 
   test("Determine format of dd-MM-yyyy, has enough data") {
     new TransformDateData {
-      val trans = DateUtils.determineFormat(ddmmyyyyDash)
-        .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
+      val transTry = DateUtils.determineFormat(ddmmyyyyDash) getOrElse dateinput
+      val trans = transTry.select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
 
       assertDataFrameEquals(trans, dateResults)
     }
@@ -251,7 +263,8 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase {
 
   test("Determine format of dd/MM/yyyy, has enough data") {
     new TransformDateData {
-      val trans = DateUtils.determineFormat(ddmmyyyySlash)
+      val transTry = DateUtils.determineFormat(ddmmyyyySlash) getOrElse dateinput
+      val trans = transTry
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
 
       assertDataFrameEquals(trans, dateResults)
@@ -260,8 +273,8 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase {
 
   test("Determine format of yyyy/MM/dd, has enough data") {
     new TransformDateData {
-      val trans = DateUtils.determineFormat(yyyymmddSlash)
-        .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
+      val transTry = DateUtils.determineFormat(yyyymmddSlash) getOrElse dateinput
+      val trans = transTry.select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
 
       assertDataFrameEquals(trans, dateResults)
     }
@@ -269,10 +282,18 @@ class DateUtilsTest extends FunSuite with DataFrameSuiteBase {
 
   test("Determine format of yyyy-MM-dd, has enough data") {
     new TransformDateData {
-      val trans = DateUtils.determineFormat(yyyymmddDash)
-        .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
+      val transTry = DateUtils.determineFormat(yyyymmddDash) getOrElse dateinput
+      val trans = transTry.select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date")
 
       assertDataFrameEquals(trans, dateResults)
+    }
+  }
+
+  test("Determine format of Bad file") {
+    new TransformDateData {
+      val transTry = DateUtils.determineFormat(badFormat)
+      assert(transTry.isFailure)
+      println(transTry.toString)
     }
   }
 
