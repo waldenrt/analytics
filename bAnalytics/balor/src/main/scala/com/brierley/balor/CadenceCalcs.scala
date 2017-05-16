@@ -1,12 +1,19 @@
 package com.brierley.balor
 
+import java.io.ByteArrayOutputStream
+
+import com.brierley.avro.schemas.{Cadence, FreqRow}
 import com.brierley.utils._
+import org.apache.avro.generic.GenericRecord
+import org.apache.avro.io.EncoderFactory
+import org.apache.avro.specific.SpecificDatumWriter
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.expressions.Window
-import org.apache.spark.sql.{DataFrame, SQLContext, functions}
+import org.apache.spark.sql._
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.hive.HiveContext
 import org.apache.spark.sql.types.IntegerType
+import org.apache.spark.storage.StorageLevel
 
 /**
   * Created by amerrill on 1/30/17.
@@ -14,12 +21,40 @@ import org.apache.spark.sql.types.IntegerType
 object CadenceCalcs {
 
   def loadFile(sqlCtx: HiveContext, delimiter: String, fileLocation: String): DataFrame = {
-    sqlCtx
+
+    def handleAnalysisException(e: AnalysisException, orgFile: DataFrame): DataFrame = {
+      //TODO return exception to UI
+      println("Incorrect header row or header row is missing.")
+      orgFile
+    }
+
+    def handleException(e: Throwable, orgFile: DataFrame): DataFrame = {
+      //TODO return exception to UI
+      println(s"Unknown Exception: $e")
+      orgFile
+    }
+
+    val orgFile = sqlCtx
       .read
       .format("com.databricks.spark.csv")
       .option("header", "true")
       .option("delimiter", delimiter)
       .load(fileLocation)
+
+    try {
+      orgFile
+        .select("CUST_ID", "TXN_ID", "TXN_DATE")
+        .filter(orgFile("TXN_ID").isNotNull)
+    }
+    catch
+      {
+        case analysis: AnalysisException => handleAnalysisException(analysis, orgFile)
+        case unknown => handleException(unknown, orgFile)
+      }
+    finally{
+      return orgFile
+    }
+
   }
 
   def basicCounts(orgDF: DataFrame): (Long, Long) = {
@@ -120,7 +155,7 @@ object CadenceCalcs {
 
   def createFreqTable(cadenceDF: DataFrame, cadenceValue: CadenceValues): DataFrame = {
 
-    if (cadenceValue < OneMonth) {
+    if (cadenceValue < TwoMonths) {
       val freqDF = cadenceDF
         .select("Cadence")
         .groupBy("Cadence")
@@ -154,6 +189,61 @@ object CadenceCalcs {
 
   }
 
+  def createCadenceAvro(jobKey: String, numRecords: Long, singleVisit: Long, rawCadence: Double, normalCadence: String,
+                        numTimePeriods: Int, percentile: Double, minMaxDF: DataFrame, freqTable: DataFrame): GenericRecord = {
+
+    val cadAvro = new Cadence()
+    cadAvro.setJobKey(jobKey)
+    cadAvro.setNumRecords(numRecords)
+    cadAvro.setSingleVisit(singleVisit)
+    cadAvro.setRawCadence(rawCadence)
+    cadAvro.setNormalizedCadence(normalCadence)
+    cadAvro.setNumTimePeriods(numTimePeriods)
+    cadAvro.setPercentile(percentile)
+
+    val minDate = minMaxDF
+      .select("min(Date)")
+      .head()
+      .getDate(0)
+      .toString
+
+    val maxDate = minMaxDF
+      .select("max(Date)")
+      .head()
+      .getDate(0)
+      .toString
+
+    cadAvro.setMinDateCadence(minDate)
+    cadAvro.setMaxDateCadence(maxDate)
+
+    val tempList = new java.util.ArrayList[FreqRow]
+
+    def mapFreqRow(freqRow: Row): Unit = {
+      val freq = new FreqRow()
+      freq.setCadence(freqRow.getInt(0))
+      freq.setFrequency(freqRow.getLong(1))
+      freq.setCumFreq(freqRow.getLong(2))
+
+      tempList.add(freq)
+    }
+
+    freqTable.collect().foreach(f => mapFreqRow(f))
+    cadAvro.setFreqTable(tempList)
+
+    val out = new ByteArrayOutputStream()
+    val datumWriter = new SpecificDatumWriter[Cadence](Cadence.getClassSchema())
+    val encoder = EncoderFactory.get().binaryEncoder(out, null)
+    datumWriter.write(cadAvro, encoder)
+    encoder.flush()
+    out.close()
+
+    BalorProducer.sendBalor(out.toByteArray, "CadenceCalcs")
+
+
+    cadAvro
+
+  }
+
   def main(args: Array[String]): Unit = {
 
     if (args.length < 4) {
@@ -162,13 +252,12 @@ object CadenceCalcs {
 
     val fileLocation = args(0)
     val delimiter = args(1)
+    val jobKey = args(2)
 
-    val percentile = args(2).toDouble
+    val percentile = args(3).toDouble
     if (percentile < .75 || percentile > .95) {
       //TODO return exception about given percentile
     }
-
-    val jobKey = args(3)
 
     val jobName = "CadenceCalcs"
     val conf = new SparkConf().setAppName(jobName)
@@ -186,6 +275,10 @@ object CadenceCalcs {
 
     val dateDF = DateUtils.determineFormat(orgFile)
 
+    dateDF.persist(StorageLevel.MEMORY_AND_DISK)
+
+    val minMaxDateDF = dateInfo(dateDF)
+
     val daysDF = daysSinceLastVisit(dateDF)
 
     val (rawCadence, cadenceDF) = calculateCadenceValue(daysDF, percentile, sqlCtx)
@@ -196,15 +289,12 @@ object CadenceCalcs {
 
     val freqTable = createFreqTable(cadenceDF, cadence)
 
+    val cadenceAvro = createCadenceAvro(jobKey, rowCount, singleVisitCount, rawCadence, cadence.name, timePeriods, percentile, minMaxDateDF, freqTable)
+
+    println(s"Cadence Avro output: $cadenceAvro")
 
     sc.stop()
-
-
-    //TODO jobkey, rowCount, singleVisitCount need to be added to the returned avro kafka message
-    //(cadence, timePeriods, freqTable)
 
   }
 
 }
-
-

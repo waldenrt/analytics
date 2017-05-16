@@ -1,0 +1,63 @@
+{
+	"type": "record",
+	"namespace": "com.brierley.avro.schemas",
+	"name": "Cadence",
+	"fields": [
+		{"name": "jobKey",
+		 "type": "string",
+		 "doc": "unique job identifier to find results in hbase"},
+		 
+		{"name": "numRecords",
+		 "type": "long",
+		 "doc": "Total number of records in the given dataset used to calculate the cadence"},
+		 
+		{"name": "singleVisit",
+		 "type": "long",
+		 "doc": "Number of customers with exactly 1 transaction in the entire dataset."},
+		 
+		{"name": "completionTime",
+		 "type": "string",
+		 "doc": "The time the spark job finished and sent the record."},
+		 
+		 {"name": "minDateCadence",
+		 "type": "string",
+		 "doc": "Beginning date of entire date set used to calculate the cadence"},
+		 
+		{"name": "maxDateCadence",
+		 "type": "string",
+		 "doc": "Last date of entire data set used to calculate the cadence"},
+		 
+		{"name": "rawCadence",
+		 "type": "double",
+		 "doc": "The cadence calculated with the given percentage before rounding to an approved timeperiod."},
+		 
+		{"name": "normalizedCadence",
+		 "type": "string",
+		 "doc": "The cadence value that will be used when running the actual balor calculations, this always rounds up."},
+		 
+		{"name": "numTimePeriods",
+		 "type": "int",
+		 "doc": "The number of time periods that are present in the given data file using the normalized cadence value."},
+		 
+		{"name": "percentile",
+		 "type": "double",
+		 "doc": "The percentile that was used in calculating the cadence. Defaults to .80, but power users can change it."},
+		 
+		{"name": "FreqTable",
+		 "type": {"type": "array",
+		 "items": {
+		 	"name": "FreqRow",
+		 	"type": "record",
+		 	"fields": [
+		 		{"name": "cadence",
+		 		 "type": "int",
+		 		 "doc": "The cadence value for the following frequencies in days"},
+		 		{"name": "frequency",
+		 		 "type": "long",
+		 		 "doc": "The number of times that the cadence appears in the dataset"},
+		 		{"name": "cumFreq",
+		 		 "type": "long",
+		 		 "doc": "The cumulative frequency of the all previous cadence values."}]
+		 	}}
+		 }]
+}

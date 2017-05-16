@@ -380,6 +380,12 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       StructField("CumFrequency", LongType, true)
     ))
 
+    val minMaxDateDF = sc.parallelize(List(
+      ("2015-03-03", "2015-06-06")
+    )).toDF("min", "max")
+      .withColumn("min(Date)", $"min".cast("date"))
+      .withColumn("max(Date)", $"max".cast("date"))
+      .select("min(Date)", "max(Date)")
 
   }
 
@@ -436,6 +442,16 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
       assert(orgFile.count() === rowCount)
       assert(cols === colNames)
+    }
+  }
+
+  test("No Header Row in file"){
+    new fileLocations {
+      val orgFile = CadenceCalcs.loadFile(sqlCtx, bar, barFileNoHeader)
+      val cols = orgFile.columns
+
+      //assert(cols === colNames)
+
     }
   }
 
@@ -824,6 +840,9 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
       val trueTableDF = sqlCtx.createDataFrame(trueTable, binSchema)
 
       assertDataFrameEquals(freqTable, trueTableDF)
+
+      val cadAvro = CadenceCalcs.createCadenceAvro("TestJob", 15, 0, 1.5, "One Week", 2, .80, minMaxDateDF, freqTable)
+    println(cadAvro)
     }
   }
 }
