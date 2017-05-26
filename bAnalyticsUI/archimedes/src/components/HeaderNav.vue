@@ -1,35 +1,38 @@
 <template>
-  <div id="headerTemp">
-    <b-navbar toggleable fixed="top" style="background-color: #ffffff;">
-      <div class="container">
-
-          <b-link class="navbar-brand" to="#">
-            <span>{{ moduleName }}</span>
-          </b-link>
-
-          <b-nav is-nav-bar class="ml-auto">
-            <b-nav-item>Job History</b-nav-item>
-            <b-nav-item>Need Help?</b-nav-item>
-
-            <!-- Navbar dropdowns -->
-            <b-nav-item-dropdown text="Client">
-              <b-dropdown-item v-for="client in clients" :key="client.id">{{ client.name }}</b-dropdown-item>
-            </b-nav-item-dropdown>
-
-            <b-nav-item-dropdown right>
-
-              <!-- Using text slot -->
-              <template slot="text">
-                <span style="font-weight: bold;">User</span>
-              </template>
-
-              <b-dropdown-item to="#">Profile</b-dropdown-item>
-              <b-dropdown-item to="#">Signout</b-dropdown-item>
-            </b-nav-item-dropdown>
-
-          </b-nav>
-      </div>
-    </b-navbar>
+  <div id="headernav">
+    <v-toolbar fixed class="green">
+      <v-toolbar-side-icon @click.native.stop="showmenu = !showmenu"></v-toolbar-side-icon>
+      <v-toolbar-title>{{ moduleName }}</v-toolbar-title>
+      <v-toolbar-items>
+        <v-toolbar-item><router-link to="/JobHistory">Job History</router-link></v-toolbar-item>
+        <v-toolbar-item>Need Help?</v-toolbar-item>
+        <v-menu bottom>
+          <v-btn primary slot="activator">Clients</v-btn>
+          <v-list>
+            <v-list-item v-for="client in clients" :key="client.id">
+              <v-list-tile>
+                <v-list-tile-title>{{ client.name }}</v-list-tile-title>
+              </v-list-tile>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+        <v-menu>
+          <v-btn icon slot="activator">
+            <v-icon>account_circle</v-icon>
+          </v-btn>
+          <v-list>
+            <v-list-item>
+              <v-list-tile>
+                <v-list-tile-title>Logout</v-list-tile-title>
+              </v-list-tile>
+              <v-list-tile>
+                <v-list-tile-title>Settings</v-list-tile-title>
+              </v-list-tile>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-toolbar-items>
+    </v-toolbar>
   </div>
 
 </template>
@@ -37,13 +40,14 @@
 <script>
 
   export default{
-    name: 'headerTemp',
+    name: 'headernav',
     data () {
       return {
+        showmenu: true,
         moduleName: 'DECILE',
         clients: [
-              {id: 1, name: 'Wendy'},
-              {id: 2, name: 'Hertz'}
+          {id: 1, name: 'Wendy'},
+          {id: 2, name: 'Hertz'}
         ]
       }
     }
@@ -51,13 +55,6 @@
 
 </script>
 
-<style lang="scss" scoped>
-  @import "../../node_modules/bootstrap/scss/bootstrap.scss";
-  @media (max-width: 900px) {
-    headerTemp {
-      font-size: $font-size-xs;
-    }
-  }
-
+<style scoped lang="scss">
 
 </style>

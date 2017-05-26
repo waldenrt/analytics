@@ -1,38 +1,116 @@
 <template>
-  <div id="app">
-    <div class="container">
-      <headernav></headernav>
-
-      <div class="row">
-        <modulenav></modulenav>
-      </div>
-    </div>
-  </div>
+  <v-app id="navigation" left-fixed-sidebar top-toolbar sidebar-under-toolbar>
+    <v-navigation-drawer temporary clipped class="accent" v-model="showmenu">
+      <v-list class="pa-0">
+        <v-list-item v-for="module in modules" :value="module.active" :key="module.name">
+          <v-list-tile>
+            <v-list-tile-title>{{ module.name }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-toolbar fixed class="white">
+      <v-toolbar-side-icon @click.native.stop="showmenu = !showmenu"></v-toolbar-side-icon>
+      <v-toolbar-title class="text--text">{{ appmodule }}</v-toolbar-title>
+      <v-toolbar-items>
+        <v-toolbar-item>
+          <router-link to="/JobHistory">Job History</router-link>
+        </v-toolbar-item>
+        <v-toolbar-item>
+          <router-link to="/Help">Need Help?</router-link>
+        </v-toolbar-item>
+        <v-menu>
+          <v-btn primary slot="activator">Client</v-btn>
+          <v-list>
+            <v-list-item v-for="client in clients" :key="client.id">
+              <v-list-tile>
+                <v-list-tile-title>{{ client.name }}</v-list-tile-title>
+              </v-list-tile>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+        <v-menu>
+          <v-btn icon slot="activator">
+            <v-icon>account_circle</v-icon>
+          </v-btn>
+          <v-list>
+            <v-list-item>
+              <v-list-tile>
+                <v-list-tile-title>
+                  <router-link to="/Logout" style="color: #354052">Logout</router-link>
+                </v-list-tile-title>
+              </v-list-tile>
+              <v-list-tile>
+                <v-list-tile-title>
+                  <router-link to="/Settings">Settings</router-link>
+                </v-list-tile-title>
+              </v-list-tile>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-toolbar-items>
+    </v-toolbar>
+    <main class="pt-5">
+      <v-container fluid>
+        <v-layout row-sm column child-flex-sm>
+          <v-flex md2>
+            <modulenav></modulenav>
+          </v-flex>
+          <v-flex xs10>
+            <div>
+              <p>first line</p>
+              <p>we can put notices here and they will be always visible from everywhere in the app..</p>
+              <router-view></router-view>
+            </div>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </main>
+    <v-footer>This will eventually be a footer component...</v-footer>
+  </v-app>
 </template>
 
 <script>
   import modulenav from './components/ModuleNav.vue'
   import headernav from './components/HeaderNav.vue'
+  import sidenav from './components/SideNav.vue'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'app',
+    data () {
+      return {
+        showmenu: false,
+        showBalor: 1,
+        clients: [
+          {id: 1, name: 'Wendy'},
+          {id: 2, name: 'Hertz'}
+        ],
+        modules: [
+          {name: 'Balor', active: true},
+          {name: 'Decile', active: false},
+          {name: 'bRelevant', active: false}
+        ]
+      }
+    },
+    computed: mapState({
+      appmodule: 'appmodule'
+    }),
     components: {
       headernav,
-      modulenav
+      modulenav,
+      sidenav
     }
   }
 </script>
 
-<style lang="scss">
-  @import '../src/assets/_custom.sass';
-  @import "../node_modules/bootstrap/scss/bootstrap.scss";
-  body {
-    padding-top: 60px;
-  }
-  @media (max-width: 979px) {
-    body {
-      padding-top: 0px;
-    }
-  }
+<style lang="stylus">
+  @import './assets/stylus/main.styl';
+
+  @media (max-width: 550px)
+    body
+      font-size: 12px
+
+
 
 </style>
