@@ -53,6 +53,34 @@
 				 "type": "long",
 				 "doc": "The total number of items purchased by all NEW customers in the given Balor time period."},
 
+				{"name": "newCustSpendAvg",
+				 "type": "double",
+				 "doc": "The average sales per NEW customer in the given time period."},
+
+				{"name": "newCustVisitAvg",
+				 "type": "double",
+				 "doc": "The average number of visits per NEW customer in the given time period."},
+
+				{"name": "newCustItemAvg",
+				 "type": "double",
+				 "doc": "The average number of purchased items per NEW customer in the given time period."},
+
+				{"name": "newCustDiscAvg",
+				 "type": "double",
+				 "doc": "The average discount amount per NEW customer in the given time period."},
+
+				{"name": "newVisitSpendAvg",
+				 "type": "double",
+				 "doc": "The average sales per visit for NEW customers in the given time period."},
+
+				{"name": "newVisitDiscAvg",
+				 "type": "double",
+				 "doc": "The average discount amount per visit for NEW customers in the given time period."},
+
+				{"name": "newVisitItemAvg",
+				 "type": "double",
+				 "doc": "The average number of purchased items per visit for NEW customers in the given time period."},
+
 				{"name": "reactCustCount",
 				 "type": "long",
 				 "doc": "The count of customers that are considered REACTIVATED in the given Balor time period.  To be considered reactivated the cust_id must appear in the current and t-2 time period"},
@@ -72,6 +100,34 @@
 				{"name": "reactItemQty",
 				 "type": "long",
 				 "doc": "The total number of items purchased by all REACTIVATED customers in the given Balor time period."},
+
+				{"name": "reactCustSpendAvg",
+				 "type": "double",
+				 "doc": "The average sales per REACTIVATED customer in the given time period."},
+
+				{"name": "reactCustVisitAvg",
+				 "type": "double",
+				 "doc": "The average number of visits per REACTIVATED customer in the given time period."},
+
+				{"name": "reactCustItemAvg",
+				 "type": "double",
+				 "doc": "The average number of purchased items per REACTIVATED customer in the given time period."},
+
+				{"name": "reactCustDiscAvg",
+				 "type": "double",
+				 "doc": "The average discount amount per REACTIVATED customer in the given time period."},
+
+				{"name": "reactVisitSpendAvg",
+				 "type": "double",
+				 "doc": "The average sales per visit for REACTIVATED customers in the given time period."},
+
+				{"name": "reactVisitDiscAvg",
+				 "type": "double",
+				 "doc": "The average discount amount per visit for REACTIVATED customers in the given time period."},
+
+				{"name": "reactVisitItemAvg",
+				 "type": "double",
+				 "doc": "The average number of purchased items per visit for REACTIVATED customers in the given time period."},
 
 				{"name": "returnCustCount",
 				 "type": "long",
@@ -93,6 +149,34 @@
 				 "type": "long",
 				 "doc": "The total number of items purchased by all RETURNING customers in the given Balor time period."},
 
+				{"name": "returnCustSpendAvg",
+				 "type": "double",
+				 "doc": "The average sales per RETURNING customer in the given time period."},
+
+				{"name": "returnCustVisitAvg",
+				 "type": "double",
+				 "doc": "The average number of visits per RETURNING customer in the given time period."},
+
+				{"name": "returnCustItemAvg",
+				 "type": "double",
+				 "doc": "The average number of purchased items per RETURNING customer in the given time period."},
+
+				{"name": "returnCustDiscAvg",
+				 "type": "double",
+				 "doc": "The average discount amount per RETURNING customer in the given time period."},
+
+				{"name": "returnVisitSpendAvg",
+				 "type": "double",
+				 "doc": "The average sales per visit for RETURNING customers in the given time period."},
+
+				{"name": "returnVisitDiscAvg",
+				 "type": "double",
+				 "doc": "The average discount amount per visit for RETURNING customers in the given time period."},
+
+				{"name": "returnVisitItemAvg",
+				 "type": "double",
+				 "doc": "The average number of purchased items per visit for RETURNING customers in the given time period."},
+
 				{"name": "lapsedCustCount",
 				 "type": "long",
 				 "doc": "The count of customers that are considered LAPSED in the given Balor time period.  To be considered lapsed the cust_id cannot appear in the current time period"},
@@ -113,6 +197,34 @@
 				 "type": "long",
 				 "doc": "The total number of items purchased by all LAPSED customers in the given Balor time period."},
 
+				{"name": "lapsedCustSpendAvg",
+				 "type": "double",
+				 "doc": "The average sales per LAPSED customer in the given time period."},
+
+				{"name": "lapsedCustVisitAvg",
+				 "type": "double",
+				 "doc": "The average number of visits per LAPSED customer in the given time period."},
+
+				{"name": "lapsedCustItemAvg",
+				 "type": "double",
+				 "doc": "The average number of purchased items per LAPSED customer in the given time period."},
+
+				{"name": "lapsedCustDiscAvg",
+				 "type": "double",
+				 "doc": "The average discount amount per LAPSED customer in the given time period."},
+
+				{"name": "lapsedVisitSpendAvg",
+				 "type": "double",
+				 "doc": "The average sales per visit for LAPSED customers in the given time period."},
+
+				{"name": "lapsedVisitDiscAvg",
+				 "type": "double",
+				 "doc": "The average discount amount per visit for LAPSED customers in the given time period."},
+
+				{"name": "lapsedVisitItemAvg",
+				 "type": "double",
+				 "doc": "The average number of purchased items per visit for LAPSED customers in the given time period."},
+
 				{"name": "custBalor",
 				 "type": "double",
 				 "doc": "The balor ratio for customer counts. ratio calculated: (new + reactivated) / lapsed"},
@@ -123,7 +235,11 @@
 
 				{"name": "spendBalor",
 				 "type": "double",
-				 "doc": "The balor ratio for the total spend for each customer segment. ratio calculated: (new + reactivated) / lapsed"}
+				 "doc": "The balor ratio for the total spend for each customer segment. ratio calculated: (new + reactivated) / lapsed"},
+
+				{"name": "retention",
+				 "type": "double",
+				 "doc": "The retention rate: (Returning in (t))/(new + react + return in (t-1))"}
 				 ]
 				}}
 			}

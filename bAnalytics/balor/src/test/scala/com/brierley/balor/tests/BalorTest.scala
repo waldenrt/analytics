@@ -1,7 +1,7 @@
 package com.brierley.balor.tests
 
 import com.brierley.balor.BalorApp
-import com.brierley.utils.{OneMonth, OneWeek, TwoWeeks}
+import com.brierley.utils.{OneMonth, TwoWeeks}
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import org.apache.spark.sql._
 import org.apache.spark.sql.functions.{to_date, unix_timestamp}
@@ -9,6 +9,7 @@ import org.apache.spark.sql.types._
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
+import org.scalatest.Matchers._
 
 /**
   * Created by amerrill on 1/31/17.
@@ -293,11 +294,34 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
     val threeBalorSetsOneOverZero = sc.parallelize(List(
       (1, 2.toLong, 3.toLong, 30.00, 0.00, 12, 1.toLong, 1.toLong, 15.00, 5.00, 6, 1.toLong, 1.toLong, 15.00, 2.50, 6, 2.toLong, 2.toLong, 25.00, 2.50, 10),
       (2, 1.toLong, 1.toLong, 10.00, 0.00, 4, 1.toLong, 1.toLong, 15.00, 5.00, 6, 1.toLong, 1.toLong, 15.00, 2.50, 6, 1.toLong, 1.toLong, 12.50, 2.50, 5),
-      (3, 1.toLong, 1.toLong, 10.00, 0.00, 4, 1.toLong, 1.toLong, 15.00, 5.00, 6, 1.toLong, 1.toLong, 15.00, 2.50, 6, 0.toLong, 1.toLong, 12.50, 2.50, 5)
+      (3, 1.toLong, 1.toLong, 10.00, 0.00, 4, 1.toLong, 1.toLong, 15.00, 5.00, 6, 2.toLong, 2.toLong, 15.00, 2.50, 6, 0.toLong, 1.toLong, 12.50, 2.50, 5)
     )).toDF("TimePeriod", "newCustCount", "newTxnCount", "newTxnAmt", "newDiscAmt", "newItemCount",
       "reactCustCount", "reactTxnCount", "reactTxnAmt", "reactDiscAmt", "reactItemCount",
       "returnCustCount", "returnTxnCount", "returnTxnAmt", "returnDiscAmt", "returnItemCount",
       "lapsedCustCount", "lapsedTxnCount", "lapsedTxnAmt", "lapsedDiscAmt", "lapsedItemCount")
+
+    val zeroReturning = sc.parallelize(List(
+      (1, 2.toLong, 3.toLong, 30.00, 0.00, 12, 1.toLong, 1.toLong, 15.00, 5.00, 6, 0.toLong, 0.toLong, 0.00, 0.00, 0, 2.toLong, 2.toLong, 25.00, 2.50, 10),
+      (2, 1.toLong, 1.toLong, 10.00, 0.00, 4, 1.toLong, 1.toLong, 15.00, 5.00, 6, 1.toLong, 1.toLong, 15.00, 2.50, 6, 1.toLong, 1.toLong, 12.50, 2.50, 5)
+    )).toDF("TimePeriod", "newCustCount", "newTxnCount", "newTxnAmt", "newDiscAmt", "newItemCount",
+      "reactCustCount", "reactTxnCount", "reactTxnAmt", "reactDiscAmt", "reactItemCount",
+      "returnCustCount", "returnTxnCount", "returnTxnAmt", "returnDiscAmt", "returnItemCount",
+      "lapsedCustCount", "lapsedTxnCount", "lapsedTxnAmt", "lapsedDiscAmt", "lapsedItemCount")
+
+
+    val avroSchemaResults = sc.parallelize(List(
+      (1, 2.toLong, 3.toLong, 40.00, 5.00, 6, 7.toLong, 8.toLong, 90.00, 10.00, 11, 12.toLong, 13.toLong, 140.00, 15.0, 16, 17.toLong, 18.toLong, 190.00, 20.00, 21),
+      (2, 23.toLong, 24.toLong, 25.00, 0.00, 27, 28.toLong, 29.toLong, 30.00, 31.00, 32, 3.toLong, 4.toLong, 35.00, 36.00, 37, 38.toLong, 39.toLong, 40.00, 2.50, 42),
+      (3, 44.toLong, 45.toLong, 46.00, 0.00, 48, 49.toLong, 50.toLong, 15.00, 52.00, 53, 54.toLong, 55.toLong, 56.00, 57.50, 58, 0.toLong, 60.toLong, 61.50, 62.50, 63)
+    )).toDF("TimePeriod", "newCustCount", "newTxnCount", "newTxnAmt", "newDiscAmt", "newItemCount",
+      "reactCustCount", "reactTxnCount", "reactTxnAmt", "reactDiscAmt", "reactItemCount",
+      "returnCustCount", "returnTxnCount", "returnTxnAmt", "returnDiscAmt", "returnItemCount",
+      "lapsedCustCount", "lapsedTxnCount", "lapsedTxnAmt", "lapsedDiscAmt", "lapsedItemCount")
+    //"newCustSpendAvg", "newCustVisitAvg", "newCustItemAvg", "newCustDiscAvg", "newVisitSpendAvg", "newVisitDiscAvg", "newVisitItemAvg",
+    //"reactCustSpendAvg", "reactCustVisitAvg", "reactCustItemAvg", "reactCustDiscAvg", "reactVisitSpendAvg", "reactVisitDiscAvg", "reactVisitItemAvg",
+    //"returnCustSpendAvg", "returnCustVisitAvg", "returnCustItemAvg", "returnCustDiscAvg", "returnVisitSpendAvg", "returnVisitDiscAvg", "returnVisitItemAvg",
+    //"lapsedCustSpendAvg", "lapsedCustVisitAvg", "lapsedCustItemAvg", "lapsedCustDiscAvg", "lapsedVisitSpendAvg", "lapsedVisitDiscAvg", "lapsedVisitItemAvg")
+
 
     val minMaxDateDF = sc.parallelize(List(
       ("2015-03-03", "2015-06-06")
@@ -560,16 +584,18 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
     //don't know if this will be tested here or somewhere else, it will need to be done iteratively with the label application
   }
 
+  //SEGMENT METRICS
+  //need to have various ones divide by zero, disc and item is optional so that needs to be reflected (columns created with 0)
 
-  //test current balor -1 (ie.  current: oct, nov, dec need to test: sept, oct, nov)
 
+  //BALOR RATIOS AND RETENTION
   test("return new DF (time period and 3 ratios) with calcs for single period") {
     new BalorData {
 
       val balorDF = BalorApp.calcBalorRatios(threeOverTwo) getOrElse threeOverTwo
-      val balors = balorDF.select("custBalor", "txnBalor", "spendBalor").head()
+      val balors = balorDF.select("custBalor", "txnBalor", "spendBalor", "retention").head()
 
-      val realBalor = Row(1.5, 2, 1.8)
+      val realBalor = Row(1.5, 2, 1.8, 0)
 
       assert(realBalor === balors)
     }
@@ -582,12 +608,38 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("custBalor", "txnBalor", "spendBalor").head()
       val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("custBalor", "txnBalor", "spendBalor").head()
 
-      val realBalor1 = Row(1.5, 2, 1.8)
+      val retention1 = balorDF.where(balorDF("TimePeriod") === 1).select("retention").first().getDouble(0)
+      val retention2 = balorDF.where(balorDF("TimePeriod") === 2).select("retention").first().getDouble(0)
 
+      val realBalor1 = Row(1.5, 2, 1.8)
       val realBalor2 = Row(2.0, 2.0, 2.0)
 
       assert(realBalor1 === balor1)
       assert(realBalor2 === balor2)
+
+      assert(retention1 ===.33 +- .01)
+      assert(retention2 === 0)
+    }
+  }
+
+  test("0 Returning customers (4 periods worth of data") {
+    new BalorData {
+
+      val balorDF = BalorApp.calcBalorRatios(zeroReturning) getOrElse twoBalorSets
+      val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("custBalor", "txnBalor", "spendBalor").head()
+      val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("custBalor", "txnBalor", "spendBalor").head()
+
+      val retention1 = balorDF.where(balorDF("TimePeriod") === 1).select("retention").first().getDouble(0)
+      val retention2 = balorDF.where(balorDF("TimePeriod") === 2).select("retention").first().getDouble(0)
+
+      val realBalor1 = Row(1.5, 2, 1.8)
+      val realBalor2 = Row(2.0, 2.0, 2.0)
+
+      assert(realBalor1 === balor1)
+      assert(realBalor2 === balor2)
+
+      assert(retention1 === 0)
+      assert(retention2 === 0)
     }
   }
 
@@ -599,6 +651,10 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("custBalor", "txnBalor", "spendBalor").head()
       val balor3 = balorDF.where(balorDF("TimePeriod") === 3).select("custBalor", "txnBalor", "spendBalor").head()
 
+      val retention1 = balorDF.where(balorDF("TimePeriod") === 1).select("retention").first().getDouble(0)
+      val retention2 = balorDF.where(balorDF("TimePeriod") === 2).select("retention").first().getDouble(0)
+      val retention3 = balorDF.where(balorDF("TimePeriod") === 3).select("retention").first().getDouble(0)
+
       val realBalor1 = Row(1.5, 2.0, 1.8)
       val realBalor2 = Row(2.0, 2.0, 2)
       val realBalor3 = Row(2.0, 2.0, 2.0)
@@ -607,12 +663,51 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       assert(realBalor2 === balor2)
       assert(realBalor3 === balor3)
 
+      assert(retention1 ===.33 +- .01)
+      assert(retention2 ===.25 +- .01)
+      assert(retention3 === 0)
+
       balorDF.show()
 
-      //val rec = BalorApp.createBalorAvro("TestKey", 5, minMaxDateDF, balorDF)
+    }
+  }
 
-      //println("this is the return object from the method call " + rec.toString)
+  test("BalorRatios for avroschema test") {
+    new BalorData {
 
+      val balorDF = BalorApp.calcBalorRatios(avroSchemaResults) getOrElse threeBalorSetsOneOverZero
+      balorDF.show()
+      val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("custBalor", "txnBalor", "spendBalor").head()
+      val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("custBalor", "txnBalor", "spendBalor").head()
+      val balor3 = balorDF.where(balorDF("TimePeriod") === 3).select("custBalor", "txnBalor", "spendBalor").head()
+
+      val retention1 = balorDF.where(balorDF("TimePeriod") === 1).select("retention").first().getDouble(0)
+      val retention2 = balorDF.where(balorDF("TimePeriod") === 2).select("retention").first().getDouble(0)
+      val retention3 = balorDF.where(balorDF("TimePeriod") === 3).select("retention").first().getDouble(0)
+
+      val realBalor1 = Row(0.5294117647058824,0.6111111111111112,0.6842105263157895)
+      val realBalor2 = Row(1.3421052631578947, 1.358974358974359, 1.375)
+      val realBalor3 = Row(93.0, 1.5833333333333333,0.991869918699187)
+
+      assert(realBalor1 === balor1)
+      assert(realBalor2 === balor2)
+      assert(realBalor3 === balor3)
+
+      assert(retention1 ===.22 +- .01)
+      assert(retention2 ===.02 +- .01)
+      assert(retention3 === 0)
+
+      balorDF.show()
+    }
+  }
+
+  //AVRO SCHEMA CREATION
+  //too  many rows to create complete dataframe, will submit DF to calcBalorRatios, calcSegmentAvg, and then to createBalorAvro
+  //this test should always be run last, that way if it fails it will be because of the avro and not a previous method
+  test("createBalorAvro with 3 time periods of data") {
+    new BalorData {
+
+      val balorDF = BalorApp.calcBalorRatios(avroSchemaResults) getOrElse threeBalorSetsOneOverZero
     }
   }
 

@@ -182,6 +182,9 @@ object BalorApp {
   }
 
   def calcBalorRatios(countsDF: DataFrame): Try[DataFrame] = Try {
+
+    val segWindow = Window.orderBy("TimePeriod")
+
     val balorDF = countsDF
       .withColumn("custBalor", balorCount(countsDF("newCustCount"), countsDF("reactCustCount"),
         countsDF("lapsedCustCount")))
@@ -189,6 +192,9 @@ object BalorApp {
         countsDF("lapsedTxnCount")))
       .withColumn("spendBalor", balorMoney(countsDF("newTxnAmt"), countsDF("reactTxnAmt"),
         countsDF("lapsedTxnAmt")))
+      .withColumn("retention", retention(countsDF("returnCustCount"), lead("reactCustCount",1).over(segWindow),
+        lead("newCustCount",1).over(segWindow), lead("returnCustCount",1).over(segWindow)))
+      .na.fill(0)
 
     balorDF
   }
@@ -247,6 +253,10 @@ object BalorApp {
       tpd.setCustBalor(tpdRow.getDouble(21))
       tpd.setTxnBalor(tpdRow.getDouble(22))
       tpd.setSpendBalor(tpdRow.getDouble(23))
+      tpd.setRetention(tpdRow.getDouble(24))
+
+      //averages will need to go here for ease of unit test data and so we don't have to reorder after adding all the
+      //new columns after the pivot...
 
       tempList.add(tpd)
     }
@@ -289,6 +299,7 @@ object BalorApp {
     val delimiter = args(1)
     val jobKey = args(2)
     val cadenceIndex = args(3).toInt
+    val csv = args(4).toBoolean
 
     val jobName = "BalorApp"
     val conf = new SparkConf().setAppName(jobName)
@@ -333,6 +344,8 @@ object BalorApp {
       case Success(avro) => {
         println(s"was a success: $avro")
         BalorProducer.sendBalor("Balor", avro)
+        if(csv)
+
         sc.stop()
       }
       case Failure(ex) => {

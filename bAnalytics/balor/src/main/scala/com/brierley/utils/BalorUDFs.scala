@@ -24,8 +24,14 @@ object BalorUDFs {
     else (newVal + react) / lapsed.toDouble
   }
 
+  def retentionFunc(currRet: Long, lastReact: Long, lastNew: Long, lastRet: Long): Double = {
+    if(currRet == 0) 0
+    else currRet.toDouble / (lastReact + lastNew + lastRet)
+  }
+
   val nonLapsedLabel = udf(nonLapsedLabelFunc(_: Long, _: Long))
   val balorMoney = udf(balorMoneyFunc(_: Double, _: Double, _: Double))
   val balorCount = udf(balorCountFunc(_: Long, _: Long, _: Long))
+  val retention = udf(retentionFunc(_: Long, _: Long, _: Long, _:Long))
 
 }

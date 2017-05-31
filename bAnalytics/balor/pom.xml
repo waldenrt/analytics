@@ -206,7 +206,7 @@
                         </goals>
                         <configuration>
                             <sourceDirectory>${project.basedir}/src/main/avro/</sourceDirectory>
-                            <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
+                            <outputDirectory>${project.basedir}/src/main/scala/</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
