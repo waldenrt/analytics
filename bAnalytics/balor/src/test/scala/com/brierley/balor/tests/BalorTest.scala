@@ -4,7 +4,7 @@ import com.brierley.balor.BalorApp
 import com.brierley.utils.{OneMonth, TwoWeeks}
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import org.apache.spark.sql._
-import org.apache.spark.sql.functions.{to_date, unix_timestamp}
+import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
@@ -264,11 +264,42 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
 
   }
 
+  trait SegAvg {
+    val sqlCtx = sqlContext
+
+    import sqlCtx.implicits._
+
+    val oneTimePeriod = sc.parallelize(List(
+      (1, 2, 3, 30.00, 0.00, 12, 1, 1, 15.00, 5.00, 6, 1, 1, 15.00, 2.50, 6, 2, 2, 25.00, 2.50, 10)
+    )).toDF("TimePeriod", "newCustCount", "newTxnCount", "newTxnAmt", "newDiscAmt", "newItemCount",
+      "reactCustCount", "reactTxnCount", "reactTxnAmt", "reactDiscAmt", "reactItemCount",
+      "returnCustCount", "returnTxnCount", "returnTxnAmt", "returnDiscAmt", "returnItemCount",
+      "lapsedCustCount", "lapsedTxnCount", "lapsedTxnAmt", "lapsedDiscAmt", "lapsedItemCount")
+
+    val zeroReturning = sc.parallelize(List(
+      (1, 2.toLong, 3.toLong, 30.00, 0.00, 12, 1.toLong, 1.toLong, 15.00, 5.00, 6, 0.toLong, 0.toLong, 0.00, 0.00, 0, 2.toLong, 2.toLong, 25.00, 2.50, 10),
+      (2, 1.toLong, 1.toLong, 10.00, 0.00, 4, 1.toLong, 1.toLong, 15.00, 5.00, 6, 1.toLong, 1.toLong, 15.00, 2.50, 6, 1.toLong, 1.toLong, 12.50, 2.50, 5)
+    )).toDF("TimePeriod", "newCustCount", "newTxnCount", "newTxnAmt", "newDiscAmt", "newItemCount",
+      "reactCustCount", "reactTxnCount", "reactTxnAmt", "reactDiscAmt", "reactItemCount",
+      "returnCustCount", "returnTxnCount", "returnTxnAmt", "returnDiscAmt", "returnItemCount",
+      "lapsedCustCount", "lapsedTxnCount", "lapsedTxnAmt", "lapsedDiscAmt", "lapsedItemCount")
+
+    val threeTimePeriods = sc.parallelize(List(
+      (1, 2.toLong, 3.toLong, 30.00, 0.00, 12, 1.toLong, 1.toLong, 15.00, 5.00, 6, 0.toLong, 0.toLong, 0.00, 0.00, 0, 2.toLong, 2.toLong, 25.00, 2.50, 10),
+      (2, 1.toLong, 1.toLong, 10.00, 0.00, 4, 1.toLong, 1.toLong, 15.00, 5.00, 6, 1.toLong, 1.toLong, 15.00, 2.50, 6, 1.toLong, 1.toLong, 12.50, 2.50, 5),
+      (3, 3.toLong, 8.toLong, 45.00, 6.00, 0, 5.toLong, 15.toLong, 60.00, 0.00, 0, 4.toLong, 4.toLong, 12.00, 0.00, 0, 2.toLong, 9.toLong, 24.00, 4.00, 0)
+    )).toDF("TimePeriod", "newCustCount", "newTxnCount", "newTxnAmt", "newDiscAmt", "newItemCount",
+      "reactCustCount", "reactTxnCount", "reactTxnAmt", "reactDiscAmt", "reactItemCount",
+      "returnCustCount", "returnTxnCount", "returnTxnAmt", "returnDiscAmt", "returnItemCount",
+      "lapsedCustCount", "lapsedTxnCount", "lapsedTxnAmt", "lapsedDiscAmt", "lapsedItemCount")
+  }
+
   trait BalorData {
     val sqlCtx = sqlContext
 
     import sqlCtx.implicits._
 
+    //purposely leaving out the 28 avg columns for ease of testing this portion
     val twoOverOne = sc.parallelize(List(
       (1, 1, 1, 10.00, 0.00, 4, 1, 1, 15.00, 5.00, 6, 1, 1, 15.00, 2.50, 6, 1, 1, 12.50, 2.50, 5)
     )).toDF("TimePeriod", "newCustCount", "newTxnCount", "newTxnAmt", "newDiscAmt", "newItemCount",
@@ -310,18 +341,13 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
 
 
     val avroSchemaResults = sc.parallelize(List(
-      (1, 2.toLong, 3.toLong, 40.00, 5.00, 6, 7.toLong, 8.toLong, 90.00, 10.00, 11, 12.toLong, 13.toLong, 140.00, 15.0, 16, 17.toLong, 18.toLong, 190.00, 20.00, 21),
-      (2, 23.toLong, 24.toLong, 25.00, 0.00, 27, 28.toLong, 29.toLong, 30.00, 31.00, 32, 3.toLong, 4.toLong, 35.00, 36.00, 37, 38.toLong, 39.toLong, 40.00, 2.50, 42),
-      (3, 44.toLong, 45.toLong, 46.00, 0.00, 48, 49.toLong, 50.toLong, 15.00, 52.00, 53, 54.toLong, 55.toLong, 56.00, 57.50, 58, 0.toLong, 60.toLong, 61.50, 62.50, 63)
+      (1, 2.toLong, 3.toLong, 40.00, 5.00, 6.toLong, 7.toLong, 8.toLong, 90.00, 10.00, 11.toLong, 12.toLong, 13.toLong, 140.00, 15.0, 16.toLong, 17.toLong, 18.toLong, 190.00, 20.00, 21.toLong),
+      (2, 23.toLong, 24.toLong, 25.00, 0.00, 27.toLong, 28.toLong, 29.toLong, 30.00, 31.00, 32.toLong, 3.toLong, 4.toLong, 35.00, 36.00, 37.toLong, 38.toLong, 39.toLong, 40.00, 2.50, 42.toLong),
+      (3, 44.toLong, 45.toLong, 46.00, 0.00, 48.toLong, 49.toLong, 50.toLong, 15.00, 52.00, 53.toLong, 54.toLong, 55.toLong, 56.00, 57.50, 58.toLong, 0.toLong, 60.toLong, 61.50, 62.50, 63.toLong)
     )).toDF("TimePeriod", "newCustCount", "newTxnCount", "newTxnAmt", "newDiscAmt", "newItemCount",
       "reactCustCount", "reactTxnCount", "reactTxnAmt", "reactDiscAmt", "reactItemCount",
       "returnCustCount", "returnTxnCount", "returnTxnAmt", "returnDiscAmt", "returnItemCount",
       "lapsedCustCount", "lapsedTxnCount", "lapsedTxnAmt", "lapsedDiscAmt", "lapsedItemCount")
-    //"newCustSpendAvg", "newCustVisitAvg", "newCustItemAvg", "newCustDiscAvg", "newVisitSpendAvg", "newVisitDiscAvg", "newVisitItemAvg",
-    //"reactCustSpendAvg", "reactCustVisitAvg", "reactCustItemAvg", "reactCustDiscAvg", "reactVisitSpendAvg", "reactVisitDiscAvg", "reactVisitItemAvg",
-    //"returnCustSpendAvg", "returnCustVisitAvg", "returnCustItemAvg", "returnCustDiscAvg", "returnVisitSpendAvg", "returnVisitDiscAvg", "returnVisitItemAvg",
-    //"lapsedCustSpendAvg", "lapsedCustVisitAvg", "lapsedCustItemAvg", "lapsedCustDiscAvg", "lapsedVisitSpendAvg", "lapsedVisitDiscAvg", "lapsedVisitItemAvg")
-
 
     val minMaxDateDF = sc.parallelize(List(
       ("2015-03-03", "2015-06-06")
@@ -586,7 +612,176 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
 
   //SEGMENT METRICS
   //need to have various ones divide by zero, disc and item is optional so that needs to be reflected (columns created with 0)
+  test("segment metrics for a single time period") {
+    new SegAvg {
 
+      val avgDF = BalorApp.calcSegAvg(oneTimePeriod) getOrElse oneTimePeriod
+      assert(avgDF != oneTimePeriod)
+      val avgCols = avgDF.columns
+      val columns = Array("TimePeriod", "newCustCount", "newTxnCount", "newTxnAmt", "newDiscAmt", "newItemCount",
+        "reactCustCount", "reactTxnCount", "reactTxnAmt", "reactDiscAmt", "reactItemCount",
+        "returnCustCount", "returnTxnCount", "returnTxnAmt", "returnDiscAmt", "returnItemCount",
+        "lapsedCustCount", "lapsedTxnCount", "lapsedTxnAmt", "lapsedDiscAmt", "lapsedItemCount",
+        "newCustSpendAvg", "newCustVisitAvg", "newCustItemAvg", "newCustDiscAvg", "newVisitSpendAvg", "newVisitItemAvg", "newVisitDiscAvg",
+        "reactCustSpendAvg", "reactCustVisitAvg", "reactCustItemAvg", "reactCustDiscAvg", "reactVisitSpendAvg", "reactVisitItemAvg", "reactVisitDiscAvg",
+        "returnCustSpendAvg", "returnCustVisitAvg", "returnCustItemAvg", "returnCustDiscAvg", "returnVisitSpendAvg", "returnVisitItemAvg", "returnVisitDiscAvg",
+        "lapsedCustSpendAvg", "lapsedCustVisitAvg", "lapsedCustItemAvg", "lapsedCustDiscAvg", "lapsedVisitSpendAvg", "lapsedVisitItemAvg", "lapsedVisitDiscAvg")
+
+      assert(avgCols === columns)
+
+      val newAvg = avgDF.where(avgDF("TimePeriod") === 1)
+        .select("newCustSpendAvg", "newCustVisitAvg", "newCustItemAvg", "newCustDiscAvg", "newVisitSpendAvg", "newVisitDiscAvg", "newVisitItemAvg")
+        .head()
+      val reactAvg = avgDF.where(avgDF("TimePeriod") === 1)
+        .select("reactCustSpendAvg", "reactCustVisitAvg", "reactCustItemAvg", "reactCustDiscAvg", "reactVisitSpendAvg", "reactVisitDiscAvg", "reactVisitItemAvg")
+        .head()
+      val returnAvg = avgDF.where(avgDF("TimePeriod") === 1)
+        .select("returnCustSpendAvg", "returnCustVisitAvg", "returnCustItemAvg", "returnCustDiscAvg", "returnVisitSpendAvg", "returnVisitDiscAvg", "returnVisitItemAvg")
+        .head()
+      val lapsedAvg = avgDF.where(avgDF("TimePeriod") === 1)
+        .select("lapsedCustSpendAvg", "lapsedCustVisitAvg", "lapsedCustItemAvg", "lapsedCustDiscAvg", "lapsedVisitSpendAvg", "lapsedVisitDiscAvg", "lapsedVisitItemAvg")
+        .head()
+
+      val realNewAvg = Row(15, 1.5, 6, 0, 10, 0, 4)
+      val realReactAvg = Row(15, 1, 6, 5, 15, 5, 6)
+      val realReturnAvg = Row(15, 1, 6, 2.5, 15, 2.5, 6)
+      val realLapsedAvg = Row(12.5, 1, 5, 1.25, 12.5, 1.25, 5)
+
+      assert(newAvg === realNewAvg)
+      assert(reactAvg === realReactAvg)
+      assert(returnAvg === realReturnAvg)
+      assert(lapsedAvg === realLapsedAvg)
+    }
+  }
+
+  test("segment metrics for 2 time periods") {
+    new SegAvg {
+      val avgDF = BalorApp.calcSegAvg(zeroReturning) getOrElse zeroReturning
+      assert(avgDF != zeroReturning)
+
+      val newAvg1 = avgDF.where(avgDF("TimePeriod") === 1)
+        .select("newCustSpendAvg", "newCustVisitAvg", "newCustItemAvg", "newCustDiscAvg", "newVisitSpendAvg", "newVisitDiscAvg", "newVisitItemAvg")
+        .head()
+      val reactAvg1 = avgDF.where(avgDF("TimePeriod") === 1)
+        .select("reactCustSpendAvg", "reactCustVisitAvg", "reactCustItemAvg", "reactCustDiscAvg", "reactVisitSpendAvg", "reactVisitDiscAvg", "reactVisitItemAvg")
+        .head()
+      val returnAvg1 = avgDF.where(avgDF("TimePeriod") === 1)
+        .select("returnCustSpendAvg", "returnCustVisitAvg", "returnCustItemAvg", "returnCustDiscAvg", "returnVisitSpendAvg", "returnVisitDiscAvg", "returnVisitItemAvg")
+        .head()
+      val lapsedAvg1 = avgDF.where(avgDF("TimePeriod") === 1)
+        .select("lapsedCustSpendAvg", "lapsedCustVisitAvg", "lapsedCustItemAvg", "lapsedCustDiscAvg", "lapsedVisitSpendAvg", "lapsedVisitDiscAvg", "lapsedVisitItemAvg")
+        .head()
+
+      val newAvg2 = avgDF.where(avgDF("TimePeriod") === 2)
+        .select("newCustSpendAvg", "newCustVisitAvg", "newCustItemAvg", "newCustDiscAvg", "newVisitSpendAvg", "newVisitDiscAvg", "newVisitItemAvg")
+        .head()
+      val reactAvg2 = avgDF.where(avgDF("TimePeriod") === 2)
+        .select("reactCustSpendAvg", "reactCustVisitAvg", "reactCustItemAvg", "reactCustDiscAvg", "reactVisitSpendAvg", "reactVisitDiscAvg", "reactVisitItemAvg")
+        .head()
+      val returnAvg2 = avgDF.where(avgDF("TimePeriod") === 2)
+        .select("returnCustSpendAvg", "returnCustVisitAvg", "returnCustItemAvg", "returnCustDiscAvg", "returnVisitSpendAvg", "returnVisitDiscAvg", "returnVisitItemAvg")
+        .head()
+      val lapsedAvg2 = avgDF.where(avgDF("TimePeriod") === 2)
+        .select("lapsedCustSpendAvg", "lapsedCustVisitAvg", "lapsedCustItemAvg", "lapsedCustDiscAvg", "lapsedVisitSpendAvg", "lapsedVisitDiscAvg", "lapsedVisitItemAvg")
+        .head()
+
+      val realNewAvg1 = Row(15, 1.5, 6, 0, 10, 0, 4)
+      val realReactAvg1 = Row(15, 1, 6, 5, 15, 5, 6)
+      val realReturnAvg1 = Row(0, 0, 0, 0, 0, 0, 0)
+      val realLapsedAvg1 = Row(12.5, 1, 5, 1.25, 12.5, 1.25, 5)
+
+      assert(newAvg1 === realNewAvg1)
+      assert(reactAvg1 === realReactAvg1)
+      assert(returnAvg1 === realReturnAvg1)
+      assert(lapsedAvg1 === realLapsedAvg1)
+
+      val realNewAvg2 = Row(10, 1, 4, 0, 10, 0, 4)
+      val realReactAvg2 = Row(15, 1, 6, 5, 15, 5, 6)
+      val realReturnAvg2 = Row(15, 1, 6, 2.5, 15, 2.5, 6)
+      val realLapsedAvg2 = Row(12.5, 1, 5, 2.5, 12.5, 2.5, 5)
+
+      assert(newAvg2 === realNewAvg2)
+      assert(reactAvg2 === realReactAvg2)
+      assert(returnAvg2 === realReturnAvg2)
+      assert(lapsedAvg2 === realLapsedAvg2)
+    }
+  }
+
+  test("segment metrics for 3 time periods, 3rd has 0 for itemQty") {
+    new SegAvg {
+      val avgDF = BalorApp.calcSegAvg(threeTimePeriods) getOrElse zeroReturning
+      assert(avgDF != zeroReturning)
+
+      val newAvg1 = avgDF.where(avgDF("TimePeriod") === 1)
+        .select("newCustSpendAvg", "newCustVisitAvg", "newCustItemAvg", "newCustDiscAvg", "newVisitSpendAvg", "newVisitDiscAvg", "newVisitItemAvg")
+        .head()
+      val reactAvg1 = avgDF.where(avgDF("TimePeriod") === 1)
+        .select("reactCustSpendAvg", "reactCustVisitAvg", "reactCustItemAvg", "reactCustDiscAvg", "reactVisitSpendAvg", "reactVisitDiscAvg", "reactVisitItemAvg")
+        .head()
+      val returnAvg1 = avgDF.where(avgDF("TimePeriod") === 1)
+        .select("returnCustSpendAvg", "returnCustVisitAvg", "returnCustItemAvg", "returnCustDiscAvg", "returnVisitSpendAvg", "returnVisitDiscAvg", "returnVisitItemAvg")
+        .head()
+      val lapsedAvg1 = avgDF.where(avgDF("TimePeriod") === 1)
+        .select("lapsedCustSpendAvg", "lapsedCustVisitAvg", "lapsedCustItemAvg", "lapsedCustDiscAvg", "lapsedVisitSpendAvg", "lapsedVisitDiscAvg", "lapsedVisitItemAvg")
+        .head()
+
+      val newAvg2 = avgDF.where(avgDF("TimePeriod") === 2)
+        .select("newCustSpendAvg", "newCustVisitAvg", "newCustItemAvg", "newCustDiscAvg", "newVisitSpendAvg", "newVisitDiscAvg", "newVisitItemAvg")
+        .head()
+      val reactAvg2 = avgDF.where(avgDF("TimePeriod") === 2)
+        .select("reactCustSpendAvg", "reactCustVisitAvg", "reactCustItemAvg", "reactCustDiscAvg", "reactVisitSpendAvg", "reactVisitDiscAvg", "reactVisitItemAvg")
+        .head()
+      val returnAvg2 = avgDF.where(avgDF("TimePeriod") === 2)
+        .select("returnCustSpendAvg", "returnCustVisitAvg", "returnCustItemAvg", "returnCustDiscAvg", "returnVisitSpendAvg", "returnVisitDiscAvg", "returnVisitItemAvg")
+        .head()
+      val lapsedAvg2 = avgDF.where(avgDF("TimePeriod") === 2)
+        .select("lapsedCustSpendAvg", "lapsedCustVisitAvg", "lapsedCustItemAvg", "lapsedCustDiscAvg", "lapsedVisitSpendAvg", "lapsedVisitDiscAvg", "lapsedVisitItemAvg")
+        .head()
+
+      val newAvg3 = avgDF.where(avgDF("TimePeriod") === 3)
+        .select("newCustSpendAvg", "newCustVisitAvg", "newCustItemAvg", "newCustDiscAvg", "newVisitSpendAvg", "newVisitDiscAvg", "newVisitItemAvg")
+        .head()
+      val reactAvg3 = avgDF.where(avgDF("TimePeriod") === 3)
+        .select("reactCustSpendAvg", "reactCustVisitAvg", "reactCustItemAvg", "reactCustDiscAvg", "reactVisitSpendAvg", "reactVisitDiscAvg", "reactVisitItemAvg")
+        .head()
+      val returnAvg3 = avgDF.where(avgDF("TimePeriod") === 3)
+        .select("returnCustSpendAvg", "returnCustVisitAvg", "returnCustItemAvg", "returnCustDiscAvg", "returnVisitSpendAvg", "returnVisitDiscAvg", "returnVisitItemAvg")
+        .head()
+      val lapsedAvg3 = avgDF.where(avgDF("TimePeriod") === 3)
+        .select("lapsedCustSpendAvg", "lapsedCustVisitAvg", "lapsedCustItemAvg", "lapsedCustDiscAvg", "lapsedVisitSpendAvg", "lapsedVisitDiscAvg", "lapsedVisitItemAvg")
+        .head()
+
+      val realNewAvg1 = Row(15, 1.5, 6, 0, 10, 0, 4)
+      val realReactAvg1 = Row(15, 1, 6, 5, 15, 5, 6)
+      val realReturnAvg1 = Row(0, 0, 0, 0, 0, 0, 0)
+      val realLapsedAvg1 = Row(12.5, 1, 5, 1.25, 12.5, 1.25, 5)
+
+      assert(newAvg1 === realNewAvg1)
+      assert(reactAvg1 === realReactAvg1)
+      assert(returnAvg1 === realReturnAvg1)
+      assert(lapsedAvg1 === realLapsedAvg1)
+
+      val realNewAvg2 = Row(10, 1, 4, 0, 10, 0, 4)
+      val realReactAvg2 = Row(15, 1, 6, 5, 15, 5, 6)
+      val realReturnAvg2 = Row(15, 1, 6, 2.5, 15, 2.5, 6)
+      val realLapsedAvg2 = Row(12.5, 1, 5, 2.5, 12.5, 2.5, 5)
+
+      assert(newAvg2 === realNewAvg2)
+      assert(reactAvg2 === realReactAvg2)
+      assert(returnAvg2 === realReturnAvg2)
+      assert(lapsedAvg2 === realLapsedAvg2)
+
+      val realNewAvg3 = Row(15, 2.6666666666666667, 0, 2, 5.625, .75, 0)
+      val realReactAvg3 = Row(12, 3, 0, 0, 4, 0, 0)
+      val realReturnAvg3 = Row(3, 1, 0, 0, 3, 0, 0)
+      val realLapsedAvg3 = Row(12, 4.5, 0, 2, 2.6666666666666665, .44444444444444444, 0)
+
+      assert(newAvg3 === realNewAvg3)
+      assert(reactAvg3 === realReactAvg3)
+      assert(returnAvg3 === realReturnAvg3)
+      assert(lapsedAvg3 === realLapsedAvg3)
+    }
+  }
 
   //BALOR RATIOS AND RETENTION
   test("return new DF (time period and 3 ratios) with calcs for single period") {
@@ -647,6 +842,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
     new BalorData {
 
       val balorDF = BalorApp.calcBalorRatios(threeBalorSetsOneOverZero) getOrElse threeBalorSetsOneOverZero
+      assert(balorDF != threeBalorSetsOneOverZero)
       val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("custBalor", "txnBalor", "spendBalor").head()
       val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("custBalor", "txnBalor", "spendBalor").head()
       val balor3 = balorDF.where(balorDF("TimePeriod") === 3).select("custBalor", "txnBalor", "spendBalor").head()
@@ -666,9 +862,6 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       assert(retention1 ===.33 +- .01)
       assert(retention2 ===.25 +- .01)
       assert(retention3 === 0)
-
-      balorDF.show()
-
     }
   }
 
@@ -676,7 +869,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
     new BalorData {
 
       val balorDF = BalorApp.calcBalorRatios(avroSchemaResults) getOrElse threeBalorSetsOneOverZero
-      balorDF.show()
+      assert(balorDF != threeBalorSetsOneOverZero)
       val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("custBalor", "txnBalor", "spendBalor").head()
       val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("custBalor", "txnBalor", "spendBalor").head()
       val balor3 = balorDF.where(balorDF("TimePeriod") === 3).select("custBalor", "txnBalor", "spendBalor").head()
@@ -685,9 +878,9 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       val retention2 = balorDF.where(balorDF("TimePeriod") === 2).select("retention").first().getDouble(0)
       val retention3 = balorDF.where(balorDF("TimePeriod") === 3).select("retention").first().getDouble(0)
 
-      val realBalor1 = Row(0.5294117647058824,0.6111111111111112,0.6842105263157895)
+      val realBalor1 = Row(0.5294117647058824, 0.6111111111111112, 0.6842105263157895)
       val realBalor2 = Row(1.3421052631578947, 1.358974358974359, 1.375)
-      val realBalor3 = Row(93.0, 1.5833333333333333,0.991869918699187)
+      val realBalor3 = Row(93.0, 1.5833333333333333, 0.991869918699187)
 
       assert(realBalor1 === balor1)
       assert(realBalor2 === balor2)
@@ -697,7 +890,6 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       assert(retention2 ===.02 +- .01)
       assert(retention3 === 0)
 
-      balorDF.show()
     }
   }
 
@@ -706,9 +898,88 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
   //this test should always be run last, that way if it fails it will be because of the avro and not a previous method
   test("createBalorAvro with 3 time periods of data") {
     new BalorData {
+      val avgDF = BalorApp.calcSegAvg(avroSchemaResults) getOrElse avroSchemaResults
+      val balorDF = BalorApp.calcBalorRatios(avgDF) getOrElse avroSchemaResults
+      val balorAvro = BalorApp.createBalorAvro("jobKey", 25, minMaxDateDF, balorDF).get
 
-      val balorDF = BalorApp.calcBalorRatios(avroSchemaResults) getOrElse threeBalorSetsOneOverZero
+      val balorSets = balorAvro.getBalorSets
+
+      val balor1 = balorSets.get(0)
+      val balor2 = balorSets.get(1)
+      val balor3 = balorSets.get(2)
+
+      //check every field in first timeperiod
+      assert(balor1.getTimePeriod === 1)
+      assert(balor1.getNewCustCount === 2)
+      assert(balor1.getNewTxnCount === 3)
+      assert(balor1.getNewTxnAmt === 40.0)
+      assert(balor1.getNewDiscAmt === 5.0)
+      assert(balor1.getNewItemQty === 6)
+
+      assert(balor1.getReactCustCount === 7)
+      assert(balor1.getReactTxnCount ===  8)
+      assert(balor1.getReactTxnAmt === 90.0)
+      assert(balor1.getReactDiscAmt === 10.0)
+      assert(balor1.getReactItemQty === 11)
+
+      assert(balor1.getReturnCustCount === 12)
+      assert(balor1.getReturnTxnCount === 13)
+      assert(balor1.getReturnTxnAmt === 140.0)
+      assert(balor1.getReturnDiscAmt === 15.0)
+      assert(balor1.getReturnItemQty === 16)
+
+      assert(balor1.getLapsedCustCount === 17)
+      assert(balor1.getLapsedTxnCount === 18)
+      assert(balor1.getLapsedTxnAmt === 190.0)
+      assert(balor1.getLapsedDiscAmt === 20.0)
+      assert(balor1.getLapsedItemQty === 21)
+
+      assert(balor1.getNewCustSpendAvg === 20.0)
+      assert(balor1.getNewCustVisitAvg === 1.5)
+      assert(balor1.getNewCustItemAvg === 3.0)
+      assert(balor1.getNewCustDiscAvg === 2.5)
+      assert(balor1.getNewVisitSpendAvg === 13.333333333333334)
+      assert(balor1.getNewVisitItemAvg === 2.0)
+      assert(balor1.getNewVisitDiscAvg === 1.6666666666666667)
+
+      assert(balor1.getReactCustSpendAvg === 12.857142857142858)
+      assert(balor1.getReactCustVisitAvg === 1.1428571428571428)
+      assert(balor1.getReactCustItemAvg === 1.5714285714285714)
+      assert(balor1.getReactCustDiscAvg === 1.4285714285714286)
+      assert(balor1.getReactVisitSpendAvg === 11.25)
+      assert(balor1.getReactVisitItemAvg === 1.375)
+      assert(balor1.getReactVisitDiscAvg === 1.25)
+
+      assert(balor1.getReturnCustSpendAvg === 11.666666666666666)
+      assert(balor1.getReturnCustVisitAvg === 1.0833333333333333)
+      assert(balor1.getReturnCustItemAvg === 1.3333333333333333)
+      assert(balor1.getReturnCustDiscAvg === 1.25)
+      assert(balor1.getReturnVisitSpendAvg === 10.76923076923077)
+      assert(balor1.getReturnVisitItemAvg === 1.2307692307692308)
+      assert(balor1.getReturnVisitDiscAvg === 1.1538461538461537)
+
+      assert(balor1.getLapsedCustSpendAvg === 11.176470588235293)
+      assert(balor1.getLapsedCustVisitAvg === 1.0588235294117647)
+      assert(balor1.getLapsedCustItemAvg === 1.2352941176470589)
+      assert(balor1.getLapsedCustDiscAvg === 1.1764705882352942)
+      assert(balor1.getLapsedVisitSpendAvg === 10.555555555555555)
+      assert(balor1.getLapsedVisitItemAvg === 1.1666666666666667)
+      assert(balor1.getLapsedVisitDiscAvg == 1.1111111111111112)
+
+      assert(balor1.getCustBalor === 0.5294117647058824)
+      assert(balor1.getTxnBalor === .6111111111111112)
+      assert(balor1.getSpendBalor === 0.6842105263157895)
+      assert(balor1.getRetention === .2222222222222222)
+
+      assert(balor2.getTimePeriod === 2)
+      assert(balor2.getNewCustCount === 23)
+
+      assert(balor3.getTimePeriod === 3)
+      assert(balor3.getNewTxnAmt === 46.0)
+
+      balorDF.show()
+      println(s"This is the avro output: $balorAvro")
+
     }
   }
-
 }

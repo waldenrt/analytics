@@ -181,6 +181,40 @@ object BalorApp {
       .withColumnRenamed("Returning_sum(ITEM_QTY)", "returnItemCount")
   }
 
+  def calcSegAvg(countsDF: DataFrame): Try[DataFrame] = Try {
+
+    countsDF
+      .withColumn("newCustSpendAvg", doubleAvgCalc(countsDF("newTxnAmt"), countsDF("newCustCount")))
+      .withColumn("newCustVisitAvg", longAvgCalc(countsDF("newTxnCount"), countsDF("newCustCount")))
+      .withColumn("newCustItemAvg", longAvgCalc(countsDF("newItemCount"), countsDF("newCustCount")))
+      .withColumn("newCustDiscAvg", doubleAvgCalc(countsDF("newDiscAmt"), countsDF("newCustCount")))
+      .withColumn("newVisitSpendAvg", doubleAvgCalc(countsDF("newTxnAmt"), countsDF("newTxnCount")))
+      .withColumn("newVisitItemAvg", longAvgCalc(countsDF("newItemCount"), countsDF("newTxnCount")))
+      .withColumn("newVisitDiscAvg", doubleAvgCalc(countsDF("newDiscAmt"), countsDF("newTxnCount")))
+      .withColumn("reactCustSpendAvg", doubleAvgCalc(countsDF("reactTxnAmt"), countsDF("reactCustCount")))
+      .withColumn("reactCustVisitAvg", longAvgCalc(countsDF("reactTxnCount"), countsDF("reactCustCount")))
+      .withColumn("reactCustItemAvg", longAvgCalc(countsDF("reactItemCount"), countsDF("reactCustCount")))
+      .withColumn("reactCustDiscAvg", doubleAvgCalc(countsDF("reactDiscAmt"), countsDF("reactCustCount")))
+      .withColumn("reactVisitSpendAvg", doubleAvgCalc(countsDF("reactTxnAmt"), countsDF("reactTxnCount")))
+      .withColumn("reactVisitItemAvg", longAvgCalc(countsDF("reactItemCount"), countsDF("reactTxnCount")))
+      .withColumn("reactVisitDiscAvg", doubleAvgCalc(countsDF("reactDiscAmt"), countsDF("reactTxnCount")))
+      .withColumn("returnCustSpendAvg", doubleAvgCalc(countsDF("returnTxnAmt"), countsDF("returnCustCount")))
+      .withColumn("returnCustVisitAvg", longAvgCalc(countsDF("returnTxnCount"), countsDF("returnCustCount")))
+      .withColumn("returnCustItemAvg", longAvgCalc(countsDF("returnItemCount"), countsDF("returnCustCount")))
+      .withColumn("returnCustDiscAvg", doubleAvgCalc(countsDF("returnDiscAmt"), countsDF("returnCustCount")))
+      .withColumn("returnVisitSpendAvg", doubleAvgCalc(countsDF("returnTxnAmt"), countsDF("returnTxnCount")))
+      .withColumn("returnVisitItemAvg", longAvgCalc(countsDF("returnItemCount"), countsDF("returnTxnCount")))
+      .withColumn("returnVisitDiscAvg", doubleAvgCalc(countsDF("returnDiscAmt"), countsDF("returnTxnCount")))
+      .withColumn("lapsedCustSpendAvg", doubleAvgCalc(countsDF("lapsedTxnAmt"), countsDF("lapsedCustCount")))
+      .withColumn("lapsedCustVisitAvg", longAvgCalc(countsDF("lapsedTxnCount"), countsDF("lapsedCustCount")))
+      .withColumn("lapsedCustItemAvg", longAvgCalc(countsDF("lapsedItemCount"), countsDF("lapsedCustCount")))
+      .withColumn("lapsedCustDiscAvg", doubleAvgCalc(countsDF("lapsedDiscAmt"), countsDF("lapsedCustCount")))
+      .withColumn("lapsedVisitSpendAvg", doubleAvgCalc(countsDF("lapsedTxnAmt"), countsDF("lapsedTxnCount")))
+      .withColumn("lapsedVisitItemAvg", longAvgCalc(countsDF("lapsedItemCount"), countsDF("lapsedTxnCount")))
+      .withColumn("lapsedVisitDiscAvg", doubleAvgCalc(countsDF("lapsedDiscAmt"), countsDF("lapsedTxnCount")))
+
+  }
+
   def calcBalorRatios(countsDF: DataFrame): Try[DataFrame] = Try {
 
     val segWindow = Window.orderBy("TimePeriod")
@@ -192,8 +226,8 @@ object BalorApp {
         countsDF("lapsedTxnCount")))
       .withColumn("spendBalor", balorMoney(countsDF("newTxnAmt"), countsDF("reactTxnAmt"),
         countsDF("lapsedTxnAmt")))
-      .withColumn("retention", retention(countsDF("returnCustCount"), lead("reactCustCount",1).over(segWindow),
-        lead("newCustCount",1).over(segWindow), lead("returnCustCount",1).over(segWindow)))
+      .withColumn("retention", retention(countsDF("returnCustCount"), lead("reactCustCount", 1).over(segWindow),
+        lead("newCustCount", 1).over(segWindow), lead("returnCustCount", 1).over(segWindow)))
       .na.fill(0)
 
     balorDF
@@ -250,13 +284,42 @@ object BalorApp {
       tpd.setLapsedDiscAmt(tpdRow.getDouble(19))
       tpd.setLapsedItemQty(tpdRow.getLong(20))
 
-      tpd.setCustBalor(tpdRow.getDouble(21))
-      tpd.setTxnBalor(tpdRow.getDouble(22))
-      tpd.setSpendBalor(tpdRow.getDouble(23))
-      tpd.setRetention(tpdRow.getDouble(24))
+      tpd.setNewCustSpendAvg(tpdRow.getDouble(21))
+      tpd.setNewCustVisitAvg(tpdRow.getDouble(22))
+      tpd.setNewCustItemAvg(tpdRow.getDouble(23))
+      tpd.setNewCustDiscAvg(tpdRow.getDouble(24))
+      tpd.setNewVisitSpendAvg(tpdRow.getDouble(25))
+      tpd.setNewVisitItemAvg(tpdRow.getDouble(26))
+      tpd.setNewVisitDiscAvg(tpdRow.getDouble(27))
 
-      //averages will need to go here for ease of unit test data and so we don't have to reorder after adding all the
-      //new columns after the pivot...
+      tpd.setReactCustSpendAvg(tpdRow.getDouble(28))
+      tpd.setReactCustVisitAvg(tpdRow.getDouble(29))
+      tpd.setReactCustItemAvg(tpdRow.getDouble(30))
+      tpd.setReactCustDiscAvg(tpdRow.getDouble(31))
+      tpd.setReactVisitSpendAvg(tpdRow.getDouble(32))
+      tpd.setReactVisitItemAvg(tpdRow.getDouble(33))
+      tpd.setReactVisitDiscAvg(tpdRow.getDouble(34))
+
+      tpd.setReturnCustSpendAvg(tpdRow.getDouble(35))
+      tpd.setReturnCustVisitAvg(tpdRow.getDouble(36))
+      tpd.setReturnCustItemAvg(tpdRow.getDouble(37))
+      tpd.setReturnCustDiscAvg(tpdRow.getDouble(38))
+      tpd.setReturnVisitSpendAvg(tpdRow.getDouble(39))
+      tpd.setReturnVisitItemAvg(tpdRow.getDouble(40))
+      tpd.setReturnVisitDiscAvg(tpdRow.getDouble(41))
+
+      tpd.setLapsedCustSpendAvg(tpdRow.getDouble(42))
+      tpd.setLapsedCustVisitAvg(tpdRow.getDouble(43))
+      tpd.setLapsedCustItemAvg(tpdRow.getDouble(44))
+      tpd.setLapsedCustDiscAvg(tpdRow.getDouble(45))
+      tpd.setLapsedVisitSpendAvg(tpdRow.getDouble(46))
+      tpd.setLapsedVisitItemAvg(tpdRow.getDouble(47))
+      tpd.setLapsedVisitDiscAvg(tpdRow.getDouble(48))
+
+      tpd.setCustBalor(tpdRow.getDouble(49))
+      tpd.setTxnBalor(tpdRow.getDouble(50))
+      tpd.setSpendBalor(tpdRow.getDouble(51))
+      tpd.setRetention(tpdRow.getDouble(52))
 
       tempList.add(tpd)
     }
@@ -268,7 +331,7 @@ object BalorApp {
     balor
   }
 
-  def sendBalorError(jobKey: String, className: String, methodName:String, msg: String, exType: String): Unit = {
+  def sendBalorError(jobKey: String, className: String, methodName: String, msg: String, exType: String): Unit = {
     val error = new Error()
     error.setJobKey(jobKey)
     error.setJobType("Balor")
@@ -299,7 +362,6 @@ object BalorApp {
     val delimiter = args(1)
     val jobKey = args(2)
     val cadenceIndex = args(3).toInt
-    val csv = args(4).toBoolean
 
     val jobName = "BalorApp"
     val conf = new SparkConf().setAppName(jobName)
@@ -335,7 +397,9 @@ object BalorApp {
 
       countsDF <- counts(labelDF)
 
-      balorDF <- calcBalorRatios(countsDF)
+      avgDF <- calcSegAvg(countsDF)
+
+      balorDF <- calcBalorRatios(avgDF)
 
       avro <- createBalorAvro(jobKey, txnCount, minMaxDF, balorDF)
     } yield avro
@@ -344,7 +408,6 @@ object BalorApp {
       case Success(avro) => {
         println(s"was a success: $avro")
         BalorProducer.sendBalor("Balor", avro)
-        if(csv)
 
         sc.stop()
       }
@@ -352,7 +415,7 @@ object BalorApp {
         println(s"something went wrong: $ex")
         ex match {
           case i: MatchError => sendBalorError(jobKey, "BalorApp", "MainMethod", "Invalid CadenceValue, must be 1-7", "User")
-          case j: AnalysisException => sendBalorError(jobKey, "BalorApp","loadFile" ,"Incorrect File Format, check column names and delimiter", "User")
+          case j: AnalysisException => sendBalorError(jobKey, "BalorApp", "loadFile", "Incorrect File Format, check column names and delimiter", "User")
           case k: NumberFormatException => sendBalorError(jobKey, "DateUtils", "determineFormat", k.getMessage, "User")
           case ex => sendBalorError(jobKey, "BalorApp", "unknown", ex.toString, "System")
         }
