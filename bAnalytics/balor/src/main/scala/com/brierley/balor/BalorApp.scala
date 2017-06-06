@@ -6,6 +6,7 @@ import java.util
 import com.brierley.avro.schemas.{Balor, Error, TimePeriodData, exception}
 import com.brierley.utils.BalorUDFs._
 import com.brierley.utils.{BalorProducer, _}
+import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.hive.HiveContext
@@ -331,7 +332,7 @@ object BalorApp {
     balor
   }
 
-  def sendBalorError(jobKey: String, className: String, methodName: String, msg: String, exType: String): Unit = {
+  def sendBalorError(jobKey: String, className: String, methodName: String, msg: String, exType: String, propsList: RDD[(String, String)]): Unit = {
     val error = new Error()
     error.setJobKey(jobKey)
     error.setJobType("Balor")
@@ -347,21 +348,11 @@ object BalorApp {
 
     error.setErrorInfo(tempList)
 
-    BalorProducer.sendError(error)
+    BalorProducer.sendError(error, propsList)
 
   }
 
   def main(args: Array[String]): Unit = {
-
-    if (args.length < 4) {
-      sendBalorError("Unknown", "BalorApp", "MainMethod", "Incorrect Usage, not enough args.", "User")
-      System.exit(-1)
-    }
-
-    val fileLocation = args(0)
-    val delimiter = args(1)
-    val jobKey = args(2)
-    val cadenceIndex = args(3).toInt
 
     val jobName = "BalorApp"
     val conf = new SparkConf().setAppName(jobName)
@@ -372,6 +363,22 @@ object BalorApp {
 
     val sc = new SparkContext(conf)
     val sqlCtx = new HiveContext(sc)
+
+    val kafkaProps = sc.textFile("kafkaProps.txt")
+    val propsOnly = kafkaProps.filter(_.contains("analytics"))
+      .map(_.split(" = "))
+      .keyBy(_(0))
+      .mapValues(_(1))
+
+    if (args.length < 4) {
+      sendBalorError("Unknown", "BalorApp", "MainMethod", "Incorrect Usage, not enough args.", "User", propsOnly)
+      System.exit(-1)
+    }
+
+    val fileLocation = args(0)
+    val delimiter = args(1)
+    val jobKey = args(2)
+    val cadenceIndex = args(3).toInt
 
     val finalDF = for {
       cadence <- Try(cadenceIndex match {
@@ -407,17 +414,17 @@ object BalorApp {
     finalDF match {
       case Success(avro) => {
         println(s"was a success: $avro")
-        BalorProducer.sendBalor("Balor", avro)
+        BalorProducer.sendBalor("balor", propsOnly, avro)
 
         sc.stop()
       }
       case Failure(ex) => {
         println(s"something went wrong: $ex")
         ex match {
-          case i: MatchError => sendBalorError(jobKey, "BalorApp", "MainMethod", "Invalid CadenceValue, must be 1-7", "User")
-          case j: AnalysisException => sendBalorError(jobKey, "BalorApp", "loadFile", "Incorrect File Format, check column names and delimiter", "User")
-          case k: NumberFormatException => sendBalorError(jobKey, "DateUtils", "determineFormat", k.getMessage, "User")
-          case ex => sendBalorError(jobKey, "BalorApp", "unknown", ex.toString, "System")
+          case i: MatchError => sendBalorError(jobKey, "BalorApp", "MainMethod", "Invalid CadenceValue, must be 1-7", "User", propsOnly)
+          case j: AnalysisException => sendBalorError(jobKey, "BalorApp", "loadFile", "Incorrect File Format, check column names and delimiter", "User", propsOnly)
+          case k: NumberFormatException => sendBalorError(jobKey, "DateUtils", "determineFormat", k.getMessage, "User", propsOnly)
+          case ex => sendBalorError(jobKey, "BalorApp", "unknown", ex.toString, "System", propsOnly)
         }
 
         sc.stop()

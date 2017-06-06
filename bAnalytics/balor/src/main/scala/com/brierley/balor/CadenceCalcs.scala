@@ -5,6 +5,7 @@ import java.util
 
 import com.brierley.avro.schemas.{Cadence, Error, FreqRow, exception}
 import com.brierley.utils._
+import org.apache.spark.rdd.RDD
 import org.apache.spark.sql._
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
@@ -19,7 +20,7 @@ import scala.util.{Failure, Success, Try}
   */
 object CadenceCalcs {
 
-  def loadFile(sqlCtx: HiveContext, delimiter: String, fileLocation: String): Try[DataFrame] = Try{
+  def loadFile(sqlCtx: HiveContext, delimiter: String, fileLocation: String): Try[DataFrame] = Try {
 
     val orgFile = sqlCtx
       .read
@@ -213,7 +214,7 @@ object CadenceCalcs {
 
   }
 
-  def sendCadError(jobKey: String, className: String, methodName:String, msg: String, exType: String): Unit = {
+  def sendCadError(jobKey: String, className: String, methodName: String, msg: String, exType: String, propsList: RDD[(String, String)]): Unit = {
     val error = new Error()
     error.setJobKey(jobKey)
     error.setJobType("Cadence")
@@ -229,26 +230,11 @@ object CadenceCalcs {
 
     error.setErrorInfo(tempList)
 
-    BalorProducer.sendError(error)
+    BalorProducer.sendError(error, propsList)
 
   }
 
   def main(args: Array[String]): Unit = {
-
-    if (args.length < 4) {
-      sendCadError("Unknown", "CadenceCalcs", "MainMethod", "Incorrect Usage, not enough args.", "User")
-      System.exit(-1)
-    }
-
-    val fileLocation = args(0)
-    val delimiter = args(1)
-    val jobKey = args(2)
-
-    val percentile = args(3).toDouble
-    if (percentile < .75 || percentile > .95) {
-      sendCadError(jobKey, "CadenceCalcs", "MainMethod", "Incorrect Usage, percentile is out of range .75 - .95", "User")
-      System.exit(-1)
-    }
 
     val jobName = "CadenceCalcs"
     val conf = new SparkConf().setAppName(jobName)
@@ -259,6 +245,28 @@ object CadenceCalcs {
 
     val sc = new SparkContext(conf)
     val sqlCtx = new HiveContext(sc)
+
+    val kafkaProps = sc.textFile("kafkaProps.txt")
+    val propsOnly = kafkaProps.filter(_.contains("analytics"))
+      .map(_.split(" = "))
+      .keyBy(_(0))
+      .mapValues(_(1))
+
+
+    if (args.length < 4) {
+      sendCadError("Unknown", "CadenceCalcs", "MainMethod", "Incorrect Usage, not enough args.", "User", propsOnly)
+      System.exit(-1)
+    }
+
+    val fileLocation = args(0)
+    val delimiter = args(1)
+    val jobKey = args(2)
+
+    val percentile = args(3).toDouble
+    if (percentile < .75 || percentile > .95) {
+      sendCadError(jobKey, "CadenceCalcs", "MainMethod", "Incorrect Usage, percentile is out of range .75 - .95", "User", propsOnly)
+      System.exit(-1)
+    }
 
     val results = for {
 
@@ -288,16 +296,16 @@ object CadenceCalcs {
 
     results match {
       case Success(avro) => {
-        BalorProducer.sendBalor("CadenceCalcs", avro)
+        BalorProducer.sendBalor("cadence", propsOnly, avro)
         println(avro)
         sc.stop()
       }
       case Failure(ex) => {
         ex match {
-          case i: MatchError => sendCadError(jobKey, "Cadence", "calcNumTimePeriods","Invalid CadenceValue from enum", "System")
-          case j: AnalysisException => sendCadError(jobKey, "Cadence","loadFile" ,"Incorrect File Format, check column names and delimiter", "User")
-          case k: NumberFormatException => sendCadError(jobKey, "DateUtils", "determineFormat", k.getMessage, "User")
-          case e => sendCadError(jobKey, "Cadence", "unknown", ex.toString, "System")
+          case i: MatchError => sendCadError(jobKey, "Cadence", "calcNumTimePeriods", "Invalid CadenceValue from enum", "System", propsOnly)
+          case j: AnalysisException => sendCadError(jobKey, "Cadence", "loadFile", "Incorrect File Format, check column names and delimiter", "User", propsOnly)
+          case k: NumberFormatException => sendCadError(jobKey, "DateUtils", "determineFormat", k.getMessage, "User", propsOnly)
+          case e => sendCadError(jobKey, "Cadence", "unknown", ex.toString, "System", propsOnly)
         }
         sc.stop()
         System.exit(-1)
