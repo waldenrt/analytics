@@ -1,0 +1,12 @@
+#CHANGES TO THIS FILE WILL NOT BE REFLECTED IN THE JOB
+#THE PROPERTY FILE USED IN THE JOB LIVES IN THE CORRESPONDING ENVIRONMENTS HDFS
+
+#IF CHANGES ARE MADE IN HDFS PLEASE UPDATE THIS FILE TO KEEP EVERYTHING IN SYNC
+
+#DEV SERVER IS: 10.4.3.21
+
+analytics.bootstrap.servers = 10.4.3.61:9092,10.4.3.62:9092,10.4.3.63:9092
+analytics.schema.registry.url = http://10.4.3.63:8081
+analytics.error.topic = ErrorLog
+analytics.cadence.topic = Cadence
+analytics.balor.topic = Balor

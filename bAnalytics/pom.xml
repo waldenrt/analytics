@@ -8,6 +8,7 @@
   <modules>
     <module>bRelevant</module>
     <module>balor</module>
+      <module>avroschemas</module>
   </modules>
 
   <name>${project.artifactId}</name>
@@ -95,6 +96,18 @@
       <groupId>com.databricks</groupId>
       <artifactId>spark-csv_2.10</artifactId>
       <version>1.4.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.databricks</groupId>
+      <artifactId>spark-avro_2.10</artifactId>
+      <version>2.0.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka-clients</artifactId>
+      <version>0.10.2.0-cp1</version>
     </dependency>
 
   </dependencies>

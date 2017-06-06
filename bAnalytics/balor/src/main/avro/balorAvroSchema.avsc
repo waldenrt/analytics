@@ -1,0 +1,247 @@
+{
+	"type": "record",
+	"namespace": "com.brierley.avro.schemas",
+	"name": "Balor",
+	"fields": [
+		{"name": "jobKey",
+		 "type": "string",
+		 "doc": "unique job identifier to find results in hbase"},
+		 
+		{"name": "numRecords",
+		 "type": "long",
+		 "doc": "Total number of records in the given dataset used to calculate the cadence"},
+		 
+		{"name": "completionTime",
+		 "type": "string",
+		 "doc": "The time the spark job finished and sent the record."},
+		 
+		{"name": "minDateBalor",
+		 "type": "string",
+		 "doc": "Beginning date after trimming datafile to match cadence.  Whole month/week"},
+		 
+		{"name": "maxDateBalor",
+		 "type": "string",
+		 "doc": "Last date after trimming datafile to match cadence.  Whole month/week"},
+		 
+		{"name": "balorSets",
+		 "type": {"type": "array",
+		 "items": {
+		 	"name": "TimePeriodData",
+		 	"type": "record",
+		 	"fields": [
+				{"name": "timePeriod",
+				 "type": "int",
+				 "doc": "The Balor time period, calculated ascending"},
+
+				{"name": "newCustCount",
+				 "type": "long",
+				 "doc": "The count of customers that are considered new in the given Balor time period.  To be considered new the cust_id must not appear in the previous 2 cadence periods"},
+
+				{"name": "newTxnCount",
+				 "type": "long",
+				 "doc": "The number of transactions made by NEW customers in the given Balor time period."},
+
+				{"name": "newTxnAmt",
+				 "type": "double",
+				 "doc": "The total spend of transactions made by NEW customers in the given Balor time period."},
+
+				{"name": "newDiscAmt",
+				 "type": "double",
+				 "doc": "The total discount amount of transactions made by NEW customers in the given Balor time period."},
+
+				{"name": "newItemQty",
+				 "type": "long",
+				 "doc": "The total number of items purchased by all NEW customers in the given Balor time period."},
+
+				{"name": "newCustSpendAvg",
+				 "type": "double",
+				 "doc": "The average sales per NEW customer in the given time period."},
+
+				{"name": "newCustVisitAvg",
+				 "type": "double",
+				 "doc": "The average number of visits per NEW customer in the given time period."},
+
+				{"name": "newCustItemAvg",
+				 "type": "double",
+				 "doc": "The average number of purchased items per NEW customer in the given time period."},
+
+				{"name": "newCustDiscAvg",
+				 "type": "double",
+				 "doc": "The average discount amount per NEW customer in the given time period."},
+
+				{"name": "newVisitSpendAvg",
+				 "type": "double",
+				 "doc": "The average sales per visit for NEW customers in the given time period."},
+
+				{"name": "newVisitDiscAvg",
+				 "type": "double",
+				 "doc": "The average discount amount per visit for NEW customers in the given time period."},
+
+				{"name": "newVisitItemAvg",
+				 "type": "double",
+				 "doc": "The average number of purchased items per visit for NEW customers in the given time period."},
+
+				{"name": "reactCustCount",
+				 "type": "long",
+				 "doc": "The count of customers that are considered REACTIVATED in the given Balor time period.  To be considered reactivated the cust_id must appear in the current and t-2 time period"},
+
+				{"name": "reactTxnCount",
+				 "type": "long",
+				 "doc": "The number of transactions made by REACTIVATED customers in the given Balor time period."},
+
+				{"name": "reactTxnAmt",
+				 "type": "double",
+				 "doc": "The total spend of transactions made by REACTIVATED customers in the given Balor time period."},
+
+				{"name": "reactDiscAmt",
+				 "type": "double",
+				 "doc": "The total discount amount of transactions made by REACTIVATED customers in the given Balor time period."},
+
+				{"name": "reactItemQty",
+				 "type": "long",
+				 "doc": "The total number of items purchased by all REACTIVATED customers in the given Balor time period."},
+
+				{"name": "reactCustSpendAvg",
+				 "type": "double",
+				 "doc": "The average sales per REACTIVATED customer in the given time period."},
+
+				{"name": "reactCustVisitAvg",
+				 "type": "double",
+				 "doc": "The average number of visits per REACTIVATED customer in the given time period."},
+
+				{"name": "reactCustItemAvg",
+				 "type": "double",
+				 "doc": "The average number of purchased items per REACTIVATED customer in the given time period."},
+
+				{"name": "reactCustDiscAvg",
+				 "type": "double",
+				 "doc": "The average discount amount per REACTIVATED customer in the given time period."},
+
+				{"name": "reactVisitSpendAvg",
+				 "type": "double",
+				 "doc": "The average sales per visit for REACTIVATED customers in the given time period."},
+
+				{"name": "reactVisitDiscAvg",
+				 "type": "double",
+				 "doc": "The average discount amount per visit for REACTIVATED customers in the given time period."},
+
+				{"name": "reactVisitItemAvg",
+				 "type": "double",
+				 "doc": "The average number of purchased items per visit for REACTIVATED customers in the given time period."},
+
+				{"name": "returnCustCount",
+				 "type": "long",
+				 "doc": "The count of customers that are considered RETURNING in the given Balor time period.  To be considered returning the cust_id must appear in the 2 most recent time periods, or all 3"},
+
+				{"name": "returnTxnCount",
+				 "type": "long",
+				 "doc": "The number of transactions made by RETURNING customers in the given Balor time period."},
+
+				{"name": "returnTxnAmt",
+				 "type": "double",
+				 "doc": "The total spend of transactions made by RETURNING customers in the given Balor time period."},
+
+				{"name": "returnDiscAmt",
+				 "type": "double",
+				 "doc": "The total discount amount of transactions made by RETURNING customers in the given Balor time period."},
+
+				{"name": "returnItemQty",
+				 "type": "long",
+				 "doc": "The total number of items purchased by all RETURNING customers in the given Balor time period."},
+
+				{"name": "returnCustSpendAvg",
+				 "type": "double",
+				 "doc": "The average sales per RETURNING customer in the given time period."},
+
+				{"name": "returnCustVisitAvg",
+				 "type": "double",
+				 "doc": "The average number of visits per RETURNING customer in the given time period."},
+
+				{"name": "returnCustItemAvg",
+				 "type": "double",
+				 "doc": "The average number of purchased items per RETURNING customer in the given time period."},
+
+				{"name": "returnCustDiscAvg",
+				 "type": "double",
+				 "doc": "The average discount amount per RETURNING customer in the given time period."},
+
+				{"name": "returnVisitSpendAvg",
+				 "type": "double",
+				 "doc": "The average sales per visit for RETURNING customers in the given time period."},
+
+				{"name": "returnVisitDiscAvg",
+				 "type": "double",
+				 "doc": "The average discount amount per visit for RETURNING customers in the given time period."},
+
+				{"name": "returnVisitItemAvg",
+				 "type": "double",
+				 "doc": "The average number of purchased items per visit for RETURNING customers in the given time period."},
+
+				{"name": "lapsedCustCount",
+				 "type": "long",
+				 "doc": "The count of customers that are considered LAPSED in the given Balor time period.  To be considered lapsed the cust_id cannot appear in the current time period"},
+
+				{"name": "lapsedTxnCount",
+				 "type": "long",
+				 "doc": "The number of transactions made by LAPSED customers in the given Balor time period."},
+
+				{"name": "lapsedTxnAmt",
+				 "type": "double",
+				 "doc": "The total spend of transactions made by LAPSED customers in the given Balor time period."},
+
+				{"name": "lapsedDiscAmt",
+				 "type": "double",
+				 "doc": "The total discount amount of transactions made by LAPSED customers in the given Balor time period."},
+
+				{"name": "lapsedItemQty",
+				 "type": "long",
+				 "doc": "The total number of items purchased by all LAPSED customers in the given Balor time period."},
+
+				{"name": "lapsedCustSpendAvg",
+				 "type": "double",
+				 "doc": "The average sales per LAPSED customer in the given time period."},
+
+				{"name": "lapsedCustVisitAvg",
+				 "type": "double",
+				 "doc": "The average number of visits per LAPSED customer in the given time period."},
+
+				{"name": "lapsedCustItemAvg",
+				 "type": "double",
+				 "doc": "The average number of purchased items per LAPSED customer in the given time period."},
+
+				{"name": "lapsedCustDiscAvg",
+				 "type": "double",
+				 "doc": "The average discount amount per LAPSED customer in the given time period."},
+
+				{"name": "lapsedVisitSpendAvg",
+				 "type": "double",
+				 "doc": "The average sales per visit for LAPSED customers in the given time period."},
+
+				{"name": "lapsedVisitDiscAvg",
+				 "type": "double",
+				 "doc": "The average discount amount per visit for LAPSED customers in the given time period."},
+
+				{"name": "lapsedVisitItemAvg",
+				 "type": "double",
+				 "doc": "The average number of purchased items per visit for LAPSED customers in the given time period."},
+
+				{"name": "custBalor",
+				 "type": "double",
+				 "doc": "The balor ratio for customer counts. ratio calculated: (new + reactivated) / lapsed"},
+
+				{"name": "txnBalor",
+				 "type": "double",
+				 "doc": "The balor ratio for transaction counts per customer segment. ratio calculated: (new + reactivated) / lapsed"},
+
+				{"name": "spendBalor",
+				 "type": "double",
+				 "doc": "The balor ratio for the total spend for each customer segment. ratio calculated: (new + reactivated) / lapsed"},
+
+				{"name": "retention",
+				 "type": "double",
+				 "doc": "The retention rate: (Returning in (t))/(new + react + return in (t-1))"}
+				 ]
+				}}
+			}
+		]
+}
