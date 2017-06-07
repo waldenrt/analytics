@@ -81,7 +81,7 @@ object BalorApp {
         .withColumn("Year", year(dateDF("Date")))
         .withColumn("MaxMonth", month(col("max(Date)")))
         .withColumn("MaxYear", year(col("max(Date)")))
-        .withColumn("TimePeriod", ((col("MaxMonth") - col("Month")) + (col("MaxYear") - col("Year")) * 12).cast(IntegerType) + 1)
+        .withColumn("TimePeriod", (((col("MaxMonth") - col("Month")) + (col("MaxYear") - col("Year")) * 12) / cadence.periodDivisor).cast(IntegerType) + 1)
         .sort("TimePeriod")
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date", "TimePeriod")
     }
