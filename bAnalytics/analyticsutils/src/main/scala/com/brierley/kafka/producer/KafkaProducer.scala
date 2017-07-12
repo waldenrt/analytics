@@ -1,4 +1,4 @@
-package com.brierley.utils
+package com.brierley.kafka.producer
 
 import java.util.Properties
 
@@ -9,9 +9,9 @@ import org.apache.spark.rdd.RDD
 /**
   * Created by amerrill on 3/30/17.
   */
-object BalorProducer {
+object KafkaProducer {
 
-  def sendBalor(topicProp: String, propsList: RDD[(String, String)], results: GenericRecord): Unit = {
+  def sendSucess(topicProp: String, propsList: RDD[(String, String)], results: GenericRecord): Unit = {
 
     val topic = propsList.lookup("analytics." + topicProp + ".topic").head
     val brokers = propsList.lookup("analytics.bootstrap.servers").head

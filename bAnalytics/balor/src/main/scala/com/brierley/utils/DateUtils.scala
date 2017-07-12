@@ -152,4 +152,42 @@ object DateUtils {
       .filter(((datediff(col("max(Date)"), dateDF("Date")) + 1) / numDays) <= col("End"))
   }
 
+  def trimMonths(dateDF: DataFrame): DataFrame = {
+    val maxMinDF = dateDF.select(max("Date"), min("Date"))
+      .withColumn("maxDay", dayofmonth(col("max(Date)")))
+      .withColumn("lastDay", last_day(col("max(Date)")))
+      .withColumn("minDay", dayofmonth(col("min(Date)")))
+      .head()
+
+    val maxDate = maxMinDF.getAs[java.sql.Date](0)
+    val minDate = maxMinDF.getAs[java.sql.Date](1).toLocalDate
+    val maxDay = maxMinDF.getInt(2)
+    val lastDay = maxMinDF.getAs[java.sql.Date](3)
+    val minDay = maxMinDF.getInt(4)
+    val minEnd = Date.valueOf(minDate.`with`(lastDayOfMonth()))
+
+    if ((maxDate == lastDay && minDay == 1) || (maxDay + 1 == minDay)) {
+      dateDF
+    }
+    else if (maxDate == lastDay) {
+      dateDF
+        .select("*")
+        .where(dateDF("Date") > minEnd)
+    }
+    else {
+      if (minDay > maxDay + 1) {
+        val minMaxDayMore = Date.valueOf(minDate.plusMonths(1).withDayOfMonth(maxDay))
+        dateDF
+          .select("*")
+          .where(dateDF("Date") >= minMaxDayMore)
+      }
+      else {
+        val minMaxDayLess = Date.valueOf(minDate.withDayOfMonth(maxDay))
+        dateDF
+          .select("*")
+          .where(dateDF("Date") >= minMaxDayLess)
+      }
+    }
+  }
+
 }
