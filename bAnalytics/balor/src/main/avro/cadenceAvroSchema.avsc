@@ -14,6 +14,10 @@
 		{"name": "singleVisit",
 		 "type": "long",
 		 "doc": "Number of customers with exactly 1 transaction in the entire dataset."},
+
+		{"name": "totalCusts",
+		 "type": "long",
+		 "doc" : "Total number of unique customers for entire dataset."},
 		 
 		{"name": "completionTime",
 		 "type": "string",
