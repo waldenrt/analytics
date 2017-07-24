@@ -1,5 +1,8 @@
 package com.brierley.balor.tests
 
+import java.util
+
+import com.brierley.avro.schemas.TimePeriodData
 import com.brierley.balor.BalorApp
 import com.brierley.utils.{OneMonth, TwoWeeks}
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
@@ -522,7 +525,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
   test("One of each label, single transaction per period") {
     new ClassLabelData {
       val labelDF = BalorApp.assignSegmentLabel(oneNewLapsedDeeplyLapsedReturningReact) getOrElse threeOverTwo
-      val labelCol = labelDF.filter(labelDF("TimePeriod") === 1).select("Label").map(_ (0)).collect()
+      val labelCol = labelDF.filter(labelDF("TimePeriod") === 1).select("Label").map(_(0)).collect()
 
       val labels = Array("New", "Reactivated", "Returning", "Lapsed")
 
@@ -917,7 +920,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       assert(balor1.getNewItemQty === 6)
 
       assert(balor1.getReactCustCount === 7)
-      assert(balor1.getReactTxnCount ===  8)
+      assert(balor1.getReactTxnCount === 8)
       assert(balor1.getReactTxnAmt === 90.0)
       assert(balor1.getReactDiscAmt === 10.0)
       assert(balor1.getReactItemQty === 11)

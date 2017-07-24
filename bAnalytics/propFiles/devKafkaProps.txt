@@ -5,8 +5,8 @@
 
 #DEV SERVER IS: 10.4.3.21
 
-analytics.bootstrap.servers = 10.4.3.61:9092,10.4.3.62:9092,10.4.3.63:9092
-analytics.schema.registry.url = http://10.4.3.63:8081
-analytics.error.topic = ErrorLog
-analytics.cadence.topic = Cadence
-analytics.balor.topic = Balor
+analytics.bootstrap.servers = "10.4.3.61:9092,10.4.3.62:9092,10.4.3.63:9092"
+analytics.schema.registry.url = "http://10.4.3.63:8081"
+analytics.error.topic = "ErrorLog"
+analytics.cadence.topic = "Cadence"
+analytics.balor.topic = "Balor"
