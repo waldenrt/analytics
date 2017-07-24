@@ -35,15 +35,20 @@ object CadenceCalcs {
 
   }
 
-  def basicCounts(orgDF: DataFrame): Try[Long] = Try {
+  def singleVisitCount(orgDF: DataFrame): Try[Long] = Try {
 
-    val singleVisitCount = orgDF
+    val singleVisit = orgDF
       .groupBy("CUST_ID")
       .agg(count("TXN_ID"))
       .filter(col("count(TXN_ID)") === 1)
       .count()
 
-    singleVisitCount
+
+    singleVisit
+  }
+
+  def totalCustCount(orgDF: DataFrame): Try[Long] = Try {
+    orgDF.select("CUST_ID").distinct().count()
   }
 
   def dateInfo(dateDF: DataFrame): Try[DataFrame] = Try {
@@ -168,13 +173,14 @@ object CadenceCalcs {
 
   }
 
-  def createCadenceAvro(jobKey: String, numRecords: Long, singleVisit: Long, rawCadence: Double, normalCadence: String,
+  def createCadenceAvro(jobKey: String, numRecords: Long, singleVisit: Long, totalCust: Long, rawCadence: Double, normalCadence: String,
                         numTimePeriods: Int, percentile: Double, minMaxDF: DataFrame, freqTable: DataFrame): Try[Cadence] = Try {
 
     val cadAvro = new Cadence()
     cadAvro.setJobKey(jobKey)
     cadAvro.setNumRecords(numRecords)
     cadAvro.setSingleVisit(singleVisit)
+    cadAvro.setTotalCusts(totalCust)
     cadAvro.setRawCadence(rawCadence)
     cadAvro.setNormalizedCadence(normalCadence)
     cadAvro.setNumTimePeriods(numTimePeriods)
@@ -272,7 +278,9 @@ object CadenceCalcs {
 
       orgFile <- loadFile(sqlCtx, delimiter, fileLocation)
 
-      singleVisitCount <- basicCounts(orgFile)
+      singleVisitCount <- singleVisitCount(orgFile)
+
+      totalCustCount <- totalCustCount(orgFile)
 
       rowCount = orgFile.count()
 
@@ -290,7 +298,7 @@ object CadenceCalcs {
 
       freqTable <- createFreqTable(cadenceDF, cadence)
 
-      cadenceAvro <- createCadenceAvro(jobKey, rowCount, singleVisitCount, rawCadence, cadence.name, timePeriods, percentile, minMaxDateDF, freqTable)
+      cadenceAvro <- createCadenceAvro(jobKey, rowCount, singleVisitCount, totalCustCount, rawCadence, cadence.name, timePeriods, percentile, minMaxDateDF, freqTable)
 
     } yield cadenceAvro
 

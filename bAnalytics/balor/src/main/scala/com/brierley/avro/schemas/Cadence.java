@@ -10,8 +10,8 @@ import org.apache.avro.specific.SpecificData;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class Cadence extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 642956449501318342L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Cadence\",\"namespace\":\"com.brierley.avro.schemas\",\"fields\":[{\"name\":\"jobKey\",\"type\":\"string\",\"doc\":\"unique job identifier to find results in hbase\"},{\"name\":\"numRecords\",\"type\":\"long\",\"doc\":\"Total number of records in the given dataset used to calculate the cadence\"},{\"name\":\"singleVisit\",\"type\":\"long\",\"doc\":\"Number of customers with exactly 1 transaction in the entire dataset.\"},{\"name\":\"completionTime\",\"type\":\"string\",\"doc\":\"The time the spark job finished and sent the record.\"},{\"name\":\"minDateCadence\",\"type\":\"string\",\"doc\":\"Beginning date of entire date set used to calculate the cadence\"},{\"name\":\"maxDateCadence\",\"type\":\"string\",\"doc\":\"Last date of entire data set used to calculate the cadence\"},{\"name\":\"rawCadence\",\"type\":\"double\",\"doc\":\"The cadence calculated with the given percentage before rounding to an approved timeperiod.\"},{\"name\":\"normalizedCadence\",\"type\":\"string\",\"doc\":\"The cadence value that will be used when running the actual balor calculations, this always rounds up.\"},{\"name\":\"numTimePeriods\",\"type\":\"int\",\"doc\":\"The number of time periods that are present in the given data file using the normalized cadence value.\"},{\"name\":\"percentile\",\"type\":\"double\",\"doc\":\"The percentile that was used in calculating the cadence. Defaults to .80, but power users can change it.\"},{\"name\":\"FreqTable\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"FreqRow\",\"fields\":[{\"name\":\"cadence\",\"type\":\"int\",\"doc\":\"The cadence value for the following frequencies in days\"},{\"name\":\"frequency\",\"type\":\"long\",\"doc\":\"The number of times that the cadence appears in the dataset\"},{\"name\":\"cumFreq\",\"type\":\"long\",\"doc\":\"The cumulative frequency of the all previous cadence values.\"}]}}}]}");
+  private static final long serialVersionUID = 8638389832659097298L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Cadence\",\"namespace\":\"com.brierley.avro.schemas\",\"fields\":[{\"name\":\"jobKey\",\"type\":\"string\",\"doc\":\"unique job identifier to find results in hbase\"},{\"name\":\"numRecords\",\"type\":\"long\",\"doc\":\"Total number of records in the given dataset used to calculate the cadence\"},{\"name\":\"singleVisit\",\"type\":\"long\",\"doc\":\"Number of customers with exactly 1 transaction in the entire dataset.\"},{\"name\":\"totalCusts\",\"type\":\"long\",\"doc\":\"Total number of unique customers for entire dataset.\"},{\"name\":\"completionTime\",\"type\":\"string\",\"doc\":\"The time the spark job finished and sent the record.\"},{\"name\":\"minDateCadence\",\"type\":\"string\",\"doc\":\"Beginning date of entire date set used to calculate the cadence\"},{\"name\":\"maxDateCadence\",\"type\":\"string\",\"doc\":\"Last date of entire data set used to calculate the cadence\"},{\"name\":\"rawCadence\",\"type\":\"double\",\"doc\":\"The cadence calculated with the given percentage before rounding to an approved timeperiod.\"},{\"name\":\"normalizedCadence\",\"type\":\"string\",\"doc\":\"The cadence value that will be used when running the actual balor calculations, this always rounds up.\"},{\"name\":\"numTimePeriods\",\"type\":\"int\",\"doc\":\"The number of time periods that are present in the given data file using the normalized cadence value.\"},{\"name\":\"percentile\",\"type\":\"double\",\"doc\":\"The percentile that was used in calculating the cadence. Defaults to .80, but power users can change it.\"},{\"name\":\"FreqTable\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"FreqRow\",\"fields\":[{\"name\":\"cadence\",\"type\":\"int\",\"doc\":\"The cadence value for the following frequencies in days\"},{\"name\":\"frequency\",\"type\":\"long\",\"doc\":\"The number of times that the cadence appears in the dataset\"},{\"name\":\"cumFreq\",\"type\":\"long\",\"doc\":\"The cumulative frequency of the all previous cadence values.\"}]}}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** unique job identifier to find results in hbase */
   @Deprecated public java.lang.CharSequence jobKey;
@@ -19,6 +19,8 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
   @Deprecated public long numRecords;
   /** Number of customers with exactly 1 transaction in the entire dataset. */
   @Deprecated public long singleVisit;
+  /** Total number of unique customers for entire dataset. */
+  @Deprecated public long totalCusts;
   /** The time the spark job finished and sent the record. */
   @Deprecated public java.lang.CharSequence completionTime;
   /** Beginning date of entire date set used to calculate the cadence */
@@ -47,6 +49,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
    * @param jobKey unique job identifier to find results in hbase
    * @param numRecords Total number of records in the given dataset used to calculate the cadence
    * @param singleVisit Number of customers with exactly 1 transaction in the entire dataset.
+   * @param totalCusts Total number of unique customers for entire dataset.
    * @param completionTime The time the spark job finished and sent the record.
    * @param minDateCadence Beginning date of entire date set used to calculate the cadence
    * @param maxDateCadence Last date of entire data set used to calculate the cadence
@@ -56,10 +59,11 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
    * @param percentile The percentile that was used in calculating the cadence. Defaults to .80, but power users can change it.
    * @param FreqTable The new value for FreqTable
    */
-  public Cadence(java.lang.CharSequence jobKey, java.lang.Long numRecords, java.lang.Long singleVisit, java.lang.CharSequence completionTime, java.lang.CharSequence minDateCadence, java.lang.CharSequence maxDateCadence, java.lang.Double rawCadence, java.lang.CharSequence normalizedCadence, java.lang.Integer numTimePeriods, java.lang.Double percentile, java.util.List<com.brierley.avro.schemas.FreqRow> FreqTable) {
+  public Cadence(java.lang.CharSequence jobKey, java.lang.Long numRecords, java.lang.Long singleVisit, java.lang.Long totalCusts, java.lang.CharSequence completionTime, java.lang.CharSequence minDateCadence, java.lang.CharSequence maxDateCadence, java.lang.Double rawCadence, java.lang.CharSequence normalizedCadence, java.lang.Integer numTimePeriods, java.lang.Double percentile, java.util.List<com.brierley.avro.schemas.FreqRow> FreqTable) {
     this.jobKey = jobKey;
     this.numRecords = numRecords;
     this.singleVisit = singleVisit;
+    this.totalCusts = totalCusts;
     this.completionTime = completionTime;
     this.minDateCadence = minDateCadence;
     this.maxDateCadence = maxDateCadence;
@@ -77,14 +81,15 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
     case 0: return jobKey;
     case 1: return numRecords;
     case 2: return singleVisit;
-    case 3: return completionTime;
-    case 4: return minDateCadence;
-    case 5: return maxDateCadence;
-    case 6: return rawCadence;
-    case 7: return normalizedCadence;
-    case 8: return numTimePeriods;
-    case 9: return percentile;
-    case 10: return FreqTable;
+    case 3: return totalCusts;
+    case 4: return completionTime;
+    case 5: return minDateCadence;
+    case 6: return maxDateCadence;
+    case 7: return rawCadence;
+    case 8: return normalizedCadence;
+    case 9: return numTimePeriods;
+    case 10: return percentile;
+    case 11: return FreqTable;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -96,14 +101,15 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
     case 0: jobKey = (java.lang.CharSequence)value$; break;
     case 1: numRecords = (java.lang.Long)value$; break;
     case 2: singleVisit = (java.lang.Long)value$; break;
-    case 3: completionTime = (java.lang.CharSequence)value$; break;
-    case 4: minDateCadence = (java.lang.CharSequence)value$; break;
-    case 5: maxDateCadence = (java.lang.CharSequence)value$; break;
-    case 6: rawCadence = (java.lang.Double)value$; break;
-    case 7: normalizedCadence = (java.lang.CharSequence)value$; break;
-    case 8: numTimePeriods = (java.lang.Integer)value$; break;
-    case 9: percentile = (java.lang.Double)value$; break;
-    case 10: FreqTable = (java.util.List<com.brierley.avro.schemas.FreqRow>)value$; break;
+    case 3: totalCusts = (java.lang.Long)value$; break;
+    case 4: completionTime = (java.lang.CharSequence)value$; break;
+    case 5: minDateCadence = (java.lang.CharSequence)value$; break;
+    case 6: maxDateCadence = (java.lang.CharSequence)value$; break;
+    case 7: rawCadence = (java.lang.Double)value$; break;
+    case 8: normalizedCadence = (java.lang.CharSequence)value$; break;
+    case 9: numTimePeriods = (java.lang.Integer)value$; break;
+    case 10: percentile = (java.lang.Double)value$; break;
+    case 11: FreqTable = (java.util.List<com.brierley.avro.schemas.FreqRow>)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -157,6 +163,23 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
    */
   public void setSingleVisit(java.lang.Long value) {
     this.singleVisit = value;
+  }
+
+  /**
+   * Gets the value of the 'totalCusts' field.
+   * @return Total number of unique customers for entire dataset.
+   */
+  public java.lang.Long getTotalCusts() {
+    return totalCusts;
+  }
+
+  /**
+   * Sets the value of the 'totalCusts' field.
+   * Total number of unique customers for entire dataset.
+   * @param value the value to set.
+   */
+  public void setTotalCusts(java.lang.Long value) {
+    this.totalCusts = value;
   }
 
   /**
@@ -332,6 +355,8 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
     private long numRecords;
     /** Number of customers with exactly 1 transaction in the entire dataset. */
     private long singleVisit;
+    /** Total number of unique customers for entire dataset. */
+    private long totalCusts;
     /** The time the spark job finished and sent the record. */
     private java.lang.CharSequence completionTime;
     /** Beginning date of entire date set used to calculate the cadence */
@@ -371,37 +396,41 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
         this.singleVisit = data().deepCopy(fields()[2].schema(), other.singleVisit);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.completionTime)) {
-        this.completionTime = data().deepCopy(fields()[3].schema(), other.completionTime);
+      if (isValidValue(fields()[3], other.totalCusts)) {
+        this.totalCusts = data().deepCopy(fields()[3].schema(), other.totalCusts);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.minDateCadence)) {
-        this.minDateCadence = data().deepCopy(fields()[4].schema(), other.minDateCadence);
+      if (isValidValue(fields()[4], other.completionTime)) {
+        this.completionTime = data().deepCopy(fields()[4].schema(), other.completionTime);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.maxDateCadence)) {
-        this.maxDateCadence = data().deepCopy(fields()[5].schema(), other.maxDateCadence);
+      if (isValidValue(fields()[5], other.minDateCadence)) {
+        this.minDateCadence = data().deepCopy(fields()[5].schema(), other.minDateCadence);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.rawCadence)) {
-        this.rawCadence = data().deepCopy(fields()[6].schema(), other.rawCadence);
+      if (isValidValue(fields()[6], other.maxDateCadence)) {
+        this.maxDateCadence = data().deepCopy(fields()[6].schema(), other.maxDateCadence);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.normalizedCadence)) {
-        this.normalizedCadence = data().deepCopy(fields()[7].schema(), other.normalizedCadence);
+      if (isValidValue(fields()[7], other.rawCadence)) {
+        this.rawCadence = data().deepCopy(fields()[7].schema(), other.rawCadence);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.numTimePeriods)) {
-        this.numTimePeriods = data().deepCopy(fields()[8].schema(), other.numTimePeriods);
+      if (isValidValue(fields()[8], other.normalizedCadence)) {
+        this.normalizedCadence = data().deepCopy(fields()[8].schema(), other.normalizedCadence);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.percentile)) {
-        this.percentile = data().deepCopy(fields()[9].schema(), other.percentile);
+      if (isValidValue(fields()[9], other.numTimePeriods)) {
+        this.numTimePeriods = data().deepCopy(fields()[9].schema(), other.numTimePeriods);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.FreqTable)) {
-        this.FreqTable = data().deepCopy(fields()[10].schema(), other.FreqTable);
+      if (isValidValue(fields()[10], other.percentile)) {
+        this.percentile = data().deepCopy(fields()[10].schema(), other.percentile);
         fieldSetFlags()[10] = true;
+      }
+      if (isValidValue(fields()[11], other.FreqTable)) {
+        this.FreqTable = data().deepCopy(fields()[11].schema(), other.FreqTable);
+        fieldSetFlags()[11] = true;
       }
     }
 
@@ -423,37 +452,41 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
         this.singleVisit = data().deepCopy(fields()[2].schema(), other.singleVisit);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.completionTime)) {
-        this.completionTime = data().deepCopy(fields()[3].schema(), other.completionTime);
+      if (isValidValue(fields()[3], other.totalCusts)) {
+        this.totalCusts = data().deepCopy(fields()[3].schema(), other.totalCusts);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.minDateCadence)) {
-        this.minDateCadence = data().deepCopy(fields()[4].schema(), other.minDateCadence);
+      if (isValidValue(fields()[4], other.completionTime)) {
+        this.completionTime = data().deepCopy(fields()[4].schema(), other.completionTime);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.maxDateCadence)) {
-        this.maxDateCadence = data().deepCopy(fields()[5].schema(), other.maxDateCadence);
+      if (isValidValue(fields()[5], other.minDateCadence)) {
+        this.minDateCadence = data().deepCopy(fields()[5].schema(), other.minDateCadence);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.rawCadence)) {
-        this.rawCadence = data().deepCopy(fields()[6].schema(), other.rawCadence);
+      if (isValidValue(fields()[6], other.maxDateCadence)) {
+        this.maxDateCadence = data().deepCopy(fields()[6].schema(), other.maxDateCadence);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.normalizedCadence)) {
-        this.normalizedCadence = data().deepCopy(fields()[7].schema(), other.normalizedCadence);
+      if (isValidValue(fields()[7], other.rawCadence)) {
+        this.rawCadence = data().deepCopy(fields()[7].schema(), other.rawCadence);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.numTimePeriods)) {
-        this.numTimePeriods = data().deepCopy(fields()[8].schema(), other.numTimePeriods);
+      if (isValidValue(fields()[8], other.normalizedCadence)) {
+        this.normalizedCadence = data().deepCopy(fields()[8].schema(), other.normalizedCadence);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.percentile)) {
-        this.percentile = data().deepCopy(fields()[9].schema(), other.percentile);
+      if (isValidValue(fields()[9], other.numTimePeriods)) {
+        this.numTimePeriods = data().deepCopy(fields()[9].schema(), other.numTimePeriods);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.FreqTable)) {
-        this.FreqTable = data().deepCopy(fields()[10].schema(), other.FreqTable);
+      if (isValidValue(fields()[10], other.percentile)) {
+        this.percentile = data().deepCopy(fields()[10].schema(), other.percentile);
         fieldSetFlags()[10] = true;
+      }
+      if (isValidValue(fields()[11], other.FreqTable)) {
+        this.FreqTable = data().deepCopy(fields()[11].schema(), other.FreqTable);
+        fieldSetFlags()[11] = true;
       }
     }
 
@@ -585,6 +618,48 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
     }
 
     /**
+      * Gets the value of the 'totalCusts' field.
+      * Total number of unique customers for entire dataset.
+      * @return The value.
+      */
+    public java.lang.Long getTotalCusts() {
+      return totalCusts;
+    }
+
+    /**
+      * Sets the value of the 'totalCusts' field.
+      * Total number of unique customers for entire dataset.
+      * @param value The value of 'totalCusts'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.Cadence.Builder setTotalCusts(long value) {
+      validate(fields()[3], value);
+      this.totalCusts = value;
+      fieldSetFlags()[3] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'totalCusts' field has been set.
+      * Total number of unique customers for entire dataset.
+      * @return True if the 'totalCusts' field has been set, false otherwise.
+      */
+    public boolean hasTotalCusts() {
+      return fieldSetFlags()[3];
+    }
+
+
+    /**
+      * Clears the value of the 'totalCusts' field.
+      * Total number of unique customers for entire dataset.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.Cadence.Builder clearTotalCusts() {
+      fieldSetFlags()[3] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'completionTime' field.
       * The time the spark job finished and sent the record.
       * @return The value.
@@ -600,9 +675,9 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return This builder.
       */
     public com.brierley.avro.schemas.Cadence.Builder setCompletionTime(java.lang.CharSequence value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.completionTime = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -612,7 +687,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return True if the 'completionTime' field has been set, false otherwise.
       */
     public boolean hasCompletionTime() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
 
 
@@ -623,7 +698,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       */
     public com.brierley.avro.schemas.Cadence.Builder clearCompletionTime() {
       completionTime = null;
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -643,9 +718,9 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return This builder.
       */
     public com.brierley.avro.schemas.Cadence.Builder setMinDateCadence(java.lang.CharSequence value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.minDateCadence = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -655,7 +730,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return True if the 'minDateCadence' field has been set, false otherwise.
       */
     public boolean hasMinDateCadence() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
 
 
@@ -666,7 +741,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       */
     public com.brierley.avro.schemas.Cadence.Builder clearMinDateCadence() {
       minDateCadence = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -686,9 +761,9 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return This builder.
       */
     public com.brierley.avro.schemas.Cadence.Builder setMaxDateCadence(java.lang.CharSequence value) {
-      validate(fields()[5], value);
+      validate(fields()[6], value);
       this.maxDateCadence = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -698,7 +773,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return True if the 'maxDateCadence' field has been set, false otherwise.
       */
     public boolean hasMaxDateCadence() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
 
 
@@ -709,7 +784,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       */
     public com.brierley.avro.schemas.Cadence.Builder clearMaxDateCadence() {
       maxDateCadence = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -729,9 +804,9 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return This builder.
       */
     public com.brierley.avro.schemas.Cadence.Builder setRawCadence(double value) {
-      validate(fields()[6], value);
+      validate(fields()[7], value);
       this.rawCadence = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -741,7 +816,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return True if the 'rawCadence' field has been set, false otherwise.
       */
     public boolean hasRawCadence() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[7];
     }
 
 
@@ -751,7 +826,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return This builder.
       */
     public com.brierley.avro.schemas.Cadence.Builder clearRawCadence() {
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -771,9 +846,9 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return This builder.
       */
     public com.brierley.avro.schemas.Cadence.Builder setNormalizedCadence(java.lang.CharSequence value) {
-      validate(fields()[7], value);
+      validate(fields()[8], value);
       this.normalizedCadence = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[8] = true;
       return this;
     }
 
@@ -783,7 +858,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return True if the 'normalizedCadence' field has been set, false otherwise.
       */
     public boolean hasNormalizedCadence() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[8];
     }
 
 
@@ -794,7 +869,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       */
     public com.brierley.avro.schemas.Cadence.Builder clearNormalizedCadence() {
       normalizedCadence = null;
-      fieldSetFlags()[7] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -814,9 +889,9 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return This builder.
       */
     public com.brierley.avro.schemas.Cadence.Builder setNumTimePeriods(int value) {
-      validate(fields()[8], value);
+      validate(fields()[9], value);
       this.numTimePeriods = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
@@ -826,7 +901,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return True if the 'numTimePeriods' field has been set, false otherwise.
       */
     public boolean hasNumTimePeriods() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[9];
     }
 
 
@@ -836,7 +911,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return This builder.
       */
     public com.brierley.avro.schemas.Cadence.Builder clearNumTimePeriods() {
-      fieldSetFlags()[8] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -856,9 +931,9 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return This builder.
       */
     public com.brierley.avro.schemas.Cadence.Builder setPercentile(double value) {
-      validate(fields()[9], value);
+      validate(fields()[10], value);
       this.percentile = value;
-      fieldSetFlags()[9] = true;
+      fieldSetFlags()[10] = true;
       return this;
     }
 
@@ -868,7 +943,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return True if the 'percentile' field has been set, false otherwise.
       */
     public boolean hasPercentile() {
-      return fieldSetFlags()[9];
+      return fieldSetFlags()[10];
     }
 
 
@@ -878,7 +953,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return This builder.
       */
     public com.brierley.avro.schemas.Cadence.Builder clearPercentile() {
-      fieldSetFlags()[9] = false;
+      fieldSetFlags()[10] = false;
       return this;
     }
 
@@ -896,9 +971,9 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return This builder.
       */
     public com.brierley.avro.schemas.Cadence.Builder setFreqTable(java.util.List<com.brierley.avro.schemas.FreqRow> value) {
-      validate(fields()[10], value);
+      validate(fields()[11], value);
       this.FreqTable = value;
-      fieldSetFlags()[10] = true;
+      fieldSetFlags()[11] = true;
       return this;
     }
 
@@ -907,7 +982,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       * @return True if the 'FreqTable' field has been set, false otherwise.
       */
     public boolean hasFreqTable() {
-      return fieldSetFlags()[10];
+      return fieldSetFlags()[11];
     }
 
 
@@ -917,7 +992,7 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
       */
     public com.brierley.avro.schemas.Cadence.Builder clearFreqTable() {
       FreqTable = null;
-      fieldSetFlags()[10] = false;
+      fieldSetFlags()[11] = false;
       return this;
     }
 
@@ -928,14 +1003,15 @@ public class Cadence extends org.apache.avro.specific.SpecificRecordBase impleme
         record.jobKey = fieldSetFlags()[0] ? this.jobKey : (java.lang.CharSequence) defaultValue(fields()[0]);
         record.numRecords = fieldSetFlags()[1] ? this.numRecords : (java.lang.Long) defaultValue(fields()[1]);
         record.singleVisit = fieldSetFlags()[2] ? this.singleVisit : (java.lang.Long) defaultValue(fields()[2]);
-        record.completionTime = fieldSetFlags()[3] ? this.completionTime : (java.lang.CharSequence) defaultValue(fields()[3]);
-        record.minDateCadence = fieldSetFlags()[4] ? this.minDateCadence : (java.lang.CharSequence) defaultValue(fields()[4]);
-        record.maxDateCadence = fieldSetFlags()[5] ? this.maxDateCadence : (java.lang.CharSequence) defaultValue(fields()[5]);
-        record.rawCadence = fieldSetFlags()[6] ? this.rawCadence : (java.lang.Double) defaultValue(fields()[6]);
-        record.normalizedCadence = fieldSetFlags()[7] ? this.normalizedCadence : (java.lang.CharSequence) defaultValue(fields()[7]);
-        record.numTimePeriods = fieldSetFlags()[8] ? this.numTimePeriods : (java.lang.Integer) defaultValue(fields()[8]);
-        record.percentile = fieldSetFlags()[9] ? this.percentile : (java.lang.Double) defaultValue(fields()[9]);
-        record.FreqTable = fieldSetFlags()[10] ? this.FreqTable : (java.util.List<com.brierley.avro.schemas.FreqRow>) defaultValue(fields()[10]);
+        record.totalCusts = fieldSetFlags()[3] ? this.totalCusts : (java.lang.Long) defaultValue(fields()[3]);
+        record.completionTime = fieldSetFlags()[4] ? this.completionTime : (java.lang.CharSequence) defaultValue(fields()[4]);
+        record.minDateCadence = fieldSetFlags()[5] ? this.minDateCadence : (java.lang.CharSequence) defaultValue(fields()[5]);
+        record.maxDateCadence = fieldSetFlags()[6] ? this.maxDateCadence : (java.lang.CharSequence) defaultValue(fields()[6]);
+        record.rawCadence = fieldSetFlags()[7] ? this.rawCadence : (java.lang.Double) defaultValue(fields()[7]);
+        record.normalizedCadence = fieldSetFlags()[8] ? this.normalizedCadence : (java.lang.CharSequence) defaultValue(fields()[8]);
+        record.numTimePeriods = fieldSetFlags()[9] ? this.numTimePeriods : (java.lang.Integer) defaultValue(fields()[9]);
+        record.percentile = fieldSetFlags()[10] ? this.percentile : (java.lang.Double) defaultValue(fields()[10]);
+        record.FreqTable = fieldSetFlags()[11] ? this.FreqTable : (java.util.List<com.brierley.avro.schemas.FreqRow>) defaultValue(fields()[11]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

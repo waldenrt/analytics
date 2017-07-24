@@ -473,6 +473,42 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
     }
   }
 
+  //COUNTS TESTS
+  test("No single visit"){
+    new MultiUserData {
+      val sCount = CadenceCalcs.singleVisitCount(multiUserDoubleNov) getOrElse 42
+      assert(sCount === 0)
+    }
+  }
+
+  test("1 single visit customer"){
+    new MultiUserData {
+      val sCount = CadenceCalcs.singleVisitCount(multiUserSingleAndDouble) getOrElse 42
+      assert(sCount === 1)
+    }
+  }
+
+  test("2 single visit customers"){
+    new MultiUserData {
+      val sCount2 = CadenceCalcs.singleVisitCount(everythingMixed) getOrElse 42
+      assert(sCount2 === 2)
+    }
+  }
+
+  test("total cust = 2") {
+    new MultiUserData {
+      val tCount = CadenceCalcs.totalCustCount(multiUserDoubleNov) getOrElse 42
+      assert(tCount === 2)
+    }
+  }
+
+  test("total cust = 6") {
+    new MultiUserData {
+      val tCount = CadenceCalcs.totalCustCount(everythingMixed) getOrElse 42
+      assert(tCount === 6)
+    }
+  }
+
   //SINGLE USER TESTS
 
   test("Single User, single transaction cadence = 0") {
