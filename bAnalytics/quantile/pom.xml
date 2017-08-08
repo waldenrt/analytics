@@ -40,6 +40,8 @@
             <artifactId>scala-library</artifactId>
             <version>${scala.version}</version>
         </dependency>
+
+        <!-- TEST -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -98,6 +100,7 @@
             <version>1.4.0</version>
         </dependency>
 
+        <!-- KAFKA/AVRO -->
         <dependency>
             <groupId>com.databricks</groupId>
             <artifactId>spark-avro_2.10</artifactId>
@@ -108,7 +111,6 @@
             <artifactId>avro</artifactId>
             <version>1.8.1</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka_${scala.compat.version}</artifactId>

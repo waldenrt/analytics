@@ -10,6 +10,7 @@
     <module>balor</module>
     <module>quantile</module>
     <module>bRelevant</module>
+      <module>lifecycle</module>
   </modules>
 
   <name>${project.artifactId}</name>
