@@ -65,9 +65,11 @@ object BalorApp {
     def weekTimePeriod(dateDF: DataFrame): DataFrame = {
       dateDF
         .select("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT", "Date", "max(Date)")
-        .withColumn("TimePeriod", (datediff(dateDF("max(Date)"), dateDF("Date")) / cadence.periodDivisor).cast(IntegerType) + 1)
-        .sort("TimePeriod")
+        .withColumn("TP", (datediff(dateDF("max(Date)"), dateDF("Date")) / cadence.periodDivisor).cast(IntegerType) + 1)
+        .sort(col("TP").desc)
+        .withColumn("TimePeriod", dense_rank().over(Window.orderBy(col("TP").desc)))
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date", "TimePeriod")
+        .withColumn("StartDate", min("Date").over(Window.partitionBy("TimePeriod")))
 
     }
 
@@ -81,9 +83,11 @@ object BalorApp {
         .withColumn("Year", year(dateDF("Date")))
         .withColumn("MaxMonth", month(col("max(Date)")))
         .withColumn("MaxYear", year(col("max(Date)")))
-        .withColumn("TimePeriod", (((col("MaxMonth") - col("Month")) + (col("MaxYear") - col("Year")) * 12) / cadence.periodDivisor).cast(IntegerType) + 1)
-        .sort("TimePeriod")
+        .withColumn("TP", (((col("MaxMonth") - col("Month")) + (col("MaxYear") - col("Year")) * 12) / cadence.periodDivisor).cast(IntegerType) + 1)
+        .sort(col("TP").desc)
+        .withColumn("TimePeriod", dense_rank().over(Window.orderBy(col("TP").desc)))
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date", "TimePeriod")
+        .withColumn("StartDate", min("Date").over(Window.partitionBy("TimePeriod")))
     }
 
     val timePeriodDF = cadence match {
@@ -110,7 +114,7 @@ object BalorApp {
   def assignSegmentLabel(timePeriodDF: DataFrame): Try[DataFrame] = Try {
 
     val returnDF = timePeriodDF
-      .groupBy("TimePeriod", "CUST_ID")
+      .groupBy("TimePeriod", "StartDate", "CUST_ID")
       .agg(count("TXN_ID").as("TXN_COUNT"),
         sum("TXN_AMT").as("TXN_AMT"),
         sum("ITEM_QTY").as("ITEM_QTY"),
@@ -124,7 +128,7 @@ object BalorApp {
     val labelDF = returnDF
       .withColumn("Label", nonLapsedLabel(returnDF("TimePeriod"), sum("TimePeriod").over(custWindow)))
       .sort("TimePeriod")
-      .select("TimePeriod", "Label", "CUST_ID", "TXN_COUNT", "TXN_AMT", "DISC_AMT", "ITEM_QTY")
+      .select("TimePeriod", "Label", "CUST_ID", "TXN_COUNT", "TXN_AMT", "DISC_AMT", "ITEM_QTY", "StartDate")
 
     val lapsedWindow = Window
       .partitionBy("CUST_ID")
@@ -137,7 +141,7 @@ object BalorApp {
       .withColumn("LapsedTimePeriod", labelDF("TimePeriod") - 1)
       .drop("TimePeriod")
       .withColumnRenamed("LapsedTimePeriod", "TimePeriod")
-      .select("TimePeriod", "Label", "CUST_ID", "TXN_COUNT", "TXN_AMT", "DISC_AMT", "ITEM_QTY")
+      .select("TimePeriod", "Label", "CUST_ID", "TXN_COUNT", "TXN_AMT", "DISC_AMT", "ITEM_QTY", "StartDate")
 
     val completeDF = labelDF
       .unionAll(lapsedDF)
@@ -155,7 +159,7 @@ object BalorApp {
 
     val pivotDF = labelDF
       .filter(labelDF("TimePeriod") < (maxTP - 1))
-      .groupBy("TimePeriod")
+      .groupBy("TimePeriod", "StartDate")
       .pivot("Label", Seq("New", "Reactivated", "Returning", "Lapsed"))
       .agg(count("CUST_ID"), sum("TXN_COUNT"), sum("TXN_AMT"), sum("DISC_AMT"), sum("ITEM_QTY"))
 
@@ -234,7 +238,7 @@ object BalorApp {
     balorDF
   }
 
-  def createBalorAvro(jobKey: String, txnCount: Long, minMaxDateDF: DataFrame, balorDF: DataFrame): Try[Balor] = Try {
+  def createBalorAvro(jobKey: String, txnCount: Long, minMaxDateDF: DataFrame, balorDF: DataFrame, cadence: CadenceValues): Try[Balor] = Try {
 
     val balor = new Balor()
     balor.setJobKey(jobKey)
@@ -321,11 +325,26 @@ object BalorApp {
       tpd.setTxnBalor(tpdRow.getDouble(50))
       tpd.setSpendBalor(tpdRow.getDouble(51))
       tpd.setRetention(tpdRow.getDouble(52))
+      tpd.setAnchorDate(tpdRow.getString(53))
 
       tempList.add(tpd)
     }
 
-    balorDF.collect().foreach(e => mapTimePeriodData(e))
+    val orderedDF = balorDF
+      .withColumn("cadence", lit(cadence.index))
+      .withColumn("formatDate", stringDate(balorDF("StartDate"), col("cadence")))
+      .select("TimePeriod", "newCustCount", "newTxnCount", "newTxnAmt", "newDiscAmt", "newItemCount",
+        "reactCustCount", "reactTxnCount", "reactTxnAmt", "reactDiscAmt", "reactItemCount",
+        "returnCustCount", "returnTxnCount", "returnTxnAmt", "returnDiscAmt", "returnItemCount",
+        "lapsedCustCount", "lapsedTxnCount", "lapsedTxnAmt", "lapsedDiscAmt", "lapsedItemCount",
+        "newCustSpendAvg", "newCustVisitAvg", "newCustItemAvg", "newCustDiscAvg", "newVisitSpendAvg", "newVisitItemAvg", "newVisitDiscAvg",
+        "reactCustSpendAvg", "reactCustVisitAvg", "reactCustItemAvg", "reactCustDiscAvg", "reactVisitSpendAvg", "reactVisitItemAvg", "reactVisitDiscAvg",
+        "returnCustSpendAvg", "returnCustVisitAvg", "returnCustItemAvg", "returnCustDiscAvg", "returnVisitSpendAvg", "returnVisitItemAvg", "returnVisitDiscAvg",
+        "lapsedCustSpendAvg", "lapsedCustVisitAvg", "lapsedCustItemAvg", "lapsedCustDiscAvg", "lapsedVisitSpendAvg", "lapsedVisitItemAvg", "lapsedVisitDiscAvg",
+        "custBalor", "txnBalor", "spendBalor", "retention", "formatDate")
+
+
+    orderedDF.collect().foreach(e => mapTimePeriodData(e))
 
     balor.setBalorSets(tempList)
 
@@ -367,8 +386,8 @@ object BalorApp {
     val kafkaProps = sc.textFile("kafkaProps.txt")
     val propsOnly = kafkaProps.filter(_.contains("analytics"))
       .map(_.split(" = "))
-      .keyBy(_(0))
-      .mapValues(_(1))
+      .keyBy(_ (0))
+      .mapValues(_ (1))
 
     if (args.length < 4) {
       sendBalorError("Unknown", "BalorApp", "MainMethod", "Incorrect Usage, not enough args.", "User", propsOnly)
@@ -408,7 +427,7 @@ object BalorApp {
 
       balorDF <- calcBalorRatios(avgDF)
 
-      avro <- createBalorAvro(jobKey, txnCount, minMaxDF, balorDF)
+      avro <- createBalorAvro(jobKey, txnCount, minMaxDF, balorDF, cadence)
     } yield avro
 
     finalDF match {

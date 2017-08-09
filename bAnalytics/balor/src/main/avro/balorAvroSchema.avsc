@@ -33,6 +33,10 @@
 				 "type": "int",
 				 "doc": "The Balor time period, calculated ascending"},
 
+				{"name": "anchorDate",
+				 "type": ["null", "string"],
+				 "doc" : "the earliest date for each time period, month will be formatted 'MMM yyyy' and weeks will be formatted 'MM/dd/yyyy', nullable to allow previous schema to appear in topic."},
+
 				{"name": "newCustCount",
 				 "type": "long",
 				 "doc": "The count of customers that are considered new in the given Balor time period.  To be considered new the cust_id must not appear in the previous 2 cadence periods"},
