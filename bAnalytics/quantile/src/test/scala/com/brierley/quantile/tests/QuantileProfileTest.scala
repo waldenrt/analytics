@@ -3,7 +3,7 @@ package com.brierley.quantile.tests
 import com.brierley.quantile.Quantile
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import org.apache.spark.sql.Row
-import org.apache.spark.sql.functions.{to_date, unix_timestamp}
+import org.apache.spark.sql.functions.{to_date, unix_timestamp, _}
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.Matchers._
@@ -137,8 +137,8 @@ class QuantileProfileTest extends FunSuite with DataFrameSuiteBase {
 
     import sqlCtx.implicits._
 
-    val storeColumns = List("TimePeriod", "STORE_ID", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
-    val custColumns = List("TimePeriod", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
+    val storeColumns = List("TimePeriod", "AnchorDate", "STORE_ID", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
+    val custColumns = List("TimePeriod", "AnchorDate", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
 
     val twoStores = sc.parallelize(List(
       ("StoreA", "CustA", "12/31/2016", "HeaderId1", "DetailID1", 3, 5.00, 0.00, "class1", "style1", "dept1", 1),
@@ -151,9 +151,10 @@ class QuantileProfileTest extends FunSuite with DataFrameSuiteBase {
       ("StoreB", "CustA", "10/30/2016", "HeaderID7", "DetailID8", 1, 11.00, 0.50, "class5", "style5", "dept5", 2)
     )).toDF("STORE_ID", "CUST_ID", "TXN_DATE", "TXN_HEADER_ID", "TXN_DETAIL_ID", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "class_descr", "style_descr", "dept_descr", "TimePeriod")
       .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
+      .withColumn("AnchorDate", lit("01/01/2015"))
 
     val minMaxDF = sc.parallelize(List(
-      ("2016-10-01","2016-12-31",8)
+      ("2016-10-01", "2016-12-31", 8)
     )).toDF("minDate", "maxDate", "count")
       .withColumn("min(Date)", to_date(unix_timestamp($"minDate", "yyyy-MM-dd").cast("timestamp")))
       .withColumn("max(Date)", to_date(unix_timestamp($"maxDate", "yyyy-MM-dd").cast("timestamp")))
@@ -169,153 +170,153 @@ class QuantileProfileTest extends FunSuite with DataFrameSuiteBase {
 
     import sqlCtx.implicits._
 
-    val storeColumns = List("TimePeriod", "STORE_ID", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "Quantile")
-    val custColumns = List("TimePeriod", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "Quantile")
+    val storeColumns = List("TimePeriod", "AnchorDate", "STORE_ID", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "Quantile")
+    val custColumns = List("TimePeriod", "AnchorDate", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "Quantile")
 
     val twentyStores = sc.parallelize(List(
-      (1, "Store-1", 1, 1, 1, 1.00, 0.00),
-      (1, "Store-2", 1, 1, 1, 2.00, 0.00),
-      (1, "Store-3", 1, 1, 1, 3.00, 0.00),
-      (1, "Store-4", 1, 1, 1, 4.00, 0.00),
-      (1, "Store-5", 1, 1, 1, 5.00, 0.00),
-      (1, "Store-6", 1, 1, 1, 6.00, 0.00),
-      (1, "Store-7", 1, 1, 1, 7.00, 0.00),
-      (1, "Store-8", 1, 1, 1, 8.00, 0.00),
-      (1, "Store-9", 1, 1, 1, 9.00, 0.00),
-      (1, "Store-10", 1, 1, 1, 10.00, 0.00),
-      (1, "Store-11", 1, 1, 1, 11.00, 0.00),
-      (1, "Store-12", 1, 1, 1, 12.00, 0.00),
-      (1, "Store-13", 1, 1, 1, 13.00, 0.00),
-      (1, "Store-14", 1, 1, 1, 14.00, 0.00),
-      (1, "Store-15", 1, 1, 1, 15.00, 0.00),
-      (1, "Store-16", 1, 1, 1, 16.00, 0.00),
-      (1, "Store-17", 1, 1, 1, 17.00, 0.00),
-      (1, "Store-18", 1, 1, 1, 18.00, 0.00),
-      (1, "Store-19", 1, 1, 1, 19.00, 0.00),
-      (1, "Store-20", 1, 1, 1, 20.00, 0.00)
-    )).toDF("TimePeriod", "STORE_ID", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
+      (1, "01/01/2015", "Store-1", 1, 1, 1, 1.00, 0.00),
+      (1, "01/01/2015", "Store-2", 1, 1, 1, 2.00, 0.00),
+      (1, "01/01/2015", "Store-3", 1, 1, 1, 3.00, 0.00),
+      (1, "01/01/2015", "Store-4", 1, 1, 1, 4.00, 0.00),
+      (1, "01/01/2015", "Store-5", 1, 1, 1, 5.00, 0.00),
+      (1, "01/01/2015", "Store-6", 1, 1, 1, 6.00, 0.00),
+      (1, "01/01/2015", "Store-7", 1, 1, 1, 7.00, 0.00),
+      (1, "01/01/2015", "Store-8", 1, 1, 1, 8.00, 0.00),
+      (1, "01/01/2015", "Store-9", 1, 1, 1, 9.00, 0.00),
+      (1, "01/01/2015", "Store-10", 1, 1, 1, 10.00, 0.00),
+      (1, "01/01/2015", "Store-11", 1, 1, 1, 11.00, 0.00),
+      (1, "01/01/2015", "Store-12", 1, 1, 1, 12.00, 0.00),
+      (1, "01/01/2015", "Store-13", 1, 1, 1, 13.00, 0.00),
+      (1, "01/01/2015", "Store-14", 1, 1, 1, 14.00, 0.00),
+      (1, "01/01/2015", "Store-15", 1, 1, 1, 15.00, 0.00),
+      (1, "01/01/2015", "Store-16", 1, 1, 1, 16.00, 0.00),
+      (1, "01/01/2015", "Store-17", 1, 1, 1, 17.00, 0.00),
+      (1, "01/01/2015", "Store-18", 1, 1, 1, 18.00, 0.00),
+      (1, "01/01/2015", "Store-19", 1, 1, 1, 19.00, 0.00),
+      (1, "01/01/2015", "Store-20", 1, 1, 1, 20.00, 0.00)
+    )).toDF("TimePeriod", "AnchorDate", "STORE_ID", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
 
     val twentyCusts = sc.parallelize(List(
-      (1, "Cust-1", 1, 1, 1.00, 0.00),
-      (1, "Cust-2", 1, 1, 2.00, 0.00),
-      (1, "Cust-3", 1, 1, 3.00, 0.00),
-      (1, "Cust-4", 1, 1, 4.00, 0.00),
-      (1, "Cust-5", 1, 1, 5.00, 0.00),
-      (1, "Cust-6", 1, 1, 6.00, 0.00),
-      (1, "Cust-7", 1, 1, 7.00, 0.00),
-      (1, "Cust-8", 1, 1, 8.00, 0.00),
-      (1, "Cust-9", 1, 1, 9.00, 0.00),
-      (1, "Cust-10", 1, 1, 10.00, 0.00),
-      (1, "Cust-11", 1, 1, 11.00, 0.00),
-      (1, "Cust-12", 1, 1, 12.00, 0.00),
-      (1, "Cust-13", 1, 1, 13.00, 0.00),
-      (1, "Cust-14", 1, 1, 14.00, 0.00),
-      (1, "Cust-15", 1, 1, 15.00, 0.00),
-      (1, "Cust-16", 1, 1, 16.00, 0.00),
-      (1, "Cust-17", 1, 1, 17.00, 0.00),
-      (1, "Cust-18", 1, 1, 18.00, 0.00),
-      (1, "Cust-19", 1, 1, 19.00, 0.00),
-      (1, "Cust-20", 1, 1, 20.00, 0.00)
-    )).toDF("TimePeriod", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
+      (1, "01/01/2015", "Cust-1", 1, 1, 1.00, 0.00),
+      (1, "01/01/2015", "Cust-2", 1, 1, 2.00, 0.00),
+      (1, "01/01/2015", "Cust-3", 1, 1, 3.00, 0.00),
+      (1, "01/01/2015", "Cust-4", 1, 1, 4.00, 0.00),
+      (1, "01/01/2015", "Cust-5", 1, 1, 5.00, 0.00),
+      (1, "01/01/2015", "Cust-6", 1, 1, 6.00, 0.00),
+      (1, "01/01/2015", "Cust-7", 1, 1, 7.00, 0.00),
+      (1, "01/01/2015", "Cust-8", 1, 1, 8.00, 0.00),
+      (1, "01/01/2015", "Cust-9", 1, 1, 9.00, 0.00),
+      (1, "01/01/2015", "Cust-10", 1, 1, 10.00, 0.00),
+      (1, "01/01/2015", "Cust-11", 1, 1, 11.00, 0.00),
+      (1, "01/01/2015", "Cust-12", 1, 1, 12.00, 0.00),
+      (1, "01/01/2015", "Cust-13", 1, 1, 13.00, 0.00),
+      (1, "01/01/2015", "Cust-14", 1, 1, 14.00, 0.00),
+      (1, "01/01/2015", "Cust-15", 1, 1, 15.00, 0.00),
+      (1, "01/01/2015", "Cust-16", 1, 1, 16.00, 0.00),
+      (1, "01/01/2015", "Cust-17", 1, 1, 17.00, 0.00),
+      (1, "01/01/2015", "Cust-18", 1, 1, 18.00, 0.00),
+      (1, "01/01/2015", "Cust-19", 1, 1, 19.00, 0.00),
+      (1, "01/01/2015", "Cust-20", 1, 1, 20.00, 0.00)
+    )).toDF("TimePeriod", "AnchorDate", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
 
     val tenStoresNoTie = sc.parallelize(List(
-      (1, "Store-1", 1, 1, 1, 1.00, 0.00),
-      (1, "Store-2", 1, 1, 1, 2.00, 0.00),
-      (1, "Store-3", 1, 1, 1, 3.00, 0.00),
-      (1, "Store-4", 1, 1, 1, 4.00, 0.00),
-      (1, "Store-5", 1, 1, 1, 5.00, 0.00),
-      (1, "Store-6", 1, 1, 1, 6.00, 0.00),
-      (1, "Store-7", 1, 1, 1, 7.00, 0.00),
-      (1, "Store-8", 1, 1, 1, 8.00, 0.00),
-      (1, "Store-9", 1, 1, 1, 9.00, 0.00),
-      (1, "Store-10", 1, 1, 1, 10.00, 0.00)
-    )).toDF("TimePeriod", "STORE_ID", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
+      (1, "01/01/2015", "Store-1", 1, 1, 1, 1.00, 0.00),
+      (1, "01/01/2015", "Store-2", 1, 1, 1, 2.00, 0.00),
+      (1, "01/01/2015", "Store-3", 1, 1, 1, 3.00, 0.00),
+      (1, "01/01/2015", "Store-4", 1, 1, 1, 4.00, 0.00),
+      (1, "01/01/2015", "Store-5", 1, 1, 1, 5.00, 0.00),
+      (1, "01/01/2015", "Store-6", 1, 1, 1, 6.00, 0.00),
+      (1, "01/01/2015", "Store-7", 1, 1, 1, 7.00, 0.00),
+      (1, "01/01/2015", "Store-8", 1, 1, 1, 8.00, 0.00),
+      (1, "01/01/2015", "Store-9", 1, 1, 1, 9.00, 0.00),
+      (1, "01/01/2015", "Store-10", 1, 1, 1, 10.00, 0.00)
+    )).toDF("TimePeriod", "AnchorDate", "STORE_ID", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
 
     val tenCustsNoTie = sc.parallelize(List(
-      (1, "Cust-1", 1, 1, 1.00, 0.00),
-      (1, "Cust-2", 1, 1, 2.00, 0.00),
-      (1, "Cust-3", 1, 1, 3.00, 0.00),
-      (1, "Cust-4", 1, 1, 4.00, 0.00),
-      (1, "Cust-5", 1, 1, 5.00, 0.00),
-      (1, "Cust-6", 1, 1, 6.00, 0.00),
-      (1, "Cust-7", 1, 1, 7.00, 0.00),
-      (1, "Cust-8", 1, 1, 8.00, 0.00),
-      (1, "Cust-9", 1, 1, 9.00, 0.00),
-      (1, "Cust-10", 1, 1, 10.00, 0.00)
-    )).toDF("TimePeriod", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
+      (1, "01/01/2015", "Cust-1", 1, 1, 1.00, 0.00),
+      (1, "01/01/2015", "Cust-2", 1, 1, 2.00, 0.00),
+      (1, "01/01/2015", "Cust-3", 1, 1, 3.00, 0.00),
+      (1, "01/01/2015", "Cust-4", 1, 1, 4.00, 0.00),
+      (1, "01/01/2015", "Cust-5", 1, 1, 5.00, 0.00),
+      (1, "01/01/2015", "Cust-6", 1, 1, 6.00, 0.00),
+      (1, "01/01/2015", "Cust-7", 1, 1, 7.00, 0.00),
+      (1,"01/01/2015",  "Cust-8", 1, 1, 8.00, 0.00),
+      (1, "01/01/2015", "Cust-9", 1, 1, 9.00, 0.00),
+      (1, "01/01/2015", "Cust-10", 1, 1, 10.00, 0.00)
+    )).toDF("TimePeriod", "AnchorDate", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
 
     val tenCustsTie = sc.parallelize(List(
-      (1, "Cust-1", 1, 1, 1.00, 0.00),
-      (1, "Cust-2", 1, 1, 2.00, 0.00),
-      (1, "Cust-3", 1, 1, 3.00, 0.00),
-      (1, "Cust-4", 1, 1, 3.00, 0.00),
-      (1, "Cust-5", 1, 1, 5.00, 0.00),
-      (1, "Cust-6", 1, 1, 6.00, 0.00),
-      (1, "Cust-7", 1, 1, 7.00, 0.00),
-      (1, "Cust-8", 1, 1, 7.00, 0.00),
-      (1, "Cust-9", 1, 1, 9.00, 0.00),
-      (1, "Cust-10", 1, 1, 10.00, 0.00)
-    )).toDF("TimePeriod", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
+      (1, "01/01/2015", "Cust-1", 1, 1, 1.00, 0.00),
+      (1, "01/01/2015", "Cust-2", 1, 1, 2.00, 0.00),
+      (1, "01/01/2015", "Cust-3", 1, 1, 3.00, 0.00),
+      (1, "01/01/2015", "Cust-4", 1, 1, 3.00, 0.00),
+      (1, "01/01/2015", "Cust-5", 1, 1, 5.00, 0.00),
+      (1, "01/01/2015", "Cust-6", 1, 1, 6.00, 0.00),
+      (1, "01/01/2015", "Cust-7", 1, 1, 7.00, 0.00),
+      (1, "01/01/2015", "Cust-8", 1, 1, 7.00, 0.00),
+      (1, "01/01/2015", "Cust-9", 1, 1, 9.00, 0.00),
+      (1, "01/01/2015", "Cust-10", 1, 1, 10.00, 0.00)
+    )).toDF("TimePeriod", "AnchorDate", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
 
     val nineCustsTie = sc.parallelize(List(
-      (1, "Cust-1", 1, 1, 1.00, 0.00),
-      (1, "Cust-2", 1, 1, 2.00, 0.00),
-      (1, "Cust-3", 1, 1, 3.00, 0.00),
-      (1, "Cust-4", 1, 1, 4.00, 0.00),
-      (1, "Cust-5", 1, 1, 5.00, 0.00),
-      (1, "Cust-6", 1, 1, 7.00, 0.00),
-      (1, "Cust-7", 1, 1, 7.00, 0.00),
-      (1, "Cust-8", 1, 1, 7.00, 0.00),
-      (1, "Cust-9", 1, 1, 7.00, 0.00)
-    )).toDF("TimePeriod", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
+      (1, "01/01/2015", "Cust-1", 1, 1, 1.00, 0.00),
+      (1, "01/01/2015", "Cust-2", 1, 1, 2.00, 0.00),
+      (1, "01/01/2015", "Cust-3", 1, 1, 3.00, 0.00),
+      (1, "01/01/2015", "Cust-4", 1, 1, 4.00, 0.00),
+      (1, "01/01/2015", "Cust-5", 1, 1, 5.00, 0.00),
+      (1, "01/01/2015", "Cust-6", 1, 1, 7.00, 0.00),
+      (1, "01/01/2015", "Cust-7", 1, 1, 7.00, 0.00),
+      (1, "01/01/2015", "Cust-8", 1, 1, 7.00, 0.00),
+      (1,"01/01/2015",  "Cust-9", 1, 1, 7.00, 0.00)
+    )).toDF("TimePeriod", "AnchorDate", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
 
     val eightCustsNoTie = sc.parallelize(List(
-      (1, "Cust-1", 1, 1, 1.00, 0.00),
-      (1, "Cust-2", 1, 1, 2.00, 0.00),
-      (1, "Cust-3", 1, 1, 3.00, 0.00),
-      (1, "Cust-4", 1, 1, 4.00, 0.00),
-      (1, "Cust-5", 1, 1, 5.00, 0.00),
-      (1, "Cust-6", 1, 1, 6.00, 0.00),
-      (1, "Cust-7", 1, 1, 7.00, 0.00),
-      (1, "Cust-8", 1, 1, 8.00, 0.00)
-    )).toDF("TimePeriod", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
+      (1, "01/01/2015", "Cust-1", 1, 1, 1.00, 0.00),
+      (1, "01/01/2015", "Cust-2", 1, 1, 2.00, 0.00),
+      (1, "01/01/2015", "Cust-3", 1, 1, 3.00, 0.00),
+      (1, "01/01/2015", "Cust-4", 1, 1, 4.00, 0.00),
+      (1, "01/01/2015", "Cust-5", 1, 1, 5.00, 0.00),
+      (1, "01/01/2015", "Cust-6", 1, 1, 6.00, 0.00),
+      (1, "01/01/2015", "Cust-7", 1, 1, 7.00, 0.00),
+      (1, "01/01/2015", "Cust-8", 1, 1, 8.00, 0.00)
+    )).toDF("TimePeriod", "AnchorDate", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
 
     val eightCustsTie = sc.parallelize(List(
-      (1, "Cust-1", 1, 1, 1.00, 0.00),
-      (1, "Cust-2", 1, 1, 2.00, 0.00),
-      (1, "Cust-3", 1, 1, 3.00, 0.00),
-      (1, "Cust-4", 1, 1, 4.00, 0.00),
-      (1, "Cust-5", 1, 1, 5.00, 0.00),
-      (1, "Cust-6", 1, 1, 7.00, 0.00),
-      (1, "Cust-7", 1, 1, 7.00, 0.00),
-      (1, "Cust-8", 1, 1, 7.00, 0.00)
-    )).toDF("TimePeriod", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
+      (1, "01/01/2015", "Cust-1", 1, 1, 1.00, 0.00),
+      (1, "01/01/2015", "Cust-2", 1, 1, 2.00, 0.00),
+      (1, "01/01/2015", "Cust-3", 1, 1, 3.00, 0.00),
+      (1, "01/01/2015", "Cust-4", 1, 1, 4.00, 0.00),
+      (1, "01/01/2015", "Cust-5", 1, 1, 5.00, 0.00),
+      (1, "01/01/2015", "Cust-6", 1, 1, 7.00, 0.00),
+      (1, "01/01/2015", "Cust-7", 1, 1, 7.00, 0.00),
+      (1, "01/01/2015", "Cust-8", 1, 1, 7.00, 0.00)
+    )).toDF("TimePeriod", "AnchorDate", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
 
     val eightCustsMidTie = sc.parallelize(List(
-      (1, "Cust-1", 1, 1, 1.00, 0.00),
-      (1, "Cust-2", 1, 1, 2.00, 0.00),
-      (1, "Cust-3", 1, 1, 3.00, 0.00),
-      (1, "Cust-4", 1, 1, 4.00, 0.00),
-      (1, "Cust-5", 1, 1, 5.00, 0.00),
-      (1, "Cust-6", 1, 1, 7.00, 0.00),
-      (1, "Cust-7", 1, 1, 7.00, 0.00),
-      (1, "Cust-8", 1, 1, 8.00, 0.00)
-    )).toDF("TimePeriod", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
+      (1, "01/01/2015", "Cust-1", 1, 1, 1.00, 0.00),
+      (1, "01/01/2015", "Cust-2", 1, 1, 2.00, 0.00),
+      (1, "01/01/2015", "Cust-3", 1, 1, 3.00, 0.00),
+      (1, "01/01/2015", "Cust-4", 1, 1, 4.00, 0.00),
+      (1, "01/01/2015", "Cust-5", 1, 1, 5.00, 0.00),
+      (1, "01/01/2015", "Cust-6", 1, 1, 7.00, 0.00),
+      (1, "01/01/2015", "Cust-7", 1, 1, 7.00, 0.00),
+      (1, "01/01/2015", "Cust-8", 1, 1, 8.00, 0.00)
+    )).toDF("TimePeriod", "AnchorDate", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
 
     val real12Stores = sc.parallelize(List(
-      (1, "1", 324524.62, 4304, 5455, 16666, 0.0),
-      (1, "2", 298825.58, 3670, 4482, 12064, 0.0),
-      (1, "3", 293152.99, 3461, 4344, 11719, 0.0),
-      (1, "4", 278943.2, 3388, 4852, 12133, 0.0),
-      (1, "5", 257001.65, 3520, 4264, 11409, 0.0),
-      (1, "6", 250647.35, 3308, 4000, 10001, 0.0),
-      (1, "7", 249612.04, 3023, 4051, 9583, 0.0),
-      (1, "8", 186295.87, 2538, 3022, 7646, 0.0),
-      (1, "9", 172619.8, 2280, 2856, 8110, 0.0),
-      (1, "10", 167207.53, 2270, 2826, 6928, 0.0),
-      (1, "11", 109326.78, 1723, 1987, 5075, 0.0),
-      (1, "12", 91797.77, 1720, 2018, 5181, 0.0)
-    )).toDF("TimePeriod", "STORE_ID", "ITEM_AMT", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "DISC_AMT")
+      (1, "01/01/2015", "1", 324524.62, 4304, 5455, 16666, 0.0),
+      (1, "01/01/2015", "2", 298825.58, 3670, 4482, 12064, 0.0),
+      (1, "01/01/2015", "3", 293152.99, 3461, 4344, 11719, 0.0),
+      (1, "01/01/2015", "4", 278943.2, 3388, 4852, 12133, 0.0),
+      (1, "01/01/2015", "5", 257001.65, 3520, 4264, 11409, 0.0),
+      (1, "01/01/2015", "6", 250647.35, 3308, 4000, 10001, 0.0),
+      (1, "01/01/2015", "7", 249612.04, 3023, 4051, 9583, 0.0),
+      (1, "01/01/2015", "8", 186295.87, 2538, 3022, 7646, 0.0),
+      (1, "01/01/2015", "9", 172619.8, 2280, 2856, 8110, 0.0),
+      (1, "01/01/2015", "10", 167207.53, 2270, 2826, 6928, 0.0),
+      (1, "01/01/2015", "11", 109326.78, 1723, 1987, 5075, 0.0),
+      (1, "01/01/2015", "12", 91797.77, 1720, 2018, 5181, 0.0)
+    )).toDF("TimePeriod", "AnchorDate", "STORE_ID", "ITEM_AMT", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "DISC_AMT")
 
     val orElseDF = sc.parallelize(List(1, 2, 3, 4)).toDF("Dummy")
   }
@@ -325,77 +326,77 @@ class QuantileProfileTest extends FunSuite with DataFrameSuiteBase {
 
     import sqlCtx.implicits._
 
-    val storeColumns = List("TimePeriod", "Quantile", "STORE_COUNT", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
-    val custColumns = List("TimePeriod", "Quantile", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
+    val storeColumns = List("TimePeriod", "AnchorDate", "Quantile", "STORE_COUNT", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
+    val custColumns = List("TimePeriod", "AnchorDate", "Quantile", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT")
 
     val tenStores1TP = sc.parallelize(List(
-      (1, "Store-1", 1, 1, 1, 1.00, 0.00, 4),
-      (1, "Store-2", 1, 1, 1, 2.00, 0.00, 4),
-      (1, "Store-3", 2, 2, 2, 3.00, 0.00, 4),
-      (1, "Store-4", 1, 1, 1, 4.00, 0.00, 3),
-      (1, "Store-5", 1, 3, 7, 5.00, 0.00, 3),
-      (1, "Store-6", 1, 1, 1, 6.00, 0.00, 2),
-      (1, "Store-7", 1, 2, 4, 7.00, 0.00, 2),
-      (1, "Store-8", 1, 1, 1, 8.00, 0.00, 1),
-      (1, "Store-9", 3, 4, 8, 9.00, 0.00, 1),
-      (1, "Store-10", 5, 9, 9, 10.00, 0.00, 1)
-    )).toDF("TimePeriod", "STORE_ID", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "Quantile")
+      (1, "01/01/2015", "Store-1", 1, 1, 1, 1.00, 0.00, 4),
+      (1,"01/01/2015",  "Store-2", 1, 1, 1, 2.00, 0.00, 4),
+      (1, "01/01/2015", "Store-3", 2, 2, 2, 3.00, 0.00, 4),
+      (1, "01/01/2015", "Store-4", 1, 1, 1, 4.00, 0.00, 3),
+      (1, "01/01/2015", "Store-5", 1, 3, 7, 5.00, 0.00, 3),
+      (1, "01/01/2015", "Store-6", 1, 1, 1, 6.00, 0.00, 2),
+      (1, "01/01/2015", "Store-7", 1, 2, 4, 7.00, 0.00, 2),
+      (1, "01/01/2015", "Store-8", 1, 1, 1, 8.00, 0.00, 1),
+      (1, "01/01/2015", "Store-9", 3, 4, 8, 9.00, 0.00, 1),
+      (1, "01/01/2015", "Store-10", 5, 9, 9, 10.00, 0.00, 1)
+    )).toDF("TimePeriod", "AnchorDate", "STORE_ID", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "Quantile")
 
     val tenStores2TP = sc.parallelize(List(
-      (1, "Store-1", 1, 1, 1, 1.00, 0.00, 4),
-      (1, "Store-2", 1, 1, 1, 2.00, 0.00, 4),
-      (1, "Store-3", 2, 2, 2, 3.00, 0.00, 4),
-      (1, "Store-4", 1, 1, 1, 4.00, 0.00, 3),
-      (1, "Store-5", 1, 3, 7, 5.00, 0.00, 3),
-      (1, "Store-6", 1, 1, 1, 6.00, 0.00, 2),
-      (1, "Store-7", 1, 2, 4, 7.00, 0.00, 2),
-      (1, "Store-8", 1, 1, 1, 8.00, 0.00, 1),
-      (1, "Store-9", 3, 4, 8, 9.00, 0.00, 1),
-      (1, "Store-10", 5, 9, 9, 10.00, 0.00, 1),
-      (2, "Store-1", 1, 1, 1, 1.00, 0.00, 4),
-      (2, "Store-2", 1, 1, 1, 2.00, 0.00, 4),
-      (2, "Store-3", 2, 2, 2, 3.00, 0.00, 3),
-      (2, "Store-4", 1, 1, 1, 4.00, 0.00, 3),
-      (2, "Store-5", 1, 3, 7, 5.00, 0.00, 3),
-      (2, "Store-6", 1, 1, 1, 6.00, 0.00, 2),
-      (2, "Store-7", 1, 2, 4, 7.00, 0.00, 2),
-      (2, "Store-8", 1, 1, 1, 8.00, 0.00, 2),
-      (2, "Store-9", 3, 4, 8, 9.00, 0.00, 1),
-      (2, "Store-10", 5, 9, 9, 10.00, 0.00, 1)
-    )).toDF("TimePeriod", "STORE_ID", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "Quantile")
+      (1, "01/01/2015", "Store-1", 1, 1, 1, 1.00, 0.00, 4),
+      (1, "01/01/2015", "Store-2", 1, 1, 1, 2.00, 0.00, 4),
+      (1, "01/01/2015", "Store-3", 2, 2, 2, 3.00, 0.00, 4),
+      (1, "01/01/2015", "Store-4", 1, 1, 1, 4.00, 0.00, 3),
+      (1, "01/01/2015", "Store-5", 1, 3, 7, 5.00, 0.00, 3),
+      (1, "01/01/2015", "Store-6", 1, 1, 1, 6.00, 0.00, 2),
+      (1, "01/01/2015", "Store-7", 1, 2, 4, 7.00, 0.00, 2),
+      (1, "01/01/2015", "Store-8", 1, 1, 1, 8.00, 0.00, 1),
+      (1, "01/01/2015", "Store-9", 3, 4, 8, 9.00, 0.00, 1),
+      (1,"01/01/2015", "Store-10", 5, 9, 9, 10.00, 0.00, 1),
+      (2, "01/01/2015", "Store-1", 1, 1, 1, 1.00, 0.00, 4),
+      (2, "01/01/2015", "Store-2", 1, 1, 1, 2.00, 0.00, 4),
+      (2, "01/01/2015", "Store-3", 2, 2, 2, 3.00, 0.00, 3),
+      (2, "01/01/2015", "Store-4", 1, 1, 1, 4.00, 0.00, 3),
+      (2, "01/01/2015", "Store-5", 1, 3, 7, 5.00, 0.00, 3),
+      (2, "01/01/2015", "Store-6", 1, 1, 1, 6.00, 0.00, 2),
+      (2, "01/01/2015", "Store-7", 1, 2, 4, 7.00, 0.00, 2),
+      (2, "01/01/2015", "Store-8", 1, 1, 1, 8.00, 0.00, 2),
+      (2, "01/01/2015", "Store-9", 3, 4, 8, 9.00, 0.00, 1),
+      (2, "01/01/2015", "Store-10", 5, 9, 9, 10.00, 0.00, 1)
+    )).toDF("TimePeriod", "AnchorDate", "STORE_ID", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "Quantile")
 
     val nineCusts1TP = sc.parallelize(List(
-      (1, "Cust-1", 1, 1, 1.00, 0.00, 4),
-      (1, "Cust-2", 1, 2, 2.00, 0.00, 4),
-      (1, "Cust-3", 1, 1, 3.00, 0.00, 3),
-      (1, "Cust-4", 3, 4, 4.00, 0.00, 3),
-      (1, "Cust-5", 1, 1, 5.00, 0.00, 2),
-      (1, "Cust-6", 1, 2, 7.00, 0.00, 1),
-      (1, "Cust-7", 1, 1, 7.00, 0.00, 1),
-      (1, "Cust-8", 1, 3, 7.00, 0.00, 1),
-      (1, "Cust-9", 1, 1, 7.00, 0.00, 1)
-    )).toDF("TimePeriod", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "Quantile")
+      (1, "01/01/2015", "Cust-1", 1, 1, 1.00, 0.00, 4),
+      (1, "01/01/2015", "Cust-2", 1, 2, 2.00, 0.00, 4),
+      (1, "01/01/2015", "Cust-3", 1, 1, 3.00, 0.00, 3),
+      (1, "01/01/2015", "Cust-4", 3, 4, 4.00, 0.00, 3),
+      (1, "01/01/2015", "Cust-5", 1, 1, 5.00, 0.00, 2),
+      (1, "01/01/2015", "Cust-6", 1, 2, 7.00, 0.00, 1),
+      (1, "01/01/2015", "Cust-7", 1, 1, 7.00, 0.00, 1),
+      (1, "01/01/2015", "Cust-8", 1, 3, 7.00, 0.00, 1),
+      (1, "01/01/2015", "Cust-9", 1, 1, 7.00, 0.00, 1)
+    )).toDF("TimePeriod", "AnchorDate", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "Quantile")
 
     val nineCusts2TP = sc.parallelize(List(
-      (1, "Cust-1", 1, 1, 1.00, 0.00, 4),
-      (1, "Cust-2", 1, 2, 2.00, 0.00, 4),
-      (1, "Cust-3", 1, 1, 3.00, 0.00, 3),
-      (1, "Cust-4", 1, 4, 4.00, 0.00, 3),
-      (1, "Cust-5", 1, 1, 5.00, 0.00, 2),
-      (1, "Cust-6", 1, 2, 7.00, 0.00, 1),
-      (1, "Cust-7", 1, 1, 7.00, 0.00, 1),
-      (1, "Cust-8", 1, 3, 7.00, 0.00, 1),
-      (1, "Cust-9", 1, 1, 7.00, 0.00, 1),
-      (2, "Cust-1", 1, 1, 1.00, 0.00, 4),
-      (2, "Cust-2", 1, 1, 2.00, 0.00, 4),
-      (2, "Cust-3", 1, 3, 3.00, 0.00, 3),
-      (2, "Cust-4", 1, 1, 4.00, 0.00, 2),
-      (2, "Cust-5", 1, 1, 5.00, 0.00, 2),
-      (2, "Cust-6", 1, 1, 7.00, 0.00, 1),
-      (2, "Cust-7", 1, 4, 7.00, 0.00, 1),
-      (2, "Cust-8", 1, 2, 7.00, 0.00, 1),
-      (2, "Cust-9", 1, 1, 7.00, 0.00, 1)
-    )).toDF("TimePeriod", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "Quantile")
+      (1,"01/01/2015",  "Cust-1", 1, 1, 1.00, 0.00, 4),
+      (1, "01/01/2015", "Cust-2", 1, 2, 2.00, 0.00, 4),
+      (1, "01/01/2015", "Cust-3", 1, 1, 3.00, 0.00, 3),
+      (1, "01/01/2015", "Cust-4", 1, 4, 4.00, 0.00, 3),
+      (1, "01/01/2015", "Cust-5", 1, 1, 5.00, 0.00, 2),
+      (1, "01/01/2015", "Cust-6", 1, 2, 7.00, 0.00, 1),
+      (1, "01/01/2015", "Cust-7", 1, 1, 7.00, 0.00, 1),
+      (1, "01/01/2015", "Cust-8", 1, 3, 7.00, 0.00, 1),
+      (1, "01/01/2015", "Cust-9", 1, 1, 7.00, 0.00, 1),
+      (2, "01/01/2015", "Cust-1", 1, 1, 1.00, 0.00, 4),
+      (2, "01/01/2015", "Cust-2", 1, 1, 2.00, 0.00, 4),
+      (2, "01/01/2015", "Cust-3", 1, 3, 3.00, 0.00, 3),
+      (2, "01/01/2015", "Cust-4", 1, 1, 4.00, 0.00, 2),
+      (2, "01/01/2015", "Cust-5", 1, 1, 5.00, 0.00, 2),
+      (2, "01/01/2015", "Cust-6", 1, 1, 7.00, 0.00, 1),
+      (2, "01/01/2015", "Cust-7", 1, 4, 7.00, 0.00, 1),
+      (2, "01/01/2015", "Cust-8", 1, 2, 7.00, 0.00, 1),
+      (2, "01/01/2015", "Cust-9", 1, 1, 7.00, 0.00, 1)
+    )).toDF("TimePeriod", "AnchorDate", "CUST_ID", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "Quantile")
 
     val orElseDF = sc.parallelize(List(1, 2, 3, 4)).toDF("Dummy")
 
@@ -434,20 +435,22 @@ class QuantileProfileTest extends FunSuite with DataFrameSuiteBase {
     import sqlCtx.implicits._
 
     val store4bins = sc.parallelize(List(
-      (1, 1, 10.toLong, 20.toLong, 40.toLong, 80.toLong, 120.00, 10.00, 1.0, 12.0, 8.0, 4.0, 2.0, 3.0, 2.0, .25, 6.0, 2.0, 4.0),
-      (1, 2, 5.toLong, 10.toLong, 20.toLong, 40.toLong, 80.00, 5.00, 1.0, 16.0, 8.0, 4.0, 2.0, 4.0, 2.0, .25, 8.0, 2.0, 4.0),
-      (1, 3, 3.toLong, 6.toLong, 12.toLong, 15.toLong, 30.00, 0.00, 0.0, 10.0, 5.0, 4.0, 2.0, .25, 1.25, 0.0, 5.0, 2.0, 2.5),
-      (1, 4, 2.toLong, 2.toLong, 4.toLong, 8.toLong, 16.00, 4.00, 2.0, 8.0, 4.0, 2.0, 1.0, 4.0, 2.0, 1.0, 8.0, 2.0, 4.0)
+      (1, 1, 10.toLong, 20.toLong, 40.toLong, 80.toLong, 120.00, 10.00, 1.0, 12.0, 8.0, 4.0, 2.0, 3.0, 2.0, .25, 6.0, 2.0, 4.0, "01/01/2015"),
+      (1, 2, 5.toLong, 10.toLong, 20.toLong, 40.toLong, 80.00, 5.00, 1.0, 16.0, 8.0, 4.0, 2.0, 4.0, 2.0, .25, 8.0, 2.0, 4.0, "01/01/2015"),
+      (1, 3, 3.toLong, 6.toLong, 12.toLong, 15.toLong, 30.00, 0.00, 0.0, 10.0, 5.0, 4.0, 2.0, .25, 1.25, 0.0, 5.0, 2.0, 2.5, "01/01/2015"),
+      (1, 4, 2.toLong, 2.toLong, 4.toLong, 8.toLong, 16.00, 4.00, 2.0, 8.0, 4.0, 2.0, 1.0, 4.0, 2.0, 1.0, 8.0, 2.0, 4.0, "01/01/2015")
     )).toDF("TimePeriod", "Quantile", "STORE_COUNT", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT",
-      "AvgDisc", "AvgSpend", "AvgItems", "AvgVisits", "AvgCust", "AvgTripSpend", "AvgTripItems", "AvgTripDisc", "AvgCustSpend", "AvgCustVists", "AvgCustItems")
+      "AvgDisc", "AvgSpend", "AvgItems", "AvgVisits", "AvgCust", "AvgTripSpend", "AvgTripItems", "AvgTripDisc", "AvgCustSpend", "AvgCustVisits", "AvgCustItems", "TXN_DATE")
+      .withColumn("AnchorDate", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val cust4bins = sc.parallelize(List(
-      (1, 1, 10.toLong, 40.toLong, 80.toLong, 120.00, 10.00, 1.0, 12.0, 8.0, 4.0, 3.0, 2.0, .25, 1.5, .125),
-      (1, 2, 5.toLong, 20.toLong, 40.toLong, 80.00, 5.00, 1.0, 16.0, 8.0, 4.0, 4.0, 2.0, .25, 2.0, .125),
-      (1, 3, 3.toLong, 12.toLong, 15.toLong, 30.00, 0.00,0.0, 10.0, 5.0, 4.0, 2.5, 1.25, 0.0, 2.0, 0.0),
-      (1, 4, 2.toLong, 4.toLong, 8.toLong, 16.00, 4.00, 2.0, 8.0, 4.0, 2.0, 4.0, 2.0, 1.0, 2.0, .5)
+      (1, 1, 10.toLong, 40.toLong, 80.toLong, 120.00, 10.00, 1.0, 12.0, 8.0, 4.0, 3.0, 2.0, .25, 1.5, .125, "01/01/2015"),
+      (1, 2, 5.toLong, 20.toLong, 40.toLong, 80.00, 5.00, 1.0, 16.0, 8.0, 4.0, 4.0, 2.0, .25, 2.0, .125, "01/01/2015"),
+      (1, 3, 3.toLong, 12.toLong, 15.toLong, 30.00, 0.00, 0.0, 10.0, 5.0, 4.0, 2.5, 1.25, 0.0, 2.0, 0.0, "01/01/2015"),
+      (1, 4, 2.toLong, 4.toLong, 8.toLong, 16.00, 4.00, 2.0, 8.0, 4.0, 2.0, 4.0, 2.0, 1.0, 2.0, .5, "01/01/2015")
     )).toDF("TimePeriod", "Quantile", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT",
-      "AvgDisc", "AvgSpend", "AvgItems", "AvgVisits", "AvgTripSpend", "AvgTripItems", "AvgTripDisc", "AvgItemSpend", "AvgItemDisc")
+      "AvgDisc", "AvgSpend", "AvgItems", "AvgVisits", "AvgTripSpend", "AvgTripItems", "AvgTripDisc", "AvgItemSpend", "AvgItemDisc", "TXN_DATE")
+      .withColumn("AnchorDate", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val orElseDF = sc.parallelize(List(1, 2, 3, 4)).toDF("Dummy")
   }
@@ -692,10 +695,10 @@ class QuantileProfileTest extends FunSuite with DataFrameSuiteBase {
 
       aggDF.show()
 
-      assert(storeA1 === Row(1, "StoreA", 2, 2, 7, 15.00, 2.50))
-      assert(storeB1 === Row(1, "StoreB", 1, 1, 10, 30.00, 5.00))
-      assert(storeA2 === Row(2, "StoreA", 2, 2, 11, 27.00, 5.00))
-      assert(storeB2 === Row(2, "StoreB", 2, 2, 3, 16.00, 3.00))
+      assert(storeA1 === Row(1, "01/01/2015", "StoreA", 2, 2, 7, 15.00, 2.50))
+      assert(storeB1 === Row(1, "01/01/2015", "StoreB", 1, 1, 10, 30.00, 5.00))
+      assert(storeA2 === Row(2, "01/01/2015", "StoreA", 2, 2, 11, 27.00, 5.00))
+      assert(storeB2 === Row(2, "01/01/2015", "StoreB", 2, 2, 3, 16.00, 3.00))
     }
   }
 
@@ -711,11 +714,11 @@ class QuantileProfileTest extends FunSuite with DataFrameSuiteBase {
       val custC = aggDF.where("TimePeriod = 2 AND CUST_ID ='CustC'").head()
       val custD = aggDF.where("TimePeriod = 2 AND CUST_ID ='CustD'").head()
 
-      assert(custA1 === Row(1, "CustA", 1, 3, 5.00, 0.00))
-      assert(custB === Row(1, "CustB", 2, 14, 40.00, 7.50))
-      assert(custA2 === Row(2, "CustA", 2, 6, 26.00, 5.50))
-      assert(custC === Row(2, "CustC", 1, 6, 12.00, 0.00))
-      assert(custD === Row(2, "CustD", 1, 2, 5.00, 2.50))
+      assert(custA1 === Row(1, "01/01/2015", "CustA", 1, 3, 5.00, 0.00))
+      assert(custB === Row(1, "01/01/2015", "CustB", 2, 14, 40.00, 7.50))
+      assert(custA2 === Row(2, "01/01/2015", "CustA", 2, 6, 26.00, 5.50))
+      assert(custC === Row(2, "01/01/2015", "CustC", 1, 6, 12.00, 0.00))
+      assert(custD === Row(2, "01/01/2015", "CustD", 1, 2, 5.00, 2.50))
     }
   }
 
@@ -952,10 +955,10 @@ class QuantileProfileTest extends FunSuite with DataFrameSuiteBase {
       val quant3 = aggDF.where("Quantile = 3").head()
       val quant4 = aggDF.where("Quantile = 4").head()
 
-      assert(quant1 === Row(1, 1, 3, 9, 14, 18, 27.00, 0.00))
-      assert(quant2 === Row(1, 2, 2, 2, 3, 5, 13.00, 0.00))
-      assert(quant3 === Row(1, 3, 2, 2, 4, 8, 9.00, 0.00))
-      assert(quant4 === Row(1, 4, 3, 4, 4, 4, 6.00, 0.00))
+      assert(quant1 === Row(1, "01/01/2015", 1, 3, 9, 14, 18, 27.00, 0.00))
+      assert(quant2 === Row(1, "01/01/2015", 2, 2, 2, 3, 5, 13.00, 0.00))
+      assert(quant3 === Row(1, "01/01/2015", 3, 2, 2, 4, 8, 9.00, 0.00))
+      assert(quant4 === Row(1, "01/01/2015", 4, 3, 4, 4, 4, 6.00, 0.00))
     }
   }
 
@@ -976,15 +979,15 @@ class QuantileProfileTest extends FunSuite with DataFrameSuiteBase {
 
       aggDF.show()
 
-      assert(quant11 === Row(1, 1, 3, 9, 14, 18, 27.00, 0.00))
-      assert(quant21 === Row(1, 2, 2, 2, 3, 5, 13.00, 0.00))
-      assert(quant31 === Row(1, 3, 2, 2, 4, 8, 9.00, 0.00))
-      assert(quant41 === Row(1, 4, 3, 4, 4, 4, 6.00, 0.00))
+      assert(quant11 === Row(1, "01/01/2015", 1, 3, 9, 14, 18, 27.00, 0.00))
+      assert(quant21 === Row(1, "01/01/2015", 2, 2, 2, 3, 5, 13.00, 0.00))
+      assert(quant31 === Row(1, "01/01/2015", 3, 2, 2, 4, 8, 9.00, 0.00))
+      assert(quant41 === Row(1, "01/01/2015", 4, 3, 4, 4, 4, 6.00, 0.00))
 
-      assert(quant12 === Row(2, 1, 2, 8, 13, 17, 19.00, 0.00))
-      assert(quant22 === Row(2, 2, 3, 3, 4, 6, 21.00, 0.00))
-      assert(quant32 === Row(2, 3, 3, 4, 6, 10, 12.00, 0.00))
-      assert(quant42 === Row(2, 4, 2, 2, 2, 2, 3.00, 0.00))
+      assert(quant12 === Row(2, "01/01/2015", 1, 2, 8, 13, 17, 19.00, 0.00))
+      assert(quant22 === Row(2, "01/01/2015", 2, 3, 3, 4, 6, 21.00, 0.00))
+      assert(quant32 === Row(2, "01/01/2015", 3, 3, 4, 6, 10, 12.00, 0.00))
+      assert(quant42 === Row(2, "01/01/2015", 4, 2, 2, 2, 2, 3.00, 0.00))
     }
   }
 
@@ -1001,10 +1004,10 @@ class QuantileProfileTest extends FunSuite with DataFrameSuiteBase {
 
       aggDF.show()
 
-      assert(quant1 === Row(1, 1, 4, 4, 7, 28.00, 0.00))
-      assert(quant2 === Row(1, 2, 1, 1, 1, 5.00, 0.00))
-      assert(quant3 === Row(1, 3, 2, 4, 5, 7.00, 0.00))
-      assert(quant4 === Row(1, 4, 2, 2, 3, 3.00, 0.00))
+      assert(quant1 === Row(1, "01/01/2015", 1, 4, 4, 7, 28.00, 0.00))
+      assert(quant2 === Row(1, "01/01/2015", 2, 1, 1, 1, 5.00, 0.00))
+      assert(quant3 === Row(1, "01/01/2015", 3, 2, 4, 5, 7.00, 0.00))
+      assert(quant4 === Row(1, "01/01/2015", 4, 2, 2, 3, 3.00, 0.00))
     }
   }
 
@@ -1026,15 +1029,15 @@ class QuantileProfileTest extends FunSuite with DataFrameSuiteBase {
       val quant42 = aggDF.filter(aggDF("TimePeriod") === 2).where("Quantile = 4").head()
 
 
-      assert(quant11 === Row(1, 1, 4, 4, 7, 28.00, 0.00))
-      assert(quant21 === Row(1, 2, 1, 1, 1, 5.00, 0.00))
-      assert(quant31 === Row(1, 3, 2, 2, 5, 7.00, 0.00))
-      assert(quant41 === Row(1, 4, 2, 2, 3, 3.00, 0.00))
+      assert(quant11 === Row(1, "01/01/2015", 1, 4, 4, 7, 28.00, 0.00))
+      assert(quant21 === Row(1, "01/01/2015", 2, 1, 1, 1, 5.00, 0.00))
+      assert(quant31 === Row(1, "01/01/2015", 3, 2, 2, 5, 7.00, 0.00))
+      assert(quant41 === Row(1, "01/01/2015", 4, 2, 2, 3, 3.00, 0.00))
 
-      assert(quant12 === Row(2, 1, 4, 4, 8, 28.00, 0.00))
-      assert(quant22 === Row(2, 2, 2, 2, 2, 9.00, 0.00))
-      assert(quant32 === Row(2, 3, 1, 1, 3, 3.00, 0.00))
-      assert(quant42 === Row(2, 4, 2, 2, 2, 3.00, 0.00))
+      assert(quant12 === Row(2, "01/01/2015", 1, 4, 4, 8, 28.00, 0.00))
+      assert(quant22 === Row(2, "01/01/2015", 2, 2, 2, 2, 9.00, 0.00))
+      assert(quant32 === Row(2, "01/01/2015", 3, 1, 1, 3, 3.00, 0.00))
+      assert(quant42 === Row(2, "01/01/2015", 4, 2, 2, 2, 3.00, 0.00))
     }
   }
 

@@ -11,11 +11,13 @@ import org.apache.avro.specific.SpecificData;
 /** Each record gives data for a single time period, and contains arrays to hold all quantile data */
 @org.apache.avro.specific.AvroGenerated
 public class quantileMigrationResults extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -5662591975988925638L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"quantileMigrationResults\",\"namespace\":\"com.brierley.avro.schemas\",\"doc\":\"Each record gives data for a single time period, and contains arrays to hold all quantile data\",\"fields\":[{\"name\":\"timePeriod\",\"type\":\"int\",\"doc\":\"Current Time period\"},{\"name\":\"migrationData\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"migrationArray\",\"fields\":[{\"name\":\"fromQuantile\",\"type\":\"int\",\"doc\":\"Quantile that they were in for PREVIOUS time period\"},{\"name\":\"currentQuantile\",\"type\":\"int\",\"doc\":\"Quantile that they belong to for CURRENT time period\"},{\"name\":\"migrationCount\",\"type\":\"long\",\"doc\":\"Total number that moved fromQuantile -> currentQuantile\"}]}}},{\"name\":\"quantileTotals\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"newTotal\",\"fields\":[{\"name\":\"quantile\",\"type\":\"int\",\"doc\":\"quantile for which totals apply to in the current time period\"},{\"name\":\"newCount\",\"type\":\"long\",\"doc\":\"Count of those not seen in PREVIOUS period, those not represented in migrationArray\"}]}}}]}");
+  private static final long serialVersionUID = 8966533226317488649L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"quantileMigrationResults\",\"namespace\":\"com.brierley.avro.schemas\",\"doc\":\"Each record gives data for a single time period, and contains arrays to hold all quantile data\",\"fields\":[{\"name\":\"timePeriod\",\"type\":\"int\",\"doc\":\"Current Time period\"},{\"name\":\"anchorDate\",\"type\":\"string\",\"doc\":\"The first date of the TimePeriod, formatted 'MMM yyyy'\"},{\"name\":\"migrationData\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"migrationArray\",\"fields\":[{\"name\":\"fromQuantile\",\"type\":\"int\",\"doc\":\"Quantile that they were in for PREVIOUS time period\"},{\"name\":\"currentQuantile\",\"type\":\"int\",\"doc\":\"Quantile that they belong to for CURRENT time period\"},{\"name\":\"migrationCount\",\"type\":\"long\",\"doc\":\"Total number that moved fromQuantile -> currentQuantile\"}]}}},{\"name\":\"quantileTotals\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"newTotal\",\"fields\":[{\"name\":\"quantile\",\"type\":\"int\",\"doc\":\"quantile for which totals apply to in the current time period\"},{\"name\":\"newCount\",\"type\":\"long\",\"doc\":\"Count of those not seen in PREVIOUS period, those not represented in migrationArray\"}]}}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** Current Time period */
   @Deprecated public int timePeriod;
+  /** The first date of the TimePeriod, formatted 'MMM yyyy' */
+  @Deprecated public java.lang.CharSequence anchorDate;
   @Deprecated public java.util.List<com.brierley.avro.schemas.migrationArray> migrationData;
   @Deprecated public java.util.List<com.brierley.avro.schemas.newTotal> quantileTotals;
 
@@ -29,11 +31,13 @@ public class quantileMigrationResults extends org.apache.avro.specific.SpecificR
   /**
    * All-args constructor.
    * @param timePeriod Current Time period
+   * @param anchorDate The first date of the TimePeriod, formatted 'MMM yyyy'
    * @param migrationData The new value for migrationData
    * @param quantileTotals The new value for quantileTotals
    */
-  public quantileMigrationResults(java.lang.Integer timePeriod, java.util.List<com.brierley.avro.schemas.migrationArray> migrationData, java.util.List<com.brierley.avro.schemas.newTotal> quantileTotals) {
+  public quantileMigrationResults(java.lang.Integer timePeriod, java.lang.CharSequence anchorDate, java.util.List<com.brierley.avro.schemas.migrationArray> migrationData, java.util.List<com.brierley.avro.schemas.newTotal> quantileTotals) {
     this.timePeriod = timePeriod;
+    this.anchorDate = anchorDate;
     this.migrationData = migrationData;
     this.quantileTotals = quantileTotals;
   }
@@ -43,8 +47,9 @@ public class quantileMigrationResults extends org.apache.avro.specific.SpecificR
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return timePeriod;
-    case 1: return migrationData;
-    case 2: return quantileTotals;
+    case 1: return anchorDate;
+    case 2: return migrationData;
+    case 3: return quantileTotals;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -54,8 +59,9 @@ public class quantileMigrationResults extends org.apache.avro.specific.SpecificR
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: timePeriod = (java.lang.Integer)value$; break;
-    case 1: migrationData = (java.util.List<com.brierley.avro.schemas.migrationArray>)value$; break;
-    case 2: quantileTotals = (java.util.List<com.brierley.avro.schemas.newTotal>)value$; break;
+    case 1: anchorDate = (java.lang.CharSequence)value$; break;
+    case 2: migrationData = (java.util.List<com.brierley.avro.schemas.migrationArray>)value$; break;
+    case 3: quantileTotals = (java.util.List<com.brierley.avro.schemas.newTotal>)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -75,6 +81,23 @@ public class quantileMigrationResults extends org.apache.avro.specific.SpecificR
    */
   public void setTimePeriod(java.lang.Integer value) {
     this.timePeriod = value;
+  }
+
+  /**
+   * Gets the value of the 'anchorDate' field.
+   * @return The first date of the TimePeriod, formatted 'MMM yyyy'
+   */
+  public java.lang.CharSequence getAnchorDate() {
+    return anchorDate;
+  }
+
+  /**
+   * Sets the value of the 'anchorDate' field.
+   * The first date of the TimePeriod, formatted 'MMM yyyy'
+   * @param value the value to set.
+   */
+  public void setAnchorDate(java.lang.CharSequence value) {
+    this.anchorDate = value;
   }
 
   /**
@@ -143,6 +166,8 @@ public class quantileMigrationResults extends org.apache.avro.specific.SpecificR
 
     /** Current Time period */
     private int timePeriod;
+    /** The first date of the TimePeriod, formatted 'MMM yyyy' */
+    private java.lang.CharSequence anchorDate;
     private java.util.List<com.brierley.avro.schemas.migrationArray> migrationData;
     private java.util.List<com.brierley.avro.schemas.newTotal> quantileTotals;
 
@@ -161,13 +186,17 @@ public class quantileMigrationResults extends org.apache.avro.specific.SpecificR
         this.timePeriod = data().deepCopy(fields()[0].schema(), other.timePeriod);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.migrationData)) {
-        this.migrationData = data().deepCopy(fields()[1].schema(), other.migrationData);
+      if (isValidValue(fields()[1], other.anchorDate)) {
+        this.anchorDate = data().deepCopy(fields()[1].schema(), other.anchorDate);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.quantileTotals)) {
-        this.quantileTotals = data().deepCopy(fields()[2].schema(), other.quantileTotals);
+      if (isValidValue(fields()[2], other.migrationData)) {
+        this.migrationData = data().deepCopy(fields()[2].schema(), other.migrationData);
         fieldSetFlags()[2] = true;
+      }
+      if (isValidValue(fields()[3], other.quantileTotals)) {
+        this.quantileTotals = data().deepCopy(fields()[3].schema(), other.quantileTotals);
+        fieldSetFlags()[3] = true;
       }
     }
 
@@ -181,13 +210,17 @@ public class quantileMigrationResults extends org.apache.avro.specific.SpecificR
         this.timePeriod = data().deepCopy(fields()[0].schema(), other.timePeriod);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.migrationData)) {
-        this.migrationData = data().deepCopy(fields()[1].schema(), other.migrationData);
+      if (isValidValue(fields()[1], other.anchorDate)) {
+        this.anchorDate = data().deepCopy(fields()[1].schema(), other.anchorDate);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.quantileTotals)) {
-        this.quantileTotals = data().deepCopy(fields()[2].schema(), other.quantileTotals);
+      if (isValidValue(fields()[2], other.migrationData)) {
+        this.migrationData = data().deepCopy(fields()[2].schema(), other.migrationData);
         fieldSetFlags()[2] = true;
+      }
+      if (isValidValue(fields()[3], other.quantileTotals)) {
+        this.quantileTotals = data().deepCopy(fields()[3].schema(), other.quantileTotals);
+        fieldSetFlags()[3] = true;
       }
     }
 
@@ -234,6 +267,49 @@ public class quantileMigrationResults extends org.apache.avro.specific.SpecificR
     }
 
     /**
+      * Gets the value of the 'anchorDate' field.
+      * The first date of the TimePeriod, formatted 'MMM yyyy'
+      * @return The value.
+      */
+    public java.lang.CharSequence getAnchorDate() {
+      return anchorDate;
+    }
+
+    /**
+      * Sets the value of the 'anchorDate' field.
+      * The first date of the TimePeriod, formatted 'MMM yyyy'
+      * @param value The value of 'anchorDate'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.quantileMigrationResults.Builder setAnchorDate(java.lang.CharSequence value) {
+      validate(fields()[1], value);
+      this.anchorDate = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'anchorDate' field has been set.
+      * The first date of the TimePeriod, formatted 'MMM yyyy'
+      * @return True if the 'anchorDate' field has been set, false otherwise.
+      */
+    public boolean hasAnchorDate() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'anchorDate' field.
+      * The first date of the TimePeriod, formatted 'MMM yyyy'
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.quantileMigrationResults.Builder clearAnchorDate() {
+      anchorDate = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'migrationData' field.
       * @return The value.
       */
@@ -247,9 +323,9 @@ public class quantileMigrationResults extends org.apache.avro.specific.SpecificR
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantileMigrationResults.Builder setMigrationData(java.util.List<com.brierley.avro.schemas.migrationArray> value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.migrationData = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -258,7 +334,7 @@ public class quantileMigrationResults extends org.apache.avro.specific.SpecificR
       * @return True if the 'migrationData' field has been set, false otherwise.
       */
     public boolean hasMigrationData() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -268,7 +344,7 @@ public class quantileMigrationResults extends org.apache.avro.specific.SpecificR
       */
     public com.brierley.avro.schemas.quantileMigrationResults.Builder clearMigrationData() {
       migrationData = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -286,9 +362,9 @@ public class quantileMigrationResults extends org.apache.avro.specific.SpecificR
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantileMigrationResults.Builder setQuantileTotals(java.util.List<com.brierley.avro.schemas.newTotal> value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.quantileTotals = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -297,7 +373,7 @@ public class quantileMigrationResults extends org.apache.avro.specific.SpecificR
       * @return True if the 'quantileTotals' field has been set, false otherwise.
       */
     public boolean hasQuantileTotals() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -307,7 +383,7 @@ public class quantileMigrationResults extends org.apache.avro.specific.SpecificR
       */
     public com.brierley.avro.schemas.quantileMigrationResults.Builder clearQuantileTotals() {
       quantileTotals = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -316,8 +392,9 @@ public class quantileMigrationResults extends org.apache.avro.specific.SpecificR
       try {
         quantileMigrationResults record = new quantileMigrationResults();
         record.timePeriod = fieldSetFlags()[0] ? this.timePeriod : (java.lang.Integer) defaultValue(fields()[0]);
-        record.migrationData = fieldSetFlags()[1] ? this.migrationData : (java.util.List<com.brierley.avro.schemas.migrationArray>) defaultValue(fields()[1]);
-        record.quantileTotals = fieldSetFlags()[2] ? this.quantileTotals : (java.util.List<com.brierley.avro.schemas.newTotal>) defaultValue(fields()[2]);
+        record.anchorDate = fieldSetFlags()[1] ? this.anchorDate : (java.lang.CharSequence) defaultValue(fields()[1]);
+        record.migrationData = fieldSetFlags()[2] ? this.migrationData : (java.util.List<com.brierley.avro.schemas.migrationArray>) defaultValue(fields()[2]);
+        record.quantileTotals = fieldSetFlags()[3] ? this.quantileTotals : (java.util.List<com.brierley.avro.schemas.newTotal>) defaultValue(fields()[3]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

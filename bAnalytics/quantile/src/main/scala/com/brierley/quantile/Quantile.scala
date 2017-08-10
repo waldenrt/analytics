@@ -94,6 +94,7 @@ object Quantile {
         .sort("TimePeriod")
         .drop(col("period"))
         .drop(col("max(Date)"))
+        .withColumn("AnchorDate", min("Date").over(Window.partitionBy("TimePeriod")))
 
       //result.persist(StorageLevel.MEMORY_AND_DISK)
       (result)
@@ -112,6 +113,7 @@ object Quantile {
         .drop(col("MaxMonth"))
         .drop(col("MaxYear"))
         .drop(col("max(Date)"))
+        .withColumn("AnchorDate", min("Date").over(Window.partitionBy("TimePeriod")))
       //result.persist(StorageLevel.MEMORY_AND_DISK)
       (result)
     }
@@ -126,13 +128,13 @@ object Quantile {
 
   def baseAgg(tpDF: DataFrame, dimension: String): Try[DataFrame] = Try {
     dimension match {
-      case "store" => tpDF.groupBy("TimePeriod", "STORE_ID")
+      case "store" => tpDF.groupBy("TimePeriod", "AnchorDate", "STORE_ID")
         .agg(countDistinct("CUST_ID").alias("CUST_COUNT"),
           countDistinct("TXN_HEADER_ID").alias("TXN_COUNT"),
           sum("ITEM_QTY").alias("ITEM_QTY"),
           sum("ITEM_AMT").alias("ITEM_AMT"),
           sum("DISC_AMT").alias("DISC_AMT"))
-      case "customer" => tpDF.groupBy("TimePeriod", "CUST_ID")
+      case "customer" => tpDF.groupBy("TimePeriod", "AnchorDate", "CUST_ID")
         .agg(countDistinct("TXN_HEADER_ID").alias("TXN_COUNT"),
           sum("ITEM_QTY").alias("ITEM_QTY"),
           sum("ITEM_AMT").alias("ITEM_AMT"),
@@ -143,7 +145,7 @@ object Quantile {
 
   def quantileSpend(aggDF: DataFrame, quant: Double): Try[DataFrame] = Try {
     val rankWindow = Window
-      .partitionBy("TimePeriod")
+      .partitionBy("TimePeriod", "AnchorDate")
       .orderBy(col("ITEM_AMT").desc)
 
     val result = aggDF.select("*")
@@ -160,14 +162,14 @@ object Quantile {
 
   def aggQuantile(quantDF: DataFrame, dimension: String): Try[DataFrame] = Try {
     dimension match {
-      case "store" => quantDF.groupBy("TimePeriod", "Quantile")
+      case "store" => quantDF.groupBy("TimePeriod", "AnchorDate", "Quantile")
         .agg(count("STORE_ID").alias("STORE_COUNT"),
           sum("CUST_COUNT").alias("CUST_COUNT"),
           sum("TXN_COUNT").alias("TXN_COUNT"),
           sum("ITEM_QTY").alias("ITEM_QTY"),
           sum("ITEM_AMT").alias("ITEM_AMT"),
           sum("DISC_AMT").alias("DISC_AMT"))
-      case "customer" => quantDF.groupBy("TimePeriod", "Quantile")
+      case "customer" => quantDF.groupBy("TimePeriod", "AnchorDate", "Quantile")
         .agg(count("CUST_ID").alias("CUST_COUNT"),
           sum("TXN_COUNT").alias("TXN_COUNT"),
           sum("ITEM_QTY").alias("ITEM_QTY"),
@@ -231,6 +233,8 @@ object Quantile {
       pd.setAvgCustVisits(pdRow.getDouble(17))
       pd.setAvgCustUnits(pdRow.getDouble(18))
 
+      pd.setAnchorDate(pdRow.getString(19))
+
       profileList.add(pd)
     }
 
@@ -254,12 +258,28 @@ object Quantile {
       pd.setAvgItemSales(pdRow.getDouble(14))
       pd.setAvgItemDisc(pdRow.getDouble(15))
 
+      pd.setAnchorDate(pdRow.getString(16))
+
       profileList.add(pd)
     }
 
+    val invertedDF = avgDF
+      .withColumn("TP", dense_rank().over(Window.orderBy(col("TimePeriod").desc)))
+      .drop("TimePeriod")
+      .withColumnRenamed("TP", "TimePeriod")
+      .withColumn("StringAnchor", stringDate(avgDF("AnchorDate")))
+
+    invertedDF.show()
+
     dimension match {
-      case "store" => avgDF.collect().foreach(x => mapStoreProfileData(x))
-      case "customer" => avgDF.collect().foreach(x => mapCustProfileData(x))
+      case "store" => invertedDF
+        .select("TimePeriod", "Quantile", "STORE_COUNT", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "AvgDisc", "AvgSpend",
+          "AvgItems", "AvgVisits", "AvgCust", "AvgTripSpend", "AvgTripItems", "AvgTripDisc", "AvgCustSpend", "AvgCustVisits", "AvgCustItems", "StringAnchor")
+        .collect().foreach(x => mapStoreProfileData(x))
+      case "customer" => invertedDF
+        .select("TimePeriod", "Quantile", "CUST_COUNT", "TXN_COUNT", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "AvgDisc", "AvgSpend",
+          "AvgItems", "AvgVisits", "AvgTripSpend", "AvgTripItems", "AvgTripDisc", "AvgItemSpend", "AvgItemDisc", "StringAnchor")
+        .collect().foreach(x => mapCustProfileData(x))
     }
 
     (profileList)
@@ -300,13 +320,13 @@ object Quantile {
       prodDF.drop("CUST_ID")
 
     if (colNames.contains("Level3")) {
-      val level3Agg = prodDF.groupBy("TimePeriod", "Quantile", "Level3")
+      val level3Agg = prodDF.groupBy("TimePeriod", "AnchorDate", "Quantile", "Level3")
         .agg(sum("ITEM_QTY").alias("Qty"), sum("ITEM_AMT").alias("Amt"))
         .withColumn("Type", lit("Level3"))
-      val level2Agg = prodDF.groupBy("TimePeriod", "Quantile", "Level2")
+      val level2Agg = prodDF.groupBy("TimePeriod", "AnchorDate", "Quantile", "Level2")
         .agg(sum("ITEM_QTY").alias("Qty"), sum("ITEM_AMT").alias("Amt"))
         .withColumn("Type", lit("Level2"))
-      val level1Agg = prodDF.groupBy("TimePeriod", "Quantile", "Level1")
+      val level1Agg = prodDF.groupBy("TimePeriod", "AnchorDate", "Quantile", "Level1")
         .agg(sum("ITEM_QTY").alias("Qty"), sum("ITEM_AMT").alias("Amt"))
         .withColumn("Type", lit("Level1"))
         .withColumnRenamed("Level1", "Descr")
@@ -316,11 +336,11 @@ object Quantile {
       (result)
     }
     else if (colNames.contains("Level2")) {
-      val level2Agg = prodDF.groupBy("TimePeriod", "Quantile", "Level2")
+      val level2Agg = prodDF.groupBy("TimePeriod", "AnchorDate", "Quantile", "Level2")
         .agg(sum("ITEM_QTY").alias("Qty"), sum("ITEM_AMT").alias("Amt"))
         .withColumn("Type", lit("Level2"))
 
-      val level1Agg = prodDF.groupBy("TimePeriod", "Quantile", "Level1")
+      val level1Agg = prodDF.groupBy("TimePeriod", "AnchorDate", "Quantile", "Level1")
         .agg(sum("ITEM_QTY").alias("Qty"), sum("ITEM_AMT").alias("Amt"))
         .withColumn("Type", lit("Level1"))
         .withColumnRenamed("Level1", "Descr")
@@ -330,7 +350,7 @@ object Quantile {
       (result)
     }
     else {
-      val result = prodDF.groupBy("TimePeriod", "Quantile", "Level1")
+      val result = prodDF.groupBy("TimePeriod", "AnchorDate", "Quantile", "Level1")
         .agg(sum("ITEM_QTY").alias("Qty"), sum("ITEM_AMT").alias("Amt"))
         .withColumn("Type", lit("Level1"))
         .withColumnRenamed("Level1", "Descr")
@@ -342,7 +362,7 @@ object Quantile {
   }
 
   def spendProds(aggProdDF: DataFrame, num: Int): Try[DataFrame] = Try {
-    val spendWindow = Window.partitionBy("TimePeriod", "Quantile", "Type")
+    val spendWindow = Window.partitionBy("TimePeriod", "AnchorDate", "Quantile", "Type")
       .orderBy(desc("Amt"))
 
     val rankDF = aggProdDF.select("*")
@@ -351,10 +371,10 @@ object Quantile {
       .withColumn("RowNum", row_number().over(spendWindow))
 
     val maxDF = rankDF
-      .groupBy("TimePeriod", "Quantile", "Type")
+      .groupBy("TimePeriod", "AnchorDate", "Quantile", "Type")
       .max("RowNum")
 
-    val joinedDF = rankDF.join(maxDF, Seq("TimePeriod", "Quantile", "Type"))
+    val joinedDF = rankDF.join(maxDF, Seq("TimePeriod", "AnchorDate", "Quantile", "Type"))
 
     val topDF = joinedDF
       .filter(col("RowNum") <= num)
@@ -370,7 +390,7 @@ object Quantile {
   }
 
   def qtyProds(aggProdDF: DataFrame, num: Int): Try[DataFrame] = Try {
-    val countWindow = Window.partitionBy("TimePeriod", "Quantile", "Type")
+    val countWindow = Window.partitionBy("TimePeriod", "AnchorDate", "Quantile", "Type")
       .orderBy(desc("Qty"))
 
     val rankDF = aggProdDF.select("*")
@@ -379,10 +399,10 @@ object Quantile {
       .withColumn("RowNum", row_number().over(countWindow))
 
     val maxDF = rankDF
-      .groupBy("TimePeriod", "Quantile", "Type")
+      .groupBy("TimePeriod","AnchorDate", "Quantile", "Type")
       .max("RowNum")
 
-    val joinedDF = rankDF.join(maxDF, Seq("TimePeriod", "Quantile", "Type"))
+    val joinedDF = rankDF.join(maxDF, Seq("TimePeriod", "AnchorDate", "Quantile", "Type"))
 
     val topDF = joinedDF
       .filter(col("RowNum") <= num)
@@ -407,8 +427,8 @@ object Quantile {
     val joinedDF = spendDF
       .withColumnRenamed("Descr", "SpendDescr")
       .withColumnRenamed("Rank", "SpendRank")
-      .join(qtyDF, Seq("TimePeriod", "Quantile", "Type", "RowNum", "Position"))
-      .sort("TimePeriod", "Quantile", "Type", "RowNum")
+      .join(qtyDF, Seq("TimePeriod", "AnchorDate", "Quantile", "Type", "RowNum", "Position"))
+      .sort("TimePeriod", "AnchorDate", "Quantile", "Type", "RowNum")
       .drop("RowNum")
 
     def setSpendAndCount(row: Row): Unit = {
@@ -435,6 +455,7 @@ object Quantile {
         qpr.setTimePeriod(row.getInt(0))
         qpr.setQuantile(row.getInt(1))
         qpr.setColumnName(row.getString(2))
+        qpr.setAnchorDate(row.getString(10))
         tempProd.add(qpr)
 
         setSpendAndCount(row)
@@ -455,6 +476,7 @@ object Quantile {
         qpr.setTimePeriod(row.getInt(0))
         qpr.setQuantile(row.getInt(1))
         qpr.setColumnName(row.getString(2))
+        qpr.setAnchorDate(row.getString(10))
         tempProd.add(qpr)
 
         spendArray = new util.ArrayList[productSpend]
@@ -465,7 +487,16 @@ object Quantile {
 
     }
 
-    joinedDF.collect().foreach(f => mapArrays(f))
+    val invertedDF = joinedDF
+      .withColumn("TP", dense_rank().over(Window.orderBy(col("TimePeriod").desc)))
+      .drop("TimePeriod")
+      .withColumnRenamed("TP", "TimePeriod")
+      .withColumn("StringAnchor", stringDate(joinedDF("AnchorDate")))
+      .select("TimePeriod", "Quantile", "Type", "Position", "SpendDescr", "Amt", "SpendRank", "Descr", "Qty", "Rank", "StringAnchor")
+
+    invertedDF.show()
+
+    invertedDF.collect().foreach(f => mapArrays(f))
 
     val lastSet = tempProd.get(tempProd.size() - 1)
     lastSet.setProductCount(countArray)
@@ -486,11 +517,11 @@ object Quantile {
 
     val idCol = getIdCol(dimension)
 
-    val baseDF = quantDF.select("TimePeriod", idCol, "Quantile")
+    val baseDF = quantDF.select("TimePeriod", "AnchorDate", idCol, "Quantile")
       .withColumnRenamed("Quantile", "CurrQuant")
       .withColumnRenamed(idCol, "ID")
 
-    val TPWindow = Window.partitionBy("ID").orderBy("TimePeriod")
+    val TPWindow = Window.partitionBy("ID").orderBy("TimePeriod", "AnchorDate")
 
     val missingTPDF = baseDF
       .drop("CurrQuant")
@@ -501,7 +532,7 @@ object Quantile {
       .withColumnRenamed("MissingTP", "TimePeriod")
       .drop(col("TPDiff"))
       .withColumn("CurrQuant", lit(null))
-      .select("TimePeriod", "ID", "CurrQuant")
+      .select("TimePeriod", "AnchorDate", "ID", "CurrQuant")
 
     val unionDF = baseDF.unionAll(missingTPDF)
 
@@ -512,11 +543,14 @@ object Quantile {
 
   def countTotals(migDF: DataFrame): Try[DataFrame] = Try {
     val maxTP = migDF.select(max("TimePeriod")).head().getInt(0)
-    migDF.filter(migDF("PrevQuant") isNull)
+    val countDF = migDF.filter(migDF("PrevQuant") isNull)
       .filter(migDF("TimePeriod") < maxTP)
       .groupBy("TimePeriod", "CurrQuant")
       .agg(count("ID"))
       .drop("PrevQuant")
+
+    countDF.show()
+    countDF
   }
 
   def sumMigrations(migrationDF: DataFrame, quant: Double, sqlCtx: HiveContext, sc: SparkContext): Try[DataFrame] = Try {
@@ -528,7 +562,7 @@ object Quantile {
 
     val quantDF = sc.parallelize(quantArray).toDF("CurrQuant")
     val prevDF = sc.parallelize(quantArray).toDF("PrevQuant")
-    val TPs = migrationDF.select("TimePeriod").distinct()
+    val TPs = migrationDF.select("TimePeriod", "AnchorDate").distinct()
 
     val matrixDF = TPs.join(quantDF).join(prevDF)
 
@@ -539,6 +573,8 @@ object Quantile {
 
     val endDF = matrixDF.join(sumDF, Seq("TimePeriod", "CurrQuant", "PrevQuant"), "left_outer")
       .na.fill(0)
+
+    endDF.show()
 
     endDF
   }
@@ -563,6 +599,7 @@ object Quantile {
       if (migArray.isEmpty) {
         val qmr = new quantileMigrationResults()
         qmr.setTimePeriod(row.getInt(0))
+        qmr.setAnchorDate(row.getString(4))
 
         migArray.add(qmr)
 
@@ -600,9 +637,21 @@ object Quantile {
       }
     }
 
-    sumDF.sort("TimePeriod").collect().foreach(f => mapMigArrays(f))
+    val invertSumDF = sumDF
+      .withColumnRenamed("TimePeriod", "TP")
+      .withColumn("TimePeriod", dense_rank().over(Window.orderBy(col("TP").desc)))
+        .withColumn("StringDate", stringDate(col("AnchorDate")))
+      .select("TimePeriod", "CurrQuant", "PrevQuant", "Count", "StringDate")
+
+    val invertCountDF = countDF
+      .withColumnRenamed("TimePeriod", "TP")
+      .withColumn("TimePeriod", dense_rank().over(Window.orderBy(col("TP").desc)))
+      .select("TimePeriod", "CurrQuant", "count(ID)")
+
+
+    invertSumDF.sort("TimePeriod").collect().foreach(f => mapMigArrays(f))
     migArray.get(migArray.size() - 1).setMigrationData(innerMigArray)
-    countDF.sort("TimePeriod").collect().foreach(g => mapCountArrays(g))
+    invertCountDF.sort("TimePeriod").collect().foreach(g => mapCountArrays(g))
     migArray.get(migArray.size() - 1).setQuantileTotals(tempTotal)
 
     migArray

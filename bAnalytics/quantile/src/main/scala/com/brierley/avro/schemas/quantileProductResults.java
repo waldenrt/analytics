@@ -11,11 +11,13 @@ import org.apache.avro.specific.SpecificData;
 /** each record represents the results of single period of time */
 @org.apache.avro.specific.AvroGenerated
 public class quantileProductResults extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 5738154995520950449L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"quantileProductResults\",\"namespace\":\"com.brierley.avro.schemas\",\"doc\":\"each record represents the results of single period of time\",\"fields\":[{\"name\":\"timePeriod\",\"type\":\"int\",\"doc\":\"Quantile Period, calculated ascending\"},{\"name\":\"quantile\",\"type\":\"int\",\"doc\":\"Quantile bucket\"},{\"name\":\"columnName\",\"type\":\"string\",\"doc\":\"Which input product column are these rankings for, user defines columns\"},{\"name\":\"ProductSpend\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"productSpend\",\"fields\":[{\"name\":\"product\",\"type\":\"string\"},{\"name\":\"rank\",\"type\":\"int\"},{\"name\":\"spend\",\"type\":\"double\"},{\"name\":\"position\",\"type\":\"string\"}]}},\"doc\":\"Top products by spend, per quantile group, defaults to 10 products\"},{\"name\":\"ProductCount\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"productCount\",\"fields\":[{\"name\":\"product\",\"type\":\"string\"},{\"name\":\"rank\",\"type\":\"int\"},{\"name\":\"count\",\"type\":\"long\"},{\"name\":\"position\",\"type\":\"string\"}]}},\"doc\":\"Top products by total units purchased per quantile group, defaults to 10 products\"}]}");
+  private static final long serialVersionUID = -4104291685366627615L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"quantileProductResults\",\"namespace\":\"com.brierley.avro.schemas\",\"doc\":\"each record represents the results of single period of time\",\"fields\":[{\"name\":\"timePeriod\",\"type\":\"int\",\"doc\":\"Quantile Period, calculated ascending\"},{\"name\":\"anchorDate\",\"type\":\"string\",\"doc\":\"The first date of the TimePeriod, formatted 'MMM yyyy'\"},{\"name\":\"quantile\",\"type\":\"int\",\"doc\":\"Quantile bucket\"},{\"name\":\"columnName\",\"type\":\"string\",\"doc\":\"Which input product column are these rankings for, user defines columns\"},{\"name\":\"ProductSpend\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"productSpend\",\"fields\":[{\"name\":\"product\",\"type\":\"string\"},{\"name\":\"rank\",\"type\":\"int\"},{\"name\":\"spend\",\"type\":\"double\"},{\"name\":\"position\",\"type\":\"string\"}]}},\"doc\":\"Top products by spend, per quantile group, defaults to 10 products\"},{\"name\":\"ProductCount\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"productCount\",\"fields\":[{\"name\":\"product\",\"type\":\"string\"},{\"name\":\"rank\",\"type\":\"int\"},{\"name\":\"count\",\"type\":\"long\"},{\"name\":\"position\",\"type\":\"string\"}]}},\"doc\":\"Top products by total units purchased per quantile group, defaults to 10 products\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** Quantile Period, calculated ascending */
   @Deprecated public int timePeriod;
+  /** The first date of the TimePeriod, formatted 'MMM yyyy' */
+  @Deprecated public java.lang.CharSequence anchorDate;
   /** Quantile bucket */
   @Deprecated public int quantile;
   /** Which input product column are these rankings for, user defines columns */
@@ -35,13 +37,15 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
   /**
    * All-args constructor.
    * @param timePeriod Quantile Period, calculated ascending
+   * @param anchorDate The first date of the TimePeriod, formatted 'MMM yyyy'
    * @param quantile Quantile bucket
    * @param columnName Which input product column are these rankings for, user defines columns
    * @param ProductSpend Top products by spend, per quantile group, defaults to 10 products
    * @param ProductCount Top products by total units purchased per quantile group, defaults to 10 products
    */
-  public quantileProductResults(java.lang.Integer timePeriod, java.lang.Integer quantile, java.lang.CharSequence columnName, java.util.List<com.brierley.avro.schemas.productSpend> ProductSpend, java.util.List<com.brierley.avro.schemas.productCount> ProductCount) {
+  public quantileProductResults(java.lang.Integer timePeriod, java.lang.CharSequence anchorDate, java.lang.Integer quantile, java.lang.CharSequence columnName, java.util.List<com.brierley.avro.schemas.productSpend> ProductSpend, java.util.List<com.brierley.avro.schemas.productCount> ProductCount) {
     this.timePeriod = timePeriod;
+    this.anchorDate = anchorDate;
     this.quantile = quantile;
     this.columnName = columnName;
     this.ProductSpend = ProductSpend;
@@ -53,10 +57,11 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return timePeriod;
-    case 1: return quantile;
-    case 2: return columnName;
-    case 3: return ProductSpend;
-    case 4: return ProductCount;
+    case 1: return anchorDate;
+    case 2: return quantile;
+    case 3: return columnName;
+    case 4: return ProductSpend;
+    case 5: return ProductCount;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -66,10 +71,11 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: timePeriod = (java.lang.Integer)value$; break;
-    case 1: quantile = (java.lang.Integer)value$; break;
-    case 2: columnName = (java.lang.CharSequence)value$; break;
-    case 3: ProductSpend = (java.util.List<com.brierley.avro.schemas.productSpend>)value$; break;
-    case 4: ProductCount = (java.util.List<com.brierley.avro.schemas.productCount>)value$; break;
+    case 1: anchorDate = (java.lang.CharSequence)value$; break;
+    case 2: quantile = (java.lang.Integer)value$; break;
+    case 3: columnName = (java.lang.CharSequence)value$; break;
+    case 4: ProductSpend = (java.util.List<com.brierley.avro.schemas.productSpend>)value$; break;
+    case 5: ProductCount = (java.util.List<com.brierley.avro.schemas.productCount>)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -89,6 +95,23 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
    */
   public void setTimePeriod(java.lang.Integer value) {
     this.timePeriod = value;
+  }
+
+  /**
+   * Gets the value of the 'anchorDate' field.
+   * @return The first date of the TimePeriod, formatted 'MMM yyyy'
+   */
+  public java.lang.CharSequence getAnchorDate() {
+    return anchorDate;
+  }
+
+  /**
+   * Sets the value of the 'anchorDate' field.
+   * The first date of the TimePeriod, formatted 'MMM yyyy'
+   * @param value the value to set.
+   */
+  public void setAnchorDate(java.lang.CharSequence value) {
+    this.anchorDate = value;
   }
 
   /**
@@ -193,6 +216,8 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
 
     /** Quantile Period, calculated ascending */
     private int timePeriod;
+    /** The first date of the TimePeriod, formatted 'MMM yyyy' */
+    private java.lang.CharSequence anchorDate;
     /** Quantile bucket */
     private int quantile;
     /** Which input product column are these rankings for, user defines columns */
@@ -217,21 +242,25 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
         this.timePeriod = data().deepCopy(fields()[0].schema(), other.timePeriod);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.quantile)) {
-        this.quantile = data().deepCopy(fields()[1].schema(), other.quantile);
+      if (isValidValue(fields()[1], other.anchorDate)) {
+        this.anchorDate = data().deepCopy(fields()[1].schema(), other.anchorDate);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.columnName)) {
-        this.columnName = data().deepCopy(fields()[2].schema(), other.columnName);
+      if (isValidValue(fields()[2], other.quantile)) {
+        this.quantile = data().deepCopy(fields()[2].schema(), other.quantile);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.ProductSpend)) {
-        this.ProductSpend = data().deepCopy(fields()[3].schema(), other.ProductSpend);
+      if (isValidValue(fields()[3], other.columnName)) {
+        this.columnName = data().deepCopy(fields()[3].schema(), other.columnName);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.ProductCount)) {
-        this.ProductCount = data().deepCopy(fields()[4].schema(), other.ProductCount);
+      if (isValidValue(fields()[4], other.ProductSpend)) {
+        this.ProductSpend = data().deepCopy(fields()[4].schema(), other.ProductSpend);
         fieldSetFlags()[4] = true;
+      }
+      if (isValidValue(fields()[5], other.ProductCount)) {
+        this.ProductCount = data().deepCopy(fields()[5].schema(), other.ProductCount);
+        fieldSetFlags()[5] = true;
       }
     }
 
@@ -245,21 +274,25 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
         this.timePeriod = data().deepCopy(fields()[0].schema(), other.timePeriod);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.quantile)) {
-        this.quantile = data().deepCopy(fields()[1].schema(), other.quantile);
+      if (isValidValue(fields()[1], other.anchorDate)) {
+        this.anchorDate = data().deepCopy(fields()[1].schema(), other.anchorDate);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.columnName)) {
-        this.columnName = data().deepCopy(fields()[2].schema(), other.columnName);
+      if (isValidValue(fields()[2], other.quantile)) {
+        this.quantile = data().deepCopy(fields()[2].schema(), other.quantile);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.ProductSpend)) {
-        this.ProductSpend = data().deepCopy(fields()[3].schema(), other.ProductSpend);
+      if (isValidValue(fields()[3], other.columnName)) {
+        this.columnName = data().deepCopy(fields()[3].schema(), other.columnName);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.ProductCount)) {
-        this.ProductCount = data().deepCopy(fields()[4].schema(), other.ProductCount);
+      if (isValidValue(fields()[4], other.ProductSpend)) {
+        this.ProductSpend = data().deepCopy(fields()[4].schema(), other.ProductSpend);
         fieldSetFlags()[4] = true;
+      }
+      if (isValidValue(fields()[5], other.ProductCount)) {
+        this.ProductCount = data().deepCopy(fields()[5].schema(), other.ProductCount);
+        fieldSetFlags()[5] = true;
       }
     }
 
@@ -306,6 +339,49 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
     }
 
     /**
+      * Gets the value of the 'anchorDate' field.
+      * The first date of the TimePeriod, formatted 'MMM yyyy'
+      * @return The value.
+      */
+    public java.lang.CharSequence getAnchorDate() {
+      return anchorDate;
+    }
+
+    /**
+      * Sets the value of the 'anchorDate' field.
+      * The first date of the TimePeriod, formatted 'MMM yyyy'
+      * @param value The value of 'anchorDate'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.quantileProductResults.Builder setAnchorDate(java.lang.CharSequence value) {
+      validate(fields()[1], value);
+      this.anchorDate = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'anchorDate' field has been set.
+      * The first date of the TimePeriod, formatted 'MMM yyyy'
+      * @return True if the 'anchorDate' field has been set, false otherwise.
+      */
+    public boolean hasAnchorDate() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'anchorDate' field.
+      * The first date of the TimePeriod, formatted 'MMM yyyy'
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.quantileProductResults.Builder clearAnchorDate() {
+      anchorDate = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'quantile' field.
       * Quantile bucket
       * @return The value.
@@ -321,9 +397,9 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantileProductResults.Builder setQuantile(int value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.quantile = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -333,7 +409,7 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
       * @return True if the 'quantile' field has been set, false otherwise.
       */
     public boolean hasQuantile() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -343,7 +419,7 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantileProductResults.Builder clearQuantile() {
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -363,9 +439,9 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantileProductResults.Builder setColumnName(java.lang.CharSequence value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.columnName = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -375,7 +451,7 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
       * @return True if the 'columnName' field has been set, false otherwise.
       */
     public boolean hasColumnName() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -386,7 +462,7 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
       */
     public com.brierley.avro.schemas.quantileProductResults.Builder clearColumnName() {
       columnName = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -406,9 +482,9 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantileProductResults.Builder setProductSpend(java.util.List<com.brierley.avro.schemas.productSpend> value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.ProductSpend = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -418,7 +494,7 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
       * @return True if the 'ProductSpend' field has been set, false otherwise.
       */
     public boolean hasProductSpend() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
 
 
@@ -429,7 +505,7 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
       */
     public com.brierley.avro.schemas.quantileProductResults.Builder clearProductSpend() {
       ProductSpend = null;
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -449,9 +525,9 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantileProductResults.Builder setProductCount(java.util.List<com.brierley.avro.schemas.productCount> value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.ProductCount = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -461,7 +537,7 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
       * @return True if the 'ProductCount' field has been set, false otherwise.
       */
     public boolean hasProductCount() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
 
 
@@ -472,7 +548,7 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
       */
     public com.brierley.avro.schemas.quantileProductResults.Builder clearProductCount() {
       ProductCount = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -481,10 +557,11 @@ public class quantileProductResults extends org.apache.avro.specific.SpecificRec
       try {
         quantileProductResults record = new quantileProductResults();
         record.timePeriod = fieldSetFlags()[0] ? this.timePeriod : (java.lang.Integer) defaultValue(fields()[0]);
-        record.quantile = fieldSetFlags()[1] ? this.quantile : (java.lang.Integer) defaultValue(fields()[1]);
-        record.columnName = fieldSetFlags()[2] ? this.columnName : (java.lang.CharSequence) defaultValue(fields()[2]);
-        record.ProductSpend = fieldSetFlags()[3] ? this.ProductSpend : (java.util.List<com.brierley.avro.schemas.productSpend>) defaultValue(fields()[3]);
-        record.ProductCount = fieldSetFlags()[4] ? this.ProductCount : (java.util.List<com.brierley.avro.schemas.productCount>) defaultValue(fields()[4]);
+        record.anchorDate = fieldSetFlags()[1] ? this.anchorDate : (java.lang.CharSequence) defaultValue(fields()[1]);
+        record.quantile = fieldSetFlags()[2] ? this.quantile : (java.lang.Integer) defaultValue(fields()[2]);
+        record.columnName = fieldSetFlags()[3] ? this.columnName : (java.lang.CharSequence) defaultValue(fields()[3]);
+        record.ProductSpend = fieldSetFlags()[4] ? this.ProductSpend : (java.util.List<com.brierley.avro.schemas.productSpend>) defaultValue(fields()[4]);
+        record.ProductCount = fieldSetFlags()[5] ? this.ProductCount : (java.util.List<com.brierley.avro.schemas.productCount>) defaultValue(fields()[5]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
