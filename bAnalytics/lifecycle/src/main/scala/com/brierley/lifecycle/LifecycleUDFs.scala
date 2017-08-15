@@ -56,8 +56,20 @@ object LifecycleUDFs {
 
   }
 
+  def longAvgCalcFunc(num: Long, denom: Long): Double = {
+    if (num == 0 || denom == 0) 0
+    else num.toDouble / denom
+  }
+
+  def doubleAvgCalcFunc(num: Double, denom: Long): Double = {
+    if (num == 0 || denom == 0) 0
+    else num/denom
+  }
+
   val calcQuint = udf(calcQuintFunc(_: Double))
   val periodCalc = udf(periodCalcFunc(_: Date, _: Date, _: Int))
   val calcRFM = udf(calcRFMFunc(_: Int, _: Int, _: Int))
   val labelRFM = udf(labelRFMFunc(_: Int))
+  val longAvgCalc = udf(longAvgCalcFunc(_: Long, _: Long))
+  val doubleAvgCalc = udf(doubleAvgCalcFunc(_: Double, _: Long))
 }

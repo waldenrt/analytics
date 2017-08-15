@@ -5,10 +5,12 @@ import java.text.SimpleDateFormat
 import com.brierley.lifecycle.Lifecycle
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import org.apache.spark.sql.Row
-import org.apache.spark.sql.functions.{to_date, unix_timestamp}
+import org.apache.spark.sql.functions._
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
+
+import scala.util.{Success, Failure}
 
 /**
   * Created by amerrill on 7/24/17.
@@ -35,6 +37,8 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
     val colNames = List("CUST_ID", "TXN_DATE", "TXN_HEADER_ID", "TXN_DETAIL_ID", "ITEM_QTY", "ITEM_AMT", "PROD_CAT")
 
     val rowCount = 5
+
+    val columnName = "PROD_CAT"
 
     val orElseDF = sc.parallelize(List(1, 2, 3, 4)).toDF("Dummy")
   }
@@ -256,7 +260,38 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
 
     val colNames = List("TimePeriod", "TotalCusts", "TotalTxns", "TotalSpend")
 
-    val segColNames = List("TimePeriod", "Segment", "TXN_COUNT", "TXN_AMT", "ITEM_QTY", "total_recency")
+    val segColNames = List("TimePeriod", "BestCustCount", "BestTxnCount", "BestTxnAmt", "BestItemQty", "BestRecency",
+      "RisingCustCount", "RisingTxnCount", "RisingTxnAmt", "RisingItemQty", "RisingRecency",
+      "MiddleCustCount", "MiddleTxnCount", "MiddleTxnAmt", "MiddleItemQty", "MiddleRecency",
+      "LapsingCustCount", "LapsingTxnCount", "LapsingTxnAmt", "LapsingItemQty", "LapsingRecency",
+      "DeeplyCustCount", "DeeplyTxnCount", "DeeplyTxnAmt", "DeeplyItemQty", "DeeplyRecency")
+  }
+
+  trait PercentageData {
+    val sqlCtx = sqlContext
+
+    import sqlCtx.implicits._
+
+    val twoTPs = sc.parallelize(List(
+      (1, 1, 2, 15.0, 4, 4, 3, 15, 85.0, 18, 11, 0, 0, 0.0, 0, 0, 1, 9, 43.0, 8, 1),
+      (2, 1, 2, 15.0, 4, 5, 0, 0, 0.0, 0, 0, 3, 16, 87.0, 18, 8, 1, 9, 43.0, 8, 2)
+    )).toDF("TimePeriod", "BestCustCount", "BestTxnCount", "BestTxnAmt", "BestItemQty", "BestRecency",
+      "MiddleCustCount", "MiddleTxnCount", "MiddleTxnAmt", "MiddleItemQty", "MiddleRecency",
+      "LapsingCustCount", "LapsingTxnCount", "LapsingTxnAmt", "LapsingItemQty", "LapsingRecency",
+      "DeeplyCustCount", "DeeplyTxnCount", "DeeplyTxnAmt", "DeeplyItemQty", "DeeplyRecency")
+      .withColumn("RisingCustCount", lit(0))
+      .withColumn("RisingTxnCount", lit(0))
+      .withColumn("RisingTxnAmt", lit(0))
+      .withColumn("RisingItemQty", lit(0))
+      .withColumn("RisingRecency", lit(0))
+
+
+    val globalDF = sc.parallelize(List(
+      (1, 5.toLong, 26.toLong, 143.0),
+      (2, 5.toLong, 27.toLong, 145.0)
+    )).toDF("TimePeriod", "TotalCusts", "TotalTxns", "TotalSpend")
+
+    val orElseDF = sc.parallelize(List(1, 2, 3, 4)).toDF("Dummy")
   }
 
   trait ProductTPData {
@@ -290,7 +325,9 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
     )).toDF("CUST_ID", "ENROLL_DATE", "TXN_DATE", "TXN_HEADER_ID", "TXN_DETAIL_ID", "ITEM_AMT", "ITEM_QTY", "PROD_CAT", "TimePeriod")
       .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
-    val tpColNames = List("TimePeriod", "PROD_CAT", "tp_ttl_sales")
+    val columnName = "PROD_CAT"
+
+    val tpColNames = List("TimePeriod", "PROD_CAT", "tpItemAmt", "tpTotalSales")
 
     val orElseDF = sc.parallelize(List(1, 2, 3, 4)).toDF("Dummy")
   }
@@ -302,10 +339,10 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
 
     val singleTP = sc.parallelize(List(
       ("CustA", "1/1/2015", "02/01/2016", "txn-1", "detail-1", 15.00, 4, "prodA", 1),
-      ("CustB", "1/1/2015", "03/01/2016", "txn-2", "detail-1", 13.00, 3, "prodA", 1),
+      ("CustB", "1/1/2015", "03/01/2016", "txn-2", "detail-1", 13.00, 3, "prodB", 1),
       ("CustC", "1/1/2015", "03/15/2016", "txn-3", "detail-1", 25.00, 2, "prodA", 1),
       ("CustD", "1/1/2015", "04/01/2016", "txn-4", "detail-1", 22.00, 3, "prodA", 1),
-      ("CustD", "1/1/2015", "04/11/2016", "txn-5", "detail-1", 19.00, 1, "prodA", 1),
+      ("CustD", "1/1/2015", "04/11/2016", "txn-5", "detail-1", 19.00, 1, "prodC", 1),
       ("CustC", "1/1/2015", "04/25/2016", "txn-6", "detail-1", 13.00, 5, "prodA", 1)
     )).toDF("CUST_ID", "ENROLL_DATE", "TXN_DATE", "TXN_HEADER_ID", "TXN_DETAIL_ID", "ITEM_AMT", "ITEM_QTY", "PROD_CAT", "TimePeriod")
       .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
@@ -315,12 +352,12 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
       ("CustB", "1/1/2015", "03/01/2016", "txn-2", "detail-1", 13.00, 3, "prodA", 1),
       ("CustC", "1/1/2015", "03/15/2016", "txn-3", "detail-1", 25.00, 2, "prodA", 1),
       ("CustD", "1/1/2015", "04/01/2016", "txn-4", "detail-1", 22.00, 3, "prodA", 1),
-      ("CustE", "1/1/2015", "04/11/2016", "txn-5", "detail-1", 19.00, 1, "prodA", 1),
+      ("CustE", "1/1/2015", "04/11/2016", "txn-5", "detail-1", 19.00, 1, "prodB", 1),
       ("CustC", "1/1/2015", "04/25/2016", "txn-6", "detail-1", 13.00, 5, "prodA", 1),
       ("CustA", "1/1/2015", "05/15/2016", "txn-7", "detail-1", 15.00, 3, "prodA", 2),
       ("CustB", "1/1/2015", "05/31/2016", "txn-8", "detail-1", 18.00, 2, "prodA", 2),
       ("CustC", "1/1/2015", "06/15/2016", "txn-9", "detail-1", 20.00, 4, "prodA", 2),
-      ("CustA", "1/1/2015", "06/30/2016", "txn-10", "detail-1", 15.00, 4, "prodA", 2),
+      ("CustA", "1/1/2015", "06/30/2016", "txn-10", "detail-1", 15.00, 4, "prodC", 2),
       ("CustC", "1/1/2015", "07/02/2016", "txn-11", "detail-1", 13.00, 3, "prodA", 2),
       ("CustD", "1/1/2015", "07/15/2016", "txn-12", "detail-1", 25.00, 2, "prodA", 2)
     )).toDF("CUST_ID", "ENROLL_DATE", "TXN_DATE", "TXN_HEADER_ID", "TXN_DETAIL_ID", "ITEM_AMT", "ITEM_QTY", "PROD_CAT", "TimePeriod")
@@ -349,7 +386,10 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
     )).toDF("CUST_ID", "daysSince", "TXN_COUNT", "TXN_AMT", "ITEM_QTY", "TimePeriod",
       "Recency", "Frequency", "Monetary", "RFM", "Segment")
 
-    val segColNames = List("TimePeriod", "Segment", "PROD_CAT", "seg_ttl_sales")
+    val columnName = "PROD_CAT"
+
+    val segColNames = List("TimePeriod", "PROD_CAT", "BestItemAmt", "RisingItemAmt", "MiddleItemAmt", "LapsingItemAmt", "DeeplyItemAmt",
+      "BestTotalSales", "RisingTotalSales", "MiddleTotalSales", "LapsingTotalSales", "DeeplyTotalSales", "ProdTotalSales")
 
     val orElseDF = sc.parallelize(List(1, 2, 3, 4)).toDF("Dummy")
   }
@@ -366,7 +406,7 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
   //INITIAL DATA PREPARTAION AND FILE LOADING TESTS
   test("comma delimited load") {
     new fileLocations {
-      val orgFile = Lifecycle.loadFile(sqlCtx, comma, commaFile) getOrElse orElseDF
+      val orgFile = Lifecycle.loadFile(sqlCtx, comma, commaFile, columnName) getOrElse orElseDF
       assert(orgFile.columns === colNames)
       assert(orgFile.count() === rowCount)
     }
@@ -374,7 +414,7 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
 
   test("bar delimited load") {
     new fileLocations {
-      val orgFile = Lifecycle.loadFile(sqlCtx, bar, barFile) getOrElse orElseDF
+      val orgFile = Lifecycle.loadFile(sqlCtx, bar, barFile, columnName) getOrElse orElseDF
       assert(orgFile.columns === colNames)
       assert(orgFile.count() === rowCount)
     }
@@ -382,7 +422,7 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
 
   test("tab delimited load") {
     new fileLocations {
-      val orgFile = Lifecycle.loadFile(sqlCtx, tab, tabFile) getOrElse orElseDF
+      val orgFile = Lifecycle.loadFile(sqlCtx, tab, tabFile, columnName) getOrElse orElseDF
       assert(orgFile.columns === colNames)
       assert(orgFile.count() === rowCount)
     }
@@ -390,7 +430,7 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
 
   test("semi delimited load") {
     new fileLocations {
-      val orgFile = Lifecycle.loadFile(sqlCtx, semi, semiFile) getOrElse orElseDF
+      val orgFile = Lifecycle.loadFile(sqlCtx, semi, semiFile, columnName) getOrElse orElseDF
       assert(orgFile.columns === colNames)
       assert(orgFile.count() === rowCount)
     }
@@ -540,74 +580,85 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
   }
 
   //SEGMENT AGG TESTS
-  test("5 customers, 2 timeperiods, random segments"){
+  test("5 customers, 2 timeperiods, random segments") {
     new GlobalCountsData {
       val orgFile = Lifecycle.segmentAgg(twoTPRandomSegments) getOrElse orElseDF
       assert(orgFile.columns === segColNames)
 
-      val middle1 = orgFile.where("TimePeriod = 1 and Segment = 'Middle of the Road'").head()
-      println(middle1)
+      val middle1 = orgFile
+        .select("TimePeriod", "MiddleCustCount", "MiddleTxnCount", "MiddleTxnAmt", "MiddleItemQty", "MiddleRecency")
+        .where("TimePeriod = 1").head()
+      assert(middle1 === Row(1, 3, 15, 85.0, 18, 11))
 
 
-      val deeply2 = orgFile.where("TimePeriod = 2 and Segment = 'Deeply Lapsed'").head()
-      assert(deeply2 === Row(2, "Deeply Lapsed", 1.toLong, 43.0, 8.toLong, 8))
+      val deeply2 = orgFile
+        .select("TimePeriod", "DeeplyCustCount", "DeeplyTxnCount", "DeeplyTxnAmt", "DeeplyItemQty", "DeeplyRecency")
+        .where("TimePeriod = 2").head()
+      assert(deeply2 === Row(2, 1, 9.toLong, 43.0, 8.toLong, 2))
+
+      println(orgFile.where("TimePeriod = 1").head())
+      println(orgFile.where("TimePeriod = 2").head())
 
     }
   }
 
   //PERCENTAGES TESTS
+  test("2 TPs various missing segments") {
+    new PercentageData {
+      val orgFile = Lifecycle.calcPercentages(twoTPs, globalDF) getOrElse orElseDF
 
+      orgFile.show()
 
-  //AVERAGES TESTS
-
+    }
+  }
 
 
   //TIMEPERIOD AGG PRODUCTS TESTS
-  test("single TimePeriod"){
+  test("single TimePeriod") {
     new ProductTPData {
-      val prodDF = Lifecycle.tpAggProd(singleTP) getOrElse orElseDF
+      val prodDF = Lifecycle.tpAggProd(singleTP, columnName) getOrElse orElseDF
       assert(prodDF.columns === tpColNames)
 
       val totals = prodDF.head()
-      println(totals)
+      assert(totals === Row(1, "prodA", 107.0, 107.0))
     }
   }
 
   test("2 TimePeriods") {
     new ProductTPData {
-      val prodDF = Lifecycle.tpAggProd(doubleTP) getOrElse orElseDF
+      val prodDF = Lifecycle.tpAggProd(doubleTP, columnName) getOrElse orElseDF
       assert(prodDF.columns === tpColNames)
 
       val totals1 = prodDF.where("TimePeriod = 1").head()
-      println(totals1)
+      assert(totals1 === Row(1, "prodA", 107.0, 107.0))
 
       val totals2 = prodDF.where("TimePeriod = 2").head()
-      println(totals2)
+      assert(totals2 === Row(2, "prodA", 106.0, 106.0))
     }
   }
 
 
   //SEGMENT AGG PRODUCTS TESTS
-  test("singleTimePeriod various segments"){
+  test("singleTimePeriod various segments") {
     new ProductSegData {
-      val prodDF = Lifecycle.segAggProd(singleTP, segSingleTP) getOrElse orElseDF
+      val prodDF = Lifecycle.segAggProd(singleTP, segSingleTP, columnName) getOrElse orElseDF
       assert(prodDF.columns === segColNames)
 
       val totals = prodDF.head()
-      println(totals)
+      assert(totals === Row(1, "Best in Class", "prodA", 15.0, 4))
     }
   }
 
   test("2 TimePeriods various segments") {
     new ProductSegData {
-      val prodDF = Lifecycle.segAggProd(doubleTP, twoTPRandomSegments) getOrElse orElseDF
+      val prodDF = Lifecycle.segAggProd(doubleTP, twoTPRandomSegments, columnName) getOrElse orElseDF
       assert(prodDF.columns === segColNames)
 
       val totals1 = prodDF.where("TimePeriod = 1 and Segment = 'Middle of the Road'").head()
-      println(totals1)
+      assert(totals1 === Row(1, "Middle of the Road", "prodA", 73.0, 13))
 
       val totals2 = prodDF.where("TimePeriod = 2 and Segment = 'Lapsing'").head()
-      println(totals2)
+      assert(totals2 === Row(2, "Lapsing", "prodA", 76.0, 11))
     }
   }
 
@@ -615,8 +666,6 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
   test("index products where products exist in more than one segment") {
 
   }
-
-
 
 
 }

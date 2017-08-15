@@ -51,7 +51,7 @@
 		             "doc" : "Total amount in sales across all segments in given timePeriod"},
 
 		            {"name": "totalItems",
-		             "type": "double",
+		             "type": "long",
 		             "doc" : "total number of items purchased across all segments for given timePeriod"},
 
 		            {"name": "bestCustTotal",
@@ -65,10 +65,6 @@
 		            {"name": "bestSalesTotal",
 		             "type": "double",
 		             "doc" : "Total amount of sales in Best in Class segment in given timePeriod"},
-
-		            {"name": "bestFreqTotal",
-		             "type": "long",
-		             "doc" : "Sum of all frequency values in Best in Class segment in given timePeriod, used to calc avgs"},
 
 		            {"name": "bestRecencyTotal",
 		             "type": "long",
@@ -122,10 +118,6 @@
 		             "type": "double",
 		             "doc" : "Total amount of sales in Rising Stars segment in given timePeriod"},
 
-		            {"name": "risingFreqTotal",
-		             "type": "long",
-		             "doc" : "Sum of all frequency values in Rising Stars segment in given timePeriod, used to calc avgs"},
-
 		            {"name": "risingRecencyTotal",
 		             "type": "long",
 		             "doc" : "Sum of all recency values in Rising Stars segment in given timePeriod, used to calc avgs"},
@@ -177,10 +169,6 @@
 		            {"name": "middleSalesTotal",
 		             "type": "double",
 		             "doc" : "Total amount of sales in Middle of the Road segment in given timePeriod"},
-
-		            {"name": "middleFreqTotal",
-		             "type": "long",
-		             "doc" : "Sum of all frequency values in Middle of the Road segment in given timePeriod, used to calc avgs"},
 
 		            {"name": "middleRecencyTotal",
 		             "type": "long",
@@ -234,10 +222,6 @@
 		             "type": "double",
 		             "doc" : "Total amount of sales in Lapsing segment in given timePeriod"},
 
-		            {"name": "lapsingFreqTotal",
-		             "type": "long",
-		             "doc" : "Sum of all frequency values in Lapsing segment in given timePeriod, used to calc avgs"},
-
 		            {"name": "lapsingRecencyTotal",
 		             "type": "long",
 		             "doc" : "Sum of all recency values in Lapsing segment in given timePeriod, used to calc avgs"},
@@ -289,10 +273,6 @@
 		            {"name": "deeplySalesTotal",
 		             "type": "double",
 		             "doc" : "Total amount of sales in Best in Class segment in given timePeriod"},
-
-		            {"name": "deeplyFreqTotal",
-		             "type": "long",
-		             "doc" : "Sum of all frequency values in Best in Class segment in given timePeriod, used to calc avgs"},
 
 		            {"name": "deeplyRecencyTotal",
 		             "type": "long",

@@ -1,7 +1,10 @@
 package com.brierley.lifecycle
 
+import java.util
+
+import com.brierley.avro.schemas.{lifecycleProdMetrics, lifecyleProfileResults}
 import com.brierley.general.utils.DateUtils
-import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.hive.HiveContext
@@ -14,7 +17,7 @@ import scala.util.{Success, Try}
   * Created by amerrill on 7/24/17.
   */
 object Lifecycle {
-  def loadFile(sqlCtx: HiveContext, delimiter: String, fileLocation: String): Try[DataFrame] = Try {
+  def loadFile(sqlCtx: HiveContext, delimiter: String, fileLocation: String, columnName: String): Try[DataFrame] = Try {
     val orgFile = sqlCtx
       .read
       .format("com.databricks.spark.csv")
@@ -25,10 +28,10 @@ object Lifecycle {
     val cols = orgFile.columns
 
     if (cols.contains("ENROLL_DATE")) {
-      orgFile.select("CUST_ID", "ENROLL_DATE", "TXN_DATE", "TXN_HEADER_ID", "TXN_DETAIL_ID", "ITEM_QTY", "ITEM_AMT", "PROD_CAT")
+      orgFile.select("CUST_ID", "ENROLL_DATE", "TXN_DATE", "TXN_HEADER_ID", "TXN_DETAIL_ID", "ITEM_QTY", "ITEM_AMT", columnName)
     }
     else
-      orgFile.select("CUST_ID", "TXN_DATE", "TXN_HEADER_ID", "TXN_DETAIL_ID", "ITEM_QTY", "ITEM_AMT", "PROD_CAT")
+      orgFile.select("CUST_ID", "TXN_DATE", "TXN_HEADER_ID", "TXN_DETAIL_ID", "ITEM_QTY", "ITEM_AMT", columnName)
 
 
   }
@@ -52,10 +55,12 @@ object Lifecycle {
         .select("*")
         .withColumn("max(Date)", lit(maxDate))
         .withColumn("period", lit(numMonths))
-        .withColumn("TimePeriod", LifecycleUDFs.periodCalc(col("max(Date)"), trimDF("Date"), col("period")))
-        .sort("TimePeriod")
+        .withColumn("TP", LifecycleUDFs.periodCalc(col("max(Date)"), trimDF("Date"), col("period")))
+        .sort(col("TP").desc)
+        .withColumn("TimePeriod", dense_rank().over(Window.orderBy(col("TP").desc)))
         .drop(col("period"))
         .drop(col("max(Date)"))
+        .drop("TP")
 
       (result)
     } else {
@@ -97,7 +102,7 @@ object Lifecycle {
 
     val recentDF = selectDF
       .select("TimePeriod", "Date")
-        .withColumn("maxTPDate", max("Date").over(tpWindow))
+      .withColumn("maxTPDate", max("Date").over(tpWindow))
       .drop("Date")
       .distinct()
 
@@ -140,29 +145,302 @@ object Lifecycle {
     rankDF
   }
 
-  def groupRFM(rfmDF: DataFrame): Try[DataFrame] = Try{
+  def groupRFM(rfmDF: DataFrame): Try[DataFrame] = Try {
 
     rfmDF
       .withColumn("Segment", LifecycleUDFs.labelRFM(rfmDF("RFM")))
   }
 
-  def calcGlobalTotals(segDF: DataFrame): Try[DataFrame] = ???
+  def calcGlobalTotals(segDF: DataFrame): Try[DataFrame] = Try {
+    segDF
+      .groupBy("TimePeriod")
+      .agg(
+        countDistinct("CUST_ID").alias("TotalCusts"),
+        sum("TXN_COUNT").alias("TotalTxns"),
+        sum("TXN_AMT").alias("TotalSpend")
+      )
+  }
 
-  def segmentAgg(segDF: DataFrame): Try[DataFrame] = ???
+  def segmentAgg(segDF: DataFrame): Try[DataFrame] = Try {
+    val pivotDF = segDF
+      .groupBy("TimePeriod")
+      .pivot("Segment", Seq("Best in Class", "Rising Stars", "Middle of the Road", "Lapsing", "Deeply Lapsed"))
+      .agg(
+        countDistinct("CUST_ID"),
+        sum("TXN_COUNT"),
+        sum("TXN_AMT"),
+        sum("ITEM_QTY"),
+        sum("Recency")
+      )
+
+    val renamedDF = pivotDF
+      .withColumnRenamed("Best in Class_count(CUST_ID)", "BestCustCount")
+      .withColumnRenamed("Best in Class_sum(TXN_COUNT)", "BestTxnCount")
+      .withColumnRenamed("Best in Class_sum(TXN_AMT)", "BestTxnAmt")
+      .withColumnRenamed("Best in Class_sum(ITEM_QTY)", "BestItemQty")
+      .withColumnRenamed("Best in Class_sum(Recency)", "BestRecency")
+      .withColumnRenamed("Rising Stars_count(CUST_ID)", "RisingCustCount")
+      .withColumnRenamed("Rising Stars_sum(TXN_COUNT)", "RisingTxnCount")
+      .withColumnRenamed("Rising Stars_sum(TXN_AMT)", "RisingTxnAmt")
+      .withColumnRenamed("Rising Stars_sum(ITEM_QTY)", "RisingItemQty")
+      .withColumnRenamed("Rising Stars_sum(Recency)", "RisingRecency")
+      .withColumnRenamed("Middle of the Road_count(CUST_ID)", "MiddleCustCount")
+      .withColumnRenamed("Middle of the Road_sum(TXN_COUNT)", "MiddleTxnCount")
+      .withColumnRenamed("Middle of the Road_sum(TXN_AMT)", "MiddleTxnAmt")
+      .withColumnRenamed("Middle of the Road_sum(ITEM_QTY)", "MiddleItemQty")
+      .withColumnRenamed("Middle of the Road_sum(Recency)", "MiddleRecency")
+      .withColumnRenamed("Lapsing_count(CUST_ID)", "LapsingCustCount")
+      .withColumnRenamed("Lapsing_sum(TXN_COUNT)", "LapsingTxnCount")
+      .withColumnRenamed("Lapsing_sum(TXN_AMT)", "LapsingTxnAmt")
+      .withColumnRenamed("Lapsing_sum(ITEM_QTY)", "LapsingItemQty")
+      .withColumnRenamed("Lapsing_sum(Recency)", "LapsingRecency")
+      .withColumnRenamed("Deeply Lapsed_count(CUST_ID)", "DeeplyCustCount")
+      .withColumnRenamed("Deeply Lapsed_sum(TXN_COUNT)", "DeeplyTxnCount")
+      .withColumnRenamed("Deeply Lapsed_sum(TXN_AMT)", "DeeplyTxnAmt")
+      .withColumnRenamed("Deeply Lapsed_sum(ITEM_QTY)", "DeeplyItemQty")
+      .withColumnRenamed("Deeply Lapsed_sum(Recency)", "DeeplyRecency")
+      .na.fill(0)
+
+    renamedDF.show()
+
+    renamedDF
+  }
 
 
+  def calcPercentages(segAggDF: DataFrame, globalDF: DataFrame): Try[DataFrame] = Try {
+    val joinedDF = segAggDF.join(globalDF, Seq("TimePeriod"))
 
-  def calcPercentages(segAggDF: DataFrame): Try[DataFrame] = ???
+    joinedDF
+      .withColumn("BestPercentCustBase", LifecycleUDFs.longAvgCalc(col("BestCustCount"), col("TotalCusts")))
+      .withColumn("BestPercentTxnBase", LifecycleUDFs.longAvgCalc(col("BestTxnCount"), col("TotalTxns")))
+      .withColumn("BestPercentSalesBase", col("BestTxnAmt") / col("TotalSpend"))
+      .withColumn("BestAvgFreq", LifecycleUDFs.longAvgCalc(col("BestTxnCount"), col("BestCustCount")))
+      .withColumn("BestAvgRecency", LifecycleUDFs.longAvgCalc(col("BestRecency"), col("BestCustCount")))
+      .withColumn("BestAvgSales", LifecycleUDFs.doubleAvgCalc(col("BestTxnAmt"), col("BestCustCount")))
+      .withColumn("BestAvgItems", LifecycleUDFs.longAvgCalc(col("BestItemQty"), col("BestCustCount")))
+      .withColumn("BestVisitSpend", LifecycleUDFs.doubleAvgCalc(col("BestTxnAmt"), col("BestTxnCount")))
 
-  def calcAverages(perDF: DataFrame): Try[DataFrame] = ???
+      .withColumn("RisingPercentCustBase", LifecycleUDFs.longAvgCalc(col("RisingCustCount"), col("TotalCusts")))
+      .withColumn("RisingPercentTxnBase", LifecycleUDFs.longAvgCalc(col("RisingTxnCount"), col("TotalTxns")))
+      .withColumn("RisingPercentSalesBase", col("RisingTxnAmt") / col("TotalSpend"))
+      .withColumn("RisingAvgFreq", LifecycleUDFs.longAvgCalc(col("RisingTxnCount"), col("RisingCustCount")))
+      .withColumn("RisingAvgRecency", LifecycleUDFs.longAvgCalc(col("RisingRecency"), col("RisingCustCount")))
+      .withColumn("RisingAvgSales", LifecycleUDFs.doubleAvgCalc(col("RisingTxnAmt"), col("RisingCustCount")))
+      .withColumn("RisingAvgItems", LifecycleUDFs.longAvgCalc(col("RisingItemQty"), col("RisingCustCount")))
+      .withColumn("RisingVisitSpend", LifecycleUDFs.doubleAvgCalc(col("RisingTxnAmt"), col("RisingTxnCount")))
+
+      .withColumn("MiddlePercentCustBase", LifecycleUDFs.longAvgCalc(col("MiddleCustCount"), col("TotalCusts")))
+      .withColumn("MiddlePercentTxnBase", LifecycleUDFs.longAvgCalc(col("MiddleTxnCount"), col("TotalTxns")))
+      .withColumn("MiddlePercentSalesBase", col("MiddleTxnAmt") / col("TotalSpend"))
+      .withColumn("MiddleAvgFreq", LifecycleUDFs.longAvgCalc(col("MiddleTxnCount"), col("MiddleCustCount")))
+      .withColumn("MiddleAvgRecency", LifecycleUDFs.longAvgCalc(col("MiddleRecency"), col("MiddleCustCount")))
+      .withColumn("MiddleAvgSales", LifecycleUDFs.doubleAvgCalc(col("MiddleTxnAmt"), col("MiddleCustCount")))
+      .withColumn("MiddleAvgItems", LifecycleUDFs.longAvgCalc(col("MiddleItemQty"), col("MiddleCustCount")))
+      .withColumn("MiddleVisitSpend", LifecycleUDFs.doubleAvgCalc(col("MiddleTxnAmt"), col("MiddleTxnCount")))
+
+      .withColumn("LapsingPercentCustBase", LifecycleUDFs.longAvgCalc(col("LapsingCustCount"), col("TotalCusts")))
+      .withColumn("LapsingPercentTxnBase", LifecycleUDFs.longAvgCalc(col("LapsingTxnCount"), col("TotalTxns")))
+      .withColumn("LapsingPercentSalesBase", col("LapsingTxnAmt") / col("TotalSpend"))
+      .withColumn("LapsingAvgFreq", LifecycleUDFs.longAvgCalc(col("LapsingTxnCount"), col("LapsingCustCount")))
+      .withColumn("LapsingAvgRecency", LifecycleUDFs.longAvgCalc(col("LapsingRecency"), col("LapsingCustCount")))
+      .withColumn("LapsingAvgSales", LifecycleUDFs.doubleAvgCalc(col("LapsingTxnAmt"), col("LapsingCustCount")))
+      .withColumn("LapsingAvgItems", LifecycleUDFs.longAvgCalc(col("LapsingItemQty"), col("LapsingCustCount")))
+      .withColumn("LapsingVisitSpend", LifecycleUDFs.doubleAvgCalc(col("LapsingTxnAmt"), col("LapsingTxnCount")))
+
+      .withColumn("DeeplyPercentCustBase", LifecycleUDFs.longAvgCalc(col("DeeplyCustCount"), col("TotalCusts")))
+      .withColumn("DeeplyPercentTxnBase", LifecycleUDFs.longAvgCalc(col("DeeplyTxnCount"), col("TotalTxns")))
+      .withColumn("DeeplyPercentSalesBase", col("DeeplyTxnAmt") / col("TotalSpend"))
+      .withColumn("DeeplyAvgFreq", LifecycleUDFs.longAvgCalc(col("DeeplyTxnCount"), col("DeeplyCustCount")))
+      .withColumn("DeeplyAvgRecency", LifecycleUDFs.longAvgCalc(col("DeeplyRecency"), col("DeeplyCustCount")))
+      .withColumn("DeeplyAvgSales", LifecycleUDFs.doubleAvgCalc(col("DeeplyTxnAmt"), col("DeeplyCustCount")))
+      .withColumn("DeeplyAvgItems", LifecycleUDFs.longAvgCalc(col("DeeplyItemQty"), col("DeeplyCustCount")))
+      .withColumn("DeeplyVisitSpend", LifecycleUDFs.doubleAvgCalc(col("DeeplyTxnAmt"), col("DeeplyTxnCount")))
+
+  }
+
+  def profileAvro(pivotDF: DataFrame): Try[java.util.ArrayList[lifecyleProfileResults]] = Try {
+    val profileList = new util.ArrayList[lifecyleProfileResults]()
+
+    def mapToAvro(pRow: Row): Unit = {
+      val pd = new lifecyleProfileResults()
+      pd.setTimePeriod(pRow.getInt(0))
+      pd.setTotalCustCount(pRow.getLong(1))
+      pd.setTotalTxnCount(pRow.getLong(2))
+      pd.setTotalSales(pRow.getDouble(3))
+      pd.setTotalItems(pRow.getLong(4))
+
+      pd.setBestCustTotal(pRow.getLong(5))
+      pd.setBestTxnTotal(pRow.getLong(6))
+      pd.setBestSalesTotal(pRow.getDouble(7))
+      pd.setBestRecencyTotal(pRow.getLong(8))
+      pd.setBestItemTotal(pRow.getLong(9))
+      pd.setBestPercentCustBase(pRow.getDouble(10))
+      pd.setBestPercentTxnBase(pRow.getDouble(11))
+      pd.setBestPercentSalesBase(pRow.getDouble(12))
+      pd.setBestAvgFreq(pRow.getDouble(13))
+      pd.setBestAvgRecency(pRow.getDouble(14))
+      pd.setBestAvgSales(pRow.getDouble(15))
+      pd.setBestAvgItems(pRow.getDouble(16))
+      pd.setBestVisitSpend(pRow.getDouble(17))
+
+      pd.setRisingCustTotal(pRow.getLong(18))
+      pd.setRisingTxnTotal(pRow.getLong(19))
+      pd.setRisingSalesTotal(pRow.getDouble(20))
+      pd.setRisingRecencyTotal(pRow.getLong(21))
+      pd.setRisingItemTotal(pRow.getLong(22))
+      pd.setRisingPercentCustBase(pRow.getDouble(23))
+      pd.setRisingPercentTxnBase(pRow.getDouble(24))
+      pd.setRisingPercentSalesBase(pRow.getDouble(25))
+      pd.setRisingAvgFreq(pRow.getDouble(26))
+      pd.setRisingAvgRecency(pRow.getDouble(27))
+      pd.setRisingAvgSales(pRow.getDouble(28))
+      pd.setRisingAvgItems(pRow.getDouble(29))
+      pd.setRisingVisitSpend(pRow.getDouble(30))
+
+      pd.setMiddleCustTotal(pRow.getLong(31))
+      pd.setMiddleTxnTotal(pRow.getLong(32))
+      pd.setMiddleSalesTotal(pRow.getDouble(33))
+      pd.setMiddleRecencyTotal(pRow.getLong(34))
+      pd.setMiddleItemTotal(pRow.getLong(35))
+      pd.setMiddlePercentCustBase(pRow.getDouble(36))
+      pd.setMiddlePercentTxnBase(pRow.getDouble(37))
+      pd.setMiddlePercentSalesBase(pRow.getDouble(38))
+      pd.setMiddleAvgFreq(pRow.getDouble(39))
+      pd.setMiddleAvgRecency(pRow.getDouble(40))
+      pd.setMiddleAvgSales(pRow.getDouble(41))
+      pd.setMiddleAvgItems(pRow.getDouble(42))
+      pd.setMiddleVisitSpend(pRow.getDouble(43))
+
+      pd.setLapsingCustTotal(pRow.getLong(44))
+      pd.setLapsingTxnTotal(pRow.getLong(45))
+      pd.setLapsingSalesTotal(pRow.getDouble(46))
+      pd.setLapsingRecencyTotal(pRow.getLong(47))
+      pd.setLapsingItemTotal(pRow.getLong(48))
+      pd.setLapsingPercentCustBase(pRow.getDouble(49))
+      pd.setLapsingPercentTxnBase(pRow.getDouble(50))
+      pd.setLapsingPercentSalesBase(pRow.getDouble(51))
+      pd.setLapsingAvgFreq(pRow.getDouble(52))
+      pd.setLapsingAvgRecency(pRow.getDouble(53))
+      pd.setLapsingAvgSales(pRow.getDouble(54))
+      pd.setLapsingAvgItems(pRow.getDouble(55))
+      pd.setLapsingVisitSpend(pRow.getDouble(56))
+
+      pd.setDeeplyCustTotal(pRow.getLong(57))
+      pd.setDeeplyTxnTotal(pRow.getLong(58))
+      pd.setDeeplySalesTotal(pRow.getDouble(59))
+      pd.setDeeplyRecencyTotal(pRow.getLong(60))
+      pd.setDeeplyItemTotal(pRow.getLong(61))
+      pd.setDeeplyPercentCustBase(pRow.getDouble(62))
+      pd.setDeeplyPercentTxnBase(pRow.getDouble(63))
+      pd.setDeeplyPercentSalesBase(pRow.getDouble(64))
+      pd.setDeeplyAvgFreq(pRow.getDouble(65))
+      pd.setDeeplyAvgRecency(pRow.getDouble(66))
+      pd.setDeeplyAvgSales(pRow.getDouble(67))
+      pd.setDeeplyAvgItems(pRow.getDouble(68))
+      pd.setDeeplyVisitSpend(pRow.getDouble(69))
+
+    }
+
+    val orderCols = pivotDF
+      .select("TimePeriod", "TotalCusts", "TotalTxns", "TotalSpend",
+        "BestCustCount", "BestTxnCount", "BestTxnAmt", "BestItemQty", "BestRecency",
+        "BestPercentCustBase", "BestPercentTxnBase", "BestPercentSalesBase", "BestAvgFreq", "BestAvgRecency", "BestAvgSales", "BestAvgItems", "BestVisitSpend",
+        "RisingCustCount", "RisingTxnCount", "RisingTxnAmt", "RisingItemQty", "RisingRecency",
+        "RisingPercentCustBase", "RisingPercentTxnBase", "RisingPercentSalesBase", "RisingAvgFreq", "RisingAvgRecency", "RisingAvgSales", "RisingAvgItems", "RisingVisitSpend",
+        "MiddleCustCount", "MiddleTxnCount", "MiddleTxnAmt", "MiddleItemQty", "MiddleRecency",
+        "MiddlePercentCustBase", "MiddlePercentTxnBase", "MiddlePercentSalesBase", "MiddleAvgFreq", "MiddleAvgRecency", "MiddleAvgSales", "MiddleAvgItems", "MiddleVisitSpend",
+        "LapsingCustCount", "LapsingTxnCount", "LapsingTxnAmt", "LapsingItemQty", "LapsingRecency",
+        "LapsingPercentCustBase", "LapsingPercentTxnBase", "LapsingPercentSalesBase", "LapsingAvgFreq", "LapsingAvgRecency", "LapsingAvgSales", "LapsingAvgItems", "LapsingVisitSpend",
+        "DeeplyCustCount", "DeeplyTxnCount", "DeeplyTxnAmt", "DeeplyItemQty", "DeeplyRecency",
+        "DeeplyPercentCustBase", "DeeplyPercentTxnBase", "DeeplyPercentSalesBase", "DeeplyAvgFreq", "DeeplyAvgRecency", "DeeplyAvgSales", "DeeplyAvgItems", "DeeplyVisitSpend")
+
+    orderCols.collect().foreach(x => mapToAvro(x))
+
+    (profileList)
+  }
 
 
-  def tpAggProd(tpDF: DataFrame): Try[DataFrame] = ???
+  def tpAggProd(tpDF: DataFrame, columnName: String): Try[DataFrame] = Try {
+    val totalDF = tpDF
+      .groupBy("TimePeriod")
+      .agg(
+        sum("ITEM_AMT").alias("tpTotalSales")
+      )
 
-  def segAggProd(tpDF: DataFrame, segDF: DataFrame): Try[DataFrame] = ???
+    val aggProdDF = tpDF
+      .groupBy("TimePeriod", columnName)
+      .agg(
+        sum("ITEM_AMT").alias("tpItemAmt")
+      )
 
-  def indexProd(tpAggDF: DataFrame, segAggDF: DataFrame): Try[DataFrame] = ???
+    aggProdDF.join(totalDF, Seq("TimePeriod"))
 
+  }
+
+  def segAggProd(tpDF: DataFrame, segDF: DataFrame, columnName: String): Try[DataFrame] = Try {
+    val selectedDF = segDF.select("TimePeriod", "CUST_ID", "Segment")
+
+    val joinedDF = tpDF.join(selectedDF, Seq("TimePeriod", "CUST_ID"))
+
+    val totalSales = joinedDF
+      .groupBy("TimePeriod")
+      .pivot("Segment", Seq("Best in Class", "Rising Stars", "Middle of the Road", "Lapsing", "Deeply Lapsed"))
+      .agg(
+        sum("ITEM_AMT")
+      )
+      .withColumnRenamed("Best in Class", "BestTotalSales")
+      .withColumnRenamed("Rising Stars", "RisingTotalSales")
+      .withColumnRenamed("Middle of the Road", "MiddleTotalSales")
+      .withColumnRenamed("Lapsing", "LapsingTotalSales")
+      .withColumnRenamed("Deeply Lapsed", "DeeplyTotalSales")
+
+    val pivotDF = joinedDF
+      .groupBy("TimePeriod", columnName)
+      .pivot("Segment", Seq("Best in Class", "Rising Stars", "Middle of the Road", "Lapsing", "Deeply Lapsed"))
+      .agg(
+        sum("ITEM_AMT")
+      )
+      .withColumnRenamed("Best in Class", "BestItemAmt")
+      .withColumnRenamed("Rising Stars", "RisingItemAmt")
+      .withColumnRenamed("Middle of the Road", "MiddleItemAmt")
+      .withColumnRenamed("Lapsing", "LapsingItemAmt")
+      .withColumnRenamed("Deeply Lapsed", "DeeplyItemAmt")
+
+    val rejoined = pivotDF.join(totalSales, Seq("TimePeriod"))
+        .na.fill(0)
+      .withColumn("ProdTotalSales", col("BestItemAmt") + col("RisingItemAmt") + col("MiddleItemAmt") + col("LapsingItemAmt") + col("DeeplyItemAmt"))
+
+    rejoined.show()
+    rejoined
+
+  }
+
+  def indexProd(tpAggDF: DataFrame, segAggDF: DataFrame, columnName: String): Try[DataFrame] = Try {
+    val joinedDF = segAggDF.join(tpAggDF, Seq("TimePeriod", columnName))
+
+    joinedDF.show()
+
+    val percentDF = joinedDF
+      .withColumn("BestPercentSales", col("BestItemAmt")/col("BestTotalSales") *100)
+      .withColumn("RisingPercentSales", col("RisingItemAmt")/col("RisingTotalSales")*100)
+      .withColumn("MiddlePercentSales", col("MiddleItemAmt")/col("MiddleTotalSales")*100)
+      .withColumn("LapsingPercentSales", col("LapsingItemAmt")/col("LapsingTotalSales")*100)
+      .withColumn("DeeplyPercentSales", col("DeeplyItemAmt")/col("DeeplyTotalSales")*100)
+      .withColumn("ProdPercentSales", col("tpItemAmt")/col("tpTotalSales")*100)
+      .withColumn("BestIndex", col("BestPercentSales") - col("ProdPercentSales"))
+      .withColumn("RisingIndex", col("BestPercentSales") - col("ProdPercentSales"))
+      .withColumn("BestIndex", col("BestPercentSales") - col("ProdPercentSales"))
+      .withColumn("BestIndex", col("BestPercentSales") - col("ProdPercentSales"))
+      .withColumn("BestIndex", col("BestPercentSales") - col("ProdPercentSales"))
+
+    percentDF.show()
+
+    percentDF
+  }
+
+  def prodAvro(calcDF: DataFrame, columnName: String): Try[java.util.ArrayList[lifecycleProdMetrics]] = Try {
+    
+  }
 
 
   def main(args: Array[String]): Unit = {
@@ -182,7 +460,7 @@ object Lifecycle {
       .keyBy(_ (0))
       .mapValues(_ (1))
 
-    if (args.length != 4) {
+    if (args.length != 5) {
       //sendError
       System.exit(-1)
     }
@@ -191,6 +469,7 @@ object Lifecycle {
     val delimiter = args(1)
     val jobKey = args(2)
     val timePeriod = args(3).toInt
+    val columnName = args(4)
 
     val validTP = List(0, 3, 6, 12)
 
