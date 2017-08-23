@@ -1,9 +1,13 @@
 package com.brierley.lifecycle
 
+import java.time.LocalDateTime
 import java.util
 
-import com.brierley.avro.schemas.{lifecycleProdMetrics, lifecyleProfileResults}
+import com.brierley.avro.schemas._
 import com.brierley.general.utils.DateUtils
+import com.brierley.kafka.producer.KafkaProducer
+import kafka.Kafka
+import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
@@ -11,7 +15,7 @@ import org.apache.spark.sql.hive.HiveContext
 import org.apache.spark.sql.types.IntegerType
 import org.apache.spark.{SparkConf, SparkContext}
 
-import scala.util.{Success, Try}
+import scala.util.{Failure, Success, Try}
 
 /**
   * Created by amerrill on 7/24/17.
@@ -32,6 +36,7 @@ object Lifecycle {
     }
     else
       orgFile.select("CUST_ID", "TXN_DATE", "TXN_HEADER_ID", "TXN_DETAIL_ID", "ITEM_QTY", "ITEM_AMT", columnName)
+      .withColumn("ITEM_QTY", orgFile("ITEM_QTY").cast(IntegerType))
 
 
   }
@@ -133,13 +138,13 @@ object Lifecycle {
       .withColumn("rRank", percent_rank().over(rWindow))
       .withColumn("fRank", percent_rank().over(fWindow))
       .withColumn("mRank", percent_rank().over(mWindow))
-      .withColumn("R", LifecycleUDFs.calcQuint(col("rRank")))
+      .withColumn("Recency", LifecycleUDFs.calcQuint(col("rRank")))
       .withColumn("F", LifecycleUDFs.calcQuint(col("fRank")))
       .withColumn("M", LifecycleUDFs.calcQuint(col("mRank")))
       .drop(col("rRank"))
       .drop(col("fRank"))
       .drop(col("mRank"))
-      .withColumn("RFM", LifecycleUDFs.calcRFM(col("R"), col("F"), col("M")))
+      .withColumn("RFM", LifecycleUDFs.calcRFM(col("Recency"), col("F"), col("M")))
 
 
     rankDF
@@ -157,7 +162,8 @@ object Lifecycle {
       .agg(
         countDistinct("CUST_ID").alias("TotalCusts"),
         sum("TXN_COUNT").alias("TotalTxns"),
-        sum("TXN_AMT").alias("TotalSpend")
+        sum("TXN_AMT").alias("TotalSpend"),
+        sum("ITEM_QTY").alias("TotalItems")
       )
   }
 
@@ -201,11 +207,8 @@ object Lifecycle {
       .withColumnRenamed("Deeply Lapsed_sum(Recency)", "DeeplyRecency")
       .na.fill(0)
 
-    renamedDF.show()
-
     renamedDF
   }
-
 
   def calcPercentages(segAggDF: DataFrame, globalDF: DataFrame): Try[DataFrame] = Try {
     val joinedDF = segAggDF.join(globalDF, Seq("TimePeriod"))
@@ -258,7 +261,7 @@ object Lifecycle {
 
   }
 
-  def profileAvro(pivotDF: DataFrame): Try[java.util.ArrayList[lifecyleProfileResults]] = Try {
+  def createProfileAvro(pivotDF: DataFrame): Try[java.util.ArrayList[lifecyleProfileResults]] = Try {
     val profileList = new util.ArrayList[lifecyleProfileResults]()
 
     def mapToAvro(pRow: Row): Unit = {
@@ -339,23 +342,26 @@ object Lifecycle {
       pd.setDeeplyAvgItems(pRow.getDouble(68))
       pd.setDeeplyVisitSpend(pRow.getDouble(69))
 
+      profileList.add(pd)
+
     }
 
     val orderCols = pivotDF
-      .select("TimePeriod", "TotalCusts", "TotalTxns", "TotalSpend",
-        "BestCustCount", "BestTxnCount", "BestTxnAmt", "BestItemQty", "BestRecency",
+      .select("TimePeriod", "TotalCusts", "TotalTxns", "TotalSpend", "TotalItems",
+        "BestCustCount", "BestTxnCount", "BestTxnAmt",  "BestRecency","BestItemQty",
         "BestPercentCustBase", "BestPercentTxnBase", "BestPercentSalesBase", "BestAvgFreq", "BestAvgRecency", "BestAvgSales", "BestAvgItems", "BestVisitSpend",
-        "RisingCustCount", "RisingTxnCount", "RisingTxnAmt", "RisingItemQty", "RisingRecency",
+        "RisingCustCount", "RisingTxnCount", "RisingTxnAmt", "RisingRecency","RisingItemQty",
         "RisingPercentCustBase", "RisingPercentTxnBase", "RisingPercentSalesBase", "RisingAvgFreq", "RisingAvgRecency", "RisingAvgSales", "RisingAvgItems", "RisingVisitSpend",
-        "MiddleCustCount", "MiddleTxnCount", "MiddleTxnAmt", "MiddleItemQty", "MiddleRecency",
+        "MiddleCustCount", "MiddleTxnCount", "MiddleTxnAmt", "MiddleRecency","MiddleItemQty",
         "MiddlePercentCustBase", "MiddlePercentTxnBase", "MiddlePercentSalesBase", "MiddleAvgFreq", "MiddleAvgRecency", "MiddleAvgSales", "MiddleAvgItems", "MiddleVisitSpend",
-        "LapsingCustCount", "LapsingTxnCount", "LapsingTxnAmt", "LapsingItemQty", "LapsingRecency",
+        "LapsingCustCount", "LapsingTxnCount", "LapsingTxnAmt",  "LapsingRecency","LapsingItemQty",
         "LapsingPercentCustBase", "LapsingPercentTxnBase", "LapsingPercentSalesBase", "LapsingAvgFreq", "LapsingAvgRecency", "LapsingAvgSales", "LapsingAvgItems", "LapsingVisitSpend",
-        "DeeplyCustCount", "DeeplyTxnCount", "DeeplyTxnAmt", "DeeplyItemQty", "DeeplyRecency",
+        "DeeplyCustCount", "DeeplyTxnCount", "DeeplyTxnAmt", "DeeplyRecency","DeeplyItemQty",
         "DeeplyPercentCustBase", "DeeplyPercentTxnBase", "DeeplyPercentSalesBase", "DeeplyAvgFreq", "DeeplyAvgRecency", "DeeplyAvgSales", "DeeplyAvgItems", "DeeplyVisitSpend")
 
     orderCols.collect().foreach(x => mapToAvro(x))
 
+    println(s"profile avro output: $profileList")
     (profileList)
   }
 
@@ -407,10 +413,8 @@ object Lifecycle {
       .withColumnRenamed("Deeply Lapsed", "DeeplyItemAmt")
 
     val rejoined = pivotDF.join(totalSales, Seq("TimePeriod"))
-        .na.fill(0)
-      .withColumn("ProdTotalSales", col("BestItemAmt") + col("RisingItemAmt") + col("MiddleItemAmt") + col("LapsingItemAmt") + col("DeeplyItemAmt"))
+      .na.fill(0)
 
-    rejoined.show()
     rejoined
 
   }
@@ -418,28 +422,260 @@ object Lifecycle {
   def indexProd(tpAggDF: DataFrame, segAggDF: DataFrame, columnName: String): Try[DataFrame] = Try {
     val joinedDF = segAggDF.join(tpAggDF, Seq("TimePeriod", columnName))
 
-    joinedDF.show()
-
     val percentDF = joinedDF
-      .withColumn("BestPercentSales", col("BestItemAmt")/col("BestTotalSales") *100)
-      .withColumn("RisingPercentSales", col("RisingItemAmt")/col("RisingTotalSales")*100)
-      .withColumn("MiddlePercentSales", col("MiddleItemAmt")/col("MiddleTotalSales")*100)
-      .withColumn("LapsingPercentSales", col("LapsingItemAmt")/col("LapsingTotalSales")*100)
-      .withColumn("DeeplyPercentSales", col("DeeplyItemAmt")/col("DeeplyTotalSales")*100)
-      .withColumn("ProdPercentSales", col("tpItemAmt")/col("tpTotalSales")*100)
+      .withColumn("BestPercentSales", col("BestItemAmt") / col("BestTotalSales") * 100)
+      .withColumn("RisingPercentSales", col("RisingItemAmt") / col("RisingTotalSales") * 100)
+      .withColumn("MiddlePercentSales", col("MiddleItemAmt") / col("MiddleTotalSales") * 100)
+      .withColumn("LapsingPercentSales", col("LapsingItemAmt") / col("LapsingTotalSales") * 100)
+      .withColumn("DeeplyPercentSales", col("DeeplyItemAmt") / col("DeeplyTotalSales") * 100)
+      .withColumn("ProdPercentSales", col("tpItemAmt") / col("tpTotalSales") * 100)
       .withColumn("BestIndex", col("BestPercentSales") - col("ProdPercentSales"))
       .withColumn("RisingIndex", col("BestPercentSales") - col("ProdPercentSales"))
-      .withColumn("BestIndex", col("BestPercentSales") - col("ProdPercentSales"))
-      .withColumn("BestIndex", col("BestPercentSales") - col("ProdPercentSales"))
-      .withColumn("BestIndex", col("BestPercentSales") - col("ProdPercentSales"))
-
-    percentDF.show()
+      .withColumn("MiddleIndex", col("MiddlePercentSales") - col("ProdPercentSales"))
+      .withColumn("LapsingIndex", col("LapsingPercentSales") - col("ProdPercentSales"))
+      .withColumn("DeeplyIndex", col("DeeplyPercentSales") - col("ProdPercentSales"))
 
     percentDF
   }
 
-  def prodAvro(calcDF: DataFrame, columnName: String): Try[java.util.ArrayList[lifecycleProdMetrics]] = Try {
-    
+  def createProdAvro(calcDF: DataFrame, columnName: String): Try[java.util.ArrayList[lifecycleProdMetrics]] = Try {
+
+    val prodList = new util.ArrayList[lifecycleProdMetrics]()
+
+    def mapAvro(pRow: Row): Unit = {
+      val p = new lifecycleProdMetrics()
+      p.setTimePeriod(pRow.getInt(0))
+      p.setProductCat(pRow.getString(1))
+      p.setProdTotalSales(pRow.getDouble(2))
+      p.setProdPercentSales(pRow.getDouble(3))
+      p.setTotalSales(pRow.getDouble(4))
+      p.setBestProdSales(pRow.getDouble(5))
+      p.setBestTotalSales(pRow.getDouble(6))
+      p.setBestPercentSales(pRow.getDouble(7))
+      p.setBestIndex(pRow.getDouble(8))
+      p.setRisingProdSales(pRow.getDouble(9))
+      p.setRisingTotalSales(pRow.getDouble(10))
+      p.setRisingPercentSales(pRow.getDouble(11))
+      p.setRisingIndex(pRow.getDouble(12))
+      p.setMiddleProdSales(pRow.getDouble(13))
+      p.setMiddleTotalSales(pRow.getDouble(14))
+      p.setMiddlePercentSales(pRow.getDouble(15))
+      p.setMiddleIndex(pRow.getDouble(16))
+      p.setLapsingProdSales(pRow.getDouble(17))
+      p.setLapsingTotalSales(pRow.getDouble(18))
+      p.setLapsingPercentSales(pRow.getDouble(19))
+      p.setLapsingIndex(pRow.getDouble(20))
+      p.setDeeplyProdSales(pRow.getDouble(21))
+      p.setDeeplyTotalSales(pRow.getDouble(22))
+      p.setDeeplyPercentSales(pRow.getDouble(23))
+      p.setDeeplyIndex(pRow.getDouble(24))
+
+      prodList.add(p)
+
+    }
+
+    val orderCols = calcDF
+      .select("TimePeriod", columnName, "tpItemAmt", "ProdPercentSales", "tpTotalSales",
+        "BestItemAmt", "BestTotalSales", "BestPercentSales", "BestIndex",
+        "RisingItemAmt", "RisingTotalSales", "RisingPercentSales", "RisingIndex",
+        "MiddleItemAmt", "MiddleTotalSales", "MiddlePercentSales", "MiddleIndex",
+        "LapsingItemAmt", "LapsingTotalSales", "LapsingPercentSales", "LapsingIndex",
+        "DeeplyItemAmt", "DeeplyTotalSales", "DeeplyPercentSales", "DeeplyIndex")
+
+    orderCols.collect().foreach(x => mapAvro(x))
+
+    println(s"Product avro output: $prodList")
+
+
+    (prodList)
+  }
+
+
+  def createMigrationDF(segDF: DataFrame): Try[DataFrame] = Try {
+
+    val baseDF = segDF.select("TimePeriod", "CUST_ID", "Segment")
+      .withColumnRenamed("Segment", "CurrSeg")
+
+    val TPWindow = Window.partitionBy("CUST_ID").orderBy(col("TimePeriod").desc)
+
+    val missingTPDF = baseDF
+      .drop("CurrSeg")
+      .withColumn("TPDiff", baseDF("TimePeriod") - lag("TimePeriod", 1).over(TPWindow))
+      .filter((col("TPDiff") > 1) || col("TPDiff").isNull && baseDF("TimePeriod") > 1)
+      .withColumn("MissingTP", baseDF("TimePeriod") - 1)
+      .drop("TimePeriod")
+      .withColumnRenamed("MissingTP", "TimePeriod")
+      .withColumn("CurrSeg", lit(null))
+      .select("TimePeriod", "CUST_ID", "CurrSeg")
+
+    val unionDF = baseDF.unionAll(missingTPDF)
+
+    unionDF.withColumn("PrevSeg", lead("CurrSeg", 1).over(TPWindow))
+      .filter(unionDF("CurrSeg") isNotNull)
+
+  }
+
+  def countMigTotals(migDF: DataFrame): Try[DataFrame] = Try {
+
+    val maxTP = migDF.select(max("TimePeriod")).head().getInt(0)
+
+    //counts all new customers not seen in previous TP, excludes TP 1 since it is the first TP
+    val newCountDF = migDF
+      .filter(migDF("PrevSeg") isNull)
+      .filter(migDF("TimePeriod") > 1)
+      .drop("PrevSeg")
+      .groupBy("TimePeriod", "CurrSeg")
+      .agg(count("CUST_ID").alias("NewCount"))
+
+    //counts all customers in all TimePeriods
+    val allCountDF = migDF
+      .drop("PrevSeg")
+      .groupBy("TimePeriod", "CurrSeg")
+      .agg(count("CUST_ID").alias("AllCount"))
+
+    val joinedDF = allCountDF.join(newCountDF, Seq("TimePeriod", "CurrSeg"), "leftouter")
+      .na.fill(0)
+
+    joinedDF
+      .groupBy("TimePeriod")
+      .pivot("CurrSeg", Seq("Best in Class", "Rising Stars", "Middle of the Road", "Lapsing", "Deeply Lapsed"))
+      .agg(
+        sum("NewCount"),
+        sum("AllCount")
+      )
+      .na.fill(0)
+
+  }
+
+  def sumMigrations(migDF: DataFrame, sqlCtx: HiveContext, sc: SparkContext): Try[DataFrame] = Try {
+    import sqlCtx.implicits._
+
+    val segList = List("Best in Class", "Rising Stars", "Middle of the Road", "Lapsing", "Deeply Lapsed")
+
+    val currSegDF = sc.parallelize(segList).toDF("CurrSeg")
+    val prevSegDF = sc.parallelize(segList).toDF("PrevSeg")
+    val TPs = migDF.select("TimePeriod").distinct()
+
+    val matrixDF = TPs.join(currSegDF).join(prevSegDF)
+
+    val sumDF = migDF
+      .na.drop()
+      .groupBy("TimePeriod", "CurrSeg", "PrevSeg")
+      .agg(
+        count("CUST_ID").alias("Count")
+      )
+
+    val endDF = matrixDF.join(sumDF, Seq("TimePeriod", "CurrSeg", "PrevSeg"), "Left_outer")
+      .na.fill(0)
+
+    endDF
+  }
+
+  def createMigrationAvro(sumDF: DataFrame, countDF: DataFrame): Try[java.util.ArrayList[lifecycleMigrationResults]] = Try {
+    val migList = new util.ArrayList[lifecycleMigrationResults]()
+    var innerMigArray = new util.ArrayList[migrationArray]()
+    var timePeriod = 1
+
+    def mapCounts(cRow: Row): Unit = {
+      val ttlList = new util.ArrayList[segmentCounts]()
+      val ttls = new segmentCounts()
+      ttls.setBestNewCount(cRow.getLong(1))
+      ttls.setBestTotalCount(cRow.getLong(2))
+      ttls.setRisingNewCount(cRow.getLong(3))
+      ttls.setRisingTotalCount(cRow.getLong(4))
+      ttls.setMiddleNewCount(cRow.getLong(5))
+      ttls.setMiddleTotalCount(cRow.getLong(6))
+      ttls.setLapsingNewCount(cRow.getLong(7))
+      ttls.setLapsingTotalCount(cRow.getLong(8))
+      ttls.setDeeplyNewCount(cRow.getLong(9))
+      ttls.setDeeplyTotalCount(cRow.getLong(10))
+
+      ttlList.add(ttls)
+      migList.get(cRow.getInt(0) - 1).setSegmentTotals(ttlList)
+    }
+
+    def setInnerMigArray(row: Row): Unit = {
+      val ma = new migrationArray()
+      ma.setCurrentSegment(row.getString(1))
+      ma.setFromSegment(row.getString(2))
+      ma.setMigrationCount(row.getLong(3))
+      innerMigArray.add(ma)
+    }
+
+    def mapMigrations(mRow: Row): Unit = {
+      if (migList.isEmpty) {
+        val lmr = new lifecycleMigrationResults()
+        lmr.setTimePeriod(mRow.getInt(0))
+
+        migList.add(lmr)
+
+        setInnerMigArray(mRow)
+      } else if (mRow.getInt(0) == migList.get(migList.size() - 1).getTimePeriod) {
+        setInnerMigArray(mRow)
+      } else {
+        migList.get(migList.size() - 1).setMigrationData(innerMigArray)
+
+        innerMigArray = new util.ArrayList[migrationArray]()
+        val lmr = new lifecycleMigrationResults()
+        lmr.setTimePeriod(mRow.getInt(0))
+        migList.add(lmr)
+
+        setInnerMigArray(mRow)
+      }
+
+    }
+
+    sumDF.sort("TimePeriod").collect().foreach(f => mapMigrations(f))
+    migList.get(migList.size() - 1).setMigrationData(innerMigArray)
+    countDF.sort("TimePeriod").collect().foreach(g => mapCounts(g))
+
+    migList
+  }
+
+
+  def dfStats(tpDF: DataFrame): Try[DataFrame] = Try {
+    tpDF
+      .select(min("Date"), max("Date"))
+      .withColumn("TXN_COUNT", lit(tpDF.count))
+  }
+
+  def createLifecycleAvro(profAvro: util.ArrayList[lifecyleProfileResults], prodAvro: util.ArrayList[lifecycleProdMetrics],
+                          migAvro: util.ArrayList[lifecycleMigrationResults], statDF: DataFrame, jobKey: String, tpLength: Int): Try[LifecycleResults] = Try {
+
+    val stats = statDF.head()
+    val lifeAvro = new LifecycleResults()
+
+    lifeAvro.setJobKey(jobKey)
+    lifeAvro.setMinDate(stats.getDate(0).toString)
+    lifeAvro.setMaxDate(stats.getDate(1).toString)
+    lifeAvro.setNumRecords(stats.getLong(2))
+    lifeAvro.setTimePeriodLength(tpLength)
+    lifeAvro.setMigrationResults(migAvro)
+    lifeAvro.setProdMetrics(prodAvro)
+    lifeAvro.setLifecycleResults(profAvro)
+
+
+    lifeAvro.setCompletionTime(LocalDateTime.now().toString)
+
+    lifeAvro
+  }
+
+  def sendLifecycleError(jobKey: String, className: String, methodName: String, msg: String, extype: String, propsList: RDD[(String, String)]): Unit = {
+    val error = new Error()
+    error.setJobKey(jobKey)
+    error.setJobType("Lifecycle")
+
+    val ex = new exception()
+    ex.setClassName(className)
+    ex.setMethodName(methodName)
+    ex.setExceptionMsg(msg)
+    ex.setExceptionType(extype)
+
+    val tempList = new util.ArrayList[exception]
+    tempList.add(ex)
+    error.setErrorInfo(tempList)
+
+    KafkaProducer.sendError(error, propsList)
   }
 
 
@@ -454,11 +690,11 @@ object Lifecycle {
     val sc = new SparkContext(conf)
     val sqlCtx = new HiveContext(sc)
 
-    val kafkaProps = sc.textFile("kafkaProps.txt")
-    val propsOnly = kafkaProps.filter(_.contains("analytics"))
+    //val kafkaProps = sc.textFile("kafkaProps.txt")
+    /*val propsOnly = kafkaProps.filter(_.contains("analytics"))
       .map(_.split(" = "))
       .keyBy(_ (0))
-      .mapValues(_ (1))
+      .mapValues(_ (1))*/
 
     if (args.length != 5) {
       //sendError
@@ -474,25 +710,68 @@ object Lifecycle {
     val validTP = List(0, 3, 6, 12)
 
     if (!validTP.contains(timePeriod)) {
+      println(s"Invalid timeperiod length submitted, must be: 0, 3, 6, or 12.  you entered $timePeriod")
       //sendError
       System.exit(-1)
     }
-    /*
-        for {
-          orgFile <- loadFile(sqlCtx, delimiter, fileLocation)
 
-          dateDF <- DateUtils.determineFormat(orgFile)
+    val avro = for {
+      orgFile <- loadFile(sqlCtx, delimiter, fileLocation, columnName)
 
-          tpDF <- calcTimePeriod(dateDF, timePeriod)
+      dateDF <- DateUtils.determineFormat(orgFile)
 
-          aggDF <- custAgg(tpDF)
+      tpDF <- calcTimePeriod(dateDF, timePeriod)
 
-          rfmDF <- calcRFM(aggDF)
+      aggDF <- custAgg(tpDF)
 
-          labelRfmDF <- groupRFM(rfmDF)
+      rfmDF <- calcRFM(aggDF)
 
-        } yield orgFile
-    */
+      segDF <- groupRFM(rfmDF)
+
+      globalDF <- calcGlobalTotals(segDF)
+
+      segAggDF <- segmentAgg(segDF)
+
+      percentDF <- calcPercentages(segAggDF, globalDF)
+
+      profAvro <- createProfileAvro(percentDF)
+
+      tpAggDF <- tpAggProd(tpDF, columnName)
+
+      segProdAggDF <- segAggProd(tpDF, segDF, columnName)
+
+      indexDF <- indexProd(tpAggDF, segProdAggDF, columnName)
+
+      prodAvro <- createProdAvro(indexDF, columnName)
+
+      migDF <- createMigrationDF(segDF)
+
+      migCountDF <- countMigTotals(migDF)
+
+      sumMigDF <- sumMigrations(migDF, sqlCtx, sc)
+
+      migAvro <- createMigrationAvro(sumMigDF, migCountDF)
+
+      statDF <- dfStats(tpDF)
+
+      lifecycleAvro <- createLifecycleAvro(profAvro, prodAvro, migAvro, statDF, jobKey, timePeriod)
+
+    } yield lifecycleAvro
+
+    avro match {
+      case Success(avro) => {
+        println(s"Lifecycle calculations were successful: $avro")
+        //KafkaProducer.sendSucess("lifecycle", propsOnly, avro)
+        sc.stop()
+      }
+      case Failure(ex) => {
+        //sendLifecycleError(jobKey, "Lifecycle", "unknown", ex.toString, "System", propsOnly)
+        println(s"Lifecycle had an error: $ex")
+        sc.stop()
+        System.exit(-1)
+      }
+    }
+
   }
 
 }

@@ -24,8 +24,8 @@
 		 "doc" : "End date of the dataset after trimming to whole month/week"},
 
 		{"name": "timePeriodLength",
-		 "type": "string",
-		 "doc" : "The period length that the dataset should be split into, if 'ALL', the file was not split"},
+		 "type": "int",
+		 "doc" : "The period length that the dataset should be split into in number of months, if 'ALL', the file was not split"},
 
 		{"name": "lifecycleResults",
 		 "type": {"type": "array",
@@ -442,11 +442,11 @@
                             "type": "record",
                             "fields": [
                                 {"name": "fromSegment",
-                                 "type": "int",
+                                 "type": "string",
                                  "doc" : "Quantile that they were in for PREVIOUS time period"},
 
                                 {"name": "currentSegment",
-                                 "type": "int",
+                                 "type": "string",
                                  "doc" : "Quantile that they belong to for CURRENT time period"},
 
                                 {"name": "migrationCount",

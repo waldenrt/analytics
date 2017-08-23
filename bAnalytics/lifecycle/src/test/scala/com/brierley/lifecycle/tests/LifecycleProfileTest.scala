@@ -162,7 +162,7 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
     val orElseDF = sc.parallelize(List(1, 2, 3, 4)).toDF("Dummy")
 
     val colNames = List("CUST_ID", "daysSince", "TXN_COUNT", "TXN_AMT", "ITEM_QTY", "TimePeriod",
-      "R", "F", "M", "RFM")
+      "Recency", "F", "M", "RFM")
 
 
   }
@@ -258,7 +258,7 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
 
     val orElseDF = sc.parallelize(List(1, 2, 3, 4)).toDF("Dummy")
 
-    val colNames = List("TimePeriod", "TotalCusts", "TotalTxns", "TotalSpend")
+    val colNames = List("TimePeriod", "TotalCusts", "TotalTxns", "TotalSpend", "TotalItems")
 
     val segColNames = List("TimePeriod", "BestCustCount", "BestTxnCount", "BestTxnAmt", "BestItemQty", "BestRecency",
       "RisingCustCount", "RisingTxnCount", "RisingTxnAmt", "RisingItemQty", "RisingRecency",
@@ -389,7 +389,7 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
     val columnName = "PROD_CAT"
 
     val segColNames = List("TimePeriod", "PROD_CAT", "BestItemAmt", "RisingItemAmt", "MiddleItemAmt", "LapsingItemAmt", "DeeplyItemAmt",
-      "BestTotalSales", "RisingTotalSales", "MiddleTotalSales", "LapsingTotalSales", "DeeplyTotalSales", "ProdTotalSales")
+      "BestTotalSales", "RisingTotalSales", "MiddleTotalSales", "LapsingTotalSales", "DeeplyTotalSales")
 
     val orElseDF = sc.parallelize(List(1, 2, 3, 4)).toDF("Dummy")
   }
@@ -564,7 +564,7 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
 
       val results = orgDF.head()
 
-      assert(results === Row(1, 5.toLong, 26.toLong, 143.0))
+      assert(results === Row(1, 5.toLong, 26.toLong, 143.0, 30))
     }
   }
 
@@ -572,10 +572,10 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
     new GlobalCountsData {
       val orgDF = Lifecycle.calcGlobalTotals(twoTPs) getOrElse orElseDF
       val tp1 = orgDF.where("TimePeriod = 1").head()
-      assert(tp1 === Row(1, 5.toLong, 26.toLong, 143.0))
+      assert(tp1 === Row(1, 5.toLong, 26.toLong, 143.0, 30))
 
       val tp2 = orgDF.where("TimePeriod = 2").head()
-      assert(tp2 === Row(2, 5.toLong, 27.toLong, 145.0))
+      assert(tp2 === Row(2, 5.toLong, 27.toLong, 145.0, 30))
     }
   }
 
@@ -606,6 +606,17 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
   test("2 TPs various missing segments") {
     new PercentageData {
       val orgFile = Lifecycle.calcPercentages(twoTPs, globalDF) getOrElse orElseDF
+      val tp1 = orgFile
+          .select("TimePeriod", "BestCustCount", "BestTxnCount", "BestTxnAmt", "BestRecency",
+            "LapsingCustCount", "LapsingTxnCount", "LapsingTxnAmt", "LapsingRecency")
+          .where("TimePeriod = 1").head()
+      assert(tp1 === Row(1,1,2,15.0,4,0,0,0.0,0))
+
+      val tp2 = orgFile
+          .select("TimePeriod", "MiddleCustCount", "MiddleTxnCount", "MiddleTxnAmt", "MiddleRecency",
+          "DeeplyCustCount", "DeeplyTxnCount", "DeeplyTxnAmt", "DeeplyRecency")
+        .where("TimePeriod = 2").head()
+      assert(tp2 === Row(2,0,0,0.0,0,1,9,43.0,2))
 
       orgFile.show()
 
@@ -645,7 +656,7 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
       assert(prodDF.columns === segColNames)
 
       val totals = prodDF.head()
-      assert(totals === Row(1, "Best in Class", "prodA", 15.0, 4))
+      assert(totals === Row(1,"prodA",15.0,0.0,38.0,22.0,0.0,15.0,13.0,38.0,41.0,0.0))
     }
   }
 
@@ -654,11 +665,11 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
       val prodDF = Lifecycle.segAggProd(doubleTP, twoTPRandomSegments, columnName) getOrElse orElseDF
       assert(prodDF.columns === segColNames)
 
-      val totals1 = prodDF.where("TimePeriod = 1 and Segment = 'Middle of the Road'").head()
-      assert(totals1 === Row(1, "Middle of the Road", "prodA", 73.0, 13))
+      val totals1 = prodDF.where("TimePeriod = 1").head()
+      assert(totals1 === Row(1,"prodA",15.0,0.0,73.0,0.0,0.0,15.0,0.0,73.0,0.0,19.0))
 
-      val totals2 = prodDF.where("TimePeriod = 2 and Segment = 'Lapsing'").head()
-      assert(totals2 === Row(2, "Lapsing", "prodA", 76.0, 11))
+      val totals2 = prodDF.where("TimePeriod = 2").head()
+      assert(totals2 === Row(2,"prodA",15.0,0.0,0.0,76.0,0.0,30.0,0.0,0.0,76.0,0.0))
     }
   }
 

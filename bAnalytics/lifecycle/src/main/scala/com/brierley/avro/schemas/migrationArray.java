@@ -10,13 +10,13 @@ import org.apache.avro.specific.SpecificData;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class migrationArray extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 6897727092352345473L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"migrationArray\",\"namespace\":\"com.brierley.avro.schemas\",\"fields\":[{\"name\":\"fromSegment\",\"type\":\"int\",\"doc\":\"Quantile that they were in for PREVIOUS time period\"},{\"name\":\"currentSegment\",\"type\":\"int\",\"doc\":\"Quantile that they belong to for CURRENT time period\"},{\"name\":\"migrationCount\",\"type\":\"long\",\"doc\":\"Total number that moved fromSegment -> currentSegment\"}]}");
+  private static final long serialVersionUID = 1700349701571077568L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"migrationArray\",\"namespace\":\"com.brierley.avro.schemas\",\"fields\":[{\"name\":\"fromSegment\",\"type\":\"string\",\"doc\":\"Quantile that they were in for PREVIOUS time period\"},{\"name\":\"currentSegment\",\"type\":\"string\",\"doc\":\"Quantile that they belong to for CURRENT time period\"},{\"name\":\"migrationCount\",\"type\":\"long\",\"doc\":\"Total number that moved fromSegment -> currentSegment\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** Quantile that they were in for PREVIOUS time period */
-  @Deprecated public int fromSegment;
+  @Deprecated public java.lang.CharSequence fromSegment;
   /** Quantile that they belong to for CURRENT time period */
-  @Deprecated public int currentSegment;
+  @Deprecated public java.lang.CharSequence currentSegment;
   /** Total number that moved fromSegment -> currentSegment */
   @Deprecated public long migrationCount;
 
@@ -33,7 +33,7 @@ public class migrationArray extends org.apache.avro.specific.SpecificRecordBase 
    * @param currentSegment Quantile that they belong to for CURRENT time period
    * @param migrationCount Total number that moved fromSegment -> currentSegment
    */
-  public migrationArray(java.lang.Integer fromSegment, java.lang.Integer currentSegment, java.lang.Long migrationCount) {
+  public migrationArray(java.lang.CharSequence fromSegment, java.lang.CharSequence currentSegment, java.lang.Long migrationCount) {
     this.fromSegment = fromSegment;
     this.currentSegment = currentSegment;
     this.migrationCount = migrationCount;
@@ -54,8 +54,8 @@ public class migrationArray extends org.apache.avro.specific.SpecificRecordBase 
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: fromSegment = (java.lang.Integer)value$; break;
-    case 1: currentSegment = (java.lang.Integer)value$; break;
+    case 0: fromSegment = (java.lang.CharSequence)value$; break;
+    case 1: currentSegment = (java.lang.CharSequence)value$; break;
     case 2: migrationCount = (java.lang.Long)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
@@ -65,7 +65,7 @@ public class migrationArray extends org.apache.avro.specific.SpecificRecordBase 
    * Gets the value of the 'fromSegment' field.
    * @return Quantile that they were in for PREVIOUS time period
    */
-  public java.lang.Integer getFromSegment() {
+  public java.lang.CharSequence getFromSegment() {
     return fromSegment;
   }
 
@@ -74,7 +74,7 @@ public class migrationArray extends org.apache.avro.specific.SpecificRecordBase 
    * Quantile that they were in for PREVIOUS time period
    * @param value the value to set.
    */
-  public void setFromSegment(java.lang.Integer value) {
+  public void setFromSegment(java.lang.CharSequence value) {
     this.fromSegment = value;
   }
 
@@ -82,7 +82,7 @@ public class migrationArray extends org.apache.avro.specific.SpecificRecordBase 
    * Gets the value of the 'currentSegment' field.
    * @return Quantile that they belong to for CURRENT time period
    */
-  public java.lang.Integer getCurrentSegment() {
+  public java.lang.CharSequence getCurrentSegment() {
     return currentSegment;
   }
 
@@ -91,7 +91,7 @@ public class migrationArray extends org.apache.avro.specific.SpecificRecordBase 
    * Quantile that they belong to for CURRENT time period
    * @param value the value to set.
    */
-  public void setCurrentSegment(java.lang.Integer value) {
+  public void setCurrentSegment(java.lang.CharSequence value) {
     this.currentSegment = value;
   }
 
@@ -145,9 +145,9 @@ public class migrationArray extends org.apache.avro.specific.SpecificRecordBase 
     implements org.apache.avro.data.RecordBuilder<migrationArray> {
 
     /** Quantile that they were in for PREVIOUS time period */
-    private int fromSegment;
+    private java.lang.CharSequence fromSegment;
     /** Quantile that they belong to for CURRENT time period */
-    private int currentSegment;
+    private java.lang.CharSequence currentSegment;
     /** Total number that moved fromSegment -> currentSegment */
     private long migrationCount;
 
@@ -201,7 +201,7 @@ public class migrationArray extends org.apache.avro.specific.SpecificRecordBase 
       * Quantile that they were in for PREVIOUS time period
       * @return The value.
       */
-    public java.lang.Integer getFromSegment() {
+    public java.lang.CharSequence getFromSegment() {
       return fromSegment;
     }
 
@@ -211,7 +211,7 @@ public class migrationArray extends org.apache.avro.specific.SpecificRecordBase 
       * @param value The value of 'fromSegment'.
       * @return This builder.
       */
-    public com.brierley.avro.schemas.migrationArray.Builder setFromSegment(int value) {
+    public com.brierley.avro.schemas.migrationArray.Builder setFromSegment(java.lang.CharSequence value) {
       validate(fields()[0], value);
       this.fromSegment = value;
       fieldSetFlags()[0] = true;
@@ -234,6 +234,7 @@ public class migrationArray extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.migrationArray.Builder clearFromSegment() {
+      fromSegment = null;
       fieldSetFlags()[0] = false;
       return this;
     }
@@ -243,7 +244,7 @@ public class migrationArray extends org.apache.avro.specific.SpecificRecordBase 
       * Quantile that they belong to for CURRENT time period
       * @return The value.
       */
-    public java.lang.Integer getCurrentSegment() {
+    public java.lang.CharSequence getCurrentSegment() {
       return currentSegment;
     }
 
@@ -253,7 +254,7 @@ public class migrationArray extends org.apache.avro.specific.SpecificRecordBase 
       * @param value The value of 'currentSegment'.
       * @return This builder.
       */
-    public com.brierley.avro.schemas.migrationArray.Builder setCurrentSegment(int value) {
+    public com.brierley.avro.schemas.migrationArray.Builder setCurrentSegment(java.lang.CharSequence value) {
       validate(fields()[1], value);
       this.currentSegment = value;
       fieldSetFlags()[1] = true;
@@ -276,6 +277,7 @@ public class migrationArray extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.migrationArray.Builder clearCurrentSegment() {
+      currentSegment = null;
       fieldSetFlags()[1] = false;
       return this;
     }
@@ -326,8 +328,8 @@ public class migrationArray extends org.apache.avro.specific.SpecificRecordBase 
     public migrationArray build() {
       try {
         migrationArray record = new migrationArray();
-        record.fromSegment = fieldSetFlags()[0] ? this.fromSegment : (java.lang.Integer) defaultValue(fields()[0]);
-        record.currentSegment = fieldSetFlags()[1] ? this.currentSegment : (java.lang.Integer) defaultValue(fields()[1]);
+        record.fromSegment = fieldSetFlags()[0] ? this.fromSegment : (java.lang.CharSequence) defaultValue(fields()[0]);
+        record.currentSegment = fieldSetFlags()[1] ? this.currentSegment : (java.lang.CharSequence) defaultValue(fields()[1]);
         record.migrationCount = fieldSetFlags()[2] ? this.migrationCount : (java.lang.Long) defaultValue(fields()[2]);
         return record;
       } catch (Exception e) {
