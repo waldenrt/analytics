@@ -4,7 +4,6 @@ import Hello from '@/components/Hello'
 import JobHistory from '@/components/JobHistory'
 import NewBalor from '@/components/NewBalor'
 import BalorSegmentTrend from '@/components/BalorSegmentTrend'
-import BalorSegmentProfile from '@/components/BalorSegmentProfile'
 import BalorTrend from '@/components/BalorTrend'
 import Cadence from '@/components/Cadence'
 import Settings from '@/components/Settings'
@@ -52,11 +51,6 @@ export default new Router({
       path: '/Balor/SegmentTrend',
       name: 'BalorSegmentTrend',
       component: BalorSegmentTrend
-    },
-    {
-      path: '/Balor/SegmentProfile',
-      name: 'BalorSegmentProfile',
-      component: BalorSegmentProfile
     },
     {
       path: '/Balor/Trend',

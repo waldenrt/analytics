@@ -19,7 +19,7 @@
         <v-toolbar-item>
           <router-link to="/Help">Need Help?</router-link>
         </v-toolbar-item>
-        <v-menu>
+        <v-menu>0
           <v-btn primary slot="activator">Client</v-btn>
           <v-list>
             <v-list-item v-for="client in clients" :key="client.id">
@@ -58,7 +58,6 @@
           </v-flex>
           <v-flex xs10>
             <div>
-              <p>first line</p>
               <p>we can put notices here and they will be always visible from everywhere in the app..</p>
               <router-view></router-view>
             </div>
