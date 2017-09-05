@@ -1,5 +1,5 @@
 <template>
-  <div  v-if="$store.state.appmodule === 'Balor'">
+  <div v-if="$store.state.appmodule === 'Balor'">
     <v-list>
       <v-list-item>
         <v-list-tile>
@@ -72,7 +72,7 @@
 </script>
 
 <style scoped>
-  .nav-link{
+  .nav_link{
     color: #354052;
   }
 
