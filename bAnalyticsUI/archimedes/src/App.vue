@@ -29,6 +29,7 @@
       <v-toolbar-side-icon @click.native.stop="showmenu = !showmenu"></v-toolbar-side-icon>
       <v-toolbar-title class="text--text">{{ appmodule }}</v-toolbar-title>
       <v-toolbar-items>
+
         <v-menu>
           <v-btn primary slot="activator" class="white--text">Client</v-btn>
           <v-list>

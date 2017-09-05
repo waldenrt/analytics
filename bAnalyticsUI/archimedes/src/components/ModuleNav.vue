@@ -32,13 +32,6 @@
       <v-list-item>
         <v-list-tile>
           <v-list-tile-title>
-            <router-link to="/Balor/SegmentProfile">Segment Profile</router-link>
-          </v-list-tile-title>
-        </v-list-tile>
-      </v-list-item>
-      <v-list-item>
-        <v-list-tile>
-          <v-list-tile-title>
             <router-link to="/JobHistory">Balor History</router-link>
           </v-list-tile-title>
         </v-list-tile>
