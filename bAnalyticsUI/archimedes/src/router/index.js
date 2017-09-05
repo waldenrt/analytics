@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
+import Home from '@/components/Home'
 import JobHistory from '@/components/JobHistory'
 import NewBalor from '@/components/NewBalor'
 import BalorSegmentTrend from '@/components/BalorSegmentTrend'
@@ -14,8 +14,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'Home',
+      component: Home
     },
     {
       path: '/JobHistory',
@@ -25,12 +25,12 @@ export default new Router({
     {
       path: '/Help',
       name: 'Help',
-      component: Hello
+      component: Home
     },
     {
       path: '/Logout',
       name: 'Logout',
-      component: Hello
+      component: Home
     },
     {
       path: '/Settings',
