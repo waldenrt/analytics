@@ -1,9 +1,11 @@
 <template>
-  <div class="content"><v-app id="navigation" left-fixed-sidebar top-toolbar sidebar-under-toolbar>
+  <div class="content">
+    <v-app id="navigation" left-fixed-sidebar top-toolbar sidebar-under-toolbar>
 
     <!-- slideout nav -->
     <v-navigation-drawer temporary clipped class="accent" v-model="showmenu">
       <v-list class="pa-0">
+        <!--Dashboard-->
         <v-list-item>
           <v-list-tile ripple class="white">
             <v-icon class="primary--text pr-3">home</v-icon>
@@ -12,14 +14,19 @@
             </v-list-tile-title>
           </v-list-tile>
         </v-list-item>
+        <!--//Dashboard-->
         <v-divider></v-divider>
+        <!--ModuleNav-->
         <v-list-item v-for="module in modules" :value="module.active" :key="module.name">
           <v-list-tile ripple>
             <v-icon class="white--text pr-3">{{ module.icon }}</v-icon>
-            <v-list-tile-title>{{ module.name }}</v-list-tile-title>
+            <v-list-tile-title>
+              <router-link to="/" class="white--text">{{ module.name }}</router-link>
+            </v-list-tile-title>
           </v-list-tile>
           <v-divider></v-divider>
         </v-list-item>
+        <!--//ModuleNav-->
       </v-list>
     </v-navigation-drawer>
     <!-- //slideout nav -->
@@ -70,10 +77,7 @@
     <main class="pt-5">
       <v-container fluid>
         <v-layout row-sm column child-flex-sm>
-          <v-flex md2>
-            <modulenav></modulenav>
-          </v-flex>
-          <v-flex xs10>
+          <v-flex xs12>
             <div>
               <!--<p>first line</p>
               <p>we can put notices here and they will be always visible from everywhere in the app..</p>-->
@@ -115,6 +119,7 @@
         modules: [
           {name: 'Balor', active: true, icon: 'label'},
           {name: 'Decile', active: false, icon: 'label'},
+          {name: 'Core Lifecycle', active: false, icon: 'label'},
           {name: 'bRelevant', active: false, icon: 'label'},
           {name: 'History', active: false, icon: 'history'},
           {name: 'Settings', active: false, icon: 'settings'},
@@ -138,15 +143,9 @@
 
 <style lang="stylus">
   @import './assets/stylus/main.styl';
+  @import '../node_modules/nouislider/distribute/nouislider.min.css';
 
   .content{flex: 1 0 auto;height:100%;padding:0;margin:0;display:flex;flex-direction:column;}
-
-  .footer{
-    height:80px;
-  }
-  .ftr_logo{
-    height:47px;
-  }
 
   @media (max-width: 550px) {
     body {font-size: 12px;}

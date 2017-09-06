@@ -1,37 +1,83 @@
 <template>
-  <div class='balorSegmentTrend'>
-    <h1>{{ msg }}</h1>
+  <v-container fluid class='balorSegmentTrend'>
 
-    <div style='width:75%;'>
-      <input type='checkbox' id='allTrends' checked='true' @change="allUpdate()">All Trendlines
-      <input type='checkbox' id='custTrend' @change="singleUpdate()">Customer Trendline
-      <input type='checkbox' id='txnTrend' @change="singleUpdate()">Transaction Trendline
-      <input type='checkbox' id='spendTrend' @change="singleUpdate()">Spend Trendline
+  <!--steppers-->
+  <v-layout white class="mb-5 pa-3">
+    <v-flex xs12 md2 class="text-xs-center">
+      <v-btn primary class="white--text">New Balor</v-btn>
+    </v-flex>
+    <v-flex xs12 md10>
+      <v-stepper non-linear>
+        <v-stepper-header>
+          <v-stepper-step step="1" editable v-tooltip:top="{ html: 'Cadence' }">Cadence</v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step step="2" editable>Balor Trend</v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step step="3" editable>Segment Trend</v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step step="4" editable>Balor History</v-stepper-step>
+        </v-stepper-header>
+      </v-stepper>
+    </v-flex>
+  </v-layout>
+  <!--//steppers-->
+
+    <!--checkboxes-->
+    <v-layout white class="checkboxes mb-3 pa-3">
+      <v-flex xs12>
+        <input class="mr-2" type='checkbox' id='allTrends' checked='true' @change="allUpdate()">All Trendlines
+        <input class="mr-2" type='checkbox' id='custTrend' @change="singleUpdate()">Customer Trendline
+        <input class="mr-2" type='checkbox' id='txnTrend' @change="singleUpdate()">Transaction Trendline
+        <input class="mr-2" type='checkbox' id='spendTrend' @change="singleUpdate()">Spend Trendline
+      </v-flex>
+    </v-layout>
+    <!--//checkboxes-->
+
+    <!--trendlines-->
+    <v-layout white class="mb-3 pa-3">
       <balor-trend-line :chart-data="trendLine"></balor-trend-line>
+    </v-layout>
+    <!--//trendlines-->
 
-      <div class="sliders" id="ratioSlide" ref="mySlider"></div>
-    </div>
-    <br>
-    <br>
-    <div style="width:25%;">
-      <balor-trend-line :chart-data='ratioLine'></balor-trend-line>
-      <pie-charts :chart-data='custData'></pie-charts>
-      <pie-charts :chart-data='txnData'></pie-charts>
-      <pie-charts :chart-data='spendData'></pie-charts>
-    </div>
-    <br>
+    <!--slider-->
+    <v-layout white class="mb-3 pt-5 pb-5 pl-3 pr-3">
+      <v-flex xs12>
+        <div id="ratioSlide" class="noUiSlider" ref="mySlider"></div>
+      </v-flex>
+    </v-layout>
+    <!--//slider-->
 
-    <br>
-    <div style='width:20%;'>
-      BALOR Composition and Metrics for Period:
-      <v-select v-model="tp"
-                v-bind:items="tpArray"
-                label="Select Time Period"
-                v-on:input="setTP()">
-      </v-select>
+    <!--selection-->
+    <v-layout white class="mb-3 pa-3">
+      <v-flex xs12>
+        <div id="selection">
+          BALOR Composition and Metrics for Period:
+          <v-select v-model="tp"
+                    v-bind:items="tpArray"
+                    label="Select Time Period"
+                    v-on:input="setTP()">
+          </v-select>
+        </div>
+      </v-flex>
+    </v-layout>
+    <!--//selection-->
 
-    </div>
-  </div>
+
+      <v-layout white class="pa-3">
+        <v-flex xs3>
+          <pie-charts :chart-data='custData' style="width:"></pie-charts>
+        </v-flex>
+        <v-flex xs3>
+          <pie-charts :chart-data='txnData'></pie-charts>
+        </v-flex>
+        <v-flex xs3>
+          <pie-charts :chart-data='spendData'></pie-charts>
+        </v-flex>
+        <v-flex xs3>
+          <balor-trend-line :chart-data='ratioLine'></balor-trend-line>
+        </v-flex>
+      </v-layout>
+  </v-container>
 
 
 </template>
@@ -370,7 +416,8 @@
         }
       },
       slideUpdateTrends () {
-        var vals = this.slider.noUiSlider.get()
+        var vals = this.Slider.noUiSlider.get
+        console.log(vals)
         var min = parseInt(vals[0])
         var max = parseInt(vals[1])
         console.log('min value: ' + min + ' and max value: ' + max)
@@ -491,14 +538,23 @@
         }
       },
       createSlider () {
-        var slider = document.getElementById('ratioSlide')
-
-        noUiSlider.create(slider, {
+        this.Slider = document.getElementById('ratioSlide')
+        this.Slider.style.height = '20px'
+        this.Slider.style.margin = '10px'
+        noUiSlider.create(this.Slider, {
           start: [0, 10], // this.tpArray.length],
+          margin: 1, // Handles must be at least 1 apart
+          tooltips: true,
           connect: true,
           step: 1,
-          range: {'min': 0, 'max': 10} // this.tpArray.length}
+          range: {'min': 0, 'max': 10}, // this.tpArray.length}
+          pips: { // Show a scale with the slider
+            mode: 'steps',
+            stepped: true,
+            density: 10
+          }
         })
+        console.log(this.Slider)
         // this.slider.noUiSlider.on('change', this.slideUpdateTrends)
       },
       setTP () {
@@ -589,5 +645,6 @@
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-
+v-layout{padding:5px;}
+.inliner{display:inline-block;}
 </style>

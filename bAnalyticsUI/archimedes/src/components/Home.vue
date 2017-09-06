@@ -1,8 +1,8 @@
 <template>
   <v-parallax src="/assets/images/bp_logo_reverse_color.png" height="1000">
     <v-layout column align-center justify-center>
-      <h1 class="white--text text-xs-center">Welcome to the Application!</h1>
-      <h4 class="white--text">Build your application today!</h4>
+      <h1 class="primary--text text-xs-center">Welcome to the Application!</h1>
+      <h4 class="primary--text">Build your application today!</h4>
     </v-layout>
   </v-parallax>
 </template>
