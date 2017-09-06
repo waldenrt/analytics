@@ -81,6 +81,7 @@
             <div>
               <!--<p>first line</p>
               <p>we can put notices here and they will be always visible from everywhere in the app..</p>-->
+              <breadcrumbs></breadcrumbs>
               <router-view></router-view>
             </div>
           </v-flex>
@@ -104,6 +105,7 @@
   import modulenav from './components/ModuleNav.vue'
   import headernav from './components/HeaderNav.vue'
   import sidenav from './components/SideNav.vue'
+  import breadcrumbs from './components/Breadcrumbs.vue'
   import { mapState } from 'vuex'
 
   export default {
@@ -136,7 +138,8 @@
       home,
       headernav,
       modulenav,
-      sidenav
+      sidenav,
+      breadcrumbs
     }
   }
 </script>
