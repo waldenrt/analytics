@@ -7,7 +7,14 @@ const { reactiveProp } = mixins
 
 export default Bar.extend({
   mixins: [reactiveProp],
-  props: ['options'],
+  data () {
+    return {
+      options: {
+        respoinsive: true,
+        maintainAspectRatio: false
+      }
+    }
+  },
   mounted () {
     this.renderChart(this.chartData, this.options)
   }
