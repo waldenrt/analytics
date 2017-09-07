@@ -1,26 +1,26 @@
 <template>
   <v-container fluid class='balorSegmentTrend'>
 
-  <!--steppers-->
-  <v-layout white class="mb-5 pa-3">
-    <v-flex xs12 md2 class="text-xs-center">
-      <v-btn primary class="white--text">New Balor</v-btn>
-    </v-flex>
-    <v-flex xs12 md10>
-      <v-stepper non-linear>
-        <v-stepper-header>
-          <v-stepper-step step="1" editable v-tooltip:top="{ html: 'Cadence' }">Cadence</v-stepper-step>
-          <v-divider></v-divider>
-          <v-stepper-step step="2" editable>Balor Trend</v-stepper-step>
-          <v-divider></v-divider>
-          <v-stepper-step step="3" editable>Segment Trend</v-stepper-step>
-          <v-divider></v-divider>
-          <v-stepper-step step="4" editable>Balor History</v-stepper-step>
-        </v-stepper-header>
-      </v-stepper>
-    </v-flex>
-  </v-layout>
-  <!--//steppers-->
+    <!--steppers-->
+    <v-layout white class="mb-5 pa-3">
+      <v-flex xs12 md2 class="text-xs-center">
+        <v-btn primary class="white--text">New Balor</v-btn>
+      </v-flex>
+      <v-flex xs12 md10>
+        <v-stepper non-linear>
+          <v-stepper-header>
+            <v-stepper-step step="1" editable v-tooltip:top="{ html: 'Cadence' }">Cadence</v-stepper-step>
+            <v-divider></v-divider>
+            <v-stepper-step step="2" editable>Balor Trend</v-stepper-step>
+            <v-divider></v-divider>
+            <v-stepper-step step="3" editable>Segment Trend</v-stepper-step>
+            <v-divider></v-divider>
+            <v-stepper-step step="4" editable>Balor History</v-stepper-step>
+          </v-stepper-header>
+        </v-stepper>
+      </v-flex>
+    </v-layout>
+    <!--//steppers-->
 
     <!--checkboxes-->
     <v-layout white class="checkboxes mb-3 pa-3">
@@ -63,20 +63,20 @@
     <!--//selection-->
 
 
-      <v-layout white class="pa-3">
-        <v-flex xs3>
-          <pie-charts :chart-data='custData' style="width:"></pie-charts>
-        </v-flex>
-        <v-flex xs3>
-          <pie-charts :chart-data='txnData'></pie-charts>
-        </v-flex>
-        <v-flex xs3>
-          <pie-charts :chart-data='spendData'></pie-charts>
-        </v-flex>
-        <v-flex xs3>
-          <balor-trend-line :chart-data='ratioLine'></balor-trend-line>
-        </v-flex>
-      </v-layout>
+    <v-layout white class="pa-3">
+      <v-flex xs3>
+        <pie-charts :chart-data='custData' style="width:"></pie-charts>
+      </v-flex>
+      <v-flex xs3>
+        <pie-charts :chart-data='txnData'></pie-charts>
+      </v-flex>
+      <v-flex xs3>
+        <pie-charts :chart-data='spendData'></pie-charts>
+      </v-flex>
+      <v-flex xs3>
+        <balor-trend-line :chart-data='ratioLine'></balor-trend-line>
+      </v-flex>
+    </v-layout>
   </v-container>
 
 
@@ -416,11 +416,9 @@
         }
       },
       slideUpdateTrends () {
-        var vals = this.Slider.noUiSlider.get
-        console.log(vals)
-        var min = parseInt(vals[0])
+        var vals = this.Slider.noUiSlider.get()
+        var min = parseInt(vals[0]) - 1
         var max = parseInt(vals[1])
-        console.log('min value: ' + min + ' and max value: ' + max)
         var allChbx = document.getElementById('allTrends')
         var custChbx = document.getElementById('custTrend')
         var txnChbx = document.getElementById('txnTrend')
@@ -431,39 +429,144 @@
         newData.datasets = []
 
         if (allChbx.checked) {
-          newData.datasets.push(this.custTrendData.datasets)
-          newData.datasets.push(this.txnTrendData.datasets)
-          newData.datasets.push(this.spendTrendData.datasets)
+          this.trendLine = {
+            labels: this.tpArray.slice(min, max),
+            datasets: [
+              {
+                label: 'Customer',
+                data: this.custBalorArray.slice(min, max),
+                fill: false,
+                lineTension: 0,
+                backgroundColor: '#8EAC1D',
+                borderColor: '#8EAC1D'
+              }, {
+                label: 'Transaction',
+                fill: false,
+                data: this.txnBalorArray.slice(min, max),
+                lineTension: 0,
+                backgroundColor: '#F7970E',
+                borderColor: '#F7970E'
+              }, {
+                label: 'Spend',
+                fill: false,
+                data: this.spendBalorArray.slice(min, max),
+                lineTension: 0,
+                backgroundColor: '#0087AA',
+                borderColor: '#0087AA'
+              }]
+          }
+        } else if (custChbx.checked && txnChbx.checked) {
+          this.trendLine = {
+            labels: this.tpArray.slice(min, max),
+            datasets: [
+              {
+                label: 'Customer',
+                data: this.custBalorArray.slice(min, max),
+                fill: false,
+                lineTension: 0,
+                backgroundColor: '#8EAC1D',
+                borderColor: '#8EAC1D'
+              }, {
+                label: 'Transaction',
+                fill: false,
+                data: this.txnBalorArray.slice(min, max),
+                lineTension: 0,
+                backgroundColor: '#F7970E',
+                borderColor: '#F7970E'
+              }]
+          }
+        } else if (custChbx.checked && spendChbx.checked) {
+          this.trendLine = {
+            labels: this.tpArray.slice(min, max),
+            datasets: [
+              {
+                label: 'Customer',
+                data: this.custBalorArray.slice(min, max),
+                fill: false,
+                lineTension: 0,
+                backgroundColor: '#8EAC1D',
+                borderColor: '#8EAC1D'
+              }, {
+                label: 'Spend',
+                fill: false,
+                data: this.spendBalorArray.slice(min, max),
+                lineTension: 0,
+                backgroundColor: '#0087AA',
+                borderColor: '#0087AA'
+              }]
+          }
+        } else if (txnChbx.checked && spendChbx.checked) {
+          this.trendLine = {
+            labels: this.tpArray.slice(min, max),
+            datasets: [
+              {
+                label: 'Transaction',
+                fill: false,
+                data: this.txnBalorArray.slice(min, max),
+                lineTension: 0,
+                backgroundColor: '#F7970E',
+                borderColor: '#F7970E'
+              }, {
+                label: 'Spend',
+                fill: false,
+                data: this.spendBalorArray.slice(min, max),
+                lineTension: 0,
+                backgroundColor: '#0087AA',
+                borderColor: '#0087AA'
+              }]
+          }
+        } else if (custChbx.checked) {
+          this.trendLine = {
+            labels: this.tpArray.slice(min, max),
+            datasets: [
+              {
+                label: 'Customer',
+                data: this.custBalorArray.slice(min, max),
+                fill: false,
+                lineTension: 0,
+                backgroundColor: '#8EAC1D',
+                borderColor: '#8EAC1D'
+              }]
+          }
+        } else if (txnChbx.checked) {
+          this.trendLine = {
+            labels: this.tpArray.slice(min, max),
+            datasets: [
+              {
+                label: 'Transaction',
+                fill: false,
+                data: this.txnBalorArray.slice(min, max),
+                lineTension: 0,
+                backgroundColor: '#F7970E',
+                borderColor: '#F7970E'
+              }]
+          }
+        } else if (spendChbx.checked) {
+          this.trendLine = {
+            labels: this.tpArray.slice(min, max),
+            datasets: [
+              {
+                label: 'Spend',
+                fill: false,
+                data: this.spendBalorArray.slice(min, max),
+                lineTension: 0,
+                backgroundColor: '#0087AA',
+                borderColor: '#0087AA'
+              }]
+          }
         }
-        if (custChbx.checked) {
-          newData.datasets.push(this.custTrendData.datasets)
-        }
-        if (txnChbx.checked) {
-          newData.datasets.push(this.txnTrendData.datasets)
-        }
-        if (spendChbx.checked) {
-          newData.datasets.push(this.spendTrendData.datasets)
-        }
-
-        var d = {}
-        d.labels = this.tpArray.slice(min, max)
-        d.datasets = []
-        for (var i in newData.datasets) {
-          var nD = newData.datasets[i]
-          nD.data = nD[0].data.slice(min, max)
-          nD.lineTension = nD[0].lineTension
-          nD.backgroundColor = nD[0].backgroundColor
-          nD.borderColor = nD[0].borderColor
-          nD.label = nD[0].label
-          d.datasets.push(nD)
-        }
-        window.trendLine.data.labels = d.labels
-        window.trendLine.data.datasets = d.datasets
-        window.trendLine.update()
       },
       singleUpdate () {
-        document.getElementById('allTrends').checked = false
-        this.slideUpdateTrends()
+        if (document.getElementById('custTrend').checked && document.getElementById('txnTrend').checked && document.getElementById('spendTrend').checked) {
+          document.getElementById('custTrend').checked = false
+          document.getElementById('txnTrend').checked = false
+          document.getElementById('spendTrend').checked = false
+          document.getElementById('allTrends').checked = true
+          this.slideUpdateTrends()
+        } else {
+          document.getElementById('allTrends').checked = false
+          this.slideUpdateTrends()
+        }
       },
       allUpdate () {
         document.getElementById('custTrend').checked = false
@@ -542,12 +645,12 @@
         this.Slider.style.height = '20px'
         this.Slider.style.margin = '10px'
         noUiSlider.create(this.Slider, {
-          start: [0, 10], // this.tpArray.length],
+          start: [1, this.tpArray.length],
           margin: 1, // Handles must be at least 1 apart
           tooltips: true,
           connect: true,
           step: 1,
-          range: {'min': 0, 'max': 10}, // this.tpArray.length}
+          range: {'min': 1, 'max': this.tpArray.length},
           pips: { // Show a scale with the slider
             mode: 'steps',
             stepped: true,
@@ -555,7 +658,7 @@
           }
         })
         console.log(this.Slider)
-        // this.slider.noUiSlider.on('change', this.slideUpdateTrends)
+        this.Slider.noUiSlider.on('change', this.slideUpdateTrends)
       },
       setTP () {
         this.custData = {
@@ -645,6 +748,11 @@
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-v-layout{padding:5px;}
-.inliner{display:inline-block;}
+  v-layout {
+    padding: 5px;
+  }
+
+  .inliner {
+    display: inline-block;
+  }
 </style>
