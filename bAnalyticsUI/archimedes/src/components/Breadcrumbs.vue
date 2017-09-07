@@ -1,6 +1,6 @@
 <template>
 <v-container fluid>
-    <v-layout row wrap v-if="$store.state.appmodule === 'Balor'" white class="mb-5 pa-3">
+    <v-layout row wrap v-if="$store.state.appmodule === 'Balor'" white class="pa-3">
       <v-flex xs12 s12 md2 class="text-xs-center">
           <v-btn primary class="white--text">NEW {{$store.state.appmodule}} INPUT</v-btn>
       </v-flex>

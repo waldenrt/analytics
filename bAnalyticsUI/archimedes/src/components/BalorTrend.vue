@@ -12,11 +12,19 @@
 
     <!--trendlines-->
     <v-layout row wrap white class="mb-3 pa-3">
-      <v-flex xs12 sm9 md9 class="chart-container">
+      <v-flex xs12 sm8 md8 class="chart-container">
         <balor-trend-line :chart-data="trendLine" class="mmm"></balor-trend-line>
       </v-flex>
-      <v-flex xs12 sm3 md3>
-          <v-card>BALOR Summary</v-card>
+      <v-flex xs12 sm4 md4>
+          <v-layout row class="primary--text text-xs-center mb-1">
+            <v-flex xs12><h6 class="primary--text text-xs-center">BALOR Summary</h6></v-flex>
+          </v-layout>
+          <v-card class="pa-2">
+            <v-layout row>
+              <v-flex xs6 class="text-xs-right">some text:</v-flex>
+              <v-flex xs6>some text</v-flex>
+            </v-layout>
+          </v-card>
       </v-flex>
     </v-layout>
     <!--//trendlines-->

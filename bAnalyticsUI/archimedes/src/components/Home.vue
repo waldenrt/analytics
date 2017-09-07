@@ -17,7 +17,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped>
 .icon_bdr{
   border:2px solid rgba(53,64,82,0.54);
   border-radius:4px;
