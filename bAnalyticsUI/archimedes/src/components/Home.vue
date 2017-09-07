@@ -1,8 +1,7 @@
 <template>
-  <v-parallax src="/assets/images/bp_logo_reverse_color.png" height="1000">
+  <v-parallax src="../assets/images/bp_logo_reverse_color.png" height="1500">
     <v-layout column align-center justify-center>
-      <h1 class="primary--text text-xs-center">Welcome to the Application!</h1>
-      <h4 class="primary--text">Build your application today!</h4>
+      <img src="../assets/images/bp_logo_reverse_color.png" />
     </v-layout>
   </v-parallax>
 </template>
@@ -12,37 +11,13 @@ export default {
   name: 'home',
   data () {
     return {
-      items: [
-        {
-          text: 'Dashboard',
-          disabled: false
-        },
-        {
-          text: 'Link 1',
-          disabled: false
-        },
-        {
-          text: 'Link 2',
-          disabled: true
-        }
-      ]
     }
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.home{
-  display: block;
-  min-width: 100%;
-  min-height: 650px;
-  background-image:url(../assets/images/bp_logo_reverse_color.png);
-  background-position: 25% 0%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  opacity:0.3;
-}
+<style>
 .icon_bdr{
   border:2px solid rgba(53,64,82,0.54);
   border-radius:4px;
