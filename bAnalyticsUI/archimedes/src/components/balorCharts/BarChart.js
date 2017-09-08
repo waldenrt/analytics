@@ -10,7 +10,7 @@ export default Bar.extend({
   data () {
     return {
       options: {
-        respoinsive: true,
+        responsive: true,
         maintainAspectRatio: false
       }
     }

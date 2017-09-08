@@ -2,15 +2,15 @@
  * Created by amerrill on 8/24/17.
  */
 
-import { Bar, mixins } from 'vue-chartjs'
+import { HorizontalBar, mixins } from 'vue-chartjs'
 const { reactiveProp } = mixins
 
-export default Bar.extend({
+export default HorizontalBar.extend({
   mixins: [reactiveProp],
   data () {
     return {
       options: {
-        respoinsive: true,
+        responsive: true,
         maintainAspectRatio: false
       }
     }
