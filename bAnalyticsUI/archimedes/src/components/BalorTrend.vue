@@ -1,64 +1,101 @@
 <template>
-  <v-container fluid class='balorSegmentTrend'>
+  <v-container fluid class="balorSegmentTrend">
 
-    <!--checkboxes-->
-    <v-layout row wrap white class="checkboxes mb-3 pa-3">
-          <v-flex xs12 sm12 md3><input hover class="mr-2" type='checkbox' id='allTrends' checked='true' @change="allUpdate()">All Trendlines</v-flex>
-          <v-flex xs12 sm4 md3><input class="mr-2" type='checkbox' id='custTrend' @change="singleUpdate()">Customer Trendline</v-flex>
-          <v-flex xs12 sm4 md3><input class="mr-2" type='checkbox' id='txnTrend' @change="singleUpdate()">Transaction Trendline</v-flex>
-          <v-flex xs12 sm4 md3><input class="mr-2" type='checkbox' id='spendTrend' @change="singleUpdate()">Spend Trendline</v-flex>
+
+
+<v-layout row wrap white class="mb-3">
+  <v-flex xs12>
+    <h6 class="primary--text text-xs-left ma-3">BALOR Period Trendline</h6>
+    <v-layout row wrap>
+        <!--checkboxes-->
+        <v-flex xs12 sm12 md5 lg6>
+          <v-layout row wrap white class="checkboxes pa-3">
+                <v-flex xs12 sm6 xl3 primary--text subheading class="mt-2 mb-2"><input class="mr-1" type='checkbox' id='allTrends' checked='true' @change="allUpdate()">All Trendlines</v-flex>
+                <v-flex xs12 sm6 xl3 primary--text subheading class="mt-2 mb-2"><input class="mr-1" type='checkbox' id='custTrend' @change="singleUpdate()">Customer Trendline</v-flex>
+                <v-flex xs12 sm6 xl3 primary--text subheading class="mt-2 mb-2"><input class="mr-1" type='checkbox' id='txnTrend' @change="singleUpdate()">Transaction Trendline</v-flex>
+                <v-flex xs12 sm6 xl3 primary--text subheading class="mt-2 mb-2"><input class="mr-1" type='checkbox' id='spendTrend' @change="singleUpdate()">Spend Trendline</v-flex>
+          </v-layout>
+        </v-flex>
+        <!--//checkboxes-->
+
+        <!--slider-->
+        <v-flex xs12 sm12 md7 lg6>
+        <v-layout row wrap white class="mb-5 pt-5 pl-3 pr-3">
+              <v-flex xs12>
+                <div id="ratioSlide" class="noUiSlider" ref="mySlider"></div>
+              </v-flex>
+        </v-layout>
+        </v-flex>
+        <!--//slider-->
     </v-layout>
-    <!--//checkboxes-->
-
     <!--trendlines-->
     <v-layout row wrap white class="mb-3 pa-3">
-      <v-flex xs12 sm9 md9 class="chart-container">
-        <balor-trend-line :chart-data="trendLine" class="mmm"></balor-trend-line>
-      </v-flex>
-      <v-flex xs12 sm3 md3>
-          <v-card>BALOR Summary</v-card>
-      </v-flex>
+          <v-flex xs12 sm12 md9 fill-height class="chart-container">
+            <balor-trend-line :chart-data="trendLine"></balor-trend-line>
+          </v-flex>
+          <v-flex xs12 sm12 md3 fill-height class="pt-3">
+              <v-layout row class="primary--text text-xs-center mt-1 mb-1">
+                <v-flex xs12><h6 class="primary--text text-xs-left">BALOR Summary</h6></v-flex>
+              </v-layout>
+                <v-layout row>
+                <v-data-table
+                    v-bind:headers="balorHeaders"
+                    :items="balorItems"
+                    hide-actions
+                    class="elevation-1"
+                  >
+                  <template slot="items" scope="props">
+                    <td width="70%" class="primary--text text-xs-left">{{ props.item.name }}</td>
+                    <td width="30%" class="text-xs-left">{{ props.item.calories }}</td>
+                  </template>
+                </v-data-table>
+              </v-layout>
+          </v-flex>
     </v-layout>
     <!--//trendlines-->
+    </v-flex>
+</v-layout>
+    <v-divider class="mt-4 mb-4"></v-divider>
 
-    <!--slider-->
-    <v-layout row wrap white class="mb-3 pt-5 pb-5 pl-3 pr-3">
-      <v-flex xs12>
-        <div id="ratioSlide" class="noUiSlider" ref="mySlider"></div>
-      </v-flex>
-    </v-layout>
-    <!--//slider-->
-
-    <!--selection-->
-    <v-layout row wrap white class="mb-3 pa-3">
-      <v-flex xs12>
-        <div id="selection">
-          BALOR Composition and Metrics for Period:
-          <v-select v-model="tp"
-                    v-bind:items="tpArray"
-                    label="Select Time Period"
-                    v-on:input="setTP()">
-          </v-select>
-        </div>
-      </v-flex>
-    </v-layout>
-    <!--//selection-->
-
-
-      <v-layout row wrap white class="pa-3">
-        <v-flex xs3>
-          <pie-charts :chart-data='custData' style="width:"></pie-charts>
-        </v-flex>
-        <v-flex xs3>
-          <pie-charts :chart-data='txnData'></pie-charts>
-        </v-flex>
-        <v-flex xs3>
-          <pie-charts :chart-data='spendData'></pie-charts>
-        </v-flex>
-        <v-flex xs3>
-          <balor-trend-line :chart-data='ratioLine'></balor-trend-line>
-        </v-flex>
+    <!--Pie Charts-->
+    <v-layout row wrap white class="pa-3">
+      <v-flex xs12 sm12 md9 fill-height>
+        <!--selection-->
+        <v-layout row wrap white>
+              <v-flex xs-10>
+                  <h6 class="primary--text text-xs-left">BALOR Composition and Metrics for Period:</h6>
+              </v-flex>
+              <v-flex xs-2>
+                <div id="selection">
+                  <v-select v-model="tp"
+                            v-bind:items="tpArray"
+                            label="Select Time Period"
+                            v-on:input="setTP()"
+                            style="width:175px;">
+                  </v-select>
+                </div>
+              </v-flex>
+        </v-layout>
+        <!--//selection-->
+        <v-layout row wrap white>
+            <v-flex xs12 sm6 md3>
+              <v-card><pie-charts :chart-data='custData' style="width:"></pie-charts></v-card>
+            </v-flex>
+            <v-flex xs12 sm6 md3>
+              <v-card><pie-charts :chart-data='txnData'></pie-charts></v-card>
+            </v-flex>
+            <v-flex xs12 sm6 md3>
+              <v-card><pie-charts :chart-data='spendData'></pie-charts></v-card>
+            </v-flex>
+            <v-flex xs12 sm6 md3>
+              <v-card><balor-trend-line :chart-data='ratioLine'></balor-trend-line></v-card>
+            </v-flex>
       </v-layout>
+      </v-flex>
+      <v-flex xs12 sm12 md3 fill-height></v-flex>
+    </v-layout>
+    <!--/Pie Charts-->
+
   </v-container>
 
 
@@ -77,6 +114,57 @@
     },
     data () {
       return {
+        balorHeaders: [
+          {
+            text: 'Heading',
+            align: 'left',
+            sortable: true,
+            value: 'name'
+          },
+          {
+            text: 'Value',
+            align: 'left',
+            sortable: true,
+            value: 'name'
+          }
+        ],
+        balorItems: [
+          {
+            value: false,
+            name: 'Min. Date',
+            calories: 159
+          },
+          {
+            value: false,
+            name: 'Max. Date',
+            calories: 237
+          },
+          {
+            value: false,
+            name: 'Customer Base',
+            calories: 262
+          },
+          {
+            value: false,
+            name: '% Customer - 1 Purchase',
+            calories: 305
+          },
+          {
+            value: false,
+            name: 'Transactions',
+            calories: 356
+          },
+          {
+            value: false,
+            name: 'Purchase Cadence - 80th Percentile',
+            calories: 375
+          },
+          {
+            value: false,
+            name: 'Time Period',
+            calories: 392
+          }
+        ],
         msg: 'Balor Trend Charts will go here!',
         custData: null,
         txnData: null,
@@ -624,8 +712,8 @@
       },
       createSlider () {
         this.Slider = document.getElementById('ratioSlide')
-        this.Slider.style.height = '20px'
-        this.Slider.style.margin = '10px'
+        this.Slider.style.height = '12px'
+        this.Slider.style.margin = '5px'
         noUiSlider.create(this.Slider, {
           start: [1, this.tpArray.length],
           margin: 1, // Handles must be at least 1 apart
@@ -731,13 +819,12 @@
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
 
-v-layout{padding:5px;}
 .inliner{display:inline-block;}
 .chart-container {
   position: relative;
-  margin: auto;
-  height: 80vh;
-  width: 80vw;
+  margin: 0 auto;
+  height: 35vh;
+  width: 70vw;
 }
 
 </style>
