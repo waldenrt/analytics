@@ -1,7 +1,6 @@
 <template>
   <body>
   <div class="balorSegmentTrend">
-    <h1>{{ msg }}</h1>
     <br>
     <div>
       <v-select v-bind:items="dimensions"
@@ -49,20 +48,20 @@
       </v-select>
       <bar-chart :chart-data="totalBars"></bar-chart>
       <v-select
-        v-bind:items="tpArray"
-        v-model="tpSelect"
-        label="Select Balor Time Period"
-        single-line
-        bottom
-        v-on:input="selectTP">
+          v-bind:items="tpArray"
+          v-model="tpSelect"
+          label="Select Balor Time Period"
+          single-line
+          bottom
+          v-on:input="updateTPMetric">
       </v-select>
       <v-select
-        v-bind:items="avgList"
-        v-model="tpAvgSelect"
-        label="Select Balor Metric"
-        single-line
-        bottom
-        v-on:input="selectMetric">
+          v-bind:items="avgList"
+          v-model="tpAvgSelect"
+          label="Select Balor Metric"
+          single-line
+          bottom
+          v-on:input="updateTPMetric">
       </v-select>
       <horizontal-chart :chart-data="avgBars"></horizontal-chart>
     </div>
@@ -106,17 +105,17 @@
           'Avg Discount per Basket'
         ],
         dimensionSelect: 'Customer',
-        avgSelect: 'Spend per Customer',
+        avgSelect: 'Avg Spend per Customer',
         tpSelect: 1,
         tpAvgSelect: 'Spend per Customer',
         avgList: [
-          {text: 'Spend per Customer'},
-          {text: 'Items per Customer'},
-          {text: 'Discount per Customer'},
-          {text: 'Transactions per Customer'},
-          {text: 'Spend per Basket'},
-          {text: 'Items per Basket'},
-          {text: 'Discount per Basket'}
+          'Spend per Customer',
+          'Items per Customer',
+          'Discount per Customer',
+          'Transactions per Customer',
+          'Spend per Basket',
+          'Items per Basket',
+          'Discount per Basket'
         ],
         incomingJson: {
           'responseCode': 0,
@@ -138,7 +137,7 @@
                   'returnVisitItemAvg': 5.1,
                   'returnCustDiscAvg': 2.0,
                   'returnVisitSpendAvg': 1.2,
-                  'returnCustVistAvg': 2.0,
+                  'returnCustVisitAvg': 2.0,
                   'returnCustItemAvg': 5.0,
                   'returnCustCount': 75,
                   'returnTxnCount': 200,
@@ -149,7 +148,7 @@
                 'newCustInfo': {
                   'newCustDiscAvg': 2.0,
                   'newCustCount': 100,
-                  'newCustVistAvg': 2.0,
+                  'newCustVisitAvg': 2.0,
                   'newTxnCount': 200,
                   'newVisitSpendAvg': 1.2,
                   'newCustSpendAvg': 100.0,
@@ -171,14 +170,14 @@
                   'reactTxnAmount': 1000.0,
                   'reactVisitDiscAvg': 4.3,
                   'reactVisitItemAvg': 5.1,
-                  'reactCustVistAvg': 2.0,
+                  'reactCustVisitAvg': 2.0,
                   'reactVisitSpendAvg': 1.2,
                   'reactItemCount': 43,
                   'reactDiscAmt': 23.00
                 },
                 'lapsedCustInfo': {
                   'lapsedTxnCount': 200,
-                  'lapsedCustVistAvg': 2.0,
+                  'lapsedCustVisitAvg': 2.0,
                   'lapsedCustDiscAvg': 2.0,
                   'lapsedCustSpendAvg': 100.0,
                   'lapsedCustItemAvg': 5.0,
@@ -199,7 +198,7 @@
                   'returnVisitItemAvg': 5.1,
                   'returnCustDiscAvg': 2.0,
                   'returnVisitSpendAvg': 1.2,
-                  'returnCustVistAvg': 2.0,
+                  'returnCustVisitAvg': 2.0,
                   'returnCustItemAvg': 5.0,
                   'returnCustCount': 100,
                   'returnTxnCount': 200,
@@ -210,7 +209,7 @@
                 'newCustInfo': {
                   'newCustDiscAvg': 2.0,
                   'newCustCount': 100,
-                  'newCustVistAvg': 2.0,
+                  'newCustVisitAvg': 2.0,
                   'newTxnCount': 200,
                   'newVisitSpendAvg': 1.2,
                   'newCustSpendAvg': 100.0,
@@ -232,14 +231,14 @@
                   'reactTxnAmount': 1000.0,
                   'reactVisitDiscAvg': 4.3,
                   'reactVisitItemAvg': 5.1,
-                  'reactCustVistAvg': 2.0,
+                  'reactCustVisitAvg': 2.0,
                   'reactVisitSpendAvg': 1.2,
                   'reactItemCount': 21,
                   'reactDiscAmt': 23.00
                 },
                 'lapsedCustInfo': {
                   'lapsedTxnCount': 200,
-                  'lapsedCustVistAvg': 2.0,
+                  'lapsedCustVisitAvg': 2.0,
                   'lapsedCustDiscAvg': 2.0,
                   'lapsedCustSpendAvg': 100.0,
                   'lapsedCustItemAvg': 5.0,
@@ -260,7 +259,7 @@
                   'returnVisitItemAvg': 5.1,
                   'returnCustDiscAvg': 2.0,
                   'returnVisitSpendAvg': 1.2,
-                  'returnCustVistAvg': 2.0,
+                  'returnCustVisitAvg': 2.0,
                   'returnCustItemAvg': 5.0,
                   'returnCustCount': 100,
                   'returnTxnCount': 200,
@@ -271,7 +270,7 @@
                 'newCustInfo': {
                   'newCustDiscAvg': 2.0,
                   'newCustCount': 100,
-                  'newCustVistAvg': 2.0,
+                  'newCustVisitAvg': 2.0,
                   'newTxnCount': 200,
                   'newVisitSpendAvg': 1.2,
                   'newCustSpendAvg': 100.0,
@@ -293,14 +292,14 @@
                   'reactTxnAmount': 1000.0,
                   'reactVisitDiscAvg': 4.3,
                   'reactVisitItemAvg': 5.1,
-                  'reactCustVistAvg': 2.0,
+                  'reactCustVisitAvg': 2.0,
                   'reactVisitSpendAvg': 1.2,
                   'reactItemCount': 21,
                   'reactDiscAmt': 21.00
                 },
                 'lapsedCustInfo': {
                   'lapsedTxnCount': 200,
-                  'lapsedCustVistAvg': 2.0,
+                  'lapsedCustVisitAvg': 2.0,
                   'lapsedCustDiscAvg': 2.0,
                   'lapsedCustSpendAvg': 100.0,
                   'lapsedCustItemAvg': 5.0,
@@ -470,7 +469,7 @@
           tempNewCustSpend.push(this.jsonMsg.timePeriods[i].newCustInfo.newCustSpendAvg)
           tempNewCustItems.push(this.jsonMsg.timePeriods[i].newCustInfo.newCustItemAvg)
           tempNewCustDisc.push(this.jsonMsg.timePeriods[i].newCustInfo.newCustDiscAvg)
-          tempNewCustTxn.push(this.jsonMsg.timePeriods[i].newCustInfo.newCustVistAvg)
+          tempNewCustTxn.push(this.jsonMsg.timePeriods[i].newCustInfo.newCustVisitAvg)
           tempNewVisitSpend.push(this.jsonMsg.timePeriods[i].newCustInfo.newVisitSpendAvg)
           tempNewVisitItems.push(this.jsonMsg.timePeriods[i].newCustInfo.newVisitItemAvg)
           tempNewVisitDisc.push(this.jsonMsg.timePeriods[i].newCustInfo.newVisitDiscAvg)
@@ -478,7 +477,7 @@
           tempRetCustSpend.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnCustSpendAvg)
           tempRetCustItems.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnCustItemAvg)
           tempRetCustDisc.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnCustDiscAvg)
-          tempRetCustTxn.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnCustVistAvg)
+          tempRetCustTxn.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnCustVisitAvg)
           tempRetVisitSpend.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnVisitSpendAvg)
           tempRetVisitItems.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnVisitItemAvg)
           tempRetVisitDisc.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnVisitDiscAvg)
@@ -486,7 +485,7 @@
           tempReactCustSpend.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactCustSpendAvg)
           tempReactCustItems.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactCustItemAvg)
           tempReactCustDisc.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactCustDiscAvg)
-          tempReactCustTxn.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactCustVistAvg)
+          tempReactCustTxn.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactCustVisitAvg)
           tempReactVisitSpend.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactVisitSpendAvg)
           tempReactVisitItems.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactVisitItemAvg)
           tempReactVisitDisc.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactVisitDiscAvg)
@@ -494,7 +493,7 @@
           tempLapCustSpend.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedCustSpendAvg)
           tempLapCustItems.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedCustItemAvg)
           tempLapCustDisc.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedCustDiscAvg)
-          tempLapCustTxn.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedCustVistAvg)
+          tempLapCustTxn.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedCustVisitAvg)
           tempLapVisitSpend.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedVisitSpendAvg)
           tempLapVisitItems.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedVisitItemAvg)
           tempLapVisitDisc.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedVisitDiscAvg)
@@ -572,6 +571,17 @@
               data: this.ttlReactCust,
               label: 'Reactivated',
               backgroundColor: '#0087AA'
+            }
+          ]
+        }
+        this.avgBars = {
+          type: 'horizontalBar',
+          labels: ['Lapsed', 'New', 'Reactivated', 'Returning'],
+          datasets: [
+            {
+              data: [this.avgLapCustSpend[this.tpSelect - 1], this.avgNewCustSpend[this.tpSelect - 1], this.avgReactCustSpend[this.tpSelect - 1], this.avgRetCustSpend[this.tpSelect - 1]],
+              label: 'Avg Spend Per Customer',
+              backgroundColor: ['#D63A09', '#8EAC1D', '#0087AA', '#F7970E']
             }
           ]
         }
@@ -1198,12 +1208,92 @@
         }
       },
 
-      selectTP () {
-
-      },
-
-      selectMetric () {
-
+      updateTPMetric () {
+        if (this.tpAvgSelect === 'Spend per Customer') {
+          this.avgBars = {
+            type: 'horizontalBar',
+            labels: ['Lapsed', 'New', 'Reactivated', 'Returning'],
+            datasets: [
+              {
+                data: [this.avgLapCustSpend[this.tpSelect - 1], this.avgNewCustSpend[this.tpSelect - 1], this.avgReactCustSpend[this.tpSelect - 1], this.avgRetCustSpend[this.tpSelect - 1]],
+                label: 'Avg Spend Per Customer',
+                backgroundColor: ['#D63A09', '#8EAC1D', '#0087AA', '#F7970E']
+              }
+            ]
+          }
+        } else if (this.tpAvgSelect === 'Items per Customer') {
+          this.avgBars = {
+            type: 'horizontalBar',
+            labels: ['Lapsed', 'New', 'Reactivated', 'Returning'],
+            datasets: [
+              {
+                data: [this.avgLapCustItems[this.tpSelect - 1], this.avgNewCustItems[this.tpSelect - 1], this.avgReactCustItems[this.tpSelect - 1], this.avgRetCustItems[this.tpSelect - 1]],
+                label: 'Avg Items Per Customer',
+                backgroundColor: ['#D63A09', '#8EAC1D', '#0087AA', '#F7970E']
+              }
+            ]
+          }
+        } else if (this.tpAvgSelect === 'Discount per Customer') {
+          this.avgBars = {
+            type: 'horizontalBar',
+            labels: ['Lapsed', 'New', 'Reactivated', 'Returning'],
+            datasets: [
+              {
+                data: [this.avgLapCustDisc[this.tpSelect - 1], this.avgNewCustDisc[this.tpSelect - 1], this.avgReactCustDisc[this.tpSelect - 1], this.avgRetCustDisc[this.tpSelect - 1]],
+                label: 'Avg Discount Per Customer',
+                backgroundColor: ['#D63A09', '#8EAC1D', '#0087AA', '#F7970E']
+              }
+            ]
+          }
+        } else if (this.tpAvgSelect === 'Transactions per Customer') {
+          this.avgBars = {
+            type: 'horizontalBar',
+            labels: ['Lapsed', 'New', 'Reactivated', 'Returning'],
+            datasets: [
+              {
+                data: [this.avgLapCustTxn[this.tpSelect - 1], this.avgNewCustTxn[this.tpSelect - 1], this.avgReactCustTxn[this.tpSelect - 1], this.avgRetCustTxn[this.tpSelect - 1]],
+                label: 'Avg Transactions Per Customer',
+                backgroundColor: ['#D63A09', '#8EAC1D', '#0087AA', '#F7970E']
+              }
+            ]
+          }
+        } else if (this.tpAvgSelect === 'Spend per Basket') {
+          this.avgBars = {
+            type: 'horizontalBar',
+            labels: ['Lapsed', 'New', 'Reactivated', 'Returning'],
+            datasets: [
+              {
+                data: [this.avgLapVisitSpend[this.tpSelect - 1], this.avgNewVisitSpend[this.tpSelect - 1], this.avgReactVisitSpend[this.tpSelect - 1], this.avgRetVisitSpend[this.tpSelect - 1]],
+                label: 'Avg Spend Per Visit',
+                backgroundColor: ['#D63A09', '#8EAC1D', '#0087AA', '#F7970E']
+              }
+            ]
+          }
+        } else if (this.tpAvgSelect === 'Items per Basket') {
+          this.avgBars = {
+            type: 'horizontalBar',
+            labels: ['Lapsed', 'New', 'Reactivated', 'Returning'],
+            datasets: [
+              {
+                data: [this.avgLapVisitItems[this.tpSelect - 1], this.avgNewVisitItems[this.tpSelect - 1], this.avgReactVisitItems[this.tpSelect - 1], this.avgRetVisitItems[this.tpSelect - 1]],
+                label: 'Avg Items Per Visit',
+                backgroundColor: ['#D63A09', '#8EAC1D', '#0087AA', '#F7970E']
+              }
+            ]
+          }
+        } else if (this.tpAvgSelect === 'Discount per Basket') {
+          this.avgBars = {
+            type: 'horizontalBar',
+            labels: ['Lapsed', 'New', 'Reactivated', 'Returning'],
+            datasets: [
+              {
+                data: [this.avgLapVisitDisc[this.tpSelect - 1], this.avgNewVisitDisc[this.tpSelect - 1], this.avgReactVisitDisc[this.tpSelect - 1], this.avgRetVisitDisc[this.tpSelect - 1]],
+                label: 'Avg Discount Per Visit',
+                backgroundColor: ['#D63A09', '#8EAC1D', '#0087AA', '#F7970E']
+              }
+            ]
+          }
+        }
       }
       // todo fill in more methods here
     }
