@@ -1,16 +1,16 @@
 <template>
   <div class="cadence">
-    <bar-chart :chart-data="cadenceBars"></bar-chart>
+    <annotated-bar-chart :chart-data="cadenceBars"></annotated-bar-chart>
   </div>
 </template>
 
 <script>
-  import BarChart from './balorCharts/BarChart'
+  import AnnotatedBarChart from './balorCharts/AnnotatedBarChart'
 
   export default {
     name: 'cadence',
     components: {
-      BarChart
+      AnnotatedBarChart
     },
     data () {
       return {
@@ -36,11 +36,11 @@
               'frequency': 2,
               'cumFreq': 3
             }, {
-              'cadence': 4,
+              'cadence': 2,
               'frequency': 5,
               'cumFreq': 6
             }, {
-              'cadence': 7,
+              'cadence': 3,
               'frequency': 8,
               'cumFreq': 9
             }],
