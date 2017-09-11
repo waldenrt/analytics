@@ -1,100 +1,124 @@
 <template>
   <v-container fluid class="balorSegmentTrend">
 
+  <v-layout row wrap class="mb-2">
+    <v-flex xs12 sm12 md9 style="height:49vh;">
+      <v-card class="white">
+      <v-card-title primary-title class="primary">
+        <h6 class="white--text text-xs-left mb-0">BALOR Period Trendline</h6>
+      </v-card-title>
+      <v-layout row wrap>
+          <!--checkboxes-->
+          <v-flex xs12>
+            <v-card flat>
+            <v-layout row wrap class="checkboxes pl-3 pr-3">
+                  <v-flex xs12 sm6 md2 grey--text subheading><input class="mr-1" type='checkbox' id='allTrends' checked='true' @change="allUpdate()">All</v-flex>
+                  <v-flex xs12 sm6 md3 grey--text subheading><input class="mr-1" type='checkbox' id='custTrend' @change="singleUpdate()">Customer</v-flex>
+                  <v-flex xs12 sm6 md3 grey--text subheading><input class="mr-1" type='checkbox' id='txnTrend' @change="singleUpdate()">Transaction</v-flex>
+                  <v-flex xs12 sm6 md3 grey--text subheading><input class="mr-1" type='checkbox' id='spendTrend' @change="singleUpdate()">Spend</v-flex>
+            </v-layout>
+            </v-card>
+          </v-flex>
+          <!--//checkboxes-->
 
-
-<v-layout row wrap white class="mb-3">
-  <v-flex xs12>
-    <h6 class="primary--text text-xs-left ma-3">BALOR Period Trendline</h6>
-    <v-layout row wrap>
-        <!--checkboxes-->
-        <v-flex xs12 sm12 md5 lg6>
-          <v-layout row wrap white class="checkboxes pa-3">
-                <v-flex xs12 sm6 xl3 primary--text subheading class="mt-2 mb-2"><input class="mr-1" type='checkbox' id='allTrends' checked='true' @change="allUpdate()">All Trendlines</v-flex>
-                <v-flex xs12 sm6 xl3 primary--text subheading class="mt-2 mb-2"><input class="mr-1" type='checkbox' id='custTrend' @change="singleUpdate()">Customer Trendline</v-flex>
-                <v-flex xs12 sm6 xl3 primary--text subheading class="mt-2 mb-2"><input class="mr-1" type='checkbox' id='txnTrend' @change="singleUpdate()">Transaction Trendline</v-flex>
-                <v-flex xs12 sm6 xl3 primary--text subheading class="mt-2 mb-2"><input class="mr-1" type='checkbox' id='spendTrend' @change="singleUpdate()">Spend Trendline</v-flex>
-          </v-layout>
-        </v-flex>
-        <!--//checkboxes-->
-
-        <!--slider-->
-        <v-flex xs12 sm12 md7 lg6>
-        <v-layout row wrap white class="mb-5 pt-5 pl-3 pr-3">
-              <v-flex xs12>
-                <div id="ratioSlide" class="noUiSlider" ref="mySlider"></div>
-              </v-flex>
-        </v-layout>
-        </v-flex>
-        <!--//slider-->
-    </v-layout>
-    <!--trendlines-->
-    <v-layout row wrap white class="mb-3 pa-3">
-          <v-flex xs12 sm12 md9 fill-height class="chart-container">
+          <!--slider-->
+          <v-flex xs12>
+            <v-layout row wrap class="mt-2 mb-3 pl-4 pr-4">
+                  <v-flex xs12>
+                    <div id="ratioSlide" class="noUiSlider" ref="mySlider"></div>
+                  </v-flex>
+            </v-layout>
+          </v-flex>
+          <!--//slider-->
+      </v-layout>
+      <!--trendlines-->
+      <v-layout row wrap class="mb-3 pa-3">
+          <v-flex xs12 fill-height class="line_chart">
             <balor-trend-line :chart-data="trendLine"></balor-trend-line>
           </v-flex>
-          <v-flex xs12 sm12 md3 fill-height class="pt-3">
-              <v-layout row class="primary--text text-xs-center mt-1 mb-1">
-                <v-flex xs12><h6 class="primary--text text-xs-left">BALOR Summary</h6></v-flex>
-              </v-layout>
+      </v-layout>
+      <!--//trendlines-->
+      </v-card>
+      </v-flex>
+      <v-flex xs12 sm12 md3 fill-height>
+        <v-card class="white">
+          <v-card-title primary-title class="primary">
+            <h6 class="white--text text-xs-left mb-0">BALOR Summary</h6>
+          </v-card-title>
+          <v-flex xs12 fill-height>
                 <v-layout row>
-                <v-data-table
-                    v-bind:headers="balorHeaders"
-                    :items="balorItems"
-                    hide-actions
-                    class="elevation-1"
-                  >
-                  <template slot="items" scope="props">
-                    <td width="70%" class="primary--text text-xs-left">{{ props.item.name }}</td>
-                    <td width="30%" class="text-xs-left">{{ props.item.calories }}</td>
-                  </template>
-                </v-data-table>
+                  <v-list>
+                    <v-list-tile v-for="item in sumItems" v-bind:key="item.name">
+                      <td width="70%">
+                        <v-list-tile-sub-title class="primary--text" v-text="item.name"></v-list-tile-sub-title>
+                      </td>
+                      <td width="30%">
+                        <v-list-tile-sub-title v-text="item.vals"></v-list-tile-sub-title>
+                      </td>
+                    </v-list-tile>
+                  </v-list>
               </v-layout>
           </v-flex>
-    </v-layout>
-    <!--//trendlines-->
-    </v-flex>
-</v-layout>
-    <v-divider class="mt-4 mb-4"></v-divider>
+        </v-card>
+      </v-flex>
+  </v-layout>
 
-    <!--Pie Charts-->
-    <v-layout row wrap white class="pa-3">
-      <v-flex xs12 sm12 md9 fill-height>
-        <!--selection-->
-        <v-layout row wrap white>
-              <v-flex xs-10>
-                  <h6 class="primary--text text-xs-left">BALOR Composition and Metrics for Period:</h6>
-              </v-flex>
-              <v-flex xs-2>
-                <div id="selection">
-                  <v-select v-model="tp"
-                            v-bind:items="tpArray"
-                            label="Select Time Period"
-                            v-on:input="setTP()"
-                            style="width:175px;">
-                  </v-select>
-                </div>
+  <v-layout row wrap class="mb-3">
+    <v-flex xs12 fill-height>
+      <v-card class="white">
+        <v-layout row wrap>
+              <v-flex xs12>
+                <v-card-title primary-title class="primary">
+                  <h6 class="white--text text-xs-left mb-0">BALOR Composition and Metrics for Period:</h6>
+                </v-card-title>
               </v-flex>
         </v-layout>
-        <!--//selection-->
-        <v-layout row wrap white>
+        <v-layout row wrap>
+          <!--selection-->
+          <v-flex xs12>
+            <v-card flat>
+            <div id="selection" class="pl-3">
+              <v-select v-model="tp"
+                        v-bind:items="tpArray"
+                        label="Select Time Period"
+                        v-on:input="setTP()"
+                        style="width:175px;margin-bottom:0;">
+              </v-select>
+            </div>
+          </v-card>
+          </v-flex>
+          <!--//selection-->
+        </v-layout>
+        <!--Pie Charts-->
+        <v-layout row wrap>
             <v-flex xs12 sm6 md3>
-              <v-card><pie-charts :chart-data='custData' style="width:"></pie-charts></v-card>
+              <v-card flat class="white">
+                <pie-charts class="white pie_chart1" :chart-data='custData'></pie-charts>
+                <div primary-title class="primary--text text-xs-center pa-2">Customers</div>
+              </v-card>
             </v-flex>
             <v-flex xs12 sm6 md3>
-              <v-card><pie-charts :chart-data='txnData'></pie-charts></v-card>
+              <v-card flat class="white">
+                <pie-charts class="white pie_chart1" :chart-data='txnData'></pie-charts>
+                <div primary-title class="primary--text text-xs-center pa-2">Transactions</div>
+              </v-card>
             </v-flex>
             <v-flex xs12 sm6 md3>
-              <v-card><pie-charts :chart-data='spendData'></pie-charts></v-card>
+              <v-card flat class="white">
+                <pie-charts class="white pie_chart1" :chart-data='spendData'></pie-charts>
+                <div primary-title class="primary--text text-xs-center pa-2">Sales</div>
+              </v-card>
             </v-flex>
             <v-flex xs12 sm6 md3>
-              <v-card><balor-trend-line :chart-data='ratioLine'></balor-trend-line></v-card>
+              <v-card flat>
+                <balor-trend-line class="white ratio_line" :chart-data='ratioLine'></balor-trend-line>
+              </v-card>
             </v-flex>
       </v-layout>
-      </v-flex>
-      <v-flex xs12 sm12 md3 fill-height></v-flex>
-    </v-layout>
-    <!--/Pie Charts-->
+      <!--/Pie Charts-->
+    </v-card>
+    </v-flex>
+  </v-layout>
 
   </v-container>
 
@@ -114,56 +138,15 @@
     },
     data () {
       return {
-        balorHeaders: [
-          {
-            text: 'Heading',
-            align: 'left',
-            sortable: true,
-            value: 'name'
-          },
-          {
-            text: 'Value',
-            align: 'left',
-            sortable: true,
-            value: 'name'
-          }
-        ],
-        balorItems: [
-          {
-            value: false,
-            name: 'Min. Date',
-            calories: 159
-          },
-          {
-            value: false,
-            name: 'Max. Date',
-            calories: 237
-          },
-          {
-            value: false,
-            name: 'Customer Base',
-            calories: 262
-          },
-          {
-            value: false,
-            name: '% Customer - 1 Purchase',
-            calories: 305
-          },
-          {
-            value: false,
-            name: 'Transactions',
-            calories: 356
-          },
-          {
-            value: false,
-            name: 'Purchase Cadence - 80th Percentile',
-            calories: 375
-          },
-          {
-            value: false,
-            name: 'Time Period',
-            calories: 392
-          }
+        sumItems: [
+          { name: 'Min. Date', vals: 159 },
+          { name: 'Max. Date', vals: 237 },
+          { name: 'Customer Base', vals: 262 },
+          { name: '% Customer - 1 Purchase', vals: 305 },
+          { name: 'Transactions', vals: 356 },
+          { name: 'Purchase Cadence - 80th Percentile', vals: 375 },
+          { name: 'Time Period', vals: 392 },
+          { name: 'Retention', vals: 392 }
         ],
         msg: 'Balor Trend Charts will go here!',
         custData: null,
@@ -717,7 +700,7 @@
         noUiSlider.create(this.Slider, {
           start: [1, this.tpArray.length],
           margin: 1, // Handles must be at least 1 apart
-          tooltips: true,
+          tooltips: false,
           connect: true,
           step: 1,
           range: {'min': 1, 'max': this.tpArray.length},
@@ -820,11 +803,25 @@
 <style scoped>
 
 .inliner{display:inline-block;}
-.chart-container {
+.line_chart {
   position: relative;
   margin: 0 auto;
   height: 35vh;
   width: 70vw;
+}
+.pie_chart1 {
+  position: relative;
+  margin: 0 auto;
+  height: 50vh;
+}
+.ratio_line {
+  position: relative;
+  margin: 0 auto;
+  width:auto !important;
+  height:auto !important;
+  max-width:auto !important;
+  max-width:auto !important;
+  /*padding:20px;*/
 }
 
 </style>
