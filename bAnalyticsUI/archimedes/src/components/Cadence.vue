@@ -1,7 +1,43 @@
 <template>
-  <div class="cadence">
-    <annotated-bar-chart :chart-data="cadenceBars"></annotated-bar-chart>
-  </div>
+  <v-container fluid class="cadence">
+    <v-layout row wrap class="mb-2">
+      <v-flex xs12 sm12 md9 style="min-height:39vh;">
+        <v-card class="white">
+        <v-card-title primary-title class="primary">
+          <h6 class="white--text text-xs-left mb-0">Annotated Bar Chart</h6>
+        </v-card-title>
+        <!--trendlines-->
+        <v-layout row wrap class="mb-3 pa-3">
+            <v-flex xs12 fill-height class="line_chart">
+            <annotated-bar-chart :chart-data="cadenceBars"></annotated-bar-chart>
+            </v-flex>
+        </v-layout>
+        <!--//trendlines-->
+        </v-card>
+        </v-flex>
+        <v-flex xs12 sm12 md3 fill-height>
+          <v-card class="white">
+            <v-card-title primary-title class="primary">
+              <h6 class="white--text text-xs-left mb-0">Cadence Summary</h6>
+            </v-card-title>
+            <v-flex xs12 fill-height>
+                  <v-layout row>
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                      <tr v-for="item in sumItems" v-bind:key="item.name">
+                        <td class="pa-2">
+                          <div class="primary--text" v-text="item.name"></div>
+                        </td>
+                        <td class="pa-2">
+                          <div v-text="item.vals"></div>
+                        </td>
+                      </tr>
+                    </table>
+                  </v-layout>
+            </v-flex>
+          </v-card>
+        </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -14,6 +50,15 @@
     },
     data () {
       return {
+        sumItems: [
+          { name: 'Min. Date', vals: 159 },
+          { name: 'Max. Date', vals: 237 },
+          { name: 'Customer Base', vals: 262 },
+          { name: '% Customer - 1 Purchase', vals: 305 },
+          { name: 'Transactions', vals: 356 },
+          { name: 'Purchase Cadence - 80th Percentile', vals: 375 },
+          { name: 'Time Period', vals: 392 }
+        ],
         msg: 'Cadence Charts and approval will go here!',
         cadenceBars: null,
         cadArray: [],
