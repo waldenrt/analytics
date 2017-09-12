@@ -2,8 +2,8 @@
 <v-container fluid class="mt-2 mb-0 pt-0 pb-0">
 <v-card class="white">
     <v-layout row wrap v-if="$store.state.appmodule === 'Balor'" class="pa-2">
-      <v-flex xs12 s12 md2 class="text-xs-center">
-          <v-btn primary class="white--text">NEW {{$store.state.appmodule}} INPUT</v-btn>
+      <v-flex xs12 s12 md2 class="text-xs-center pt-1">
+          <v-btn primary class="white--text">+ NEW {{$store.state.appmodule}} INPUT</v-btn>
       </v-flex>
       <v-flex xs12 s12 md10 class="pa-2">
         <v-breadcrumbs icons divider="chevron_right" class="pl-0 ml-0">

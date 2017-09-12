@@ -18,14 +18,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.icon_bdr{
-  border:2px solid rgba(53,64,82,0.54);
-  border-radius:4px;
-}
-.title{
-  vertical-align: middle;
-}
-.inliner{display:inline;}
 .wtrmrk{
   background: url(https://governor-media.s3.amazonaws.com/5820287194e85008730d0d6d%2Fassets%2Fimages%2Flogo-white.png) no-repeat center;
   background-size: cover;

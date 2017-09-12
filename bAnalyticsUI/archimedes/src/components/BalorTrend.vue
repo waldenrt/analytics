@@ -47,16 +47,16 @@
           </v-card-title>
           <v-flex xs12 fill-height>
                 <v-layout row>
-                  <v-list>
-                    <v-list-tile v-for="item in sumItems" v-bind:key="item.name">
-                      <td width="70%">
-                        <v-list-tile-sub-title class="primary--text" v-text="item.name"></v-list-tile-sub-title>
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr v-for="item in sumItems" v-bind:key="item.name">
+                      <td class="pa-3">
+                        <div class="primary--text" v-text="item.name"></div>
                       </td>
-                      <td width="30%">
-                        <v-list-tile-sub-title v-text="item.vals"></v-list-tile-sub-title>
+                      <td class="pa-3">
+                        <div v-text="item.vals"></div>
                       </td>
-                    </v-list-tile>
-                  </v-list>
+                    </tr>
+                  </table>
               </v-layout>
           </v-flex>
         </v-card>
@@ -77,15 +77,20 @@
           <!--selection-->
           <v-flex xs12>
             <v-card flat>
-            <div id="selection" class="pl-3">
-              <v-select v-model="tp"
-                        v-bind:items="tpArray"
-                        label="Select Time Period"
-                        v-on:input="setTP()"
-                        style="width:175px;margin-bottom:0;">
-              </v-select>
-            </div>
-          </v-card>
+              <div class="pa-3" style="height:7vh;">
+                <div id="selection" class="inliner left_float">
+                  <v-select v-model="tp"
+                            v-bind:items="tpArray"
+                            label="Select Time Period"
+                            v-on:input="setTP()"
+                            style="width:175px;margin-bottom:0;">
+                  </v-select>
+                </div>
+                <div class="primary--text inliner right_float pt-3" v-for="item in retentionItems" v-bind:key="item.name">
+                  {{ item.name }}: {{ item.vals }}
+                </div>
+              </div>
+            </v-card>
           </v-flex>
           <!--//selection-->
         </v-layout>
@@ -145,7 +150,9 @@
           { name: '% Customer - 1 Purchase', vals: 305 },
           { name: 'Transactions', vals: 356 },
           { name: 'Purchase Cadence - 80th Percentile', vals: 375 },
-          { name: 'Time Period', vals: 392 },
+          { name: 'Time Period', vals: 392 }
+        ],
+        retentionItems: [
           { name: 'Retention', vals: 392 }
         ],
         msg: 'Balor Trend Charts will go here!',
@@ -823,5 +830,7 @@
   max-width:auto !important;
   /*padding:20px;*/
 }
+.left_float{float: left;}
+.right_float{float:right;}
 
 </style>
