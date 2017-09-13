@@ -54,6 +54,20 @@
             <h6 class="white--text text-xs-left mb-0">BALOR Summary</h6>
           </v-card-title>
           <v-flex xs12 fill-height>
+<<<<<<< HEAD
+                <v-layout row>
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr v-for="item in sumItems" v-bind:key="item.name">
+                      <td class="pa-3">
+                        <div class="primary--text" v-text="item.name"></div>
+                      </td>
+                      <td class="pa-3">
+                        <div v-text="item.vals"></div>
+                      </td>
+                    </tr>
+                  </table>
+              </v-layout>
+=======
             <v-layout row>
               <v-list>
                 <v-list-tile v-for="item in sumItems" v-bind:key="item.name">
@@ -66,11 +80,30 @@
                 </v-list-tile>
               </v-list>
             </v-layout>
+>>>>>>> fe77cb5bae71cbf379ab788e016fa67b47e63834
           </v-flex>
         </v-card>
       </v-flex>
     </v-layout>
 
+<<<<<<< HEAD
+  <v-layout row wrap class="mb-3">
+    <v-flex xs12 fill-height>
+      <v-card class="white">
+        <v-layout row wrap>
+              <v-flex xs12>
+                <v-card-title primary-title class="primary">
+                  <h6 class="white--text text-xs-left mb-0">BALOR Composition and Metrics for Period:</h6>
+                </v-card-title>
+              </v-flex>
+        </v-layout>
+        <v-layout row wrap>
+          <!--selection-->
+          <v-flex xs12>
+            <v-card flat>
+              <div class="pa-3" style="height:7vh;">
+                <div id="selection" class="inliner left_float">
+=======
     <v-layout row wrap class="mb-3">
       <v-flex xs12 fill-height>
         <v-card class="white">
@@ -86,6 +119,7 @@
             <v-flex xs12>
               <v-card flat>
                 <div id="selection" class="pl-3">
+>>>>>>> fe77cb5bae71cbf379ab788e016fa67b47e63834
                   <v-select v-model="tp"
                             v-bind:items="tpArray"
                             label="Select Time Period"
@@ -93,12 +127,16 @@
                             style="width:175px;margin-bottom:0;">
                   </v-select>
                 </div>
-              </v-card>
-            </v-flex>
-            <!--//selection-->
-          </v-layout>
-          <!--Pie Charts-->
-          <v-layout row wrap>
+                <div class="primary--text inliner right_float pt-3" v-for="item in retentionItems" v-bind:key="item.name">
+                  {{ item.name }}: {{ item.vals }}
+                </div>
+              </div>
+            </v-card>
+          </v-flex>
+          <!--//selection-->
+        </v-layout>
+        <!--Pie Charts-->
+        <v-layout row wrap>
             <v-flex xs12 sm6 md3>
               <v-card flat class="white">
                 <pie-charts class="white pie_chart1" :chart-data='custData'></pie-charts>
@@ -146,7 +184,22 @@
     },
     data () {
       return {
+<<<<<<< HEAD
+        sumItems: [
+          { name: 'Min. Date', vals: 159 },
+          { name: 'Max. Date', vals: 237 },
+          { name: 'Customer Base', vals: 262 },
+          { name: '% Customer - 1 Purchase', vals: 305 },
+          { name: 'Transactions', vals: 356 },
+          { name: 'Purchase Cadence - 80th Percentile', vals: 375 },
+          { name: 'Time Period', vals: 392 }
+        ],
+        retentionItems: [
+          { name: 'Retention', vals: 392 }
+        ],
+=======
         sumItems: [],
+>>>>>>> fe77cb5bae71cbf379ab788e016fa67b47e63834
         msg: 'Balor Trend Charts will go here!',
         custData: null,
         txnData: null,
@@ -813,6 +866,31 @@
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
 
+<<<<<<< HEAD
+.inliner{display:inline-block;}
+.line_chart {
+  position: relative;
+  margin: 0 auto;
+  height: 35vh;
+  width: 70vw;
+}
+.pie_chart1 {
+  position: relative;
+  margin: 0 auto;
+  height: 50vh;
+}
+.ratio_line {
+  position: relative;
+  margin: 0 auto;
+  width:auto !important;
+  height:auto !important;
+  max-width:auto !important;
+  max-width:auto !important;
+  /*padding:20px;*/
+}
+.left_float{float: left;}
+.right_float{float:right;}
+=======
   .inliner {
     display: inline-block;
   }
@@ -839,5 +917,6 @@
     max-width: auto !important;
     /*padding:20px;*/
   }
+>>>>>>> fe77cb5bae71cbf379ab788e016fa67b47e63834
 
 </style>

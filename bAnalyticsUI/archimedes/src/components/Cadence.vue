@@ -24,10 +24,10 @@
                   <v-layout row>
                     <table width="100%" cellpadding="0" cellspacing="0">
                       <tr v-for="item in sumItems" v-bind:key="item.name">
-                        <td class="pa-2">
+                        <td class="pa-3">
                           <div class="primary--text" v-text="item.name"></div>
                         </td>
-                        <td class="pa-2">
+                        <td class="pa-3">
                           <div v-text="item.vals"></div>
                         </td>
                       </tr>
