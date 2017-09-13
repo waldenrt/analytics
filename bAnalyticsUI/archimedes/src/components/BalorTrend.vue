@@ -866,7 +866,6 @@
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
 
-<<<<<<< HEAD
 .inliner{display:inline-block;}
 .line_chart {
   position: relative;
@@ -890,33 +889,5 @@
 }
 .left_float{float: left;}
 .right_float{float:right;}
-=======
-  .inliner {
-    display: inline-block;
-  }
-
-  .line_chart {
-    position: relative;
-    margin: 0 auto;
-    height: 35vh;
-    width: 70vw;
-  }
-
-  .pie_chart1 {
-    position: relative;
-    margin: 0 auto;
-    height: 50vh;
-  }
-
-  .ratio_line {
-    position: relative;
-    margin: 0 auto;
-    width: auto !important;
-    height: auto !important;
-    max-width: auto !important;
-    max-width: auto !important;
-    /*padding:20px;*/
-  }
->>>>>>> fe77cb5bae71cbf379ab788e016fa67b47e63834
 
 </style>
