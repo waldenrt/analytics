@@ -21,7 +21,7 @@
           <v-list-tile ripple>
             <v-icon class="white--text pr-3">{{ module.icon }}</v-icon>
             <v-list-tile-title>
-              <router-link to="/" class="white--text">{{ module.name }}</router-link>
+              <router-link :to="module.link"Baloe class="white--text">{{ module.name }}</router-link>
             </v-list-tile-title>
           </v-list-tile>
           <v-divider></v-divider>
@@ -72,23 +72,7 @@
       </v-toolbar-items>
     </v-toolbar>
     <!--//top nav-->
-
-    <!--main container-->
-    <main class="pt-5">
-      <v-container fluid>
-        <v-layout row-sm column child-flex-sm>
-          <v-flex xs12>
-            <div>
-              <!--<p>first line</p>
-              <p>we can put notices here and they will be always visible from everywhere in the app..</p>-->
-              <breadcrumbs></breadcrumbs>
-              <router-view></router-view>
-            </div>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </main>
-    <!--//main container-->
+   <router-view></router-view>
 
     <!--footer-->
     <v-footer fixed class="pa-3 footer">
@@ -105,7 +89,7 @@
   import modulenav from './components/ModuleNav.vue'
   import headernav from './components/HeaderNav.vue'
   import sidenav from './components/SideNav.vue'
-  import breadcrumbs from './components/Breadcrumbs.vue'
+  import breadcrumbs from './components/BalorBreadcrumbs.vue'
   import { mapState } from 'vuex'
 
   export default {
@@ -119,15 +103,15 @@
           {id: 2, name: 'Hertz'}
         ],
         modules: [
-          {name: 'Balor', active: true, icon: 'label'},
-          {name: 'Decile', active: false, icon: 'label'},
-          {name: 'Core Lifecycle', active: false, icon: 'label'},
-          {name: 'bRelevant', active: false, icon: 'label'},
-          {name: 'History', active: false, icon: 'history'},
-          {name: 'Settings', active: false, icon: 'settings'},
-          {name: 'Help', active: false, icon: 'help'},
-          {name: 'Feedback', active: false, icon: 'feedback'},
-          {name: 'Logout', active: false, icon: 'exit_to_app'}
+          {name: 'Balor', active: true, icon: 'label', link: '/Balor'},
+          {name: 'Decile', active: false, icon: 'label', link: '/Quantile'},
+          {name: 'Core Lifecycle', active: false, icon: 'label', link: '/Lifecycle'},
+          {name: 'bRelevant', active: false, icon: 'label', link: '/bRelevant'},
+          {name: 'History', active: false, icon: 'history', link: '/History'},
+          {name: 'Settings', active: false, icon: 'settings', link: '/Settings'},
+          {name: 'Help', active: false, icon: 'help', link: '/Help'},
+          {name: 'Feedback', active: false, icon: 'feedback', link: '/Feedback'},
+          {name: 'Logout', active: false, icon: 'exit_to_app', link: '/Logout'}
         ]
       }
     },

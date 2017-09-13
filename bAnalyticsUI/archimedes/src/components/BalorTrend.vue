@@ -54,7 +54,6 @@
             <h6 class="white--text text-xs-left mb-0">BALOR Summary</h6>
           </v-card-title>
           <v-flex xs12 fill-height>
-<<<<<<< HEAD
                 <v-layout row>
                   <table width="100%" cellpadding="0" cellspacing="0">
                     <tr v-for="item in sumItems" v-bind:key="item.name">
@@ -67,26 +66,11 @@
                     </tr>
                   </table>
               </v-layout>
-=======
-            <v-layout row>
-              <v-list>
-                <v-list-tile v-for="item in sumItems" v-bind:key="item.name">
-                  <td width="70%">
-                    <v-list-tile-sub-title class="primary--text" v-text="item.name"></v-list-tile-sub-title>
-                  </td>
-                  <td width="30%">
-                    <v-list-tile-sub-title v-text="item.vals"></v-list-tile-sub-title>
-                  </td>
-                </v-list-tile>
-              </v-list>
-            </v-layout>
->>>>>>> fe77cb5bae71cbf379ab788e016fa67b47e63834
           </v-flex>
         </v-card>
       </v-flex>
     </v-layout>
 
-<<<<<<< HEAD
   <v-layout row wrap class="mb-3">
     <v-flex xs12 fill-height>
       <v-card class="white">
@@ -103,23 +87,6 @@
             <v-card flat>
               <div class="pa-3" style="height:7vh;">
                 <div id="selection" class="inliner left_float">
-=======
-    <v-layout row wrap class="mb-3">
-      <v-flex xs12 fill-height>
-        <v-card class="white">
-          <v-layout row wrap>
-            <v-flex xs12>
-              <v-card-title primary-title class="primary">
-                <h6 class="white--text text-xs-left mb-0">BALOR Composition and Metrics for Period:</h6>
-              </v-card-title>
-            </v-flex>
-          </v-layout>
-          <v-layout row wrap>
-            <!--selection-->
-            <v-flex xs12>
-              <v-card flat>
-                <div id="selection" class="pl-3">
->>>>>>> fe77cb5bae71cbf379ab788e016fa67b47e63834
                   <v-select v-model="tp"
                             v-bind:items="tpArray"
                             label="Select Time Period"
@@ -184,22 +151,11 @@
     },
     data () {
       return {
-<<<<<<< HEAD
-        sumItems: [
-          { name: 'Min. Date', vals: 159 },
-          { name: 'Max. Date', vals: 237 },
-          { name: 'Customer Base', vals: 262 },
-          { name: '% Customer - 1 Purchase', vals: 305 },
-          { name: 'Transactions', vals: 356 },
-          { name: 'Purchase Cadence - 80th Percentile', vals: 375 },
-          { name: 'Time Period', vals: 392 }
-        ],
+
         retentionItems: [
           { name: 'Retention', vals: 392 }
         ],
-=======
         sumItems: [],
->>>>>>> fe77cb5bae71cbf379ab788e016fa67b47e63834
         msg: 'Balor Trend Charts will go here!',
         custData: null,
         txnData: null,
