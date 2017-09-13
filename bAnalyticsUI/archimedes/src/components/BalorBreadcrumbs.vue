@@ -43,7 +43,7 @@
 <script>
 
   export default{
-    name: 'breadcrumbs',
+    name: 'balorBreadcrumbs',
     data () {
       return {
         items: [
