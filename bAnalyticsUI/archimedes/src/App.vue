@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content pa-0 ma-0">
     <v-app id="navigation" left-fixed-sidebar top-toolbar sidebar-under-toolbar>
 
     <!-- slideout nav -->
@@ -21,7 +21,7 @@
           <v-list-tile ripple>
             <v-icon class="white--text pr-3">{{ module.icon }}</v-icon>
             <v-list-tile-title>
-              <router-link :to="module.link"Baloe class="white--text">{{ module.name }}</router-link>
+              <router-link :to="module.link" class="white--text">{{ module.name }}</router-link>
             </v-list-tile-title>
           </v-list-tile>
           <v-divider></v-divider>
@@ -38,7 +38,7 @@
       <v-toolbar-items>
 
         <v-menu>
-          <v-btn primary slot="activator" class="white--text">Client</v-btn>
+          <v-btn primary outline slot="activator" class="primary--text">Client</v-btn>
           <v-list>
             <v-list-item v-for="client in clients" :key="client.id">
               <v-list-tile>

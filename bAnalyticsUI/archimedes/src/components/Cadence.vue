@@ -130,7 +130,7 @@
             {
               data: this.countArray,
               label: 'Cadence',
-              backgroundColor: '#0087AA'
+              backgroundColor: '#F7970E'
             }
           ]
         }
