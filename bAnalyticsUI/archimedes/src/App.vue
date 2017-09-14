@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content pa-0 ma-0">
     <v-app id="navigation" left-fixed-sidebar top-toolbar sidebar-under-toolbar>
 
     <!-- slideout nav -->
@@ -38,7 +38,7 @@
       <v-toolbar-items>
 
         <v-menu>
-          <v-btn primary slot="activator" class="white--text">Client</v-btn>
+          <v-btn primary outline slot="activator" class="primary--text">Client</v-btn>
           <v-list>
             <v-list-item v-for="client in clients" :key="client.id">
               <v-list-tile>

@@ -1,10 +1,10 @@
 <template>
-    <v-container fluid grid-list-md class="NewBalor">
+    <v-container fluid class="NewBalor">
     <v-layout row wrap>
       <!-- COLUMN1 -->
       <v-flex d-flex xs12 sm6>
         <!-- CARD1 -->
-        <v-card class="white">
+        <v-card class="white v_card_width">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Enter Job Name</h6>
           </v-card-title>
@@ -17,7 +17,7 @@
         </v-card>
         <!-- //CARD1 -->
         <!-- CARD2 -->
-        <v-card class="white">
+        <v-card class="white v_card_width">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Select file for analysis</h6>
           </v-card-title>
@@ -35,7 +35,7 @@
         </v-card>
         <!-- //CARD2 -->
         <!-- CARD3 -->
-        <v-card class="white">
+        <v-card class="white v_card_width">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Select file type</h6>
           </v-card-title>
@@ -88,5 +88,5 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.v_card_width{max-width:450px;}
 </style>

@@ -1,8 +1,8 @@
 <template>
   <v-container fluid class="balorSegmentTrend">
 
-    <v-layout row wrap class="mb-2">
-      <v-flex xs12 sm12 md9 style="height:49vh;">
+    <v-layout row wrap class="mb-3">
+      <v-flex xs12 sm12 md9 lg9 style="mb-3 height:49vh;">
         <v-card class="white">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">BALOR Period Trendline</h6>
@@ -48,7 +48,7 @@
           <!--//trendlines-->
         </v-card>
       </v-flex>
-      <v-flex xs12 sm12 md3 fill-height>
+      <v-flex xs12 sm12 md3 lg3 fill-height>
         <v-card class="white">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">BALOR Summary</h6>
@@ -57,10 +57,10 @@
                 <v-layout row>
                   <table width="100%" cellpadding="0" cellspacing="0">
                     <tr v-for="item in sumItems" v-bind:key="item.name">
-                      <td class="pa-3">
+                      <td class="pa-3" width="50%" style="text-align:right;">
                         <div class="primary--text" v-text="item.name"></div>
                       </td>
-                      <td class="pa-3">
+                      <td class="pa-3" width="50%" style="text-align:left;">
                         <div v-text="item.vals"></div>
                       </td>
                     </tr>
@@ -104,27 +104,27 @@
         </v-layout>
         <!--Pie Charts-->
         <v-layout row wrap>
-            <v-flex xs12 sm6 md3>
-              <v-card flat class="white">
-                <pie-charts class="white pie_chart1" :chart-data='custData'></pie-charts>
+            <v-flex xs12 sm6 md4 lg3 class="pie_chart1">
+              <v-card flat class="white pa-3">
+                <pie-charts class="white" :chart-data='custData'></pie-charts>
                 <div primary-title class="primary--text text-xs-center pa-2">Customers</div>
               </v-card>
             </v-flex>
-            <v-flex xs12 sm6 md3>
-              <v-card flat class="white">
-                <pie-charts class="white pie_chart1" :chart-data='txnData'></pie-charts>
+            <v-flex xs12 sm6 md4 lg3 class="pie_chart1">
+              <v-card flat class="white pa-3">
+                <pie-charts class="white" :chart-data='txnData'></pie-charts>
                 <div primary-title class="primary--text text-xs-center pa-2">Transactions</div>
               </v-card>
             </v-flex>
-            <v-flex xs12 sm6 md3>
-              <v-card flat class="white">
-                <pie-charts class="white pie_chart1" :chart-data='spendData'></pie-charts>
+            <v-flex xs12 sm6 md4 lg3 class="pie_chart1">
+              <v-card flat class="white pa-3">
+                <pie-charts class="white" :chart-data='spendData'></pie-charts>
                 <div primary-title class="primary--text text-xs-center pa-2">Sales</div>
               </v-card>
             </v-flex>
-            <v-flex xs12 sm6 md3>
-              <v-card flat>
-                <balor-trend-line class="white ratio_line" :chart-data='ratioLine'></balor-trend-line>
+            <v-flex xs12 sm6 md7 lg3 class="ratio_line">
+              <v-card flat class="white pt-4 pr-3 pb-3 pl-3">
+                <balor-trend-line class="white" :chart-data='ratioLine'></balor-trend-line>
               </v-card>
             </v-flex>
           </v-layout>
@@ -832,16 +832,12 @@
 .pie_chart1 {
   position: relative;
   margin: 0 auto;
-  height: 50vh;
+  min-height: 41vh;
 }
 .ratio_line {
   position: relative;
   margin: 0 auto;
-  width:auto !important;
-  height:auto !important;
-  max-width:auto !important;
-  max-width:auto !important;
-  /*padding:20px;*/
+  width: 41vh;
 }
 .left_float{float: left;}
 .right_float{float:right;}

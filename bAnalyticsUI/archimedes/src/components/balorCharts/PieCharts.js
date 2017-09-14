@@ -7,10 +7,13 @@ const { reactiveProp } = mixins
 
 export default Pie.extend({
   mixins: [reactiveProp],
-  props: ['options'],
-  options: {
-    responsive: true,
-    maintainAspectRatio: false
+  data () {
+    return {
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    }
   },
   mounted () {
     this.renderChart(this.chartData, this.options)
