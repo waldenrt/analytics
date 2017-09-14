@@ -21,7 +21,7 @@
           <v-list-tile ripple>
             <v-icon class="white--text pr-3">{{ module.icon }}</v-icon>
             <v-list-tile-title>
-              <router-link :to="module.link"Baloe class="white--text">{{ module.name }}</router-link>
+              <router-link :to="module.link" class="white--text">{{ module.name }}</router-link>
             </v-list-tile-title>
           </v-list-tile>
           <v-divider></v-divider>
