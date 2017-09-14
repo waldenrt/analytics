@@ -9,6 +9,7 @@ import BalorTrend from '@/components/BalorTrend'
 import Cadence from '@/components/Cadence'
 import Settings from '@/components/Settings'
 import Quantile from '@/components/Quantile'
+import QuantProfile from '@/components/QuantProfile'
 
 Vue.use(Router)
 
@@ -79,7 +80,7 @@ export default new Router({
         {
           path: 'Summary',
           name: 'QuantSummary',
-          component: Settings
+          component: QuantProfile
         },
         {
           path: 'Migration',
