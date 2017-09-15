@@ -1,72 +1,181 @@
 <template>
-  <body>
-  <div class="balorSegmentTrend">
-    <br>
-    <div>
-      <v-select v-bind:items="dimensions"
-                v-model="dimensionSelect"
-                label="Select Dimension"
-                single-line
-                bottom
-                v-on:input="selectDimension()">
-      </v-select>
-      <v-select
-          v-if="dimensionSelect === 'Customer'"
-          v-bind:items="custDim"
-          v-model="avgSelect"
-          label="Select Average"
-          single-line
-          bottom
-          v-on:input="selectAvg()">
-      </v-select>
-      <v-select
-          v-else-if="dimensionSelect === 'Visits'"
-          v-bind:items="visitDim"
-          v-model="avgSelect"
-          label="Select Average"
-          single-line
-          bottom
-          v-on:input="selectAvg()">
-      </v-select>
-      <v-select
-          v-else-if="dimensionSelect === 'Spend'"
-          v-bind:items="spendDim"
-          v-model="avgSelect"
-          label="Select Average"
-          single-line
-          bottom
-          v-on:input="selectAvg()">
-      </v-select>
-      <v-select
-          v-else-if="dimensionSelect === 'Discount'"
-          v-bind:items="discDim"
-          v-model="avgSelect"
-          label="Select Average"
-          single-line
-          bottom
-          v-on:input="selectAvg()">
-      </v-select>
-      <bar-chart :chart-data="totalBars"></bar-chart>
-      <v-select
-          v-bind:items="tpArray"
-          v-model="tpSelect"
-          label="Select Balor Time Period"
-          single-line
-          bottom
-          v-on:input="updateTPMetric">
-      </v-select>
-      <v-select
-          v-bind:items="avgList"
-          v-model="tpAvgSelect"
-          label="Select Balor Metric"
-          single-line
-          bottom
-          v-on:input="updateTPMetric">
-      </v-select>
-      <horizontal-chart :chart-data="avgBars"></horizontal-chart>
-    </div>
-  </div>
-  </body>
+<v-container fluid class="balorSegmentTrend">
+
+<!--ROW1-->
+    <v-layout row wrap class="pt-0 mb-3">
+      <v-flex xs12>
+        <v-card class="pa-0 ma-0 grey lighten-2">
+          <v-layout row wrap>
+
+
+          <!--Dropdown1-->
+          <v-flex xs12 sm6 md4>
+            <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
+              <v-layout row wrap>
+                <v-flex xs5>
+                  <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT25">
+                    Select BALOR<br />metrics:
+                  </div>
+                </v-flex>
+                <v-flex xs7>
+                  <v-card class="white pa-0">
+                  <v-select v-bind:items="dimensions"
+                            v-model="dimensionSelect"
+                            label="Select Dimension"
+                            single-line
+                            bottom
+                            v-on:input="selectDimension()"
+                            class="pa-1 m-0 v_font">
+                  </v-select>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-flex>
+          <!--//Dropdown1-->
+          <!--Dropdown2-->
+          <v-flex xs12 sm6 md5>
+            <v-card flat class="pl-2 pr-2 grey lighten-2">
+              <v-layout row wrap>
+                <v-flex xs5>
+                  <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT25">
+                    Select BALOR<br />segment:
+                  </div>
+                </v-flex>
+                <v-flex xs7>
+                  <v-card class="white">
+                  <v-select
+                      v-if="dimensionSelect === 'Customer'"
+                      v-bind:items="custDim"
+                      v-model="avgSelect"
+                      label="Select Average"
+                      single-line
+                      bottom
+                      v-on:input="selectAvg()"
+                      class="pa-1 m-0">
+                  </v-select>
+                  <v-select
+                      v-else-if="dimensionSelect === 'Visits'"
+                      v-bind:items="visitDim"
+                      v-model="avgSelect"
+                      label="Select Average"
+                      single-line
+                      bottom
+                      v-on:input="selectAvg()"
+                      class="pa-1 m-0">
+                  </v-select>
+                  <v-select
+                      v-else-if="dimensionSelect === 'Spend'"
+                      v-bind:items="spendDim"
+                      v-model="avgSelect"
+                      label="Select Average"
+                      single-line
+                      bottom
+                      v-on:input="selectAvg()"
+                      class="pa-1 m-0">
+                  </v-select>
+                  <v-select
+                      v-else-if="dimensionSelect === 'Discount'"
+                      v-bind:items="discDim"
+                      v-model="avgSelect"
+                      label="Select Average"
+                      single-line
+                      bottom
+                      v-on:input="selectAvg()"
+                      class="pa-1 m-0">
+                  </v-select>
+                </v-card>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-flex>
+          <!--//Dropdown2-->
+          </v-layout>
+        </v-card>
+      </v-flex>
+      <!--chart-->
+      <v-flex xs12>
+        <v-card class="white">
+          <bar-chart :chart-data="totalBars" class="pa-2 chart_h"></bar-chart>
+        </v-card>
+      </v-flex>
+      <!--//chart-->
+    </v-layout>
+<!--//ROW1-->
+
+<!--ROW2-->
+    <v-layout row wrap class="mt-4 mb-3">
+      <v-flex xs12>
+        <v-card class="pa-0 ma-0 grey lighten-2">
+          <v-layout row wrap>
+
+
+          <!--Dropdown1-->
+          <v-flex xs12 sm6 md4>
+            <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
+              <v-layout row wrap>
+                <v-flex xs5>
+                  <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT25">
+                    Select BALOR<br />time period:
+                  </div>
+                </v-flex>
+                <v-flex xs7>
+                  <v-card class="white pa-0">
+                    <v-select
+                        v-bind:items="tpArray"
+                        v-model="tpSelect"
+                        label="Select Balor Time Period"
+                        single-line
+                        bottom
+                        v-on:input="updateTPMetric"
+                        class="pa-1 m-0">
+                    </v-select>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-flex>
+          <!--//Dropdown1-->
+          <!--Dropdown2-->
+          <v-flex xs12 sm6 md5>
+            <v-card flat class="pl-2 pr-2 grey lighten-2">
+              <v-layout row wrap>
+                <v-flex xs5>
+                  <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT25">
+                    Select BALOR<br />metric:
+                  </div>
+                </v-flex>
+                <v-flex xs7>
+                  <v-card class="white">
+                    <v-select
+                        v-bind:items="avgList"
+                        v-model="tpAvgSelect"
+                        label="Select Balor Metric"
+                        single-line
+                        bottom
+                        v-on:input="updateTPMetric"
+                        class="pa-1 m-0">
+                    </v-select>
+                </v-card>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-flex>
+          <!--//Dropdown2-->
+          </v-layout>
+        </v-card>
+      </v-flex>
+      <!--chart-->
+      <v-flex xs12>
+        <v-card class="white">
+          <horizontal-chart :chart-data="avgBars" class="pa-2 chart_h"></horizontal-chart>
+        </v-card>
+      </v-flex>
+      <!--//chart-->
+    </v-layout>
+<!--//ROW2-->
+
+</v-container>
 </template>
 
 <script>
@@ -1303,5 +1412,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.chart_h{height:31vh !important;}
+.padT25{padding-top:25px !important;}
 </style>
