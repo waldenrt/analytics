@@ -7,7 +7,7 @@
         <div>
           <!--<p>first line</p>
           <p>we can put notices here and they will be always visible from everywhere in the app..</p>-->
-          <balor-breadcrumbs></balor-breadcrumbs>
+          <balorSteppers></balorSteppers>
           <router-view></router-view>
         </div>
       </v-flex>
@@ -18,12 +18,12 @@
 </template>
 
 <script>
-  import BalorBreadcrumbs from './BalorBreadcrumbs.vue'
+  import balorSteppers from './balorSteppers.vue'
 
   export default {
     name: 'balor',
     components: {
-      BalorBreadcrumbs
+      balorSteppers
     }
   }
 

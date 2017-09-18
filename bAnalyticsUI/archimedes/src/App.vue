@@ -10,7 +10,7 @@
           <v-list-tile ripple class="white">
             <v-icon class="primary--text pr-3">home</v-icon>
             <v-list-tile-title class="primary--text">
-              <router-link to="/">Dashboard</router-link>
+              <router-link to="/" tag="span" style="cursor:pointer;">Dashboard</router-link>
             </v-list-tile-title>
           </v-list-tile>
         </v-list-item>
@@ -21,7 +21,7 @@
           <v-list-tile ripple>
             <v-icon class="white--text pr-3">{{ module.icon }}</v-icon>
             <v-list-tile-title>
-              <router-link :to="module.link" class="white--text">{{ module.name }}</router-link>
+              <router-link :to="module.link" tag="span" style="cursor:pointer;" class="white--text">{{ module.name }}</router-link>
             </v-list-tile-title>
           </v-list-tile>
           <v-divider></v-divider>
@@ -89,7 +89,7 @@
   import modulenav from './components/ModuleNav.vue'
   import headernav from './components/HeaderNav.vue'
   import sidenav from './components/SideNav.vue'
-  import breadcrumbs from './components/BalorBreadcrumbs.vue'
+  import balorSteppers from './components/balorSteppers.vue'
   import { mapState } from 'vuex'
 
   export default {
@@ -123,7 +123,7 @@
       headernav,
       modulenav,
       sidenav,
-      breadcrumbs
+      balorSteppers
     }
   }
 </script>
