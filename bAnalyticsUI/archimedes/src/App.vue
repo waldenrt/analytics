@@ -89,7 +89,7 @@
   import modulenav from './components/ModuleNav.vue'
   import headernav from './components/HeaderNav.vue'
   import sidenav from './components/SideNav.vue'
-  import balorSteppers from './components/balorSteppers.vue'
+  import balorTabs from './components/balorTabs.vue'
   import { mapState } from 'vuex'
 
   export default {
@@ -123,7 +123,7 @@
       headernav,
       modulenav,
       sidenav,
-      balorSteppers
+      balorTabs
     }
   }
 </script>
