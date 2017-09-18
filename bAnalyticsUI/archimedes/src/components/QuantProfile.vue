@@ -57,17 +57,21 @@
         TPArray: [],
         TPSelect: 1,
         quantiles: [],
-        quantileSelect: null,
+        quantileSelect: ['All'],
         metrics: [
           'Spend',
           'Units',
           'Visits'
         ],
         metricSelect: 'Spend',
-        spendArray: [],
-        unitArray: [],
-        visitArray: [],
+        spendArrayFull: [],
+        unitArrayFull: [],
+        visitArrayFull: [],
+        spendArrayCurr: [],
+        unitArrayCurr: [],
+        visitArrayCurr: [],
         quantileArray: [],
+        quantArrayCurr: [],
         spendPerArray: [],
         unitPerArray: [],
         visitPerArray: [],
@@ -560,15 +564,45 @@
         console.log(tempObj)
       },
       selectQuantile () {
+        if (this.quantileSelect.indexOf('All') !== -1) {
+          console.log('contains all')
+          this.spendArrayCurr = this.spendArrayFull
+          this.unitArrayCurr = this.unitArrayFull
+          this.visitArrayCurr = this.visitArrayFull
+          this.quantArrayCurr = this.quantileArray
+          this.selectMetric()
+        } else {
+          var sorted = this.quantileSelect
+          // sorted.sort()
+          console.log(sorted)
+          console.log('no all here')
+          var unitArray = []
+          var spendArray = []
+          var visitArray = []
+          var quantArray = []
 
+          for (var i = 0; i < sorted.length; i++) {
+            unitArray.push(this.unitArrayFull[sorted[i] - 1])
+            spendArray.push(this.spendArrayFull[sorted[i] - 1])
+            visitArray.push(this.visitArrayFull[sorted[i] - 1])
+            quantArray.push(this.quantileArray[sorted[i] - 1])
+          }
+
+          this.spendArrayCurr = spendArray
+          this.unitArrayCurr = unitArray
+          this.visitArrayCurr = visitArray
+          this.quantArrayCurr = quantArray
+
+          this.selectMetric()
+        }
       },
       selectMetric () {
         if (this.metricSelect === 'Spend') {
           this.paretoData = {
-            labels: this.quantileArray,
+            labels: this.quantArrayCurr,
             datasets: [
               {
-                data: this.spendArray,
+                data: this.spendArrayCurr,
                 label: 'Total Spend',
                 backgroundColor: '#0087AA'
               }, {
@@ -587,7 +621,7 @@
             labels: this.quantileArray,
             datasets: [
               {
-                data: this.unitArray,
+                data: this.unitArrayCurr,
                 label: 'Total Units',
                 backgroundColor: '#0087AA'
               }, {
@@ -606,8 +640,8 @@
             labels: this.quantileArray,
             datasets: [
               {
-                data: this.visitArray,
-                label: 'Total Spend',
+                data: this.visitArrayCurr,
+                label: 'Total Visits',
                 backgroundColor: '#0087AA'
               }, {
                 data: this.visitPerArray,
@@ -666,12 +700,12 @@
         }
 
         this.TPArray = tempTP
-        this.spendArray = tempSpend
-        this.unitArray = tempUnit
-        this.visitArray = tempVisit
+        this.spendArrayFull = tempSpend
+        this.unitArrayFull = tempUnit
+        this.visitArrayFull = tempVisit
         this.quantileArray = tempQuant
-        tempQuant.push('All')
-        this.quantiles = tempQuant
+        var allArray = ['All']
+        this.quantiles = allArray.concat(tempQuant)
 
         var tempUnitPer = []
         var tempTtlUnit = []
@@ -680,31 +714,31 @@
         var tempVisitPer = []
         var tempTtlVisit = []
 
-        for (var k = 0; k < this.spendArray.length; k++) {
+        for (var k = 0; k < this.spendArrayFull.length; k++) {
           if (k === 0) {
-            tempSpendPer.push(this.spendArray[k] / ttlSpend)
-            tempTtlSpend.push(this.spendArray[k])
+            tempSpendPer.push(this.spendArrayFull[k] / ttlSpend)
+            tempTtlSpend.push(this.spendArrayFull[k])
           } else {
-            tempSpendPer.push((tempTtlSpend[k - 1] + this.spendArray[k]) / ttlSpend)
-            tempTtlSpend.push(this.spendArray[k] + tempTtlSpend[k - 1])
+            tempSpendPer.push((tempTtlSpend[k - 1] + this.spendArrayFull[k]) / ttlSpend)
+            tempTtlSpend.push(this.spendArrayFull[k] + tempTtlSpend[k - 1])
           }
         }
-        for (var l = 0; l < this.unitArray.length; l++) {
+        for (var l = 0; l < this.unitArrayFull.length; l++) {
           if (l === 0) {
-            tempUnitPer.push(this.unitArray[l] / ttlUnit)
-            tempTtlUnit.push(this.unitArray[l])
+            tempUnitPer.push(this.unitArrayFull[l] / ttlUnit)
+            tempTtlUnit.push(this.unitArrayFull[l])
           } else {
-            tempUnitPer.push((tempTtlUnit[l - 1] + this.unitArray[l]) / ttlUnit)
-            tempTtlUnit.push(this.unitArray[l] + tempTtlUnit[l - 1])
+            tempUnitPer.push((tempTtlUnit[l - 1] + this.unitArrayFull[l]) / ttlUnit)
+            tempTtlUnit.push(this.unitArrayFull[l] + tempTtlUnit[l - 1])
           }
         }
-        for (var x = 0; x < this.visitArray.length; x++) {
+        for (var x = 0; x < this.visitArrayFull.length; x++) {
           if (x === 0) {
-            tempVisitPer.push(this.visitArray[x] / ttlVisit)
-            tempTtlVisit.push(this.visitArray[x])
+            tempVisitPer.push(this.visitArrayFull[x] / ttlVisit)
+            tempTtlVisit.push(this.visitArrayFull[x])
           } else {
-            tempVisitPer.push((tempTtlVisit[x - 1] + this.visitArray[x]) / ttlVisit)
-            tempTtlVisit.push(this.visitArray[x] + tempTtlVisit[x - 1])
+            tempVisitPer.push((tempTtlVisit[x - 1] + this.visitArrayFull[x]) / ttlVisit)
+            tempTtlVisit.push(this.visitArrayFull[x] + tempTtlVisit[x - 1])
           }
         }
 
@@ -716,7 +750,7 @@
           labels: this.quantileArray,
           datasets: [
             {
-              data: this.spendArray,
+              data: this.spendArrayFull,
               label: 'Total Spend',
               backgroundColor: '#0087AA'
             }, {
@@ -767,9 +801,9 @@
           ttlSpend += sortArray[j].totalSpend
         }
 
-        this.spendArray = tempSpend
-        this.unitArray = tempUnit
-        this.visitArray = tempVisit
+        this.spendArrayFull = tempSpend
+        this.unitArrayFull = tempUnit
+        this.visitArrayFull = tempVisit
 
         var tempUnitPer = []
         var tempTtlUnit = []
@@ -778,31 +812,31 @@
         var tempVisitPer = []
         var tempTtlVisit = []
 
-        for (var k = 0; k < this.spendArray.length; k++) {
+        for (var k = 0; k < this.spendArrayFull.length; k++) {
           if (k === 0) {
-            tempSpendPer.push(this.spendArray[k] / ttlSpend)
-            tempTtlSpend.push(this.spendArray[k])
+            tempSpendPer.push(this.spendArrayFull[k] / ttlSpend)
+            tempTtlSpend.push(this.spendArrayFull[k])
           } else {
-            tempSpendPer.push((tempTtlSpend[k - 1] + this.spendArray[k]) / ttlSpend)
-            tempTtlSpend.push(this.spendArray[k] + tempTtlSpend[k - 1])
+            tempSpendPer.push((tempTtlSpend[k - 1] + this.spendArrayFull[k]) / ttlSpend)
+            tempTtlSpend.push(this.spendArrayFull[k] + tempTtlSpend[k - 1])
           }
         }
-        for (var l = 0; l < this.unitArray.length; l++) {
-          if (k === 0) {
-            tempUnitPer.push(this.unitArray[k] / ttlUnit)
-            tempTtlUnit.push(this.unitArray[k])
+        for (var l = 0; l < this.unitArrayFull.length; l++) {
+          if (l === 0) {
+            tempUnitPer.push(this.unitArrayFull[l] / ttlUnit)
+            tempTtlUnit.push(this.unitArrayFull[l])
           } else {
-            tempUnitPer.push((tempTtlUnit[k - 1] + this.unitArray[k]) / ttlUnit)
-            tempTtlUnit.push(this.unitArray[k] + tempTtlUnit[k - 1])
+            tempUnitPer.push((tempTtlUnit[l - 1] + this.unitArrayFull[l]) / ttlUnit)
+            tempTtlUnit.push(this.unitArrayFull[l] + tempTtlUnit[l - 1])
           }
         }
-        for (var x = 0; x < this.visitArray.length; x++) {
-          if (k === 0) {
-            tempVisitPer.push(this.visitArray[k] / ttlVisit)
-            tempTtlVisit.push(this.visitArray[k])
+        for (var x = 0; x < this.visitArrayFull.length; x++) {
+          if (x === 0) {
+            tempVisitPer.push(this.visitArrayFull[x] / ttlVisit)
+            tempTtlVisit.push(this.visitArrayFull[x])
           } else {
-            tempVisitPer.push((tempTtlVisit[k - 1] + this.visitArray[k]) / ttlVisit)
-            tempTtlVisit.push(this.visitArray[k] + tempTtlVisit[k - 1])
+            tempVisitPer.push((tempTtlVisit[x - 1] + this.visitArrayFull[x]) / ttlVisit)
+            tempTtlVisit.push(this.visitArrayFull[x] + tempTtlVisit[x - 1])
           }
         }
 
@@ -814,7 +848,7 @@
           labels: this.quantileArray,
           datasets: [
             {
-              data: this.spendArray,
+              data: this.spendArrayFull,
               label: 'Total Spend',
               backgroundColor: '#0087AA'
             }, {

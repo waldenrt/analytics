@@ -3,39 +3,39 @@
     <v-layout row wrap class="mb-2">
       <v-flex xs12 sm12 md9 style="min-height:39vh;">
         <v-card class="white">
-        <v-card-title primary-title class="primary">
-          <h6 class="white--text text-xs-left mb-0">Annotated Bar Chart</h6>
-        </v-card-title>
-        <!--trendlines-->
-        <v-layout row wrap class="mb-3 pa-3">
+          <v-card-title primary-title class="primary">
+            <h6 class="white--text text-xs-left mb-0">Annotated Bar Chart</h6>
+          </v-card-title>
+          <!--trendlines-->
+          <v-layout row wrap class="mb-3 pa-3">
             <v-flex xs12 fill-height class="line_chart">
-            <annotated-bar-chart :chart-data="cadenceBars"></annotated-bar-chart>
+              <annotated-bar-chart :chart-data="cadenceBars"></annotated-bar-chart>
             </v-flex>
-        </v-layout>
-        <!--//trendlines-->
+          </v-layout>
+          <!--//trendlines-->
         </v-card>
-        </v-flex>
-        <v-flex xs12 sm12 md3 fill-height>
-          <v-card class="white">
-            <v-card-title primary-title class="primary">
-              <h6 class="white--text text-xs-left mb-0">Cadence Summary</h6>
-            </v-card-title>
-            <v-flex xs12 fill-height>
-                  <v-layout row>
-                    <table width="100%" cellpadding="0" cellspacing="0">
-                      <tr v-for="item in sumItems" v-bind:key="item.name">
-                        <td class="pa-3">
-                          <div class="primary--text" v-text="item.name"></div>
-                        </td>
-                        <td class="pa-3">
-                          <div v-text="item.vals"></div>
-                        </td>
-                      </tr>
-                    </table>
-                  </v-layout>
-            </v-flex>
-          </v-card>
-        </v-flex>
+      </v-flex>
+      <v-flex xs12 sm12 md3 fill-height>
+        <v-card class="white">
+          <v-card-title primary-title class="primary">
+            <h6 class="white--text text-xs-left mb-0">Cadence Summary</h6>
+          </v-card-title>
+          <v-flex xs12 fill-height>
+            <v-layout row>
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr v-for="item in sumItems" v-bind:key="item.name">
+                  <td class="pa-3">
+                    <div class="primary--text" v-text="item.name"></div>
+                  </td>
+                  <td class="pa-3">
+                    <div v-text="item.vals"></div>
+                  </td>
+                </tr>
+              </table>
+            </v-layout>
+          </v-flex>
+        </v-card>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -50,15 +50,7 @@
     },
     data () {
       return {
-        sumItems: [
-          { name: 'Min. Date', vals: 159 },
-          { name: 'Max. Date', vals: 237 },
-          { name: 'Customer Base', vals: 262 },
-          { name: '% Customer - 1 Purchase', vals: 305 },
-          { name: 'Transactions', vals: 356 },
-          { name: 'Purchase Cadence - 80th Percentile', vals: 375 },
-          { name: 'Time Period', vals: 392 }
-        ],
+        sumItems: [],
         msg: 'Cadence Charts and approval will go here!',
         cadenceBars: null,
         cadArray: [],
@@ -106,6 +98,7 @@
     mounted () {
       this.parseJson()
       this.createBar()
+      this.createSummary()
     },
     methods: {
       parseJson () {
@@ -134,6 +127,15 @@
             }
           ]
         }
+      },
+      createSummary () {
+        this.sumItems.push({name: 'Min. Date', vals: this.jsonMsg.minDateCadence})
+        this.sumItems.push({name: 'Max. Date', vals: this.jsonMsg.maxDateCadence})
+        this.sumItems.push({name: '1 Purchase Customers', vals: this.jsonMsg.singleVist})
+        this.sumItems.push({name: 'Transactions', vals: this.jsonMsg.numRecords})
+        this.sumItems.push({name: 'Raw Cadence - 80% - Days', vals: this.jsonMsg.rawCadence})
+        this.sumItems.push({name: 'Normalized Cadence', vals: this.jsonMsg.normalizedCadence})
+        this.sumItems.push({name: 'Time Period', vals: this.jsonMsg.numTimePeriods})
       }
       // todo more methods fit in here.....
     }
