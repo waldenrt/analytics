@@ -1,5 +1,24 @@
 <template>
   <v-container fluid class="balorSegmentTrend">
+    <v-layout row wrap class="mt-0 mb-3 pa-0">
+      <v-flex xs12>
+        <v-card flat>
+          <v-tabs id="mobile-tabs-3" grow class="elevation-1">
+            <v-tabs-bar slot="activators" class="grey lighten-2">
+              <v-tabs-slider></v-tabs-slider>
+              <v-tabs-item router to="/Balor/Trend">
+                BALOR Trends
+                <v-icon class="pt-1">timeline</v-icon>
+              </v-tabs-item>
+              <v-tabs-item router to="/Balor/SegmentTrend">
+                Segment Trends
+                <v-icon class="pt-1">multiline_chart</v-icon>
+              </v-tabs-item>
+            </v-tabs-bar>
+          </v-tabs>
+        </v-card>
+      </v-flex>
+    </v-layout>
 
     <v-layout row wrap class="mb-3">
       <v-flex xs12 sm12 md8 lg9 class="mb-3" style="height:49vh;">
