@@ -10,6 +10,7 @@ import Cadence from '@/components/Cadence'
 import Settings from '@/components/Settings'
 import Quantile from '@/components/Quantile'
 import QuantProfile from '@/components/QuantProfile'
+import Lifecycle from '@/components/Lifecycle'
 
 Vue.use(Router)
 
@@ -90,6 +91,33 @@ export default new Router({
         {
           path: 'Products',
           name: 'QuantProd',
+          component: Settings
+        }
+      ]
+    },
+    {
+      path: '/Lifecycle',
+      name: 'LifecycleMain',
+      component: Lifecycle,
+      children: [
+        {
+          path: 'NewLifecycle',
+          name: 'NewLifecycle',
+          component: Settings
+        },
+        {
+          path: 'Summary',
+          name: 'LifecycleSummary',
+          component: Settings
+        },
+        {
+          path: 'Migration',
+          name: 'LifecycleMig',
+          component: Settings
+        },
+        {
+          path: 'Products',
+          name: 'LifecycleProd',
           component: Settings
         }
       ]

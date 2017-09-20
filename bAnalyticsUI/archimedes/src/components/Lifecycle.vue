@@ -5,8 +5,6 @@
       <v-layout row-sm column child-flex-sm>
         <v-flex xs12>
           <div>
-            <!--<p>first line</p>
-            <p>we can put notices here and they will be always visible from everywhere in the app..</p>-->
             <balor-breadcrumbs></balor-breadcrumbs>
             <router-view></router-view>
           </div>
@@ -19,10 +17,10 @@
 
 <script>
   import BalorBreadcrumbs from './BalorBreadcrumbs.vue'
-  // TODO update to quantile breadcrumbs when they are completed....
+  // TODO update to lifecycle tabs when they are completed....
 
   export default {
-    name: 'quantile',
+    name: 'lifecycle',
     components: {
       BalorBreadcrumbs
     }

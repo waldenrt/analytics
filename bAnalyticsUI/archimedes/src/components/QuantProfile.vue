@@ -73,8 +73,11 @@
         quantileArray: [],
         quantArrayCurr: [],
         spendPerArray: [],
+        spendPerArrayCurr: [],
         unitPerArray: [],
+        unitPerArrayCurr: [],
         visitPerArray: [],
+        visitPerArrayCurr: [],
         paretoData: {},
         custHeaders: [
           {
@@ -572,26 +575,35 @@
           this.quantArrayCurr = this.quantileArray
           this.selectMetric()
         } else {
-          var sorted = this.quantileSelect
-          // sorted.sort()
+          var sorted = this.quantileSelect.slice().sort((a, b) => (a - b))
+          sorted.slice().sort()
           console.log(sorted)
           console.log('no all here')
           var unitArray = []
           var spendArray = []
           var visitArray = []
           var quantArray = []
+          var unitPer = []
+          var spendPer = []
+          var visitPer = []
 
           for (var i = 0; i < sorted.length; i++) {
             unitArray.push(this.unitArrayFull[sorted[i] - 1])
             spendArray.push(this.spendArrayFull[sorted[i] - 1])
             visitArray.push(this.visitArrayFull[sorted[i] - 1])
             quantArray.push(this.quantileArray[sorted[i] - 1])
+            unitPer.push(this.unitPerArray[sorted[i] - 1])
+            spendPer.push(this.spendPerArray[sorted[i] - 1])
+            visitPer.push(this.visitPerArray[sorted[i] - 1])
           }
 
           this.spendArrayCurr = spendArray
           this.unitArrayCurr = unitArray
           this.visitArrayCurr = visitArray
           this.quantArrayCurr = quantArray
+          this.spendPerArrayCurr = spendPer
+          this.visitPerArrayCurr = visitPer
+          this.unitPerArrayCurr = unitPer
 
           this.selectMetric()
         }
@@ -606,7 +618,7 @@
                 label: 'Total Spend',
                 backgroundColor: '#0087AA'
               }, {
-                data: this.spendPerArray,
+                data: this.spendPerArrayCurr,
                 label: 'Cumlative Percent Spend',
                 type: 'line',
                 yAxisID: 'right-y-axis',
@@ -618,14 +630,14 @@
           }
         } else if (this.metricSelect === 'Units') {
           this.paretoData = {
-            labels: this.quantileArray,
+            labels: this.quantArrayCurr,
             datasets: [
               {
                 data: this.unitArrayCurr,
                 label: 'Total Units',
                 backgroundColor: '#0087AA'
               }, {
-                data: this.unitPerArray,
+                data: this.unitPerArrayCurr,
                 label: 'Cumlative Percent Units',
                 type: 'line',
                 yAxisID: 'right-y-axis',
@@ -637,14 +649,14 @@
           }
         } else if (this.metricSelect === 'Visits') {
           this.paretoData = {
-            labels: this.quantileArray,
+            labels: this.quantArrayCurr,
             datasets: [
               {
                 data: this.visitArrayCurr,
                 label: 'Total Visits',
                 backgroundColor: '#0087AA'
               }, {
-                data: this.visitPerArray,
+                data: this.visitPerArrayCurr,
                 label: 'Cumlative Percent Visits',
                 type: 'line',
                 yAxisID: 'right-y-axis',
