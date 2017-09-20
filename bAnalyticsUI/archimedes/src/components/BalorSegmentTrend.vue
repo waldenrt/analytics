@@ -12,7 +12,7 @@
             </v-tabs-item>
             <v-tabs-item router to="/Balor/SegmentTrend">
               Segment Trends
-              <v-icon class="pt-1">multiline_chart</v-icon>
+              <v-icon class="pt-1">bar_chart</v-icon>
             </v-tabs-item>
           </v-tabs-bar>
         </v-tabs>
