@@ -132,7 +132,15 @@
   @import './assets/stylus/main.styl';
   @import '../node_modules/nouislider/distribute/nouislider.min.css';
 
-  .content{flex: 1 0 auto;height:100%;padding:0;margin:0;display:flex;flex-direction:column;}
+  .content {
+    flex: 1 0 auto;
+    height:100%;
+    padding:0;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+    background-color:#eff3f6;
+  }
 
   @media (max-width: 550px) {
     body {font-size: 12px;}

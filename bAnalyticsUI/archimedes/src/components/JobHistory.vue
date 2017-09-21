@@ -16,9 +16,9 @@
             v-bind:headers="headers"
             v-bind:items="items"
             v-bind:search="search"
-            v-bind:pagination.sync="pagination"
-            :total-items="totalItems"
-            :loading="loading"
+            v-model="selected"
+            selected-key="id"
+            select-all
             class="elevation-1"
           >
             <template slot="headers" scope="props">
@@ -27,12 +27,36 @@
               </span>
             </template>
             <template slot="items" scope="props">
-              <td>{{ props.item.name }}</td>
-              <td class="text-xs-right">{{ props.item.calories }}</td>
-              <td class="text-xs-right">{{ props.item.fat }}</td>
-              <td class="text-xs-right">{{ props.item.carbs }}</td>
-              <td class="text-xs-right">{{ props.item.protein }}</td>
-              <td class="text-xs-right"><v-icon>more_horiz</v-icon></td>
+              <td>
+                <v-checkbox
+                  primary
+                  hide-details
+                  v-model="props.selected"
+                ></v-checkbox>
+              </td>
+              <td>{{ props.item.id }}</td>
+              <td class="text-xs-right">{{ props.item.name }}</td>
+              <td class="text-xs-right">{{ props.item.job }}</td>
+              <td class="text-xs-right">
+                {{ props.item.status }}
+                  <div style="display:inline-block;background-color:#F7970E;width:15px;height:15px;border-radius:2px;margin-left:2px;position:relative;top:3px;"></div>
+              </td>
+              <td class="text-xs-right">{{ props.item.date_mod }}</td>
+              <td class="text-xs-right">{{ props.item.record }}</td>
+              <td class="text-xs-right pl-1" style="width:10px !important;">
+                <v-menu bottom left offset-y>
+                  <v-btn icon="icon" slot="activator" light>
+                    <v-icon class="primary--text text-xs-right pl-4">more_vert</v-icon>
+                  </v-btn>
+                  <v-list>
+                    <v-list-item v-for="drop in drops" :key="drop.slot">
+                      <v-list-tile>
+                        <v-list-tile-title>{{ drop.title }}</v-list-tile-title>
+                      </v-list-tile>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </td>
             </template>
           </v-data-table>
         </v-card>
@@ -47,175 +71,127 @@
     data () {
       return {
         search: '',
-        totalItems: 0,
-        items: [],
-        loading: true,
-        pagination: {},
-        headers: [
+        selected: [],
+        headers: [ // Data that populates the Data Table Header Row
           {
-            text: 'Name',
+            text: 'ID',
             left: true,
-            sortable: false,
-            value: 'name'
+            sortable: true,
+            value: 'id'
           },
-          { text: 'Job Type', value: 'calories' },
-          { text: 'Status', value: 'fat' },
-          { text: 'Last Modified Date', value: 'carbs' },
-          { text: 'Record Count', value: 'protein' },
-          { text: 'BLANK', value: 'sodium' }
-        ]
-      }
-    },
-    watch: {
-      pagination: {
-        handler () {
-          this.getDataFromApi()
-            .then(data => {
-              this.items = data.items
-              this.totalItems = data.total
-            })
-        },
-        deep: true
-      }
-    },
-    mounted () {
-      this.getDataFromApi()
-        .then(data => {
-          this.items = data.items
-          this.totalItems = data.total
-        })
-    },
-    methods: {
-      getDataFromApi () {
-        this.loading = true
-        return new Promise((resolve, reject) => {
-          const { sortBy, descending, page, rowsPerPage } = this.pagination
-
-          let items = this.getUsers()
-          const total = items.length
-
-          if (this.pagination.sortBy) {
-            items = items.sort((a, b) => {
-              const sortA = a[sortBy]
-              const sortB = b[sortBy]
-
-              if (descending) {
-                if (sortA < sortB) return 1
-                if (sortA > sortB) return -1
-                return 0
-              } else {
-                if (sortA < sortB) return -1
-                if (sortA > sortB) return 1
-                return 0
-              }
-            })
+          { text: 'Name', value: 'name' },
+          { text: 'Job Type', value: 'job' },
+          { text: 'Status', value: 'status' },
+          { text: 'Last Modified Date', value: 'date_mod' },
+          { text: 'Record Count', value: 'record' },
+          { text: 'Actions', value: 'action' }
+        ],
+        items: [ // Data that populates the Data Table
+          {
+            value: false,
+            id: '0000-0001',
+            name: 'Name01',
+            job: 'Balor',
+            status: 'File Uploaded',
+            date_mod: '2017-01-01',
+            record: 100,
+            action: ''
+          },
+          {
+            value: false,
+            id: '0000-0002',
+            name: 'Name02',
+            job: 'Balor',
+            status: 'Cadence Complete',
+            date_mod: '2017-05-01',
+            record: 90,
+            action: ''
+          },
+          {
+            value: false,
+            id: '0000-0003',
+            name: 'Name03',
+            job: 'Core Lifecycle',
+            status: 'Running',
+            date_mod: '2017-08-01',
+            record: 80,
+            action: ''
+          },
+          {
+            value: false,
+            id: '0000-0004',
+            name: 'Name04',
+            job: 'bRelevant',
+            status: 'Running',
+            date_mod: '2017-10-01',
+            record: 70,
+            action: ''
+          },
+          {
+            value: false,
+            id: '0000-0005',
+            name: 'Name05',
+            job: 'Balor',
+            status: 'Balor Complete',
+            date_mod: '2017-06-01',
+            record: 40,
+            action: ''
+          },
+          {
+            value: false,
+            id: '0000-0006',
+            name: 'Name06',
+            job: 'Balor',
+            status: 'Cadence Complete',
+            date_mod: '2017-02-01',
+            record: 17,
+            action: ''
+          },
+          {
+            value: false,
+            id: '0000-0007',
+            name: 'Name07',
+            job: 'Balor',
+            status: 'Balor Complete',
+            date_mod: '2017-09-01',
+            record: 1,
+            action: ''
+          },
+          {
+            value: false,
+            id: '0000-0008',
+            name: 'Name08',
+            job: 'Balor',
+            status: 'Balor Complete',
+            date_mod: '2017-07-01',
+            record: 6,
+            action: ''
+          },
+          {
+            value: false,
+            id: '0000-0009',
+            name: 'Name09',
+            job: 'Balor',
+            status: 'Balor Complete',
+            date_mod: '2017-04-01',
+            record: 5,
+            action: ''
+          },
+          {
+            value: false,
+            id: '0000-0010',
+            name: 'Name10',
+            job: 'Balor',
+            status: 'Balor Complete',
+            date_mod: '2017-03-01',
+            record: 7,
+            action: ''
           }
-
-          if (rowsPerPage > 0) {
-            items = items.slice((page - 1) * rowsPerPage, page * rowsPerPage)
-          }
-
-          setTimeout(() => {
-            this.loading = false
-            resolve({
-              items,
-              total
-            })
-          }, 1000)
-        })
-      },
-      getUsers () {
-        return [
-          {
-            value: false,
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            sodium: 87
-          },
-          {
-            value: false,
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            sodium: 129
-          },
-          {
-            value: false,
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            sodium: 337
-          },
-          {
-            value: false,
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            sodium: 413
-          },
-          {
-            value: false,
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            sodium: 327
-          },
-          {
-            value: false,
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-            sodium: 50
-          },
-          {
-            value: false,
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-            sodium: 38
-          },
-          {
-            value: false,
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-            sodium: 562
-          },
-          {
-            value: false,
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-            sodium: 326
-          },
-          {
-            value: false,
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-            sodium: 54
-          }
+        ],
+        drops: [ // Dropdown for each job
+          { title: 'View', slot: 1 },
+          { title: 'Delete', slot: 2 },
+          { title: 'Export', slot: 3 }
         ]
       }
     }
