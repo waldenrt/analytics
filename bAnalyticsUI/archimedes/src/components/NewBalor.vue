@@ -21,6 +21,7 @@
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Select file for analysis</h6>
           </v-card-title>
+          <!-- Shouldn't be a plain select....
           <v-select
               v-model="dialog"
               persistent
@@ -32,8 +33,11 @@
               class="ma-3 pr-4"
               required
             ></v-select>
+
+        -->
+          <input type="file" :name="uploadFieldName" @change="filesChange($event.target.name, $event.target.files)" class="input-file">
         </v-card>
-        <!-- //CARD2 -->
+          <!-- //CARD2 -->
         <!-- CARD3 -->
         <v-card class="white v_card_width">
           <v-card-title primary-title class="primary">
