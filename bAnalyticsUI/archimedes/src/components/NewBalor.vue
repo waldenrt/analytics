@@ -62,7 +62,7 @@
       <!-- COLUMN2 -->
       <v-flex d-flex xs12 sm6>
         <v-card class="white">
-          <img src="http://via.placeholder.com/525x150/00313D/ffffff?text=[Image+of+Sample+file+preview]" width="100%" height="100%" style="padding:10px;">
+          <img src="../assets/images/balor_file_image.png" width="100%" height="100%" style="padding:10px;">
         </v-card>
         <v-card class="white mt-3">
           <img src="http://via.placeholder.com/525x150/8EAC1D/ffffff?text=User+File+Preview" width="100%" height="100%" style="padding:10px;">
