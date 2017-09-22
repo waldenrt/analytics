@@ -37,7 +37,7 @@
       <v-toolbar-title class="text--text">{{ appmodule }}</v-toolbar-title>
       <v-toolbar-items>
 
-        <v-menu>
+        <v-menu bottom left offset-y>
           <v-btn primary outline slot="activator" class="primary--text">Client</v-btn>
           <v-list>
             <v-list-item v-for="client in clients" :key="client.id">
@@ -47,10 +47,10 @@
             </v-list-item>
           </v-list>
         </v-menu>
-        <v-btn icon slot="activator" v-tooltip:left="{ html: 'Global Job History' }">
+        <v-btn router  to="/JobHistory" icon slot="activator" v-tooltip:left="{ html: 'Global Job History' }">
           <v-icon>history</v-icon>
         </v-btn>
-        <v-menu>
+        <v-menu bottom left offset-y>
           <v-btn icon slot="activator">
             <v-icon>account_circle</v-icon>
           </v-btn>
@@ -104,7 +104,7 @@
         ],
         modules: [
           {name: 'Balor', active: true, icon: 'label', link: '/Balor'},
-          {name: 'Decile', active: false, icon: 'label', link: '/Quantile'},
+          {name: 'Quantile', active: false, icon: 'label', link: '/Quantile'},
           {name: 'Core Lifecycle', active: false, icon: 'label', link: '/Lifecycle'},
           {name: 'bRelevant', active: false, icon: 'label', link: '/bRelevant'},
           {name: 'History', active: false, icon: 'history', link: '/History'},

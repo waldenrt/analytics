@@ -2,7 +2,7 @@
     <v-container fluid class="NewBalor">
     <v-layout row wrap>
       <!-- COLUMN1 -->
-      <v-flex d-flex xs12 sm6>
+      <v-flex d-flex xs12 sm12 md6>
         <!-- CARD1 -->
         <v-card class="white v_card_width">
           <v-card-title primary-title class="primary">
@@ -17,25 +17,11 @@
         </v-card>
         <!-- //CARD1 -->
         <!-- CARD2 -->
-        <v-card class="white v_card_width">
+        <v-card class="white v_card_width mb-3">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Select file for analysis</h6>
           </v-card-title>
-          <!-- Shouldn't be a plain select....
-          <v-select
-              v-model="dialog"
-              persistent
-              label="Select file for analysis"
-              single-line
-              auto
-              prepend-icon="search"
-              slot="activator"
-              class="ma-3 pr-4"
-              required
-            ></v-select>
-
-        -->
-          <input type="file" :name="uploadFieldName" @change="filesChange($event.target.name, $event.target.files)" class="input-file">
+          <input type="file" :name="uploadFieldName" @change="filesChange($event.target.name, $event.target.files)" class="input-file ma-3">
         </v-card>
           <!-- //CARD2 -->
         <!-- CARD3 -->
@@ -54,18 +40,21 @@
               required
             ></v-select>
         </v-card>
+        <!-- //CARD3 -->
         <v-btn @click="submit" :class="{ green: valid, red: !valid }" class="primary white--text">submit</v-btn>
         <v-btn @click="clear">clear</v-btn>
-        <!-- CARD2 -->
       </v-flex>
       <!-- //COLUMN1 -->
       <!-- COLUMN2 -->
-      <v-flex d-flex xs12 sm6>
+      <v-flex d-flex xs12 sm12 md6>
         <v-card class="white">
-          <img src="../assets/images/balor_file_image.png" width="100%" height="100%" style="padding:10px;">
+          <v-card-title primary-title class="primary">
+            <h6 class="white--text text-xs-left mb-0">Sample File Image</h6>
+          </v-card-title>
+          <img src="../assets/images/balor_file_img.png" width="100%" height="100%" class="file_sample">
         </v-card>
         <v-card class="white mt-3">
-          <img src="http://via.placeholder.com/525x150/8EAC1D/ffffff?text=User+File+Preview" width="100%" height="100%" style="padding:10px;">
+          <img src="http://via.placeholder.com/525x150/EDEDED/ffffff?text=User+File+Preview" width="100%" height="100%" class="file_sample">
         </v-card>
       </v-flex>
       <!-- //COLUMN2 -->
@@ -92,5 +81,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.v_card_width{max-width:450px;}
+.v_card_width {max-width:450px;}
+.file_sample {padding:10px; position:relative; top:3px;}
 </style>

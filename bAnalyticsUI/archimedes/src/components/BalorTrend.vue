@@ -31,17 +31,21 @@
             <v-flex xs12>
               <v-card flat>
                 <v-layout row wrap class="checkboxes pl-3 pr-3">
-                  <v-flex xs12 sm6 md2 grey--text subheading><input class="mr-1" type='checkbox' id='allTrends'
-                                                                    checked='true' @change="allUpdate()">All
+                  <v-flex xs12 sm6 md2 grey--text subheading>
+                    <input class="mr-1" type='checkbox' id='allTrends'
+                    checked='true' @change="allUpdate()">All
                   </v-flex>
-                  <v-flex xs12 sm6 md3 grey--text subheading><input class="mr-1" type='checkbox' id='custTrend'
-                                                                    @change="singleUpdate()">Customer
+                  <v-flex xs12 sm6 md3 grey--text subheading>
+                    <input class="mr-1" type='checkbox' id='custTrend'
+                    @change="singleUpdate()">Customer
                   </v-flex>
-                  <v-flex xs12 sm6 md3 grey--text subheading><input class="mr-1" type='checkbox' id='txnTrend'
-                                                                    @change="singleUpdate()">Transaction
+                  <v-flex xs12 sm6 md3 grey--text subheading>
+                    <input class="mr-1" type='checkbox' id='txnTrend'
+                    @change="singleUpdate()">Transaction
                   </v-flex>
-                  <v-flex xs12 sm6 md3 grey--text subheading><input class="mr-1" type='checkbox' id='spendTrend'
-                                                                    @change="singleUpdate()">Spend
+                  <v-flex xs12 sm6 md3 grey--text subheading>
+                    <input class="mr-1" type='checkbox' id='spendTrend'
+                    @change="singleUpdate()">Spend
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -69,9 +73,10 @@
       </v-flex>
       <v-flex xs12 sm12 md4 lg3 fill-height>
         <v-card class="white">
-          <v-card-title primary-title class="primary">
-            <h6 class="white--text text-xs-left mb-0">BALOR Summary</h6>
+          <v-card-title primary-title class="white">
+            <h6 class="primary--text text-xs-left mb-0">BALOR Summary</h6>
           </v-card-title>
+          <v-divider class="primary pb-0"></v-divider>
           <v-flex xs12 fill-height>
                 <v-layout row>
                   <table width="100%" cellpadding="0" cellspacing="0">
@@ -120,6 +125,20 @@
             </v-card>
           </v-flex>
           <!--//selection-->
+        </v-layout>
+        <v-layout row wrap>
+          <v-flex xs12>
+            <v-card flat class="white pa-3">
+              <div class="legend" style="background-color:#D63809;"></div>
+                <div style="display:inline;padding-right:5px;">Lapsed</div>
+              <div class="legend" style="background-color:#8EAC1D;"></div>
+                <div style="display:inline;padding-right:5px;">New</div>
+              <div class="legend" style="background-color:#F7970E;"></div>
+                <div style="display:inline;padding-right:5px;">Returning</div>
+              <div class="legend" style="background-color:#0087AA;"></div>
+                <div style="display:inline;padding-right:5px;">Reactivated</div>
+            </v-card>
+          </v-flex>
         </v-layout>
         <!--Pie Charts-->
         <v-layout row wrap>
@@ -443,7 +462,6 @@
         this.sumItems.push({name: 'Transactions', vals: this.jsonMsg.numRecords})
         this.sumItems.push({name: 'Purchase Cadence - 80th Percentile', vals: this.jsonMsg.normalizedCadence})
         this.sumItems.push({name: 'Time Period', vals: this.jsonMsg.timePeriods.length})
-        this.sumItems.push({name: 'Retention', vals: 'This is done by TimePeriod not overall...'})
       },
       createLines () {
         var tempCust = []
@@ -841,7 +859,7 @@
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
 
-.inliner{display:inline-block;}
+.inliner {display:inline-block;}
 .line_chart {
   position: relative;
   margin: 0 auto;
@@ -857,7 +875,15 @@
   margin: 0 auto;
   height: 20vw !important;
 }
-.left_float{float: left;}
-.right_float{float:right;}
+.left_float {float: left;}
+.right_float {float:right;}
+.legend {
+  display:inline-block;
+  width:38px;
+  height:12px;
+  border-radius:2px;
+  margin-right:5px;
+}
+.legend_color { background-color:#005E76; }
 
 </style>
