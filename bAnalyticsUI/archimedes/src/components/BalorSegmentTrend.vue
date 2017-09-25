@@ -22,10 +22,11 @@
   <!--ROW1-->
   <v-layout row wrap class="pt-0 mb-3">
     <v-flex xs12>
+      <v-card-title primary-title class="primary">
+        <h6 class="white--text text-xs-left mb-0">Segment Trends</h6>
+      </v-card-title>
       <v-card class="pa-0 ma-0 grey lighten-2">
         <v-layout row wrap>
-
-
         <!--Dropdown1-->
         <v-flex xs12 sm6 md4>
           <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
@@ -124,6 +125,9 @@
   <!--ROW2-->
   <v-layout row wrap class="mt-4 mb-3">
     <v-flex xs12>
+      <v-card-title primary-title class="primary">
+        <h6 class="white--text text-xs-left mb-0">Segment Profiles</h6>
+      </v-card-title>
       <v-card class="pa-0 ma-0 grey lighten-2">
         <v-layout row wrap>
           <!--Dropdown1-->

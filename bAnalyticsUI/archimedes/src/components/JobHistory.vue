@@ -37,9 +37,9 @@
               <td>{{ props.item.id }}</td>
               <td class="text-xs-right">{{ props.item.name }}</td>
               <td class="text-xs-right">{{ props.item.job }}</td>
-              <td class="text-xs-right">
+              <td class="text-xs-right" id="status_col">
                 {{ props.item.status }}
-                  <div style="display:inline-block;background-color:#F7970E;width:15px;height:15px;border-radius:2px;margin-left:2px;position:relative;top:3px;"></div>
+                  <div class="status_block"></div>
               </td>
               <td class="text-xs-right">{{ props.item.date_mod }}</td>
               <td class="text-xs-right">{{ props.item.record }}</td>
@@ -194,11 +194,38 @@
           { title: 'Export', slot: 3 }
         ]
       }
+    },
+    methods: {
+      statusColor () {
+        var x = document.getElementsByClassName('status_block')
+        for (var i = 0; i < this.items.length; i++) {
+          if (this.items[i].status === 'File Uploaded') {
+            x[i].style.backgroundColor = '#005E76'
+          } else if (this.items[i].status === 'Cadence Complete') {
+            x[i].style.backgroundColor = '#8EAC1D'
+          } else if (this.items[i].status === 'Balor Complete') {
+            x[i].style.backgroundColor = '#8EAC1D'
+          } else if (this.items[i].status === 'Running') {
+            x[i].style.backgroundColor = '#F7970E'
+          }
+        }
+      }
+    },
+    mounted () {
+      this.statusColor()
     }
   }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.status_block {
+    display:inline-block;
+    width:15px;
+    height:15px;
+    border-radius:2px;
+    margin-left:4px;
+    position:relative;
+    top:3px;
+  }
 </style>
