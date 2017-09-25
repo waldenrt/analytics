@@ -32,7 +32,7 @@
           <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
             <v-layout row wrap>
               <v-flex xs5>
-                <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT25">
+                <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
                   Select BALOR<br />metrics:
                 </div>
               </v-flex>
@@ -57,7 +57,7 @@
           <v-card flat class="pl-2 pr-2 grey lighten-2">
             <v-layout row wrap>
               <v-flex xs5>
-                <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT25">
+                <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
                   Select BALOR<br />segment:
                 </div>
               </v-flex>
@@ -135,7 +135,7 @@
             <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
               <v-layout row wrap>
                 <v-flex xs5>
-                  <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT25">
+                  <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
                     Select BALOR<br />time period:
                   </div>
                 </v-flex>
@@ -161,7 +161,7 @@
             <v-card flat class="pl-2 pr-2 grey lighten-2">
               <v-layout row wrap>
                 <v-flex xs5>
-                  <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT25">
+                  <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
                     Select BALOR<br />metric:
                   </div>
                 </v-flex>
@@ -2300,7 +2300,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 .chart_h{height:31vh !important;}
-.padT25{padding-top:25px !important;}
+.padT18{padding-top:18px !important;}
 </style>

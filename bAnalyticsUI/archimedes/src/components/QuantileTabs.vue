@@ -10,8 +10,8 @@
           <v-tabs-bar slot="activators">
             <v-tabs-slider></v-tabs-slider>
             <v-tabs-item router to="/Quantile/NewQuantile">Input</v-tabs-item>
-            <v-tabs-item router to="/Quantile/Summary">Quantile Summary & Profiles</v-tabs-item>
-            <v-tabs-item router to="/Quantile/Migration">Quantile Migration</v-tabs-item>
+            <v-tabs-item router to="/Quantile/Summary">Summary & Profiles</v-tabs-item>
+            <v-tabs-item router to="/Quantile/Migration">Migration</v-tabs-item>
             <v-tabs-item router to="/Quantile/Products">Top/Bottom Products</v-tabs-item>
           </v-tabs-bar>
         </v-tabs>

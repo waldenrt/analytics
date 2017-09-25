@@ -1,50 +1,127 @@
 <template>
-  <div>
-    <div>
-      <v-select v-bind:items="quantiles"
-                v-model="quantileSelect"
-                label="Select Quantiles"
-                multiple
-                single-line
-                bottom
-                v-on:input="selectQuantile()">
-      </v-select>
-      <v-select
-          v-bind:items="TPArray"
-          v-model="TPSelect"
-          label="Select Time Period"
-          single-line
-          bottom
-          v-on:input="selectTP()">
-      </v-select>
-      <v-select
-          v-bind:items="metrics"
-          v-model="metricSelect"
-          label="Select Metric"
-          single-line
-          bottom
-          v-on:input="selectMetric()">
-      </v-select>
-    </div>
-    <div>
-      <pareto-chart :chart-data="paretoData"></pareto-chart>
-    </div>
+  <v-container fluid class="balorSegmentTrend">
+    <!--ROW1-->
+    <v-layout row wrap class="pt-0 mb-3">
+      <v-flex xs12>
+        <v-card class="pa-0 ma-0 grey lighten-2">
+          <v-card-title primary-title class="primary">
+            <h6 class="white--text text-xs-left mb-0">Customer Quantile Summary & Pareto Analysis</h6>
+          </v-card-title>
+          <v-layout row wrap>
+          <!--Dropdown1-->
+          <v-flex xs12 sm3>
+            <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
+              <v-layout row wrap>
+                <v-flex xs12>
+                  <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                    Select Customer<br />Quantiles:
+                  </div>
+                </v-flex>
+                <v-flex xs12>
+                  <v-card class="white pa-0">
+                    <v-select v-bind:items="quantiles"
+                              v-model="quantileSelect"
+                              label="Select Quantiles"
+                              multiple
+                              single-line
+                              bottom
+                              v-on:input="selectQuantile()"
+                              class="pl-1 pr-1 m-0">
+                    </v-select>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-flex>
+          <!--//Dropdown1-->
+          <!--Dropdown2-->
+          <v-flex xs12 sm3>
+            <v-card flat class="pl-2 pr-2 grey lighten-2">
+              <v-layout row wrap>
+                <v-flex xs12>
+                  <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                    Choose A Time<br />Period:
+                  </div>
+                </v-flex>
+                <v-flex xs12>
+                  <v-card class="white">
+                    <v-select
+                        v-bind:items="TPArray"
+                        v-model="TPSelect"
+                        label="Select Time Period"
+                        single-line
+                        bottom
+                        v-on:input="selectTP()"
+                        class="pl-1 pr-1 m-0">
+                    </v-select>
+                </v-card>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-flex>
+          <!--//Dropdown2-->
+          <!--Dropdown3-->
+          <v-flex xs12 sm3>
+            <v-card flat class="pl-2 pr-2 grey lighten-2">
+              <v-layout row wrap>
+                <v-flex xs12>
+                  <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                    Select Metrics for<br />Pareto Analysis:
+                  </div>
+                </v-flex>
+                <v-flex xs12>
+                  <v-card class="white">
+                    <v-select
+                        v-bind:items="metrics"
+                        v-model="metricSelect"
+                        label="Select Metric"
+                        single-line
+                        bottom
+                        v-on:input="selectMetric()"
+                        class="pl-1 pr-1 m-0">
+                    </v-select>
+                </v-card>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-flex>
+          <!--//Dropdown3-->
+          </v-layout>
+        </v-card>
+      </v-flex>
+    </v-layout>
+    <!--//ROW1-->
+    <v-layout wrap row>
+      <v-flex xs12>
+        <v-card class="white pl-3 pr-3 pt-1 pb-1">
+          <div class="title primary--text text-xs-center pa-1">Quantile Pareto Analysis</div>
+          <pareto-chart :chart-data="paretoData" style="height:23vh;"></pareto-chart>
+        </v-card>
+      </v-flex>
+    </v-layout>
 
-    <v-data-table
-        v-bind:headers="custHeaders"
-        :items="custItems"
-        hide-actions>
-      <template slot="items" scope="props">
-        <td>{{ props.item.quantile }}</td>
-        <td class="text-xs-right">{{ props.item.avgCustSales }}</td>
-        <td class="text-xs-right">{{ props.item.avgVisitSpend }}</td>
-        <td class="text-xs-right">{{ props.item.avgItemSales }}</td>
-        <td class="text-xs-right">{{ props.item.avgCustUnits }}</td>
-        <td class="text-xs-right">{{ props.item.avgVisitUnits }}</td>
-        <td class="text-xs-right">{{ props.item.avgCustVisits }}</td>
-      </template>
-    </v-data-table>
-  </div>
+    <v-layout wrap row>
+      <v-flex xs12>
+        <v-card class="white pl-3 pr-3 pt-1 pb-1">
+          <div class="title primary--text text-xs-center pa-1">Quantile Purchase Profiles</div>
+          <v-data-table
+              v-bind:headers="custHeaders"
+              :items="custItems"
+              hide-actions>
+            <template slot="items" scope="props">
+              <td>{{ props.item.quantile }}</td>
+              <td class="text-xs-right">{{ props.item.avgCustSales }}</td>
+              <td class="text-xs-right">{{ props.item.avgVisitSpend }}</td>
+              <td class="text-xs-right">{{ props.item.avgItemSales }}</td>
+              <td class="text-xs-right">{{ props.item.avgCustUnits }}</td>
+              <td class="text-xs-right">{{ props.item.avgVisitUnits }}</td>
+              <td class="text-xs-right">{{ props.item.avgCustVisits }}</td>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -880,5 +957,4 @@
 </script>
 
 <style>
-
 </style>

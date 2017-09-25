@@ -4,10 +4,12 @@
     <v-container fluid>
       <v-layout row-sm column child-flex-sm>
         <v-flex xs12>
-          <div>
-            <balor-breadcrumbs></balor-breadcrumbs>
+          <v-card flat>
+            <!--<p>first line</p>
+            <p>we can put notices here and they will be always visible from everywhere in the app..</p>-->
+            <LifecycleTabs></LifecycleTabs>
             <router-view></router-view>
-          </div>
+          </v-card>
         </v-flex>
       </v-layout>
     </v-container>
@@ -16,13 +18,13 @@
 </template>
 
 <script>
-  import BalorBreadcrumbs from './BalorBreadcrumbs.vue'
+  import LifecycleTabs from './LifecycleTabs.vue'
   // TODO update to lifecycle tabs when they are completed....
 
   export default {
     name: 'lifecycle',
     components: {
-      BalorBreadcrumbs
+      LifecycleTabs
     }
   }
 
