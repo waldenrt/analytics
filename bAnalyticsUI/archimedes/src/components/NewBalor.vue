@@ -22,7 +22,7 @@
             <h6 class="white--text text-xs-left mb-0">Select file for analysis</h6>
           </v-card-title>
           <form enctype="multipart/form-data">
-            <input type="file" id="fileUploader" @change="fileUpload()">
+            <input type="file" :name="uploadFieldName"  @change="fileUpload($event.target.name, $event.target.files)">
           </form>
         </v-card>
         <!-- //CARD2 -->
@@ -66,6 +66,8 @@
 </template>
 
 <script>
+  import {upload} from './javascript/file-upload.service'
+
   export default {
     data () {
       return {
@@ -77,37 +79,28 @@
           {text: '.DSV (";" delimeter)'}
         ],
         dialog: false,
-        valid: true
+        valid: true,
+        uploadedFiles: [],
+        uploadError: null,
+        currentStatus: null,
+        uploadFieldName: 'file'
       }
     },
     methods: {
-      fileUpload () {
-        var path = document.getElementById('fileUploader').value
-        console.log('path...' + path)
-        var WebHDFS = require('webhdfs')
+      fileUpload (fieldName, fileNames) {
+        console.log('Entering fileUpload')
+        const formData = new FormData()
+        if (!fileNames.length) return
 
-        var hdfs = WebHDFS.createClient({
-          user: 'admin',
-          host: '10.4.3.26',
-          port: 14000,
-          path: '/webhdfs/v1'
-        })
-        var fs = require('fs')
-        var localFileStream = fs.createReadStream(path)
-        // e.target.files || e.dataTransfer.files
-        var remoteFileStream = hdfs.createWriteStream('/user/archimedes/brierley/demo/test')
+        formData.append(fieldName, fileNames[0])
 
-        localFileStream.pipe(remoteFileStream)
-
-        remoteFileStream.on('error', function onError (err) {
-          console.log('ERROR occured: ' + err)
-          // Do something with the error
-        })
-
-        remoteFileStream.on('finish', function onFinish () {
-          console.log('Upload succesful')
-          // Upload is done
-        })
+        this.save(formData)
+      },
+      save (formData) {
+        upload(formData)
+          .catch(err => {
+            alert('There was an error uploading the file.  Please try again.  ' + err.message.toString())
+          })
       },
       submit () {
         console.log('submit job now')
