@@ -14,9 +14,18 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
+    "chart.js": "^2.6.0",
+    "chartjs-plugin-annotation": "^0.5.5",
+    "hdfs": "^1.0.1",
+    "net": "^1.0.2",
+    "nouislider": "^10.1.0",
+    "tls": "0.0.1",
+    "v-file-upload": "^3.1.0",
     "vue": "^2.2.6",
+    "vue-chartjs": "^2.8.2",
     "vue-router": "^2.3.1",
-    "vuex": "^2.3.1"
+    "vuex": "^2.3.1",
+    "webhdfs": "^1.1.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
@@ -83,7 +92,7 @@
     "vue-loader": "^11.3.4",
     "vue-style-loader": "^2.0.5",
     "vue-template-compiler": "^2.2.6",
-    "vuetify": "^0.12.0",
+    "vuetify": "0.12.0",
     "webpack": "^2.3.3",
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-dev-middleware": "^1.10.0",

@@ -67,5 +67,11 @@ module.exports = {
         loader: ['style', 'css', 'stylus']
       }
     ]
+  },
+  node: {
+    console: true,
+    fs: true,
+    net: 'empty',
+    tls: 'empty'
   }
 }

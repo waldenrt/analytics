@@ -1,13 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
+import Home from '@/components/Home'
 import JobHistory from '@/components/JobHistory'
+import Balor from '@/components/Balor'
 import NewBalor from '@/components/NewBalor'
 import BalorSegmentTrend from '@/components/BalorSegmentTrend'
-import BalorSegmentProfile from '@/components/BalorSegmentProfile'
 import BalorTrend from '@/components/BalorTrend'
 import Cadence from '@/components/Cadence'
 import Settings from '@/components/Settings'
+import Quantile from '@/components/Quantile'
+import QuantProfile from '@/components/QuantProfile'
+import Lifecycle from '@/components/Lifecycle'
 
 Vue.use(Router)
 
@@ -15,8 +18,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'Home',
+      component: Home
     },
     {
       path: '/JobHistory',
@@ -26,12 +29,12 @@ export default new Router({
     {
       path: '/Help',
       name: 'Help',
-      component: Hello
+      component: Home
     },
     {
       path: '/Logout',
       name: 'Logout',
-      component: Hello
+      component: Home
     },
     {
       path: '/Settings',
@@ -39,29 +42,85 @@ export default new Router({
       component: Settings
     },
     {
-      path: '/Balor/NewBalor',
-      name: 'NewBalor',
-      component: NewBalor
+      path: '/Balor',
+      name: 'BalorMain',
+      component: Balor,
+      children: [
+        {
+          path: 'NewBalor',
+          name: 'NewBalor',
+          component: NewBalor
+        },
+        {
+          path: 'Cadence',
+          name: 'Cadence',
+          component: Cadence
+        },
+        {
+          path: 'SegmentTrend',
+          name: 'BalorSegmentTrend',
+          component: BalorSegmentTrend
+        },
+        {
+          path: 'Trend',
+          name: 'BalorTrend',
+          component: BalorTrend
+        }
+      ]
     },
     {
-      path: '/Balor/Cadence',
-      name: 'Cadence',
-      component: Cadence
+      path: '/Quantile',
+      name: 'QuantileMain',
+      component: Quantile,
+      children: [
+        {
+          path: 'NewQuantile',
+          name: 'NewQuantile',
+          component: Settings
+        },
+        {
+          path: 'Summary',
+          name: 'QuantSummary',
+          component: QuantProfile
+        },
+        {
+          path: 'Migration',
+          name: 'QuantMig',
+          component: Settings
+        },
+        {
+          path: 'Products',
+          name: 'QuantProd',
+          component: Settings
+        }
+      ]
     },
     {
-      path: '/Balor/SegmentTrend',
-      name: 'BalorSegmentTrend',
-      component: BalorSegmentTrend
-    },
-    {
-      path: '/Balor/SegmentProfile',
-      name: 'BalorSegmentProfile',
-      component: BalorSegmentProfile
-    },
-    {
-      path: '/Balor/Trend',
-      name: 'BalorTrend',
-      component: BalorTrend
+      path: '/Lifecycle',
+      name: 'LifecycleMain',
+      component: Lifecycle,
+      children: [
+        {
+          path: 'NewLifecycle',
+          name: 'NewLifecycle',
+          component: Settings
+        },
+        {
+          path: 'Summary',
+          name: 'LifecycleSummary',
+          component: Settings
+        },
+        {
+          path: 'Migration',
+          name: 'LifecycleMig',
+          component: Settings
+        },
+        {
+          path: 'Products',
+          name: 'LifecycleProd',
+          component: Settings
+        }
+      ]
     }
   ]
 })
