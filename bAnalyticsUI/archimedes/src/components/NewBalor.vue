@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="NewBalor pl-0 pr-0">
+  <v-container fluid class="NewBalor pl-3 pr-3">
     <v-layout row wrap>
       <!-- COLUMN1 -->
       <v-flex d-flex xs12 sm12 md6>
@@ -11,7 +11,7 @@
           <v-text-field
               name="input-1"
               label="Enter job name"
-              class="ma-3 pr-4"
+              class="ma-3 pr-4 pa-2"
               required
           ></v-text-field>
         </v-card>
@@ -22,7 +22,7 @@
             <h6 class="white--text text-xs-left mb-0">Select file for analysis</h6>
           </v-card-title>
           <form enctype="multipart/form-data">
-            <input type="file" :name="uploadFieldName"  @change="fileUpload($event.target.name, $event.target.files)">
+            <input type="file" :name="uploadFieldName"  @change="fileUpload($event.target.name, $event.target.files)" class="pa-3">
           </form>
         </v-card>
         <!-- //CARD2 -->
@@ -35,7 +35,7 @@
               v-bind:items="items"
               v-model="e1"
               label="Select file type"
-              class="ma-3 pr-4"
+              class="ma-3 pr-4 pa-2"
               single-line
               bottom
               v-bind:error-messages="['Please select an option']"

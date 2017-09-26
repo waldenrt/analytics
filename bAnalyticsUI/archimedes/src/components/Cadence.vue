@@ -1,10 +1,10 @@
 <template>
-  <v-container fluid class="cadence pl-0 pr-0">
+  <v-container fluid class="cadence pl-3 pr-3">
     <v-layout row wrap class="mb-2">
       <v-flex xs12 sm12 md8 lg9>
         <v-card class="white">
         <v-card-title primary-title class="primary">
-          <h6 class="white--text text-xs-left mb-0">Annotated Bar Chart</h6>
+          <h6 class="white--text text-xs-left mb-0">Purchase Candence Distribution</h6>
         </v-card-title>
         <!--trendlines-->
         <v-layout row wrap class="mb-3 pa-3">
