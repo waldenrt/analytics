@@ -1,8 +1,8 @@
 <template>
 <!--main container-->
 <main>
-  <v-container fluid>
-    <v-layout row-sm column child-flex-sm>
+  <v-container fluid class="ma-0 pl-0 pr-0">
+    <v-layout row-sm column child-flex-sm class="ml-0 mr-0">
       <v-flex xs12>
         <v-card flat>
           <!--<p>first line</p>

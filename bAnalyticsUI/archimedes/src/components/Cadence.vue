@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="cadence">
+  <v-container fluid class="cadence pl-0 pr-0">
     <v-layout row wrap class="mb-2">
       <v-flex xs12 sm12 md8 lg9>
         <v-card class="white">

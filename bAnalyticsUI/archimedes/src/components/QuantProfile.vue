@@ -1,7 +1,7 @@
 <template>
-  <v-container fluid class="balorSegmentTrend">
-    <!--ROW1-->
-    <v-layout row wrap class="pt-0 mb-3">
+  <v-container fluid class="quantileSummary pl-0 pr-0">
+    <!-- =====ROW1===== -->
+    <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-card-title primary-title class="primary">
@@ -90,16 +90,19 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <!--//ROW1-->
+    <!-- //=====ROW1===== -->
+    <!-- =====ROW2===== -->
     <v-layout wrap row>
-      <v-flex xs12>
+      <v-flex xs12 class="pt-0 mt-0">
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <div class="title primary--text text-xs-center pa-1">Quantile Pareto Analysis</div>
           <pareto-chart :chart-data="paretoData" style="height:23vh;"></pareto-chart>
         </v-card>
       </v-flex>
     </v-layout>
+    <!-- //=====ROW2===== -->
 
+    <!-- =====ROW3===== -->
     <v-layout wrap row>
       <v-flex xs12>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
@@ -121,6 +124,7 @@
         </v-card>
       </v-flex>
     </v-layout>
+    <!-- //=====ROW3===== -->
   </v-container>
 </template>
 
