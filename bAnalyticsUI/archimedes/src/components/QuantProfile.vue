@@ -8,84 +8,84 @@
             <h6 class="white--text text-xs-left mb-0">Customer Quantile Summary & Pareto Analysis</h6>
           </v-card-title>
           <v-layout row wrap>
-          <!--Dropdown1-->
-          <v-flex xs12 sm3>
-            <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
-              <v-layout row wrap>
-                <v-flex xs12>
-                  <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                    Select Customer<br />Quantiles:
-                  </div>
-                </v-flex>
-                <v-flex xs12>
-                  <v-card class="white pa-0">
-                    <v-select v-bind:items="quantiles"
-                              v-model="quantileSelect"
-                              label="Select Quantiles"
-                              multiple
-                              single-line
-                              bottom
-                              v-on:input="selectQuantile()"
-                              class="pl-1 pr-1 m-0">
-                    </v-select>
-                  </v-card>
-                </v-flex>
-              </v-layout>
-            </v-card>
-          </v-flex>
-          <!--//Dropdown1-->
-          <!--Dropdown2-->
-          <v-flex xs12 sm3>
-            <v-card flat class="pl-2 pr-2 grey lighten-2">
-              <v-layout row wrap>
-                <v-flex xs12>
-                  <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                    Choose A Time<br />Period:
-                  </div>
-                </v-flex>
-                <v-flex xs12>
-                  <v-card class="white">
-                    <v-select
-                        v-bind:items="TPArray"
-                        v-model="TPSelect"
-                        label="Select Time Period"
-                        single-line
-                        bottom
-                        v-on:input="selectTP()"
-                        class="pl-1 pr-1 m-0">
-                    </v-select>
-                </v-card>
-                </v-flex>
-              </v-layout>
-            </v-card>
-          </v-flex>
-          <!--//Dropdown2-->
-          <!--Dropdown3-->
-          <v-flex xs12 sm3>
-            <v-card flat class="pl-2 pr-2 grey lighten-2">
-              <v-layout row wrap>
-                <v-flex xs12>
-                  <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                    Select Metrics for<br />Pareto Analysis:
-                  </div>
-                </v-flex>
-                <v-flex xs12>
-                  <v-card class="white">
-                    <v-select
-                        v-bind:items="metrics"
-                        v-model="metricSelect"
-                        label="Select Metric"
-                        single-line
-                        bottom
-                        v-on:input="selectMetric()"
-                        class="pl-1 pr-1 m-0">
-                    </v-select>
-                </v-card>
-                </v-flex>
-              </v-layout>
-            </v-card>
-          </v-flex>
-          <!--//Dropdown3-->
+            <!--Dropdown1-->
+            <v-flex xs12 sm3>
+              <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
+                <v-layout row wrap>
+                  <v-flex xs12>
+                    <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                      Select Customer<br/>Quantiles:
+                    </div>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-card class="white pa-0">
+                      <v-select v-bind:items="quantiles"
+                                v-model="quantileSelect"
+                                label="Select Quantiles"
+                                multiple
+                                single-line
+                                bottom
+                                v-on:input="selectQuantile()"
+                                class="pl-1 pr-1 m-0">
+                      </v-select>
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+              </v-card>
+            </v-flex>
+            <!--//Dropdown1-->
+            <!--Dropdown2-->
+            <v-flex xs12 sm3>
+              <v-card flat class="pl-2 pr-2 grey lighten-2">
+                <v-layout row wrap>
+                  <v-flex xs12>
+                    <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                      Choose A Time<br/>Period:
+                    </div>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-card class="white">
+                      <v-select
+                          v-bind:items="TPArray"
+                          v-model="TPSelect"
+                          label="Select Time Period"
+                          single-line
+                          bottom
+                          v-on:input="selectTP()"
+                          class="pl-1 pr-1 m-0">
+                      </v-select>
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+              </v-card>
+            </v-flex>
+            <!--//Dropdown2-->
+            <!--Dropdown3-->
+            <v-flex xs12 sm3>
+              <v-card flat class="pl-2 pr-2 grey lighten-2">
+                <v-layout row wrap>
+                  <v-flex xs12>
+                    <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                      Select Metrics for<br/>Pareto Analysis:
+                    </div>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-card class="white">
+                      <v-select
+                          v-bind:items="metrics"
+                          v-model="metricSelect"
+                          label="Select Metric"
+                          single-line
+                          bottom
+                          v-on:input="selectMetric()"
+                          class="pl-1 pr-1 m-0">
+                      </v-select>
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+              </v-card>
+            </v-flex>
+            <!--//Dropdown3-->
           </v-layout>
         </v-card>
       </v-flex>
@@ -690,6 +690,7 @@
         }
       },
       selectMetric () {
+        console.log(this.spendPerArrayCurr)
         if (this.metricSelect === 'Spend') {
           this.paretoData = {
             labels: this.quantArrayCurr,
@@ -797,6 +798,9 @@
         this.unitArrayFull = tempUnit
         this.visitArrayFull = tempVisit
         this.quantileArray = tempQuant
+        this.spendArrayCurr = tempSpend
+        this.unitArrayCurr = tempUnit
+        this.visitArrayCurr = tempVisit
         var allArray = ['All']
         this.quantiles = allArray.concat(tempQuant)
 
@@ -839,6 +843,12 @@
         this.unitPerArray = tempUnitPer
         this.visitPerArray = tempVisitPer
 
+        this.spendPerArrayCurr = tempSpendPer
+        this.unitPerArrayCurr = tempUnitPer
+        this.visitPerArrayCurr = tempVisitPer
+
+        this.quantArrayCurr = this.quantileArray
+
         this.paretoData = {
           labels: this.quantileArray,
           datasets: [
@@ -850,7 +860,7 @@
               data: this.spendPerArray,
               label: 'Cumlative Percent Spend',
               type: 'line',
-
+              yAxisID: 'right-y-axis',
               backgroundColor: '#F7970E',
               borderColor: '#F7970E',
               fill: false
@@ -897,6 +907,9 @@
         this.spendArrayFull = tempSpend
         this.unitArrayFull = tempUnit
         this.visitArrayFull = tempVisit
+        this.spendArrayCurr = tempSpend
+        this.unitArrayCurr = tempUnit
+        this.visitArrayCurr = tempVisit
 
         var tempUnitPer = []
         var tempTtlUnit = []
@@ -936,6 +949,9 @@
         this.spendPerArray = tempSpendPer
         this.unitPerArray = tempUnitPer
         this.visitPerArray = tempVisitPer
+        this.spendPerArrayCurr = tempSpendPer
+        this.unitPerArrayCurr = tempUnitPer
+        this.visitPerArrayCurr = tempVisitPer
 
         this.paretoData = {
           labels: this.quantileArray,
