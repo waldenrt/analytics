@@ -1571,6 +1571,34 @@
               data: this.ttlReactCust,
               label: 'Reactivated',
               backgroundColor: '#0087AA'
+            }, {
+              data: this.avgRetCustSpend,
+              label: 'Spend per Returning Customer',
+              type: 'line',
+              yAxisID: 'right-y-axis',
+              backgroundColor: '#F7970E',
+              fill: false
+            }, {
+              data: this.avgLapCustSpend,
+              label: 'Spend per Lapsed Customer',
+              type: 'line',
+              yAxisID: 'right-y-axis',
+              backgroundColor: '#D63A09',
+              fill: false
+            }, {
+              data: this.avgNewCustSpend,
+              label: 'Spend per New Customer',
+              type: 'line',
+              yAxisID: 'right-y-axis',
+              backgroundColor: '#8EAC1D',
+              fill: false
+            }, {
+              data: this.avgReactCustSpend,
+              label: 'Spend per Reactivated Customer',
+              type: 'line',
+              yAxisID: 'right-y-axis',
+              backgroundColor: '#0087AA',
+              fill: false
             }
           ]
         }
@@ -1589,7 +1617,7 @@
 
       selectDimension () {
         if (this.dimensionSelect === 'Customer') {
-          console.log('Customer selected')
+          this.avgSelect = 'Avg Spend per Customer'
           this.totalBars = {
             labels: this.tpArray,
             datasets: [
@@ -1609,11 +1637,39 @@
                 data: this.ttlReactCust,
                 label: 'Reactivated',
                 backgroundColor: '#0087AA'
+              }, {
+                data: this.avgRetCustSpend,
+                label: 'Spend per Returning Customer',
+                type: 'line',
+                yAxisID: 'right-y-axis',
+                backgroundColor: '#F7970E',
+                fill: false
+              }, {
+                data: this.avgLapCustSpend,
+                label: 'Spend per Lapsed Customer',
+                type: 'line',
+                yAxisID: 'right-y-axis',
+                backgroundColor: '#D63A09',
+                fill: false
+              }, {
+                data: this.avgNewCustSpend,
+                label: 'Spend per New Customer',
+                type: 'line',
+                yAxisID: 'right-y-axis',
+                backgroundColor: '#8EAC1D',
+                fill: false
+              }, {
+                data: this.avgReactCustSpend,
+                label: 'Spend per Reactivated Customer',
+                type: 'line',
+                yAxisID: 'right-y-axis',
+                backgroundColor: '#0087AA',
+                fill: false
               }
             ]
           }
         } else if (this.dimensionSelect === 'Visits') {
-          console.log('Visits selected')
+          this.avgSelect = 'Avg Spend per Basket'
           this.totalBars = {
             labels: this.tpArray,
             datasets: [
@@ -1633,11 +1689,39 @@
                 data: this.ttlReactTxn,
                 label: 'Reactivated',
                 backgroundColor: '#0087AA'
+              }, {
+                data: this.avgRetVisitSpend,
+                label: 'Spend per Visit - Returning',
+                type: 'line',
+                yAxisID: 'right-y-axis',
+                backgroundColor: '#F7970E',
+                fill: false
+              }, {
+                data: this.avgLapVisitSpend,
+                label: 'Spend per Visit - Lapsed',
+                type: 'line',
+                yAxisID: 'right-y-axis',
+                backgroundColor: '#D63A09',
+                fill: false
+              }, {
+                data: this.avgNewVisitSpend,
+                label: 'Spend per Visit - New',
+                type: 'line',
+                yAxisID: 'right-y-axis',
+                backgroundColor: '#8EAC1D',
+                fill: false
+              }, {
+                data: this.avgReactVisitSpend,
+                label: 'Spend per Visit - Reactivated',
+                type: 'line',
+                yAxisID: 'right-y-axis',
+                backgroundColor: '#0087AA',
+                fill: false
               }
             ]
           }
         } else if (this.dimensionSelect === 'Spend') {
-          console.log('Spend selected')
+          this.avgSelect = 'Avg Spend per Customer'
           this.totalBars = {
             labels: this.tpArray,
             datasets: [
@@ -1657,11 +1741,39 @@
                 data: this.ttlReactSpend,
                 label: 'Reactivated',
                 backgroundColor: '#0087AA'
+              }, {
+                data: this.avgRetCustSpend,
+                label: 'Spend per Returning Customer',
+                type: 'line',
+                yAxisID: 'right-y-axis',
+                backgroundColor: '#F7970E',
+                fill: false
+              }, {
+                data: this.avgLapCustSpend,
+                label: 'Spend per Lapsed Customer',
+                type: 'line',
+                yAxisID: 'right-y-axis',
+                backgroundColor: '#D63A09',
+                fill: false
+              }, {
+                data: this.avgNewCustSpend,
+                label: 'Spend per New Customer',
+                type: 'line',
+                yAxisID: 'right-y-axis',
+                backgroundColor: '#8EAC1D',
+                fill: false
+              }, {
+                data: this.avgReactCustSpend,
+                label: 'Spend per Reactivated Customer',
+                type: 'line',
+                yAxisID: 'right-y-axis',
+                backgroundColor: '#0087AA',
+                fill: false
               }
             ]
           }
         } else if (this.dimensionSelect === 'Discount') {
-          console.log('Discount selected')
+          this.avgSelect = 'Avg Discount per Customer'
           this.totalBars = {
             labels: this.tpArray,
             datasets: [
@@ -1681,6 +1793,34 @@
                 data: this.ttlReactDisc,
                 label: 'Reactivated',
                 backgroundColor: '#0087AA'
+              }, {
+                data: this.avgRetCustDisc,
+                label: 'Discount per Customer - Returning',
+                type: 'line',
+                yAxisID: 'right-y-axis',
+                backgroundColor: '#F7970E',
+                fill: false
+              }, {
+                data: this.avgLapCustDisc,
+                label: 'Discount per Customer - Lapsed',
+                type: 'line',
+                yAxisID: 'right-y-axis',
+                backgroundColor: '#D63A09',
+                fill: false
+              }, {
+                data: this.avgNewCustDisc,
+                label: 'Discount per Customer - New',
+                type: 'line',
+                yAxisID: 'right-y-axis',
+                backgroundColor: '#8EAC1D',
+                fill: false
+              }, {
+                data: this.avgReactCustDisc,
+                label: 'Discount per Customer - Reactivated',
+                type: 'line',
+                yAxisID: 'right-y-axis',
+                backgroundColor: '#0087AA',
+                fill: false
               }
             ]
           }

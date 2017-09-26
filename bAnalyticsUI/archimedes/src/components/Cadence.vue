@@ -124,7 +124,7 @@
         this.sumItems.push({name: 'Transactions', vals: this.jsonMsg.numRecords})
         this.sumItems.push({name: 'Raw Cadence - 80th Percentile', vals: this.jsonMsg.rawCadence})
         this.sumItems.push({name: 'Normalized Cadence Value', vals: this.jsonMsg.normalizedCadence})
-        this.sumItems.push({name: 'Time Period', vals: this.jsonMsg.timePeriods.length})
+        this.sumItems.push({name: 'Time Period', vals: this.jsonMsg.numTimePeriods})
       },
 
       createBar () {
