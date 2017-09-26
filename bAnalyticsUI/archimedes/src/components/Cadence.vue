@@ -51,15 +51,7 @@
     },
     data () {
       return {
-        sumItems: [
-          { name: 'Min. Date', vals: 159 },
-          { name: 'Max. Date', vals: 237 },
-          { name: 'Customer Base', vals: 262 },
-          { name: '% Customer - 1 Purchase', vals: 305 },
-          { name: 'Transactions', vals: 356 },
-          { name: 'Purchase Cadence - 80th Percentile', vals: 375 },
-          { name: 'Time Period', vals: 392 }
-        ],
+        sumItems: [],
         msg: 'Cadence Charts and approval will go here!',
         cadenceBars: null,
         cadArray: [],
@@ -71,7 +63,7 @@
           'httpStatusCode': 200,
           'data': {
             'normalizedCadence': '2 weeks',
-            'singleVist': 24,
+            'singleVisit': 24,
             'percentile': 0.8,
             'numRecords': 1000,
             'maxDateCadence': '04/23/2017',
@@ -107,6 +99,7 @@
     mounted () {
       this.parseJson()
       this.createBar()
+      this.createSummary()
     },
     methods: {
       parseJson () {
@@ -124,6 +117,16 @@
         this.perArray = tempPer
       },
 
+      createSummary () {
+        this.sumItems.push({name: 'Min. Date', vals: this.jsonMsg.minDateCadence})
+        this.sumItems.push({name: 'Max. Date', vals: this.jsonMsg.maxDateCadence})
+        this.sumItems.push({name: '# Customer - 1 Purchase', vals: this.jsonMsg.singleVisit})
+        this.sumItems.push({name: 'Transactions', vals: this.jsonMsg.numRecords})
+        this.sumItems.push({name: 'Raw Cadence - 80th Percentile', vals: this.jsonMsg.rawCadence})
+        this.sumItems.push({name: 'Normalized Cadence Value', vals: this.jsonMsg.normalizedCadence})
+        this.sumItems.push({name: 'Time Period', vals: this.jsonMsg.timePeriods.length})
+      },
+
       createBar () {
         this.cadenceBars = {
           labels: this.cadArray,
@@ -136,7 +139,6 @@
           ]
         }
       }
-      // todo more methods fit in here.....
     }
   }
 </script>

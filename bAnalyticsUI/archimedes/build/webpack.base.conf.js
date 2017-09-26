@@ -70,7 +70,7 @@ module.exports = {
   },
   node: {
     console: true,
-    fs: true,
+    fs: 'empty',
     net: 'empty',
     tls: 'empty'
   }

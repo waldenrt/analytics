@@ -33,19 +33,19 @@
                 <v-layout row wrap class="checkboxes pl-3 pr-3">
                   <v-flex xs12 sm6 md2 grey--text subheading>
                     <input class="mr-1" type='checkbox' id='allTrends'
-                    checked='true' @change="allUpdate()">All
+                           checked='true' @change="allUpdate()">All
                   </v-flex>
                   <v-flex xs12 sm6 md3 grey--text subheading>
                     <input class="mr-1" type='checkbox' id='custTrend'
-                    @change="singleUpdate()">Customer
+                           @change="singleUpdate()">Customer
                   </v-flex>
                   <v-flex xs12 sm6 md3 grey--text subheading>
                     <input class="mr-1" type='checkbox' id='txnTrend'
-                    @change="singleUpdate()">Transaction
+                           @change="singleUpdate()">Transaction
                   </v-flex>
                   <v-flex xs12 sm6 md3 grey--text subheading>
                     <input class="mr-1" type='checkbox' id='spendTrend'
-                    @change="singleUpdate()">Spend
+                           @change="singleUpdate()">Spend
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -78,70 +78,71 @@
           </v-card-title>
           <v-divider class="primary pb-0"></v-divider>
           <v-flex xs12 fill-height>
-                <v-layout row>
-                  <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr v-for="item in sumItems" v-bind:key="item.name">
-                      <td class="pa-2" width="50%">
-                        <div class="primary--text" v-text="item.name"></div>
-                      </td>
-                      <td class="pa-2" width="50%">
-                        <div v-text="item.vals"></div>
-                      </td>
-                    </tr>
-                  </table>
-              </v-layout>
+            <v-layout row>
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr v-for="item in sumItems" v-bind:key="item.name">
+                  <td class="pa-2" width="50%">
+                    <div class="primary--text" v-text="item.name"></div>
+                  </td>
+                  <td class="pa-2" width="50%">
+                    <div v-text="item.vals"></div>
+                  </td>
+                </tr>
+              </table>
+            </v-layout>
           </v-flex>
         </v-card>
       </v-flex>
     </v-layout>
 
-  <v-layout row wrap class="mb-3">
-    <v-flex xs12 fill-height>
-      <v-card class="white">
-        <v-layout row wrap>
-              <v-flex xs12>
-                <v-card-title primary-title class="primary">
-                  <h6 class="white--text text-xs-left mb-0">BALOR Composition and Metrics for Period:</h6>
-                </v-card-title>
-              </v-flex>
-        </v-layout>
-        <v-layout row wrap>
-          <!--selection-->
-          <v-flex xs12>
-            <v-card flat>
-              <div class="pa-3" style="height:7vh;">
-                <div id="selection" class="inliner left_float">
-                  <v-select v-model="tp"
-                            v-bind:items="tpArray"
-                            label="Select Time Period"
-                            v-on:input="setTP()"
-                            style="width:175px;margin-bottom:0;">
-                  </v-select>
+    <v-layout row wrap class="mb-3">
+      <v-flex xs12 fill-height>
+        <v-card class="white">
+          <v-layout row wrap>
+            <v-flex xs12>
+              <v-card-title primary-title class="primary">
+                <h6 class="white--text text-xs-left mb-0">BALOR Composition and Metrics for Period:</h6>
+              </v-card-title>
+            </v-flex>
+          </v-layout>
+          <v-layout row wrap>
+            <!--selection-->
+            <v-flex xs12>
+              <v-card flat>
+                <div class="pa-3" style="height:7vh;">
+                  <div id="selection" class="inliner left_float">
+                    <v-select v-model="tp"
+                              v-bind:items="tpArray"
+                              label="Select Time Period"
+                              v-on:input="setTP()"
+                              style="width:175px;margin-bottom:0;">
+                    </v-select>
+                  </div>
+                  <div class="primary--text inliner right_float pt-3" v-for="item in retentionItems"
+                       v-bind:key="item.name">
+                    {{ item.name }}: {{ item.vals }}
+                  </div>
                 </div>
-                <div class="primary--text inliner right_float pt-3" v-for="item in retentionItems" v-bind:key="item.name">
-                  {{ item.name }}: {{ item.vals }}
-                </div>
-              </div>
-            </v-card>
-          </v-flex>
-          <!--//selection-->
-        </v-layout>
-        <v-layout row wrap>
-          <v-flex xs12>
-            <v-card flat class="white pa-3">
-              <div class="legend" style="background-color:#D63809;"></div>
+              </v-card>
+            </v-flex>
+            <!--//selection-->
+          </v-layout>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <v-card flat class="white pa-3">
+                <div class="legend" style="background-color:#D63809;"></div>
                 <div style="display:inline;padding-right:5px;">Lapsed</div>
-              <div class="legend" style="background-color:#8EAC1D;"></div>
+                <div class="legend" style="background-color:#8EAC1D;"></div>
                 <div style="display:inline;padding-right:5px;">New</div>
-              <div class="legend" style="background-color:#F7970E;"></div>
+                <div class="legend" style="background-color:#F7970E;"></div>
                 <div style="display:inline;padding-right:5px;">Returning</div>
-              <div class="legend" style="background-color:#0087AA;"></div>
+                <div class="legend" style="background-color:#0087AA;"></div>
                 <div style="display:inline;padding-right:5px;">Reactivated</div>
-            </v-card>
-          </v-flex>
-        </v-layout>
-        <!--Pie Charts-->
-        <v-layout row wrap>
+              </v-card>
+            </v-flex>
+          </v-layout>
+          <!--Pie Charts-->
+          <v-layout row wrap>
             <v-flex xs12 sm6 md4 lg3>
               <v-card flat class="white pa-3">
                 <pie-charts class="white pie_chart1" :chart-data='custData'></pie-charts>
@@ -182,7 +183,7 @@
   import noUiSlider from 'noUiSlider'
 
   export default {
-    name: 'balorSegmentTrend',
+    name: 'balorTrend',
     components: {
       BalorTrendLine,
       PieCharts
@@ -190,9 +191,7 @@
     data () {
       return {
 
-        retentionItems: [
-          { name: 'Retention', vals: 392 }
-        ],
+        retentionItems: [],
         sumItems: [],
         msg: 'Balor Trend Charts will go here!',
         custData: null,
@@ -458,10 +457,13 @@
         this.sumItems.push({name: 'Min. Date', vals: this.jsonMsg.minDateBalor})
         this.sumItems.push({name: 'Max. Date', vals: this.jsonMsg.maxDateBalor})
         this.sumItems.push({name: 'Customer Base', vals: this.jsonMsg.totalCust})
-        this.sumItems.push({name: '% Customer - 1 Purchase', vals: this.jsonMsg.singleVisit / this.jsonMsg.totalCust * 100})
+        this.sumItems.push({
+          name: '% Customer - 1 Purchase',
+          vals: this.jsonMsg.singleVisit / this.jsonMsg.totalCust * 100
+        })
         this.sumItems.push({name: 'Transactions', vals: this.jsonMsg.numRecords})
         this.sumItems.push({name: 'Purchase Cadence - 80th Percentile', vals: this.jsonMsg.normalizedCadence})
-        this.sumItems.push({name: 'Time Period', vals: this.jsonMsg.timePeriods.length})
+        this.sumItems.push({name: 'Time Periods', vals: this.jsonMsg.timePeriods.length})
       },
       createLines () {
         var tempCust = []
@@ -686,6 +688,7 @@
       },
       createPies () {
         var tp = 0
+        this.retentionItems = [{name: 'Retention', vals: this.jsonMsg.timePeriods[tp].returnTxnCount}]
 
         this.custData = {
           datasets: [{
@@ -850,6 +853,8 @@
             }
           ]
         }
+
+        this.retentionItems = [{name: 'Retention', vals: this.jsonMsg.timePeriods[this.tp].returnTxnCount}]
       }
     }
   }
@@ -859,31 +864,46 @@
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
 
-.inliner {display:inline-block;}
-.line_chart {
-  position: relative;
-  margin: 0 auto;
-  height: 35vh !important;
-}
-.pie_chart1 {
-  position: relative;
-  margin: 0 auto;
-  height: 20vw !important;
-}
-.ratio_line {
-  position: relative;
-  margin: 0 auto;
-  height: 20vw !important;
-}
-.left_float {float: left;}
-.right_float {float:right;}
-.legend {
-  display:inline-block;
-  width:38px;
-  height:12px;
-  border-radius:2px;
-  margin-right:5px;
-}
-.legend_color { background-color:#005E76; }
+  .inliner {
+    display: inline-block;
+  }
+
+  .line_chart {
+    position: relative;
+    margin: 0 auto;
+    height: 35vh !important;
+  }
+
+  .pie_chart1 {
+    position: relative;
+    margin: 0 auto;
+    height: 20vw !important;
+  }
+
+  .ratio_line {
+    position: relative;
+    margin: 0 auto;
+    height: 20vw !important;
+  }
+
+  .left_float {
+    float: left;
+  }
+
+  .right_float {
+    float: right;
+  }
+
+  .legend {
+    display: inline-block;
+    width: 38px;
+    height: 12px;
+    border-radius: 2px;
+    margin-right: 5px;
+  }
+
+  .legend_color {
+    background-color: #005E76;
+  }
 
 </style>

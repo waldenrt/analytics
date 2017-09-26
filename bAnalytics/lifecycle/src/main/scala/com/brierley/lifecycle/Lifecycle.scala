@@ -77,12 +77,13 @@ object Lifecycle {
         .withColumn("MaxMonth", month(col("max(Date)")))
         .withColumn("MaxYear", year(col("max(Date)")))
         .withColumn("TimePeriod", (((col("MaxMonth") - col("Month")) + (col("MaxYear") - col("Year")) * 12) / numMonths).cast(IntegerType) + 1)
-        .sort("TimePeriod")
         .drop(col("Month"))
         .drop(col("Year"))
         .drop(col("MaxMonth"))
         .drop(col("MaxYear"))
         .drop(col("max(Date)"))
+        //.withColumn("TimePeriod", dense_rank().over(Window.orderBy(col("TP").desc)))
+        //.drop("TP")
       (result)
     }
   }
@@ -90,10 +91,7 @@ object Lifecycle {
   def custAgg(tpDF: DataFrame): Try[DataFrame] = Try {
     val aggWindow = Window
       .partitionBy("TimePeriod")
-      .orderBy("CUST_ID")
 
-    val tpWindow = Window
-      .partitionBy("TimePeriod")
     val selectDF = tpDF.select("CUST_ID", "Date", "TXN_HEADER_ID", "ITEM_AMT", "ITEM_QTY", "TimePeriod")
 
     val aggDF = selectDF
@@ -107,7 +105,7 @@ object Lifecycle {
 
     val recentDF = selectDF
       .select("TimePeriod", "Date")
-      .withColumn("maxTPDate", max("Date").over(tpWindow))
+      .withColumn("maxTPDate", max("Date").over(aggWindow))
       .drop("Date")
       .distinct()
 
@@ -176,7 +174,7 @@ object Lifecycle {
         sum("TXN_COUNT"),
         sum("TXN_AMT"),
         sum("ITEM_QTY"),
-        sum("Recency")
+        sum("daysSince")
       )
 
     val renamedDF = pivotDF
@@ -184,27 +182,27 @@ object Lifecycle {
       .withColumnRenamed("Best in Class_sum(TXN_COUNT)", "BestTxnCount")
       .withColumnRenamed("Best in Class_sum(TXN_AMT)", "BestTxnAmt")
       .withColumnRenamed("Best in Class_sum(ITEM_QTY)", "BestItemQty")
-      .withColumnRenamed("Best in Class_sum(Recency)", "BestRecency")
+      .withColumnRenamed("Best in Class_sum(daysSince)", "BestRecency")
       .withColumnRenamed("Rising Stars_count(CUST_ID)", "RisingCustCount")
       .withColumnRenamed("Rising Stars_sum(TXN_COUNT)", "RisingTxnCount")
       .withColumnRenamed("Rising Stars_sum(TXN_AMT)", "RisingTxnAmt")
       .withColumnRenamed("Rising Stars_sum(ITEM_QTY)", "RisingItemQty")
-      .withColumnRenamed("Rising Stars_sum(Recency)", "RisingRecency")
+      .withColumnRenamed("Rising Stars_sum(daysSince)", "RisingRecency")
       .withColumnRenamed("Middle of the Road_count(CUST_ID)", "MiddleCustCount")
       .withColumnRenamed("Middle of the Road_sum(TXN_COUNT)", "MiddleTxnCount")
       .withColumnRenamed("Middle of the Road_sum(TXN_AMT)", "MiddleTxnAmt")
       .withColumnRenamed("Middle of the Road_sum(ITEM_QTY)", "MiddleItemQty")
-      .withColumnRenamed("Middle of the Road_sum(Recency)", "MiddleRecency")
+      .withColumnRenamed("Middle of the Road_sum(daysSince)", "MiddleRecency")
       .withColumnRenamed("Lapsing_count(CUST_ID)", "LapsingCustCount")
       .withColumnRenamed("Lapsing_sum(TXN_COUNT)", "LapsingTxnCount")
       .withColumnRenamed("Lapsing_sum(TXN_AMT)", "LapsingTxnAmt")
       .withColumnRenamed("Lapsing_sum(ITEM_QTY)", "LapsingItemQty")
-      .withColumnRenamed("Lapsing_sum(Recency)", "LapsingRecency")
+      .withColumnRenamed("Lapsing_sum(daysSince)", "LapsingRecency")
       .withColumnRenamed("Deeply Lapsed_count(CUST_ID)", "DeeplyCustCount")
       .withColumnRenamed("Deeply Lapsed_sum(TXN_COUNT)", "DeeplyTxnCount")
       .withColumnRenamed("Deeply Lapsed_sum(TXN_AMT)", "DeeplyTxnAmt")
       .withColumnRenamed("Deeply Lapsed_sum(ITEM_QTY)", "DeeplyItemQty")
-      .withColumnRenamed("Deeply Lapsed_sum(Recency)", "DeeplyRecency")
+      .withColumnRenamed("Deeply Lapsed_sum(daysSince)", "DeeplyRecency")
       .na.fill(0)
 
     renamedDF
@@ -430,7 +428,7 @@ object Lifecycle {
       .withColumn("DeeplyPercentSales", col("DeeplyItemAmt") / col("DeeplyTotalSales") * 100)
       .withColumn("ProdPercentSales", col("tpItemAmt") / col("tpTotalSales") * 100)
       .withColumn("BestIndex", col("BestPercentSales") - col("ProdPercentSales"))
-      .withColumn("RisingIndex", col("BestPercentSales") - col("ProdPercentSales"))
+      .withColumn("RisingIndex", col("RisingPercentSales") - col("ProdPercentSales"))
       .withColumn("MiddleIndex", col("MiddlePercentSales") - col("ProdPercentSales"))
       .withColumn("LapsingIndex", col("LapsingPercentSales") - col("ProdPercentSales"))
       .withColumn("DeeplyIndex", col("DeeplyPercentSales") - col("ProdPercentSales"))

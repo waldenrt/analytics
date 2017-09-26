@@ -107,7 +107,7 @@
           {name: 'Quantile', active: false, icon: 'label', link: '/Quantile'},
           {name: 'Core Lifecycle', active: false, icon: 'label', link: '/Lifecycle'},
           {name: 'bRelevant', active: false, icon: 'label', link: '/bRelevant'},
-          {name: 'History', active: false, icon: 'history', link: '/History'},
+          {name: 'History', active: false, icon: 'history', link: '/JobHistory'},
           {name: 'Settings', active: false, icon: 'settings', link: '/Settings'},
           {name: 'Help', active: false, icon: 'help', link: '/Help'},
           {name: 'Feedback', active: false, icon: 'feedback', link: '/Feedback'},
@@ -141,6 +141,7 @@
     flex-direction:column;
     background-color:#eff3f6;
   }
+  .input-group__details{display: none !important;}
 
   @media (max-width: 550px) {
     body {font-size: 12px;}

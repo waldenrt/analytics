@@ -9,7 +9,7 @@
         <v-tabs id="mobile-tabs-3" grow light class="elevation-1">
           <v-tabs-bar slot="activators">
             <v-tabs-slider></v-tabs-slider>
-            <v-tabs-item router to="/Lifecycle/NewQuantile">Input</v-tabs-item>
+            <v-tabs-item router to="/Lifecycle/NewLifecycle">Input</v-tabs-item>
             <v-tabs-item router to="/Lifecycle/Summary">Segment Summary</v-tabs-item>
             <v-tabs-item router to="/Lifecycle/Migration">Segment Migration</v-tabs-item>
             <v-tabs-item router to="/Lifecycle/Products">Product Index</v-tabs-item>

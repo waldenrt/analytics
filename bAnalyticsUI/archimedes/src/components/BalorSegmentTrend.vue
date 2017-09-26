@@ -32,7 +32,7 @@
           <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
             <v-layout row wrap>
               <v-flex xs5>
-                <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT25">
+                <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
                   Select BALOR<br />metrics:
                 </div>
               </v-flex>
@@ -57,7 +57,7 @@
           <v-card flat class="pl-2 pr-2 grey lighten-2">
             <v-layout row wrap>
               <v-flex xs5>
-                <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT25">
+                <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
                   Select BALOR<br />segment:
                 </div>
               </v-flex>
@@ -115,7 +115,7 @@
     <!--chart-->
     <v-flex xs12>
       <v-card class="white">
-        <bar-chart :chart-data="totalBars" class="pa-2 chart_h"></bar-chart>
+        <pareto-chart :chart-data="totalBars" class="pa-2 chart_h"></pareto-chart>
       </v-card>
     </v-flex>
     <!--//chart-->
@@ -135,7 +135,7 @@
             <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
               <v-layout row wrap>
                 <v-flex xs5>
-                  <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT25">
+                  <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
                     Select BALOR<br />time period:
                   </div>
                 </v-flex>
@@ -161,7 +161,7 @@
             <v-card flat class="pl-2 pr-2 grey lighten-2">
               <v-layout row wrap>
                 <v-flex xs5>
-                  <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT25">
+                  <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
                     Select BALOR<br />metric:
                   </div>
                 </v-flex>
@@ -201,12 +201,14 @@
 <script>
   import HorizontalChart from './balorCharts/HorizontalChart'
   import BarChart from './balorCharts/BarChart'
+  import ParetoChart from './balorCharts/ParetoChart'
 
   export default {
     name: 'balorSegmentTrend',
     components: {
       BarChart,
-      HorizontalChart
+      HorizontalChart,
+      ParetoChart
     },
     data () {
       return {
@@ -1710,24 +1712,28 @@
                 data: this.avgRetCustSpend,
                 label: 'Spend per Returning Customer',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#F7970E',
                 fill: false
               }, {
                 data: this.avgLapCustSpend,
                 label: 'Spend per Lapsed Customer',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#D63A09',
                 fill: false
               }, {
                 data: this.avgNewCustSpend,
                 label: 'Spend per New Customer',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#8EAC1D',
                 fill: false
               }, {
                 data: this.avgReactCustSpend,
                 label: 'Spend per Reactivated Customer',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#0087AA',
                 fill: false
               }
@@ -1757,24 +1763,28 @@
                 data: this.avgRetCustItems,
                 label: 'Items per Returning Customer',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#F7970E',
                 fill: false
               }, {
                 data: this.avgLapCustItems,
                 label: 'Items per Lapsed Customer',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#D63A09',
                 fill: false
               }, {
                 data: this.avgNewCustItems,
                 label: 'Items per New Customer',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#8EAC1D',
                 fill: false
               }, {
                 data: this.avgReactCustItems,
                 label: 'Items per Reactivated Customer',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#0087AA',
                 fill: false
               }
@@ -1804,24 +1814,28 @@
                 data: this.avgRetCustDisc,
                 label: 'Discount per Returning Customer',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#F7970E',
                 fill: false
               }, {
                 data: this.avgLapCustDisc,
                 label: 'Discount per Lapsed Customer',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#D63A09',
                 fill: false
               }, {
                 data: this.avgNewCustDisc,
                 label: 'Discount per New Customer',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#8EAC1D',
                 fill: false
               }, {
                 data: this.avgReactCustDisc,
                 label: 'Discount per Reactivated Customer',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#0087AA',
                 fill: false
               }
@@ -1851,30 +1865,34 @@
                 data: this.avgRetCustTxn,
                 label: 'Visits per Returning Customer',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#F7970E',
                 fill: false
               }, {
                 data: this.avgLapCustTxn,
                 label: 'Visits per Lapsed Customer',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#D63A09',
                 fill: false
               }, {
                 data: this.avgNewCustTxn,
                 label: 'Visits per New Customer',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#8EAC1D',
                 fill: false
               }, {
                 data: this.avgReactCustTxn,
                 label: 'Visits per Reactivated Customer',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#0087AA',
                 fill: false
               }
             ]
           }
-        } else if (this.dimensionSelect === 'Visits' && this.avgSelect === 'Avg Basket Amount') {
+        } else if (this.dimensionSelect === 'Visits' && this.avgSelect === 'Avg Spend per Basket') {
           this.totalBars = {
             labels: this.tpArray,
             datasets: [
@@ -1898,24 +1916,28 @@
                 data: this.avgRetVisitSpend,
                 label: 'Spend per Visit - Returning',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#F7970E',
                 fill: false
               }, {
                 data: this.avgLapVisitSpend,
                 label: 'Spend per Visit - Lapsed',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#D63A09',
                 fill: false
               }, {
                 data: this.avgNewVisitSpend,
                 label: 'Spend per Visit - New',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#8EAC1D',
                 fill: false
               }, {
                 data: this.avgReactVisitSpend,
                 label: 'Spend per Visit - Reactivated',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#0087AA',
                 fill: false
               }
@@ -1945,24 +1967,28 @@
                 data: this.avgRetVisitItems,
                 label: 'Items per Visit - Returning',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#F7970E',
                 fill: false
               }, {
                 data: this.avgLapVisitItems,
                 label: 'Items per Visit - Lapsed',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#D63A09',
                 fill: false
               }, {
                 data: this.avgNewVisitItems,
                 label: 'Items per Visit - New',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#8EAC1D',
                 fill: false
               }, {
                 data: this.avgReactVisitItems,
                 label: 'Items per Visit - Reactivated',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#0087AA',
                 fill: false
               }
@@ -1992,24 +2018,28 @@
                 data: this.avgRetVisitDisc,
                 label: 'Discount per Visit - Returning',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#F7970E',
                 fill: false
               }, {
                 data: this.avgLapVisitDisc,
                 label: 'Discount per Visit - Lapsed',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#D63A09',
                 fill: false
               }, {
                 data: this.avgNewVisitDisc,
                 label: 'Discount per Visit - New',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#8EAC1D',
                 fill: false
               }, {
                 data: this.avgReactVisitDisc,
                 label: 'Discount per Visit - Reactivated',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#0087AA',
                 fill: false
               }
@@ -2039,24 +2069,28 @@
                 data: this.avgRetCustSpend,
                 label: 'Spend per Customer - Returning',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#F7970E',
                 fill: false
               }, {
                 data: this.avgLapCustSpend,
                 label: 'Spend per Customer - Lapsed',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#D63A09',
                 fill: false
               }, {
                 data: this.avgNewCustSpend,
                 label: 'Spend per Customer - New',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#8EAC1D',
                 fill: false
               }, {
                 data: this.avgReactCustSpend,
                 label: 'Spend per Customer - Reactivated',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#0087AA',
                 fill: false
               }
@@ -2086,24 +2120,28 @@
                 data: this.avgRetVisitSpend,
                 label: 'Spend per Visit - Returning',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#F7970E',
                 fill: false
               }, {
                 data: this.avgLapVisitSpend,
                 label: 'Spend per Visit - Lapsed',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#D63A09',
                 fill: false
               }, {
                 data: this.avgNewVisitSpend,
                 label: 'Spend per Visit - New',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#8EAC1D',
                 fill: false
               }, {
                 data: this.avgReactVisitSpend,
                 label: 'Spend per Visit - Reactivated',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#0087AA',
                 fill: false
               }
@@ -2133,24 +2171,28 @@
                 data: this.avgRetCustDisc,
                 label: 'Discount per Customer - Returning',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#F7970E',
                 fill: false
               }, {
                 data: this.avgLapCustDisc,
                 label: 'Discount per Customer - Lapsed',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#D63A09',
                 fill: false
               }, {
                 data: this.avgNewCustDisc,
                 label: 'Discount per Customer - New',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#8EAC1D',
                 fill: false
               }, {
                 data: this.avgReactCustDisc,
                 label: 'Discount per Customer - Reactivated',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#0087AA',
                 fill: false
               }
@@ -2180,24 +2222,28 @@
                 data: this.avgRetVisitDisc,
                 label: 'Discount per Visit - Returning',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#F7970E',
                 fill: false
               }, {
                 data: this.avgLapVisitDisc,
                 label: 'Discount per Visit - Lapsed',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#D63A09',
                 fill: false
               }, {
                 data: this.avgNewVisitDisc,
                 label: 'Discount per Visit - New',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#8EAC1D',
                 fill: false
               }, {
                 data: this.avgReactVisitDisc,
                 label: 'Discount per Visit - Reactivated',
                 type: 'line',
+                yAxisID: 'right-y-axis',
                 backgroundColor: '#0087AA',
                 fill: false
               }
@@ -2300,7 +2346,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 .chart_h{height:31vh !important;}
-.padT25{padding-top:25px !important;}
+.padT18{padding-top:18px !important;}
 </style>

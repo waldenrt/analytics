@@ -9,6 +9,7 @@ import BalorTrend from '@/components/BalorTrend'
 import Cadence from '@/components/Cadence'
 import Settings from '@/components/Settings'
 import Quantile from '@/components/Quantile'
+import NewQuantile from '@/components/NewQuantile'
 import QuantProfile from '@/components/QuantProfile'
 import Lifecycle from '@/components/Lifecycle'
 
@@ -76,7 +77,7 @@ export default new Router({
         {
           path: 'NewQuantile',
           name: 'NewQuantile',
-          component: Settings
+          component: NewQuantile
         },
         {
           path: 'Summary',

@@ -588,13 +588,13 @@ class LifecycleProfileTest extends FunSuite with DataFrameSuiteBase {
       val middle1 = orgFile
         .select("TimePeriod", "MiddleCustCount", "MiddleTxnCount", "MiddleTxnAmt", "MiddleItemQty", "MiddleRecency")
         .where("TimePeriod = 1").head()
-      assert(middle1 === Row(1, 3, 15, 85.0, 18, 11))
+      assert(middle1 === Row(1, 3, 15, 85.0, 18, 15))
 
 
       val deeply2 = orgFile
         .select("TimePeriod", "DeeplyCustCount", "DeeplyTxnCount", "DeeplyTxnAmt", "DeeplyItemQty", "DeeplyRecency")
         .where("TimePeriod = 2").head()
-      assert(deeply2 === Row(2, 1, 9.toLong, 43.0, 8.toLong, 2))
+      assert(deeply2 === Row(2, 1, 9.toLong, 43.0, 8.toLong, 8))
 
       println(orgFile.where("TimePeriod = 1").head())
       println(orgFile.where("TimePeriod = 2").head())
