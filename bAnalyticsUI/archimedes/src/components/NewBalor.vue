@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="NewBalor">
+  <v-container fluid class="NewBalor pl-0 pr-0">
     <v-layout row wrap>
       <!-- COLUMN1 -->
       <v-flex d-flex xs12 sm12 md6>

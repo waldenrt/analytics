@@ -11,7 +11,10 @@ export default HorizontalBar.extend({
     return {
       options: {
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        legend: {
+          display: false
+        }
       }
     }
   },

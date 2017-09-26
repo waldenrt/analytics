@@ -1,5 +1,5 @@
 <template>
-<v-container fluid class="balorSegmentTrend">
+<v-container fluid class="balorSegmentTrend pl-0 pr-0">
   <v-layout row wrap class="mt-0 mb-3 pa-0">
     <v-flex xs12>
       <v-card flat>

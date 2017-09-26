@@ -1,6 +1,7 @@
 <template>
   <v-parallax src="../assets/images/bp_logo_reverse_color.png" height="1500">
     <v-layout column align-center justify-center>
+      <h3 class="text-xs-center">Consumer Insights Dashboard</h3>
       <img src="../assets/images/bp_logo_reverse_color.png" />
     </v-layout>
   </v-parallax>
