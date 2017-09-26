@@ -690,11 +690,11 @@ object Lifecycle {
     val sc = new SparkContext(conf)
     val sqlCtx = new HiveContext(sc)
 
-    //val kafkaProps = sc.textFile("kafkaProps.txt")
-    /*val propsOnly = kafkaProps.filter(_.contains("analytics"))
+    val kafkaProps = sc.textFile("kafkaProps.txt")
+    val propsOnly = kafkaProps.filter(_.contains("analytics"))
       .map(_.split(" = "))
       .keyBy(_ (0))
-      .mapValues(_ (1))*/
+      .mapValues(_ (1))
 
     if (args.length != 5) {
       //sendError
@@ -761,12 +761,12 @@ object Lifecycle {
     avro match {
       case Success(avro) => {
         println(s"Lifecycle calculations were successful: $avro")
-        //KafkaProducer.sendSucess("lifecycle", propsOnly, avro)
+        KafkaProducer.sendSucess("lifecycle", propsOnly, avro)
         sc.stop()
       }
       case Failure(ex) => {
-        //sendLifecycleError(jobKey, "Lifecycle", "unknown", ex.toString, "System", propsOnly)
         println(s"Lifecycle had an error: $ex")
+        sendLifecycleError(jobKey, "Lifecycle", "unknown", ex.toString, "System", propsOnly)
         sc.stop()
         System.exit(-1)
       }

@@ -169,7 +169,7 @@
 		 			 "type": "int",
 		 			 "doc" : "Quantile bucket"},
 
-		 			{"name": "columnName",
+		 	 		{"name": "columnName",
 		 			 "type": "string",
 		 			 "doc" : "Which input product column are these rankings for, user defines columns"},
 

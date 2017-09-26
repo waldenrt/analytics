@@ -347,6 +347,7 @@ object BalorApp {
     tempList.add(ex)
 
     error.setErrorInfo(tempList)
+    println(error)
 
     BalorProducer.sendError(error, propsList)
 

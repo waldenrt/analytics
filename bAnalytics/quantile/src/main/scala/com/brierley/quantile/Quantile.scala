@@ -601,9 +601,13 @@ object Quantile {
     }
 
     sumDF.sort("TimePeriod").collect().foreach(f => mapMigArrays(f))
-    migArray.get(migArray.size() - 1).setMigrationData(innerMigArray)
+    // migArray.get(migArray.size() - 1).setMigrationData(innerMigArray)
     countDF.sort("TimePeriod").collect().foreach(g => mapCountArrays(g))
-    migArray.get(migArray.size() - 1).setQuantileTotals(tempTotal)
+    migArray.get(timePeriod - 1).setQuantileTotals(tempTotal)
+
+    if (migArray.get(migArray.size() - 1).getMigrationData == null) {
+      migArray.remove(migArray.size() - 1)
+    }
 
     migArray
   }
@@ -739,11 +743,11 @@ object Quantile {
     avro match {
       case Success(avro) => {
         println(s"was a success: $avro")
-        //KafkaProducer.sendSucess("quantile", propsOnly, avro)
+        KafkaProducer.sendSucess("quantile", propsOnly, avro)
         sc.stop()
       }
       case Failure(ex) => {
-        //sendQuantileError(jobKey, "BalorApp", "unknown", ex.toString, "System", propsOnly)
+        sendQuantileError(jobKey, "BalorApp", "unknown", ex.toString, "System", propsOnly)
         println(s"there was an error: $ex")
         sc.stop()
         System.exit(-1)
