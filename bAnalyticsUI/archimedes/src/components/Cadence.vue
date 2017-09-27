@@ -3,16 +3,17 @@
     <v-layout row wrap class="mb-2">
       <v-flex xs12 sm12 md8 lg9>
         <v-card class="white">
-        <v-card-title primary-title class="primary">
-          <h6 class="white--text text-xs-left mb-0">Purchase Candence Distribution</h6>
-        </v-card-title>
-        <!--trendlines-->
-        <v-layout row wrap class="mb-3 pa-3">
+          <v-card-title primary-title class="primary">
+            <h6 class="white--text text-xs-left mb-0">Purchase Candence Distribution</h6>
+          </v-card-title>
+          <!--trendlines-->
+          <v-layout row wrap class="mb-3 pa-3">
             <v-flex xs12>
-            <annotated-bar-chart :chart-data="cadenceBars" style="height:21vh !important;" class="bar_chart"></annotated-bar-chart>
+              <annotated-bar-chart :chart-data="cadenceBars" style="height:21vh !important;"
+                                   class="bar_chart"></annotated-bar-chart>
             </v-flex>
-        </v-layout>
-        <!--//trendlines-->
+          </v-layout>
+          <!--//trendlines-->
         </v-card>
       </v-flex>
       <v-flex xs12 sm12 md4 lg3 class="mb-3">
@@ -22,27 +23,28 @@
           </v-card-title>
           <v-divider class="primary pb-0"></v-divider>
           <v-flex xs12 fill-height>
-                <v-layout row wrap>
-                    <table cellpadding="0" cellspacing="0" style="height:21vh !important;">
-                      <tr v-for="item in sumItems" v-bind:key="item.name">
-                        <td class="pa-2">
-                          <div class="primary--text" v-text="item.name"></div>
-                        </td>
-                        <td class="pa-2">
-                          <div v-text="item.vals"></div>
-                        </td>
-                      </tr>
-                    </table>
-                </v-layout>
+            <v-layout row wrap>
+              <table cellpadding="0" cellspacing="0" style="height:21vh !important;">
+                <tr v-for="item in sumItems" v-bind:key="item.name">
+                  <td class="pa-2">
+                    <div class="primary--text" v-text="item.name"></div>
+                  </td>
+                  <td class="pa-2">
+                    <div v-text="item.vals"></div>
+                  </td>
+                </tr>
+              </table>
+            </v-layout>
           </v-flex>
         </v-card>
-        </v-flex>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
   import AnnotatedBarChart from './balorCharts/AnnotatedBarChart'
+  import {cadence} from './javascript/balor.service'
 
   export default {
     name: 'cadence',
@@ -57,38 +59,8 @@
         cadArray: [],
         countArray: [],
         perArray: [],
-        incomingJson: {
-          'responseCode': 0,
-          'isError': 'false',
-          'httpStatusCode': 200,
-          'data': {
-            'normalizedCadence': '2 weeks',
-            'singleVisit': 24,
-            'percentile': 0.8,
-            'numRecords': 1000,
-            'maxDateCadence': '04/23/2017',
-            'numTimePeriods': 99,
-            'minDateCadence': '01/01/2017',
-            'freqTable': [{
-              'cadence': 1,
-              'frequency': 2,
-              'cumFreq': 3
-            }, {
-              'cadence': 2,
-              'frequency': 5,
-              'cumFreq': 6
-            }, {
-              'cadence': 3,
-              'frequency': 8,
-              'cumFreq': 9
-            }],
-            'rawCadence': 23.3
-          },
-          'errors': '',
-          'moreInfo': '',
-          'userMessage': 'Success',
-          'developerMessage': ''
-        }
+        jobId: 'aeoDemo',
+        incomingJson: {}
       }
     },
     computed: {
@@ -97,12 +69,23 @@
       }
     },
     mounted () {
-      this.parseJson()
-      this.createBar()
-      this.createSummary()
+      this.getResults()
     },
     methods: {
+      getResults () {
+        cadence(this.jobId)
+          .then((response) => {
+            this.incomingJson = response.data
+            this.parseJson()
+            this.createBar()
+            this.createSummary()
+          })
+          .catch(err => {
+            alert('Could not get cadence results. ' + err.message.toString())
+          })
+      },
       parseJson () {
+        console.log('incomingJson: ' + this.jsonMsg)
         var tempCad = []
         var tempCount = []
         var tempPer = []
@@ -145,6 +128,9 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .bar_chart{}
-  .table_h{}
+  .bar_chart {
+  }
+
+  .table_h {
+  }
 </style>
