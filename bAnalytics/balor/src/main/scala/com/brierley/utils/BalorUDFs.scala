@@ -26,6 +26,7 @@ object BalorUDFs {
 
   def retentionFunc(currRet: Long, lastReact: Long, lastNew: Long, lastRet: Long): Double = {
     if (currRet == 0) 0
+    else if ((lastReact + lastNew + lastRet) == 0) 0
     else currRet.toDouble / (lastReact + lastNew + lastRet)
   }
 
@@ -35,12 +36,12 @@ object BalorUDFs {
   }
 
   def doubleAvgCalcFunc(num: Double, denom: Long): Double = {
-    if(num == 0 || denom == 0) 0
-    else num/denom
+    if (num == 0 || denom == 0) 0
+    else num / denom
   }
 
   def stringDateFunc(date: java.sql.Date, cad: Int): String = {
-    if(cad == 1 || cad == 2) {
+    if (cad == 1 || cad == 2) {
       val format = new java.text.SimpleDateFormat("MM/dd/yyyy")
       format.format(date)
     }

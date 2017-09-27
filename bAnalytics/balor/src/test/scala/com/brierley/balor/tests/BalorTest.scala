@@ -402,7 +402,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
         .first()
         .getInt(0)
 
-      assert(janPeriod === 1)
+      assert(janPeriod === 3)
 
       val febPeriod = periodDF
         .where("TXN_AMT = 7.5")
@@ -418,7 +418,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
         .first()
         .getInt(0)
 
-      assert(marPeriod === 3)
+      assert(marPeriod === 1)
     }
   }
 
@@ -427,7 +427,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       val periodDF = BalorApp.calcTimePeriod(singleUserJanFebMar2016, OneMonth) getOrElse singleUserJanFebMar2015
       val timePeriods = periodDF.select("TimePeriod").map(_ (0)).collect()
 
-      assert(timePeriods === List(1, 2, 2, 3, 3))
+      assert(timePeriods === List(1, 1, 2, 2, 3))
 
       val janPeriod = periodDF
         .where("TXN_AMT = 5.0")
@@ -435,7 +435,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
         .first()
         .getInt(0)
 
-      assert(janPeriod === 1)
+      assert(janPeriod === 3)
 
       val febPeriod = periodDF
         .where("TXN_AMT = 14.14")
@@ -459,7 +459,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
         .first()
         .getInt(0)
 
-      assert(marPeriod === 3)
+      assert(marPeriod === 1)
 
       val marPeriod2 = periodDF
         .where("TXN_AMT = 325.13")
@@ -467,7 +467,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
         .first()
         .getInt(0)
 
-      assert(marPeriod2 === 3)
+      assert(marPeriod2 === 1)
     }
   }
 
@@ -478,7 +478,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
 
       //jan 31 entry should be dropped
       assert(periodDF.count() === 5)
-      assert(timePeriods === List(1, 2, 2, 3,3))
+      assert(timePeriods === List(1, 1, 2, 2, 3))
 
     }
   }
@@ -492,10 +492,10 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       val period4 = periodDF.where("TimePeriod = 4").select("TimePeriod").count()
 
       assert(periodDF.count() === 22)
-      assert(period4 === 3)
-      assert(period3 === 9)
-      assert(period2 === 4)
-      assert(period1 === 6)
+      assert(period4 === 6)
+      assert(period3 === 4)
+      assert(period2 === 9)
+      assert(period1 === 3)
     }
 
   }
@@ -509,10 +509,10 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       val period4 = periodDF.where("TimePeriod = 4").select("TimePeriod").count()
 
       assert(periodDF.count() === 22)
-      assert(period4 === 3)
-      assert(period3 === 9)
-      assert(period2 === 4)
-      assert(period1 === 6)
+      assert(period4 === 6)
+      assert(period3 === 4)
+      assert(period2 === 9)
+      assert(period1 === 3)
     }
   }
 
@@ -522,7 +522,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       val timePeriods = periodDF.select("TimePeriod").map(_ (0)).collect()
 
       assert(periodDF.count() === 10)
-      assert(timePeriods === List(1, 1, 1, 1, 1, 1, 2, 2, 2, 2))
+      assert(timePeriods === List(1, 1, 1, 1, 2, 2, 2, 2, 2, 2))
     }
 
   }
@@ -543,6 +543,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       val labelDF = BalorApp.assignSegmentLabel(oneNewLapsedDeeplyLapsedReturningReact) getOrElse threeOverTwo
       val labelCol = labelDF.filter(labelDF("TimePeriod") === 1).select("Label").map(_ (0)).collect()
 
+      labelDF.show()
       val labels = Array("New", "Reactivated", "Returning", "Lapsed")
 
       assert(labelCol === labels)
@@ -927,12 +928,12 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
 
       val balorSets = balorAvro.getBalorSets
 
-      val balor1 = balorSets.get(0)
+      val balor1 = balorSets.get(2)
       val balor2 = balorSets.get(1)
-      val balor3 = balorSets.get(2)
+      val balor3 = balorSets.get(0)
 
       //check every field in first timeperiod
-      assert(balor1.getTimePeriod === 1)
+      assert(balor1.getTimePeriod === 3)
       assert(balor1.getNewCustCount === 2)
       assert(balor1.getNewTxnCount === 3)
       assert(balor1.getNewTxnAmt === 40.0)
@@ -997,7 +998,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       assert(balor2.getTimePeriod === 2)
       assert(balor2.getNewCustCount === 23)
 
-      assert(balor3.getTimePeriod === 3)
+      assert(balor3.getTimePeriod === 1)
       assert(balor3.getNewTxnAmt === 46.0)
 
       balorDF.show()

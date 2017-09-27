@@ -65,9 +65,9 @@ object BalorApp {
     def weekTimePeriod(dateDF: DataFrame): DataFrame = {
       dateDF
         .select("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT", "Date", "max(Date)")
-        .withColumn("TP", (datediff(dateDF("max(Date)"), dateDF("Date")) / cadence.periodDivisor).cast(IntegerType) + 1)
-        .sort(col("TP").desc)
-        .withColumn("TimePeriod", dense_rank().over(Window.orderBy(col("TP").desc)))
+        .withColumn("TimePeriod", (datediff(dateDF("max(Date)"), dateDF("Date")) / cadence.periodDivisor).cast(IntegerType) + 1)
+        //.sort(col("TP").desc)
+        //.withColumn("TimePeriod", dense_rank().over(Window.orderBy(col("TP").desc)))
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date", "TimePeriod")
         .withColumn("StartDate", min("Date").over(Window.partitionBy("TimePeriod")))
 
@@ -83,9 +83,9 @@ object BalorApp {
         .withColumn("Year", year(dateDF("Date")))
         .withColumn("MaxMonth", month(col("max(Date)")))
         .withColumn("MaxYear", year(col("max(Date)")))
-        .withColumn("TP", (((col("MaxMonth") - col("Month")) + (col("MaxYear") - col("Year")) * 12) / cadence.periodDivisor).cast(IntegerType) + 1)
-        .sort(col("TP").desc)
-        .withColumn("TimePeriod", dense_rank().over(Window.orderBy(col("TP").desc)))
+        .withColumn("TimePeriod", (((col("MaxMonth") - col("Month")) + (col("MaxYear") - col("Year")) * 12) / cadence.periodDivisor).cast(IntegerType) + 1)
+        //.sort(col("TP").desc)
+        //.withColumn("TimePeriod", dense_rank().over(Window.orderBy(col("TP").desc)))
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date", "TimePeriod")
         .withColumn("StartDate", min("Date").over(Window.partitionBy("TimePeriod")))
     }
@@ -120,6 +120,10 @@ object BalorApp {
         sum("ITEM_QTY").as("ITEM_QTY"),
         sum("DISC_AMT").as("DISC_AMT"))
 
+    val startDate = timePeriodDF
+      .select("TimePeriod", "StartDate")
+      .distinct()
+
     val custWindow = Window
       .partitionBy("CUST_ID")
       .orderBy("TimePeriod")
@@ -128,7 +132,7 @@ object BalorApp {
     val labelDF = returnDF
       .withColumn("Label", nonLapsedLabel(returnDF("TimePeriod"), sum("TimePeriod").over(custWindow)))
       .sort("TimePeriod")
-      .select("TimePeriod", "Label", "CUST_ID", "TXN_COUNT", "TXN_AMT", "DISC_AMT", "ITEM_QTY", "StartDate")
+      .select("TimePeriod", "Label", "CUST_ID", "TXN_COUNT", "TXN_AMT", "DISC_AMT", "ITEM_QTY")
 
     val lapsedWindow = Window
       .partitionBy("CUST_ID")
@@ -141,15 +145,17 @@ object BalorApp {
       .withColumn("LapsedTimePeriod", labelDF("TimePeriod") - 1)
       .drop("TimePeriod")
       .withColumnRenamed("LapsedTimePeriod", "TimePeriod")
-      .select("TimePeriod", "Label", "CUST_ID", "TXN_COUNT", "TXN_AMT", "DISC_AMT", "ITEM_QTY", "StartDate")
+      .select("TimePeriod", "Label", "CUST_ID", "TXN_COUNT", "TXN_AMT", "DISC_AMT", "ITEM_QTY")
 
     val completeDF = labelDF
       .unionAll(lapsedDF)
       .sort("TimePeriod")
       .na.fill(0)
 
-    completeDF.persist(StorageLevel.MEMORY_AND_DISK)
-    completeDF
+    val joinedDF = completeDF.join(startDate, Seq("TimePeriod"))
+
+    joinedDF.persist(StorageLevel.MEMORY_AND_DISK)
+    joinedDF
   }
 
   def counts(labelDF: DataFrame): Try[DataFrame] = Try {
@@ -330,10 +336,14 @@ object BalorApp {
       tempList.add(tpd)
     }
 
-    val orderedDF = balorDF
+    val flipTP = balorDF
+      .withColumn("TPRank", dense_rank().over(Window.orderBy(col("TimePeriod").desc)))
+      .sort(col("TPRank"))
+
+    val orderedDF = flipTP
       .withColumn("cadence", lit(cadence.index))
       .withColumn("formatDate", stringDate(balorDF("StartDate"), col("cadence")))
-      .select("TimePeriod", "newCustCount", "newTxnCount", "newTxnAmt", "newDiscAmt", "newItemCount",
+      .select("TPRank", "newCustCount", "newTxnCount", "newTxnAmt", "newDiscAmt", "newItemCount",
         "reactCustCount", "reactTxnCount", "reactTxnAmt", "reactDiscAmt", "reactItemCount",
         "returnCustCount", "returnTxnCount", "returnTxnAmt", "returnDiscAmt", "returnItemCount",
         "lapsedCustCount", "lapsedTxnCount", "lapsedTxnAmt", "lapsedDiscAmt", "lapsedItemCount",
