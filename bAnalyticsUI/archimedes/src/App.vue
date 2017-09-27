@@ -86,8 +86,6 @@
 
 <script>
   import home from './components/Home.vue'
-  import modulenav from './components/ModuleNav.vue'
-  import headernav from './components/HeaderNav.vue'
   import sidenav from './components/SideNav.vue'
   import balorTabs from './components/balorTabs.vue'
   import { mapState } from 'vuex'
@@ -120,8 +118,6 @@
     }),
     components: {
       home,
-      headernav,
-      modulenav,
       sidenav,
       balorTabs
     }

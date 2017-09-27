@@ -1,8 +1,8 @@
 <template>
-  <v-parallax src="../assets/images/bp_logo_reverse_color.png" height="1400">
+  <v-parallax src="/static/bp_logo_reverse_color2.png" height="1000" class="bg_img mt-0 mb-0">
     <v-layout column align-center justify-center>
-      <h3 class="primary--text text-xs-center">Consumer Insights Dashboard</h3>
-      <img src="../assets/images/bp_logo_reverse_color.png" />
+      <h1 class="primary--text text-xs-center">Consumer Insights</h1>
+      <h3 class="grey--text text-xs-center">Dashboard</h3>
     </v-layout>
   </v-parallax>
 </template>
@@ -19,4 +19,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.bg_img {
+  margin-top:90px;
+}
 </style>
