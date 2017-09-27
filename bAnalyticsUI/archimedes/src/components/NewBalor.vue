@@ -56,9 +56,9 @@
           </v-card-title>
           <img src="../assets/images/balor_file_img.png" width="100%" height="100%" class="file_sample">
         </v-card>
-        <v-card class="white mt-3">
+        <!--<v-card class="white mt-3">
           <img src="http://via.placeholder.com/525x150/EDEDED/ffffff?text=User+File+Preview" width="100%" height="100%" class="file_sample">
-        </v-card>
+        </v-card>-->
       </v-flex>
       <!-- //COLUMN2 -->
     </v-layout>

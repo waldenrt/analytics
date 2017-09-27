@@ -571,8 +571,8 @@
           datasets: [{
             data: [
               this.jsonMsg.timePeriods[tp].newTxnAmt,
-              this.jsonMsg.timePeriods[tp].returnTxnAmount,
-              this.jsonMsg.timePeriods[tp].reactTxnAmount],
+              this.jsonMsg.timePeriods[tp].returnTxnAmt,
+              this.jsonMsg.timePeriods[tp].reactTxnAmt],
             backgroundColor: [
               '#8EAC1D',
               '#F7970E',
@@ -654,8 +654,8 @@
           datasets: [{
             data: [
               this.jsonMsg.timePeriods[this.tp - 1].newTxnAmt,
-              this.jsonMsg.timePeriods[this.tp - 1].returnTxnAmount,
-              this.jsonMsg.timePeriods[this.tp - 1].reactTxnAmount],
+              this.jsonMsg.timePeriods[this.tp - 1].returnTxnAmt,
+              this.jsonMsg.timePeriods[this.tp - 1].reactTxnAmt],
             backgroundColor: [
               '#8EAC1D',
               '#F7970E',
