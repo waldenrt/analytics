@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="quantileSummary pl-0 pr-0">
+  <v-container fluid class="quantileSummary pl-0 pr-0 mb-3">
     <!-- =====ROW1===== -->
     <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
