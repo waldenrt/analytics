@@ -190,6 +190,7 @@
   import BalorTrendLine from './balorCharts/BalorTrendLine.js'
   import PieCharts from './balorCharts/PieCharts.js'
   import noUiSlider from 'noUiSlider'
+  import {summary} from './javascript/balor.service'
 
   export default {
     name: 'balorTrend',
@@ -207,199 +208,12 @@
         txnData: null,
         spendData: null,
         ratioLine: null,
-        incomingJson: {
-          'responseCode': 0,
-          'isError': 'false',
-          'httpStatusCode': 200,
-          'data': {
-            'normalizedCadence': 1.0,
-            'singleVisit': 1050,
-            'totalCust': 100000,
-            'maxDateBalor': '2016-12-31',
-            'numRecords': 2702629,
-            'timePeriods': [
-              {
-                'lapsedTxnCount': 92230,
-                'newCustCount': 69506,
-                'reactTxnCount': 39050,
-                'newTxnCount': 116307,
-                'txnBalor': 1.684451913694026,
-                'returnTxnAmount': 4716953.0,
-                'reactCustCount': 17966,
-                'spendBalor': 2.107847534662702,
-                'timePeriod': 1,
-                'reactTxnAmount': 1033399.0,
-                'returnCustCount': 69462,
-                'custBalor': 1.508397999655113,
-                'lapsedCustCount': 57990,
-                'lapsedTxnAmount': 2175970.0,
-                'newTxnAmt': 3553214.0,
-                'returnTxnCount': 215602
-              }, {
-                'lapsedTxnCount': 77938,
-                'newCustCount': 61236,
-                'reactTxnCount': 36643,
-                'newTxnCount': 100160,
-                'txnBalor': 1.7552798378198056,
-                'returnTxnAmount': 2991339.0,
-                'reactCustCount': 17432,
-                'spendBalor': 1.5643779808631946,
-                'timePeriod': 2,
-                'reactTxnAmount': 842324.0,
-                'returnCustCount': 48784,
-                'custBalor': 1.5794567028730901,
-                'lapsedCustCount': 49807,
-                'lapsedTxnAmount': 2192947.0,
-                'newTxnAmt': 2588274.0,
-                'returnTxnCount': 144387
-              }, {
-                'lapsedTxnCount': 85303,
-                'newCustCount': 41723,
-                'reactTxnCount': 27621,
-                'newTxnCount': 63081,
-                'txnBalor': 1.0632920295886428,
-                'returnTxnAmount': 2437061.0,
-                'reactCustCount': 15016,
-                'spendBalor': 1.0520229762587552,
-                'timePeriod': 3,
-                'reactTxnAmount': 724850.0,
-                'returnCustCount': 41852,
-                'custBalor': 1.0629859302695919,
-                'lapsedCustCount': 53377,
-                'lapsedTxnAmount': 2549066.0,
-                'newTxnAmt': 1956826.0,
-                'returnTxnCount': 109455
-              }, {
-                'lapsedTxnCount': 88456,
-                'newCustCount': 40499,
-                'reactTxnCount': 28337,
-                'newTxnCount': 61986,
-                'txnBalor': 1.0211065388441711,
-                'returnTxnAmount': 2623998.0,
-                'reactCustCount': 14838,
-                'spendBalor': 1.3453899282385546,
-                'timePeriod': 4,
-                'reactTxnAmount': 845628.0,
-                'returnCustCount': 39892,
-                'custBalor': 0.9886197162968521,
-                'lapsedCustCount': 55974,
-                'lapsedTxnAmount': 2241733.0,
-                'newTxnAmt': 2170377.0,
-                'returnTxnCount': 104411
-              }, {
-                'lapsedTxnCount': 92734,
-                'newCustCount': 39288,
-                'reactTxnCount': 28749,
-                'newTxnCount': 58170,
-                'txnBalor': 0.9372937649621498,
-                'returnTxnAmount': 2093211.0,
-                'reactCustCount': 15697,
-                'spendBalor': 1.1416113309970697,
-                'timePeriod': 5,
-                'reactTxnAmount': 733655.0,
-                'returnCustCount': 40881,
-                'custBalor': 0.9591299190622383,
-                'lapsedCustCount': 57328,
-                'lapsedTxnAmount': 2257736.0,
-                'newTxnAmt': 1843802.0,
-                'returnTxnCount': 103120
-              }, {
-                'lapsedTxnCount': 100803,
-                'newCustCount': 39702,
-                'reactTxnCount': 27053,
-                'newTxnCount': 60239,
-                'txnBalor': 0.8659662906857931,
-                'returnTxnAmount': 2084852.0,
-                'reactCustCount': 14945,
-                'spendBalor': 1.047200847460415,
-                'timePeriod': 6,
-                'reactTxnAmount': 683061.0,
-                'returnCustCount': 43562,
-                'custBalor': 0.9053962257898835,
-                'lapsedCustCount': 60357,
-                'lapsedTxnAmount': 2431736.0,
-                'newTxnAmt': 1863455.0,
-                'returnTxnCount': 111003
-              }, {
-                'lapsedTxnCount': 97086,
-                'newCustCount': 41056,
-                'reactTxnCount': 26735,
-                'newTxnCount': 63154,
-                'txnBalor': 0.9258698473518324,
-                'returnTxnAmount': 2477227.0,
-                'reactCustCount': 14347,
-                'spendBalor': 0.9483848897077092,
-                'timePeriod': 7,
-                'reactTxnAmount': 616520.0,
-                'returnCustCount': 48516,
-                'custBalor': 0.905322156314852,
-                'lapsedCustCount': 61197,
-                'lapsedTxnAmount': 2616230.0,
-                'newTxnAmt': 1864673.0,
-                'returnTxnCount': 131028
-              }, {
-                'lapsedTxnCount': 88212,
-                'newCustCount': 47370,
-                'reactTxnCount': 31164,
-                'newTxnCount': 72332,
-                'txnBalor': 1.1732644084705028,
-                'returnTxnAmount': 2646692.0,
-                'reactCustCount': 16662,
-                'spendBalor': 1.2618917303311943,
-                'timePeriod': 8,
-                'reactTxnAmount': 854868.0,
-                'returnCustCount': 45681,
-                'custBalor': 1.1417363550452009,
-                'lapsedCustCount': 56083,
-                'lapsedTxnAmount': 2497597.0,
-                'newTxnAmt': 2296829.0,
-                'returnTxnCount': 122000
-              }, {
-                'lapsedTxnCount': 96699,
-                'newCustCount': 44833,
-                'reactTxnCount': 26956,
-                'newTxnCount': 68335,
-                'txnBalor': 0.9854393530439819,
-                'returnTxnAmount': 2518094.0,
-                'reactCustCount': 14333,
-                'spendBalor': 1.0379567379694452,
-                'timePeriod': 9,
-                'reactTxnAmount': 763353.0,
-                'returnCustCount': 42598,
-                'custBalor': 0.9843773396556027,
-                'lapsedCustCount': 60105,
-                'lapsedTxnAmount': 2864498.0,
-                'newTxnAmt': 2209872.0,
-                'returnTxnCount': 111083
-              }, {
-                'lapsedTxnCount': 88676,
-                'newCustCount': 45153,
-                'reactTxnCount': 32013,
-                'newTxnCount': 68897,
-                'txnBalor': 1.137962921196265,
-                'returnTxnAmount': 2600382.0,
-                'reactCustCount': 16647,
-                'spendBalor': 1.1262522030538704,
-                'timePeriod': 10,
-                'reactTxnAmount': 838657.0,
-                'returnCustCount': 40903,
-                'custBalor': 1.0770303241547579,
-                'lapsedCustCount': 57380,
-                'lapsedTxnAmount': 2780799.0,
-                'newTxnAmt': 2293224.0,
-                'returnTxnCount': 110152
-              }],
-            'minDateBalor': '2016-01-01'
-          },
-          'errors': '',
-          'moreInfo': '',
-          'userMessage': 'Cowboys',
-          'developerMessage': ''
-        },
+        incomingJson: {},
         custBalorArray: [],
         txnBalorArray: [],
         spendBalorArray: [],
         tpArray: [],
+        jobId: 'aeoDemo',
         custTrendData: {
           labels: this.tpArray,
           datasets: [
@@ -454,21 +268,32 @@
       }
     },
     mounted () {
-      this.createPies()
-      this.createLines()
-      this.createSlider()
-      this.createSummary()
+      this.getResults()
 
       // this.createTrend()
     },
     methods: {
+      getResults () {
+        summary(this.jobId)
+          .catch(err => {
+            alert('Could not get Trend results. ' + err.message.toString())
+          })
+          .then((response) => {
+            this.incomingJson = response.data
+            console.log(this.incomingJson)
+            this.createPies()
+            this.createLines()
+            this.createSlider()
+            this.createSummary()
+          })
+      },
       createSummary () {
         this.sumItems.push({name: 'Min. Date', vals: this.jsonMsg.minDateBalor})
         this.sumItems.push({name: 'Max. Date', vals: this.jsonMsg.maxDateBalor})
-        this.sumItems.push({name: 'Customer Base', vals: this.jsonMsg.totalCust})
+        this.sumItems.push({name: 'Customer Base', vals: this.jsonMsg.totalCusts})
         this.sumItems.push({
           name: '% Customer - 1 Purchase',
-          vals: this.jsonMsg.singleVisit / this.jsonMsg.totalCust * 100
+          vals: this.jsonMsg.singleVisit / this.jsonMsg.totalCusts * 100
         })
         this.sumItems.push({name: 'Transactions', vals: this.jsonMsg.numRecords})
         this.sumItems.push({name: 'Purchase Cadence - 80th Percentile', vals: this.jsonMsg.normalizedCadence})
@@ -779,7 +604,6 @@
             density: 10
           }
         })
-        console.log(this.Slider)
         this.Slider.noUiSlider.on('change', this.slideUpdateTrends)
       },
       setTP () {
