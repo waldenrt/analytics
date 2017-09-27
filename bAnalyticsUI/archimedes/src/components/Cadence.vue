@@ -4,12 +4,12 @@
       <v-flex xs12 sm12 md8 lg9>
         <v-card class="white">
           <v-card-title primary-title class="primary">
-            <h6 class="white--text text-xs-left mb-0">Purchase Candence Distribution</h6>
+            <h6 class="white--text text-xs-left mb-0">Purchase Cadence Distribution</h6>
           </v-card-title>
           <!--trendlines-->
           <v-layout row wrap class="mb-3 pa-3">
             <v-flex xs12>
-              <annotated-bar-chart :chart-data="cadenceBars" style="height:21vh !important;"
+              <annotated-bar-chart :chart-data="cadenceBars" style="height:65vh !important;"
                                    class="bar_chart"></annotated-bar-chart>
             </v-flex>
           </v-layout>
@@ -131,6 +131,4 @@
   .bar_chart {
   }
 
-  .table_h {
-  }
 </style>
