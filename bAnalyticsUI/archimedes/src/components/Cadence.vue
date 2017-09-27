@@ -59,7 +59,7 @@
         cadArray: [],
         countArray: [],
         perArray: [],
-        jobId: 'aeoDemo',
+        jobId: 'macysDemo',
         incomingJson: {}
       }
     },
