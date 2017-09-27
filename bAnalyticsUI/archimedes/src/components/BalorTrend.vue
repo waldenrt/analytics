@@ -213,7 +213,7 @@
         txnBalorArray: [],
         spendBalorArray: [],
         tpArray: [],
-        jobId: 'aeoDemo',
+        jobId: 'macysDemo',
         custTrendData: {
           labels: this.tpArray,
           datasets: [
