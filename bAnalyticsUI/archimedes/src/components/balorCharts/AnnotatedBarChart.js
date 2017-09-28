@@ -12,6 +12,12 @@ export default Bar.extend({
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        scales: {
+          xAxes: [{
+            categoryPercentage: 1.0,
+            barPercentage: 1.0
+          }]
+        },
         annotation: {
           annotations: [
             {
