@@ -37,9 +37,8 @@
               <td>{{ props.item.id }}</td>
               <td class="text-xs-right">{{ props.item.name }}</td>
               <td class="text-xs-right">{{ props.item.job }}</td>
-              <td class="text-xs-right" id="status_col">
-                {{ props.item.status }}
-                  <div class="status_block"></div>
+              <td class="text-xs-right">
+                  <div class="status_block">{{ props.item.status }}</div>
               </td>
               <td class="text-xs-right">{{ props.item.date_mod }}</td>
               <td class="text-xs-right">{{ props.item.record }}</td>
@@ -221,11 +220,14 @@
 <style scoped>
 .status_block {
     display:inline-block;
-    width:15px;
-    height:15px;
+    width:100%;
     border-radius:2px;
-    margin-left:4px;
-    position:relative;
-    top:3px;
+    padding:5px;
+    color:##eff3f6;
   }
+.menu .menu__content .card .list {
+  padding-top:0;
+  padding-bottom:0;
+}
+.list__tile{height:38px !important;}
 </style>
