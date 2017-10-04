@@ -37,9 +37,7 @@
               <td>{{ props.item.id }}</td>
               <td class="text-xs-right">{{ props.item.name }}</td>
               <td class="text-xs-right">{{ props.item.job }}</td>
-              <td class="text-xs-right">
-                  <div class="status_block">{{ props.item.status }}</div>
-              </td>
+              <td class="text-xs-right">{{ props.item.status }}</td>
               <td class="text-xs-right">{{ props.item.date_mod }}</td>
               <td class="text-xs-right">{{ props.item.record }}</td>
               <td class="text-xs-right pl-1" style="width:10px !important;">
@@ -195,7 +193,7 @@
       }
     },
     methods: {
-      statusColor () {
+      statusColor () { // leaving this method. removing it from the data table until I can figure out how to activate method when the pagination activates.
         var x = document.getElementsByClassName('status_block')
         for (var i = 0; i < this.items.length; i++) {
           if (this.items[i].status === 'File Uploaded') {
