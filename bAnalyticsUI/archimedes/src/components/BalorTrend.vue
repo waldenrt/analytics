@@ -3,7 +3,7 @@
     <v-layout row wrap class="mt-0 mb-3 pa-0">
       <v-flex xs12>
         <v-card flat>
-          <v-tabs id="mobile-tabs-3" grow class="elevation-1">
+          <v-tabs id="mobile-tabs-3" icons centered grow class="elevation-1">
             <v-tabs-bar slot="activators" class="grey lighten-2">
               <v-tabs-slider></v-tabs-slider>
               <v-tabs-item router to="/Balor/Trend">
@@ -135,21 +135,22 @@
             <!--//selection-->
           </v-layout>
           <!-- //SELECTION ROW -->
-
+          <!-- LEGEND -->
           <v-layout row wrap>
             <v-flex xs12>
               <v-card flat class="white pa-3">
                 <div class="legend legend_color1"></div>
-                <div class="inliner" style="padding-right:5px;">Lapsed</div>
+                <div class="inliner padR5">Lapsed</div>
                 <div class="legend legend_color2"></div>
-                <div class="inliner" style="padding-right:5px;">New</div>
+                <div class="inliner padR5">New</div>
                 <div class="legend legend_color3"></div>
-                <div class="inliner" style="padding-right:5px;">Returning</div>
+                <div class="inliner padR5">Returning</div>
                 <div class="legend legend_color4"></div>
-                <div class="inliner" style="padding-right:5px;">Reactivated</div>
+                <div class="inliner padR5">Reactivated</div>
               </v-card>
             </v-flex>
           </v-layout>
+          <!-- //LEGEND -->
           <!--Pie Charts-->
           <v-layout row wrap>
             <v-flex xs12 sm6 md6 lg3>
@@ -732,6 +733,7 @@
   .legend_color2 { background-color: #8EAC1D; }
   .legend_color3 { background-color: #F7970E; }
   .legend_color4 { background-color: #0087AA; }
+  .padR5{padding-right:5px;}
 
   /* Smartphones (portrait and landscape) ----------- */
   @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {

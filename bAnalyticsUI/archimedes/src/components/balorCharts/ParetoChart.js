@@ -21,6 +21,9 @@ export default Bar.extend({
             type: 'linear',
             position: 'right'
           }]
+        },
+        legend: {
+          display: false
         }
       }
     }

@@ -94,15 +94,23 @@
     <!-- =====ROW2===== -->
     <v-layout wrap row>
       <v-flex xs12 class="pt-0 mt-0">
+        <v-card class="pl-3 pr-3 pt-1 pb-1">
+          <div class="title primary--text text-xs-center pa-1 emphasis"><span class="grey--text darken-2">Visits</span> Analysis for Quantiles <span class="grey--text darken-2">All</span> during Period <span class="grey--text darken-2">1</span>, with reference line at <span class="grey--text darken-2">70.00</span> percent of total</div>
+        </v-card>
+      </v-flex>
+    </v-layout>
+    <!-- //=====ROW2===== -->
+    <!-- =====ROW3===== -->
+    <v-layout wrap row>
+      <v-flex xs12 class="pt-0 mt-0">
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <div class="title primary--text text-xs-center pa-1">Quantile Pareto Analysis</div>
           <pareto-chart :chart-data="paretoData" style="height:23vh;"></pareto-chart>
         </v-card>
       </v-flex>
     </v-layout>
-    <!-- //=====ROW2===== -->
-
-    <!-- =====ROW3===== -->
+    <!-- //=====ROW3===== -->
+    <!-- =====ROW4===== -->
     <v-layout wrap row>
       <v-flex xs12>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
@@ -124,7 +132,7 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <!-- //=====ROW3===== -->
+    <!-- //=====ROW4===== -->
   </v-container>
 </template>
 
@@ -976,5 +984,6 @@
   }
 </script>
 
-<style>
+<style scoped>
+.emphasis{font-style: italic;}
 </style>
