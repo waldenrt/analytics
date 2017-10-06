@@ -20,6 +20,9 @@ export default Bar.extend({
             id: 'right-y-axis',
             type: 'linear',
             position: 'right'
+          }],
+          xAxes: [{
+            barPercentage: 0.8
           }]
         }
       }
