@@ -24,6 +24,9 @@ export default Bar.extend({
           xAxes: [{
             barPercentage: 0.8
           }]
+        },
+        legend: {
+          display: false
         }
       }
     }

@@ -13,7 +13,8 @@
               label="Enter job name"
               class="ma-3 pr-4 pa-2"
               required
-          ></v-text-field>
+              id="job_balor">
+          </v-text-field>
         </v-card>
         <!-- //CARD1 -->
         <!-- CARD2 -->
@@ -22,7 +23,12 @@
             <h6 class="white--text text-xs-left mb-0">Select file for analysis</h6>
           </v-card-title>
           <form enctype="multipart/form-data">
-            <input type="file" :name="uploadFieldName"  @change="fileUpload($event.target.name, $event.target.files)" class="pa-3">
+            <input
+              type="file"
+              :name="uploadFieldName"
+              @change="fileUpload($event.target.name, $event.target.files)"
+              class="pa-3"
+              id="input_balor">
           </form>
         </v-card>
         <!-- //CARD2 -->
@@ -40,10 +46,11 @@
               bottom
               v-bind:error-messages="['Please select an option']"
               required
-          ></v-select>
+              id="select_balor">
+          </v-select>
         </v-card>
         <!-- //CARD3 -->
-        <v-btn @click="submit" :class="{ green: valid, red: !valid }" class="primary white--text">submit</v-btn>
+        <v-btn :disabled="!formIsValid" @click="submit" :class="{ green: valid, red: !valid }" class="primary white--text">submit</v-btn>
         <v-btn @click="clear">clear</v-btn>
       </v-flex>
       <!-- //COLUMN1 -->
@@ -84,6 +91,11 @@
         uploadError: null,
         currentStatus: null,
         uploadFieldName: 'file'
+      }
+    },
+    computed: {
+      formIsValid () {
+        return this.job_balor !== '' && this.input_balor !== '' && this.select_balor !== ''
       }
     },
     methods: {
