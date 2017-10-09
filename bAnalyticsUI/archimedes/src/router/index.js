@@ -14,6 +14,7 @@ import QuantProfile from '@/components/QuantProfile'
 import QuantMigration from '@/components/QuantMigration'
 import QuantProducts from '@/components/QuantProducts'
 import Lifecycle from '@/components/Lifecycle'
+import LifecycleProducts from '@/components/LifecycleProducts'
 
 Vue.use(Router)
 
@@ -121,7 +122,7 @@ export default new Router({
         {
           path: 'Products',
           name: 'LifecycleProd',
-          component: Settings
+          component: LifecycleProducts
         }
       ]
     }
