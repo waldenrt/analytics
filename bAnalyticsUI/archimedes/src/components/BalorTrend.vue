@@ -1,5 +1,6 @@
 <template>
   <v-container fluid class="balorTrend pl-3 pr-3">
+    <!-- =====TABS-ROW===== -->
     <v-layout row wrap class="mt-0 mb-3 pa-0">
       <v-flex xs12>
         <v-card flat>
@@ -19,7 +20,9 @@
         </v-card>
       </v-flex>
     </v-layout>
+    <!-- //=====TABS-ROW===== -->
 
+    <!-- =====ROW1===== -->
     <v-layout row wrap class="mb-3">
       <v-flex xs12 sm12 md8 lg9>
         <v-card class="white">
@@ -94,7 +97,9 @@
         </v-card>
       </v-flex>
     </v-layout>
+    <!-- //=====ROW1===== -->
 
+    <!-- =====ROW2===== -->
     <v-layout row wrap class="mb-3">
       <v-flex xs12 fill-height>
         <v-card class="white">
@@ -181,6 +186,7 @@
         </v-card>
       </v-flex>
     </v-layout>
+    <!-- //=====ROW2===== -->
 
   </v-container>
 

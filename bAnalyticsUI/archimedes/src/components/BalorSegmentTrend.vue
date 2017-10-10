@@ -1,5 +1,6 @@
 <template>
 <v-container fluid class="balorSegmentTrend pl-3 pr-3">
+  <!-- =====TABS-ROW===== -->
   <v-layout row wrap class="mt-0 mb-3 pa-0">
     <v-flex xs12>
       <v-card flat>
@@ -19,7 +20,8 @@
       </v-card>
     </v-flex>
   </v-layout>
-  <!--ROW1-->
+  <!-- //=====TABS-ROW===== -->
+  <!-- =====ROW1===== -->
   <v-layout row wrap class="pt-0 mb-3">
     <v-flex xs12>
       <v-card-title primary-title class="primary">
@@ -136,9 +138,9 @@
     </v-flex>
     <!--//chart-->
   </v-layout>
-  <!--//ROW1-->
+  <!-- //=====ROW1===== -->
 
-  <!--ROW2-->
+  <!-- =====ROW2===== -->
   <v-layout row wrap class="mt-4 mb-3">
     <v-flex xs12>
       <v-card-title primary-title class="primary">
@@ -209,7 +211,7 @@
     </v-flex>
     <!--//chart-->
   </v-layout>
-  <!--//ROW2-->
+  <!-- //=====ROW2===== -->
 
 </v-container>
 </template>

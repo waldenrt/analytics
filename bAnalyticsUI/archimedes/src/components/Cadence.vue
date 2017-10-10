@@ -1,6 +1,8 @@
 <template>
   <v-container fluid class="cadence pl-3 pr-3">
+    <!-- =====ROW1===== -->
     <v-layout row wrap class="mb-2">
+      <!--Chart-->
       <v-flex xs12 sm12 md8 lg9>
         <v-card class="white">
           <v-card-title primary-title class="primary">
@@ -9,13 +11,14 @@
           <!--trendlines-->
           <v-layout row wrap class="mb-3 pa-3">
             <v-flex xs12>
-              <annotated-bar-chart :chart-data="cadenceBars" style="height:65vh !important;"
-                                   class="bar_chart"></annotated-bar-chart>
+              <annotated-bar-chart :chart-data="cadenceBars" style="height:65vh !important;" class="bar_chart"></annotated-bar-chart>
             </v-flex>
           </v-layout>
           <!--//trendlines-->
         </v-card>
       </v-flex>
+      <!--//Chart-->
+      <!--Table-->
       <v-flex xs12 sm12 md4 lg3 class="mb-3">
         <v-card class="white">
           <v-card-title primary-title class="white">
@@ -38,7 +41,9 @@
           </v-flex>
         </v-card>
       </v-flex>
+      <!--//Table-->
     </v-layout>
+    <!-- //=====ROW1===== -->
   </v-container>
 </template>
 

@@ -2,7 +2,7 @@
   <div class="content pa-0 ma-0">
     <v-app id="navigation" left-fixed-sidebar top-toolbar sidebar-under-toolbar>
 
-    <!-- slideout nav -->
+    <!-- =====slideout nav===== -->
     <v-navigation-drawer temporary clipped class="accent" v-model="showmenu">
       <v-list class="pa-0">
         <!--Dashboard-->
@@ -29,16 +29,16 @@
         <!--//ModuleNav-->
       </v-list>
     </v-navigation-drawer>
-    <!-- //slideout nav -->
+    <!-- //=====slideout nav===== -->
 
-    <!--top nav-->
+    <!-- =====top nav===== -->
     <v-toolbar fixed class="white">
       <v-toolbar-side-icon @click.native.stop="showmenu = !showmenu"></v-toolbar-side-icon>
       <v-toolbar-title class="text--text">{{ appmodule }}</v-toolbar-title>
       <v-toolbar-items>
 
         <v-menu bottom left offset-y>
-          <v-btn primary outline slot="activator" class="primary--text">Client</v-btn>
+          <v-btn primary outline slot="activator" class="primary--text padR6">Client<v-icon>arrow_drop_down</v-icon></v-btn>
           <v-list>
             <v-list-item v-for="client in clients" :key="client.id">
               <v-list-tile>
@@ -71,14 +71,17 @@
         </v-menu>
       </v-toolbar-items>
     </v-toolbar>
-    <!--//top nav-->
-   <router-view></router-view>
+    <!-- //=====top nav===== -->
+    
+    <!-- =====router===== -->
+    <router-view></router-view>
+    <!-- //=====router===== -->
 
-    <!--footer-->
+    <!-- =====footer===== -->
     <v-footer fixed class="pa-3 footer">
       <div>&copy; {{ new Date().getFullYear() }}</div>
     </v-footer>
-    <!--//footer-->
+    <!-- //=====footer===== -->
 
   </v-app>
   </div>
@@ -138,6 +141,7 @@
     background-color:#eff3f6;
   }
   .input-group__details{display: none !important;}
+  .padR6{padding-right:6px;}
 
   @media (max-width: 550px) {
     body {font-size: 12px;}
