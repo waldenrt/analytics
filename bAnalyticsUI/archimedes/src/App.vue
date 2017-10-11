@@ -47,7 +47,7 @@
             </v-list-item>
           </v-list>
         </v-menu>
-        <v-btn router  to="/JobHistory" icon slot="activator" v-tooltip:left="{ html: 'Global Job History' }">
+        <v-btn router  to="/JobHistory" icon slot="activator" v-tooltip:bottom="{ html: 'Global Job History' }">
           <v-icon>history</v-icon>
         </v-btn>
         <v-menu bottom left offset-y>
@@ -72,7 +72,7 @@
       </v-toolbar-items>
     </v-toolbar>
     <!-- //=====top nav===== -->
-    
+
     <!-- =====router===== -->
     <router-view></router-view>
     <!-- //=====router===== -->
@@ -130,7 +130,7 @@
 <style lang="stylus">
   @import './assets/stylus/main.styl';
   @import '../node_modules/nouislider/distribute/nouislider.min.css';
-
+  #navigation{height: 100%;}
   .content {
     flex: 1 0 auto;
     height:100%;
