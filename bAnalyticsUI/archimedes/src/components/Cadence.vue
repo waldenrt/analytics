@@ -44,6 +44,15 @@
       <!--//Table-->
     </v-layout>
     <!-- //=====ROW1===== -->
+    <!-- =====ROW2===== -->
+    <v-layout row wrap class="mb-2">
+      <v-flex xs12 sm12 md8 lg9 class="text-xs-right">
+        <v-btn floating class="float_btn">
+          <v-icon light>add</v-icon>
+        </v-btn>
+      </v-flex>
+    </v-layout>
+    <!-- //=====ROW2===== -->
   </v-container>
 </template>
 
@@ -126,6 +135,10 @@
             }
           ]
         }
+      },
+
+      activateOverlay () {
+
       }
     }
   }
@@ -133,5 +146,10 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.float_btn{
+  background-color:#D63A09;
+  position: relative;
+  bottom:160px;
+  right:30px;
+}
 </style>
