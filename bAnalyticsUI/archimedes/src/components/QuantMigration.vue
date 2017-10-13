@@ -47,8 +47,8 @@
                   </v-flex>
                   <v-flex xs12>
                     <v-card class="white">
-                      <v-select v-bind:items="quantAray"
-                                v-model="piorPeriod"
+                      <v-select v-bind:items="quantArray"
+                                v-model="priorPeriod"
                                 label="Select Prior Period Quantiles"
                                 multiple
                                 single-line
@@ -71,7 +71,7 @@
                   </v-flex>
                   <v-flex xs12>
                     <v-card class="white">
-                      <v-select v-bind:items="quantAray"
+                      <v-select v-bind:items="quantArray"
                                 v-model="postPeriod"
                                 label="Select Post Period Quantiles"
                                 multiple
@@ -118,7 +118,9 @@
     <v-layout wrap row>
       <v-flex xs12 class="pt-0 mt-0">
         <v-card class="pl-3 pr-3 pt-1 pb-1">
-          <div class="title primary--text text-xs-center pa-1 emphasis"><em>Period <span class="grey--text darken-2">1</span> Quantile Migration from Prior Period Quantiles <span class="grey--text darken-2">All</span> to Post Period Quantiles <span class="grey--text darken-2">All</span></em></div>
+          <div class="title primary--text text-xs-center pa-1 emphasis"><em>Period <span class="grey--text darken-2">{{ tpSelect }}</span>
+            Quantile Migration from Prior Period Quantiles <span class="grey--text darken-2">{{ priorPeriod }}</span> to
+            Post Period Quantiles <span class="grey--text darken-2">{{ postPeriod }}</span></em></div>
         </v-card>
       </v-flex>
     </v-layout>
@@ -168,9 +170,24 @@
                       <!--****THIS IS JUST A PLACEHOLDER TABLE****-->
                       <table cellpadding="0" cellspacing="0" width="100%" style="height:21vh !important;">
                         <tr v-for="item in sumItems" v-bind:key="item.name">
-                          <td class="pl-2 pr-2 pt-2 pb-0"><div class="primary--text" v-text="item.name"></div></td>
-                          <td class="pl-2 pr-2 pt-2 pb-0"><div v-text="item.vals"></div></td>
-                          <td class="pl-2 pr-2 pt-2 pb-0"><div><v-icon>{{item.icon}}</v-icon></div></td>
+                          <td class="pl-2 pr-2 pt-2 pb-0">
+                            <div class="primary--text" v-text="item.name"></div>
+                          </td>
+                          <td class="pl-2 pr-2 pt-2 pb-0">
+                            <div v-text="item.priorCustCount"></div>
+                          </td>
+                          <td class="pl-2 pr-2 pt-2 pb-0">
+                            <div v-text="item.retained"></div>
+                          </td>
+                          <td class="pl-2 pr-2 pt-2 pb-0">
+                            <div v-text="item.new"></div>
+                          </td>
+                          <td class="pl-2 pr-2 pt-2 pb-0">
+                            <div v-text="item.postCustCount"></div>
+                          </td>
+                          <td class="pl-2 pr-2 pt-2 pb-0">
+                            <div v-text="item.retRate"></div>
+                          </td>
                         </tr>
                       </table>
                       <!--//****THIS IS JUST A PLACEHOLDER TABLE****//-->
@@ -203,7 +220,7 @@
                                   <v-flex xs12>
                                     <v-card class="white pa-0">
                                       <!--****THIS IS JUST A PLACEHOLDER DROPDOWN****-->
-                                      <v-select v-bind:items="quantiles"
+                                      <v-select v-bind:items="quantArray"
                                                 v-model="quantileSelect"
                                                 label="Select Quantiles"
                                                 multiple
@@ -330,6 +347,7 @@
         views: ['Counts', 'Percentages'],
         tpArray: [],
         quantArray: [],
+        quantileSelect: [],
         quantHeaders: [
           {text: '', value: 'from'},
           {text: '1', value: 'key1'},
@@ -345,16 +363,16 @@
         ],
         quantMigItems: [],
         sumItems: [
-          {name: 'name1', vals: '100%', icon: 'trending_up'},
-          {name: 'name2', vals: '90%', icon: 'trending_up'},
-          {name: 'name3', vals: '80%', icon: 'trending_up'},
-          {name: 'name4', vals: '70%', icon: 'trending_up'},
-          {name: 'name5', vals: '60%', icon: 'trending_flat'},
-          {name: 'name6', vals: '50%', icon: 'trending_flat'},
-          {name: 'name7', vals: '40%', icon: 'trending_down'},
-          {name: 'name8', vals: '30%', icon: 'trending_down'},
-          {name: 'name9', vals: '20%', icon: 'trending_down'},
-          {name: 'name10', vals: '10%', icon: 'trending_down'}
+          {name: 'name1', priorCustCount: 100, retained: 100, new: 500, postCustCount: 600, retRate: '90%'},
+          {name: 'name2', priorCustCount: 100, retained: 200, new: 500, postCustCount: 600, retRate: '90%'},
+          {name: 'name3', priorCustCount: 100, retained: 300, new: 500, postCustCount: 600, retRate: '90%'},
+          {name: 'name4', priorCustCount: 100, retained: 400, new: 500, postCustCount: 600, retRate: '90%'},
+          {name: 'name5', priorCustCount: 100, retained: 500, new: 500, postCustCount: 600, retRate: '90%'},
+          {name: 'name6', priorCustCount: 100, retained: 600, new: 500, postCustCount: 600, retRate: '90%'},
+          {name: 'name7', priorCustCount: 100, retained: 700, new: 500, postCustCount: 600, retRate: '90%'},
+          {name: 'name8', priorCustCount: 100, retained: 800, new: 500, postCustCount: 600, retRate: '90%'},
+          {name: 'name9', priorCustCount: 100, retained: 900, new: 500, postCustCount: 600, retRate: '90%'},
+          {name: 'name10', priorCustCount: 100, retained: 1000, new: 500, postCustCount: 600, retRate: '90%'}
         ]
       }
     },
@@ -393,11 +411,29 @@
             }
           }
           tpConverted.push(tempConvert)
+          console.log('tpconverted from for loop: 1')
+          console.log(tpConverted)
         }
         // tpConverted contains timePeriod arrays
-        this.quantMigItems = JSON.parse(JSON.stringify(tpConverted[0]))
+        console.log(tpConverted)
+        this.quantMigItems = JSON.parse(JSON.stringify(tpConverted))
         console.log(this.quantMigItems)
         this.tpArray = tempTP
+        console.log(this.tpArray)
+
+        for (var y = 0; y < this.quantMigItems.length; y++) {
+          for (var z = 0; z < this.quantMigItems[y].length; z++) {
+            console.log('whats inside quantMigItems[y].[z]')
+            console.log(this.quantMigItems[y][z])
+            var vals = Object.values(this.quantMigItems[y][z])
+            console.log(vals)
+            vals.shift()
+            console.log(vals)
+            var sum2 = vals.reduce(function (a, b) { return a + b })
+
+            console.log(sum2)
+          }
+        }
       }
     }
   }
@@ -405,5 +441,7 @@
 </script>
 
 <style scoped>
-.card_width{width:100% !important;}
+  .card_width {
+    width: 100% !important;
+  }
 </style>
