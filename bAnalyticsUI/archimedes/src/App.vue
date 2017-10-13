@@ -52,7 +52,7 @@
         </v-btn>
         <v-menu bottom left offset-y>
           <v-btn icon slot="activator">
-            <v-icon>account_circle</v-icon>
+            <v-icon class="blue-grey--text text--darken-2">account_circle</v-icon>
           </v-btn>
           <v-list>
             <v-list-item>

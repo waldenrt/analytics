@@ -71,26 +71,15 @@
         </v-flex>
       </v-card>
     </v-flex>
-    <!--
-    <v-layout wrap row>
-      <v-flex xs12>
-        <v-card class="white pl-3 pr-3 pt-1 pb-1">
-          <div class="title primary--text text-xs-center pa-1">Cadence Raw Data</div>
-          <v-data-table
-              v-bind:headers="tableHeaders"
-              v-bind:pagination.sync="pagination"
-              :items="tableData"
-              hide-actions>
-            <template slot="items" scope="props">
-              <td>{{ props.item.cadence }}</td>
-              <td class="text-xs-right">{{ props.item.frequency }}</td>
-              <td class="text-xs-right">{{ props.item.cumFreq }}</td>
-            </template>
-          </v-data-table>
-        </v-card>
+    <!-- =====ROW2===== -->
+    <v-layout row wrap class="mb-2">
+      <v-flex xs12 sm12 md8 lg9 class="text-xs-right">
+        <v-btn floating class="float_btn">
+          <v-icon light>add</v-icon>
+        </v-btn>
       </v-flex>
     </v-layout>
-    -->
+    <!-- //=====ROW2===== -->
   </v-container>
 </template>
 
@@ -187,6 +176,10 @@
             }
           ]
         }
+      },
+
+      activateOverlay () {
+
       }
     }
   }
@@ -194,5 +187,10 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.float_btn{
+  background-color:#D63A09;
+  position: relative;
+  bottom:160px;
+  right:30px;
+}
 </style>

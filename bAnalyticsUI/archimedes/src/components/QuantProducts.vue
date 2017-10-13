@@ -124,17 +124,6 @@
               </v-card>
             </v-flex>
             <!--//Dropdown4-->
-            <!--ProgressBar-->
-            <v-flex xs12 sm4>
-              <v-card flat class="pl-2 pr-2 grey lighten-2">
-                <v-layout row wrap>
-                  <v-flex xs12 class="pt-0">
-                    <div class="progress_bar"></div>
-                  </v-flex>
-                </v-layout>
-              </v-card>
-            </v-flex>
-            <!--//ProgressBar-->
           </v-layout>
         </v-card>
       </v-flex>
