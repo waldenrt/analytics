@@ -167,7 +167,6 @@
                   <v-divider class="primary pb-0"></v-divider>
                   <v-flex xs12 fill-height>
                     <v-layout row wrap>
-                      <!--****THIS IS JUST A PLACEHOLDER TABLE****-->
                       <table cellpadding="0" cellspacing="0" width="100%" style="height:21vh !important;">
                         <tr v-for="item in sumItems" v-bind:key="item.name">
                           <td class="pl-2 pr-2 pt-2 pb-0">
@@ -190,7 +189,6 @@
                           </td>
                         </tr>
                       </table>
-                      <!--//****THIS IS JUST A PLACEHOLDER TABLE****//-->
                     </v-layout>
                   </v-flex>
                 </v-card>
@@ -327,10 +325,10 @@
                 'migrationCount': 400
               }],
               'quantileTotals': [{
-                'quantile': 3,
+                'quantile': 1,
                 'newCount': 1500
               }, {
-                'quantile': 4,
+                'quantile': 2,
                 'newCount': 7000
               }]
             }]
@@ -363,16 +361,6 @@
         ],
         quantMigItems: [],
         sumItems: [
-          {name: 'name1', priorCustCount: 100, retained: 100, new: 500, postCustCount: 600, retRate: '90%'},
-          {name: 'name2', priorCustCount: 100, retained: 200, new: 500, postCustCount: 600, retRate: '90%'},
-          {name: 'name3', priorCustCount: 100, retained: 300, new: 500, postCustCount: 600, retRate: '90%'},
-          {name: 'name4', priorCustCount: 100, retained: 400, new: 500, postCustCount: 600, retRate: '90%'},
-          {name: 'name5', priorCustCount: 100, retained: 500, new: 500, postCustCount: 600, retRate: '90%'},
-          {name: 'name6', priorCustCount: 100, retained: 600, new: 500, postCustCount: 600, retRate: '90%'},
-          {name: 'name7', priorCustCount: 100, retained: 700, new: 500, postCustCount: 600, retRate: '90%'},
-          {name: 'name8', priorCustCount: 100, retained: 800, new: 500, postCustCount: 600, retRate: '90%'},
-          {name: 'name9', priorCustCount: 100, retained: 900, new: 500, postCustCount: 600, retRate: '90%'},
-          {name: 'name10', priorCustCount: 100, retained: 1000, new: 500, postCustCount: 600, retRate: '90%'}
         ]
       }
     },
@@ -390,18 +378,20 @@
         var tpConverted = []
         var quants = []
         var tempTP = []
+        var tempTpSums = []
 
         var numQuants = Math.sqrt(initArray[1].migrationData.length)
 
-        for (var i = 1; i <= numQuants; i++) {
+        for (let i = 1; i <= numQuants; i++) {
           quants.push({'from': i})
         }
 
-        for (var j = 0; j < initArray.length; j++) {
+        // REFORMAT DATA INTO SINLGE TP ARRAY OF KEY VALUE PAIRS
+        for (let j = 0; j < initArray.length; j++) {
           tempTP.push(initArray[j].timePeriod)
           var tempConvert = JSON.parse(JSON.stringify(quants))
-          for (var x = 0; x < initArray[j].migrationData.length; x++) {
-            for (var k = 0; k < tempConvert.length; k++) {
+          for (let x = 0; x < initArray[j].migrationData.length; x++) {
+            for (let k = 0; k < tempConvert.length; k++) {
               let key = 'key' + initArray[j].migrationData[x].currentQuantile
               if (tempConvert[k].from === initArray[j].migrationData[x].fromQuantile) {
                 tempConvert[k][key] = initArray[j].migrationData[x].migrationCount
@@ -411,29 +401,82 @@
             }
           }
           tpConverted.push(tempConvert)
-          console.log('tpconverted from for loop: 1')
-          console.log(tpConverted)
         }
         // tpConverted contains timePeriod arrays
+        console.log('completed tpConverted array..')
         console.log(tpConverted)
         this.quantMigItems = JSON.parse(JSON.stringify(tpConverted))
-        console.log(this.quantMigItems)
         this.tpArray = tempTP
-        console.log(this.tpArray)
 
-        for (var y = 0; y < this.quantMigItems.length; y++) {
-          for (var z = 0; z < this.quantMigItems[y].length; z++) {
-            console.log('whats inside quantMigItems[y].[z]')
-            console.log(this.quantMigItems[y][z])
+        // CALCULATE THE TOTAL RETAINED CUSTOMERS IN POST PERIOD
+        for (let y = 0; y < this.quantMigItems.length; y++) {
+          var tempSums = []
+          for (let z = 0; z < this.quantMigItems[y].length; z++) {
             var vals = Object.values(this.quantMigItems[y][z])
-            console.log(vals)
             vals.shift()
-            console.log(vals)
-            var sum2 = vals.reduce(function (a, b) { return a + b })
-
-            console.log(sum2)
+            var sum2 = vals.reduce(function (a, b) {
+              return a + b
+            })
+            tempSums.push(sum2)
           }
+          tempTpSums.push(tempSums)
         }
+
+        console.log('tempTpSums should be 2 arrays of 2 vals each')
+        console.log(tempTpSums)
+
+        // REFORMAT NEW CUST COUNT PER QUANTILE DATA
+        var tpNewCust = []
+
+        for (let i = 0; i < this.jsonMsg.quantileMigration.length; i++) {
+          var newCust = []
+          for (let j = 0; j < this.jsonMsg.quantileMigration[i].quantileTotals.length; j++) {
+            newCust.push(this.jsonMsg.quantileMigration[i].quantileTotals[j].newCount)
+          }
+          tpNewCust.push(newCust)
+        }
+        console.log('new quantile tp list')
+        console.log(tpNewCust)
+
+        // CALCULATE THE POST CUSTOMER COUNT ARRAY (POST NEW + POST RETAINED)
+        var tempTpPostCustCount = []
+        var tempCustCountZero = []
+
+        for (let i = 0; i < tempTpSums.length; i++) {
+          var postCount = []
+          tempCustCountZero = []
+          for (let j = 0; j < tempTpSums[i].length; j++) {
+            postCount.push(tempTpSums[i][j] + tpNewCust[i][j])
+            tempCustCountZero.push(0)
+          }
+          tempTpPostCustCount.push(postCount)
+        }
+
+        tempTpPostCustCount.push(tempCustCountZero)
+        console.log('post count tp list')
+        console.log(tempTpPostCustCount)
+
+        // CREATE ARRAY OF OBJECTS TO POPULATE THE RETENTION RATE TABLE...
+        var tempRetObj = []
+
+        for (let i = 0; i < tempTpSums.length; i++) {
+          var retObj = []
+          for (let j = 0; j < tempTpSums[i].length; j++) {
+            retObj.push({
+              name: j + 1,
+              priorCustCount: tempTpPostCustCount[i + 1][j],
+              retained: tempTpSums[i][j],
+              new: tpNewCust[i][j],
+              postCustCount: tempTpPostCustCount[i][j],
+              retRate: tempTpSums[i][j] / tempTpPostCustCount[i + 1][j] * 100
+            })
+          }
+          tempRetObj.push(retObj)
+        }
+        console.log('object to populate retention table')
+        console.log(tempRetObj)
+
+        this.sumItems = tempRetObj[this.tpSelect - 1]
       }
     }
   }
