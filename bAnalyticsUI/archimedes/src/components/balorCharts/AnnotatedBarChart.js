@@ -32,6 +32,9 @@ export default Bar.extend({
               }
             }
           ]
+        },
+        legend: {
+          display: false
         }
       }
     }
