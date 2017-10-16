@@ -25,6 +25,7 @@
                     <v-card class="white pa-0">
                       <v-select v-bind:items="tpArray"
                                 v-model="tpSelect"
+                                v-on:input="selectTP()"
                                 label="Select Time Period"
                                 single-line
                                 bottom
@@ -136,7 +137,7 @@
             <v-flex xs8>
               <v-data-table
                   v-bind:headers="quantHeaders"
-                  :items="quantMigItems"
+                  :items="tableMigItems"
                   hide-actions>
                 <template slot="items" scope="props">
                   <td>{{ props.item.from }}</td>
@@ -339,12 +340,12 @@
           'developerMessage': ''
         },
         tpSelect: 1,
-        priorPeriod: [],
-        postPeriod: [],
+        priorPeriod: ['All'],
+        postPeriod: ['All'],
         viewType: 'Counts',
         views: ['Counts', 'Percentages'],
         tpArray: [],
-        quantArray: [],
+        quantArray: ['All', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         quantileSelect: [],
         quantHeaders: [
           {text: '', value: 'from'},
@@ -360,8 +361,9 @@
           {text: '10', value: 'key10'}
         ],
         quantMigItems: [],
-        sumItems: [
-        ]
+        tableMigItems: [],
+        sumItems: [],
+        sumItemsArray: []
       }
     },
     computed: {
@@ -405,6 +407,8 @@
         // tpConverted contains timePeriod arrays
         console.log('completed tpConverted array..')
         console.log(tpConverted)
+
+        this.tableMigItems = JSON.parse(JSON.stringify(tpConverted))[this.tpSelect - 1]
         this.quantMigItems = JSON.parse(JSON.stringify(tpConverted))
         this.tpArray = tempTP
 
@@ -477,6 +481,12 @@
         console.log(tempRetObj)
 
         this.sumItems = tempRetObj[this.tpSelect - 1]
+        this.sumItemsArray = tempRetObj
+      },
+
+      selectTP () {
+        this.sumItems = this.sumItemsArray[this.tpSelect - 1]
+        this.tableMigItems = this.quantMigItems[this.tpSelect - 1]
       }
     }
   }
