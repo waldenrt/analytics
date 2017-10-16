@@ -3,18 +3,24 @@ import Router from 'vue-router'
 import Login from '@/components/Login'
 import Home from '@/components/Home'
 import JobHistory from '@/components/JobHistory'
+import Settings from '@/components/Settings'
+
 import Balor from '@/components/Balor'
 import NewBalor from '@/components/NewBalor'
-import BalorSegmentTrend from '@/components/BalorSegmentTrend'
-import BalorTrend from '@/components/BalorTrend'
 import Cadence from '@/components/Cadence'
-import Settings from '@/components/Settings'
+import BalorTrend from '@/components/BalorTrend'
+import BalorSegmentTrend from '@/components/BalorSegmentTrend'
+
 import Quantile from '@/components/Quantile'
 import NewQuantile from '@/components/NewQuantile'
 import QuantProfile from '@/components/QuantProfile'
 import QuantMigration from '@/components/QuantMigration'
 import QuantProducts from '@/components/QuantProducts'
+
 import Lifecycle from '@/components/Lifecycle'
+import NewLifecycle from '@/components/NewLifecycle'
+import LifecycleSummary from '@/components/LifecycleSummary'
+import LifecycleMigration from '@/components/LifecycleMigration'
 import LifecycleProducts from '@/components/LifecycleProducts'
 
 Vue.use(Router)
@@ -113,17 +119,17 @@ export default new Router({
         {
           path: 'NewLifecycle',
           name: 'NewLifecycle',
-          component: Settings
+          component: NewLifecycle
         },
         {
           path: 'Summary',
           name: 'LifecycleSummary',
-          component: Settings
+          component: LifecycleSummary
         },
         {
           path: 'Migration',
-          name: 'LifecycleMig',
-          component: Settings
+          name: 'LifecycleMigration',
+          component: LifecycleMigration
         },
         {
           path: 'Products',
