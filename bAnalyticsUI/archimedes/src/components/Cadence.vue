@@ -11,8 +11,10 @@
           <!--trendlines-->
           <v-layout row wrap class="mb-3 pa-3">
             <v-flex xs12>
-              <annotated-bar-chart :chart-data="cadenceBars" style="height:65vh !important;"
-                                   class="bar_chart"></annotated-bar-chart>
+              <annotated-bar-chart
+                :chart-data="cadenceBars"
+                style="height:65vh !important;"
+                class="bar_chart"></annotated-bar-chart>
             </v-flex>
           </v-layout>
           <!--//trendlines-->
@@ -45,32 +47,6 @@
       <!--//Table-->
     </v-layout>
     <!-- //=====ROW1===== -->
-
-    <v-flex xs4 class="mb-3">
-      <v-card class="white">
-        <v-card-title primary-title class="white">
-          <h6 class="primary--text text-xs-left mb-0">Cadence Raw Data</h6>
-        </v-card-title>
-        <v-divider class="primary pb-0"></v-divider>
-        <v-flex xs12 fill-height>
-          <v-layout row wrap>
-            <table cellpadding="0" cellspacing="0" style="height:21vh !important;">
-              <tr v-for="item in tableData" v-bind:key="item.cadence">
-                <td class="pa-2">
-                  <div class="primary--text" v-text="item.cadence"></div>
-                </td>
-                <td class="pa-2">
-                  <div v-text="item.frequency"></div>
-                </td>
-                <td class="pa-2">
-                  <div v-text="item.cumFreq"></div>
-                </td>
-              </tr>
-            </table>
-          </v-layout>
-        </v-flex>
-      </v-card>
-    </v-flex>
     <!-- =====ROW2===== -->
     <v-layout row wrap class="mb-2">
       <v-flex xs12 sm12 md8 lg9 class="text-xs-right">
@@ -80,6 +56,37 @@
       </v-flex>
     </v-layout>
     <!-- //=====ROW2===== -->
+    <!-- =====ROW3===== -->
+    <v-layout row wrap class="mb-2">
+      <v-flex xs4 class="mb-3">
+        <v-card class="white">
+          <v-card-title primary-title class="white">
+            <h6 class="primary--text text-xs-left mb-0">Cadence Raw Data</h6>
+          </v-card-title>
+          <v-divider class="primary pb-0"></v-divider>
+          <v-flex xs12 fill-height>
+            <v-layout row wrap>
+              <v-data-table
+                v-bind:headers="tableHeaders"
+                :items="tableData"
+                v-bind:search="search"
+                v-bind:pagination.sync="pagination"
+                hide-actions>
+              <template slot="items" scope="props">
+                <td>{{ props.item.cadence }}</td>
+                <td>{{ props.item.frequency }}</td>
+                <td>{{ props.item.cumFreq }}</td>
+              </template>
+            </v-data-table>
+            <div class="text-xs-center pt-2">
+              <v-pagination v-model="pagination.page" :length="Math.ceil(pagination.totalItems / pagination.rowsPerPage)"></v-pagination>
+            </div>
+            </v-layout>
+          </v-flex>
+        </v-card>
+      </v-flex>
+    </v-layout>
+    <!-- //=====ROW3===== -->
   </v-container>
 </template>
 
@@ -94,6 +101,7 @@
     },
     data () {
       return {
+        search: '',
         sumItems: [],
         msg: 'Cadence Charts and approval will go here!',
         cadenceBars: null,
@@ -102,7 +110,10 @@
         perArray: [],
         jobId: 'macysDemo',
         incomingJson: {},
-        tableHeaders: ['Cadence', 'Frequency', 'Cumlative Frequency'],
+        tableHeaders: [
+          {text: 'Cadence', value: 'cadence'},
+          {text: 'Frequency', value: 'frequency'},
+          {text: 'Cumlative Frequency', value: 'cumFreq'}],
         tableData: [],
         pagination: {}
       }
@@ -192,5 +203,9 @@
   position: relative;
   bottom:160px;
   right:30px;
+}
+.raw_data_tbl{
+  overflow: scroll !important;
+  height:200px !important;
 }
 </style>
