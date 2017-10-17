@@ -3,27 +3,24 @@
     <!-- =====TABS-ROW===== -->
     <v-layout row wrap class="mt-0 mb-3 pa-0">
       <v-flex xs12>
-        <v-card flat>
-          <v-tabs id="mobile-tabs-3" icons centered grow class="elevation-1">
-            <v-tabs-bar slot="activators" class="grey lighten-2">
-              <v-tabs-slider></v-tabs-slider>
-              <v-tabs-item router to="/Balor/Trend">
-                BALOR Trends
-                <v-icon class="pt-1">timeline</v-icon>
-              </v-tabs-item>
-              <v-tabs-item router to="/Balor/SegmentTrend">
-                Segment Trends
-                <v-icon class="pt-1">bar_chart</v-icon>
-              </v-tabs-item>
-            </v-tabs-bar>
-          </v-tabs>
+        <v-card flat height="50px">
+          <v-bottom-nav absolute value="true" class="blue-grey lighten-1 elevation-2">
+            <v-btn flat class="white--text" router to="/Balor/Trend">
+              <span>Balor Trends</span>
+              <v-icon>timeline</v-icon>
+            </v-btn>
+            <v-btn flat class="white--text" router to="/Balor/SegmentTrend">
+              <span>Segment Trends</span>
+              <v-icon>bar_chart</v-icon>
+            </v-btn>
+          </v-bottom-nav>
         </v-card>
       </v-flex>
     </v-layout>
     <!-- //=====TABS-ROW===== -->
 
     <!-- =====ROW1===== -->
-    <v-layout row wrap class="mb-3">
+    <v-layout row wrap class="pa-0 mb-0">
       <v-flex xs12 sm12 md8 lg9>
         <v-card class="white">
           <v-card-title primary-title class="primary">
@@ -207,7 +204,6 @@
     },
     data () {
       return {
-
         retentionItems: [],
         sumItems: [],
         msg: 'Balor Trend Charts will go here!',
@@ -740,6 +736,9 @@
   .legend_color3 { background-color: #F7970E; }
   .legend_color4 { background-color: #0087AA; }
   .padR5{padding-right:5px;}
+
+  .tabs__item{padding:0 !important;}
+  .tabs__container a{padding:0;}
 
   /* Smartphones (portrait and landscape) ----------- */
   @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {

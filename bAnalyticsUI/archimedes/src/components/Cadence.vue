@@ -48,44 +48,49 @@
     </v-layout>
     <!-- //=====ROW1===== -->
     <!-- =====ROW2===== -->
-    <v-layout row wrap class="mb-2">
-      <v-flex xs12 sm12 md8 lg9 class="text-xs-right">
-        <v-btn floating class="float_btn">
+        <v-btn floating class="float_btn"
+        v-on:click="openOver = !openOver">
           <v-icon light>add</v-icon>
         </v-btn>
-      </v-flex>
-    </v-layout>
     <!-- //=====ROW2===== -->
     <!-- =====ROW3===== -->
-    <v-layout row wrap class="mb-2">
+    <v-layout row wrap>
+      <div
+      class="demo"
+      :class="{'change_sumthn': openOver}"></div>
+    </v-layout>
+    <!--<v-layout row wrap class="mb-2">
       <v-flex xs4 class="mb-3">
         <v-card class="white">
-          <v-card-title primary-title class="white">
-            <h6 class="primary--text text-xs-left mb-0">Cadence Raw Data</h6>
-          </v-card-title>
-          <v-divider class="primary pb-0"></v-divider>
-          <v-flex xs12 fill-height>
-            <v-layout row wrap>
-              <v-data-table
-                v-bind:headers="tableHeaders"
-                :items="tableData"
-                v-bind:search="search"
-                v-bind:pagination.sync="pagination"
-                hide-actions>
-              <template slot="items" scope="props">
-                <td>{{ props.item.cadence }}</td>
-                <td>{{ props.item.frequency }}</td>
-                <td>{{ props.item.cumFreq }}</td>
-              </template>
-            </v-data-table>
-            <div class="text-xs-center pt-2">
-              <v-pagination v-model="pagination.page" :length="Math.ceil(pagination.totalItems / pagination.rowsPerPage)"></v-pagination>
-            </div>
-            </v-layout>
-          </v-flex>
+          <div id="raw_data_tbl">
+            <v-card-title primary-title class="white">
+              <h6 class="primary--text text-xs-left mb-0">Cadence Raw Data</h6>
+            </v-card-title>
+            <v-divider class="primary pb-0"></v-divider>
+            <v-flex xs12 fill-height>
+              <v-layout row wrap>
+                <v-data-table
+                  v-bind:headers="tableHeaders"
+                  :items="tableData"
+                  v-bind:search="search"
+                  v-bind:pagination.sync="pagination"
+                  hide-actions>
+                <template slot="items" scope="props">
+                  <td>{{ props.item.cadence }}</td>
+                  <td>{{ props.item.frequency }}</td>
+                  <td>{{ props.item.cumFreq }}</td>
+                </template>
+              </v-data-table>
+              <div class="text-xs-center pt-2">
+                <v-pagination v-model="pagination.page" :length="Math.ceil(pagination.totalItems / pagination.rowsPerPage)"></v-pagination>
+              </div>
+              </v-layout>
+            </v-flex>
+          </div>
+
         </v-card>
       </v-flex>
-    </v-layout>
+    </v-layout>-->
     <!-- //=====ROW3===== -->
   </v-container>
 </template>
@@ -101,6 +106,7 @@
     },
     data () {
       return {
+        openOver: false,
         search: '',
         sumItems: [],
         msg: 'Cadence Charts and approval will go here!',
@@ -188,9 +194,8 @@
           ]
         }
       },
-
-      activateOverlay () {
-
+      openOverlay () {
+        document.getElementById('myDIV').style.overflow = 'scroll'
       }
     }
   }
@@ -200,12 +205,25 @@
 <style scoped>
 .float_btn{
   background-color:#D63A09;
-  position: relative;
-  bottom:160px;
+  position: fixed;
+  bottom:70px;
   right:30px;
 }
-.raw_data_tbl{
-  overflow: scroll !important;
-  height:200px !important;
+#raw_data_tbl{
+  overflow: hidden;
+  height:0;
+  background:rbga(0,0,0,.2);
+}
+.demo{
+  width: 100%;
+  height: 100px;
+  background-color: grey;
+  display: inline-block;
+  margin: 10px;
+}
+.change_sumthn{
+  width: 50px;
+  height: 50px;
+  background-color: blue;
 }
 </style>

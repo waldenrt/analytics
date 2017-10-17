@@ -3,20 +3,17 @@
   <!-- =====TABS-ROW===== -->
   <v-layout row wrap class="mt-0 mb-3 pa-0">
     <v-flex xs12>
-      <v-card flat>
-        <v-tabs id="mobile-tabs-3" icons centered grow class="elevation-1">
-          <v-tabs-bar slot="activators" class="grey lighten-2">
-            <v-tabs-slider></v-tabs-slider>
-            <v-tabs-item router to="/Balor/Trend" class="primary--text">
-              BALOR Trends
-              <v-icon class="pt-1">timeline</v-icon>
-            </v-tabs-item>
-            <v-tabs-item router to="/Balor/SegmentTrend">
-              Segment Trends
-              <v-icon class="pt-1">bar_chart</v-icon>
-            </v-tabs-item>
-          </v-tabs-bar>
-        </v-tabs>
+      <v-card flat height="50px">
+        <v-bottom-nav absolute value="true" class="blue-grey lighten-1 elevation-2">
+          <v-btn flat class="white--text" router to="/Balor/Trend">
+            <span>Balor Trends</span>
+            <v-icon>timeline</v-icon>
+          </v-btn>
+          <v-btn flat class="white--text" router to="/Balor/SegmentTrend">
+            <span>Segment Trends</span>
+            <v-icon>bar_chart</v-icon>
+          </v-btn>
+        </v-bottom-nav>
       </v-card>
     </v-flex>
   </v-layout>
