@@ -13,8 +13,10 @@
             <v-flex xs12>
               <annotated-bar-chart
                 :chart-data="cadenceBars"
+                :options="cadOptions"
                 style="height:65vh !important;"
-                class="bar_chart"></annotated-bar-chart>
+                class="bar_chart"
+                id="cadChart"></annotated-bar-chart>
             </v-flex>
           </v-layout>
           <!--//trendlines-->
@@ -115,7 +117,9 @@
           {text: 'Frequency', value: 'frequency'},
           {text: 'Cumlative Frequency', value: 'cumFreq'}],
         tableData: [],
-        pagination: {}
+        pagination: {},
+        percentages: [],
+        cadOptions: {}
       }
     },
     computed: {
@@ -161,9 +165,8 @@
         this.cadArray = tempCad
         this.countArray = tempCount
         this.perArray = tempPer
-        console.log('new table data from for loop')
         this.tableData = tempTable
-        console.log(this.tableData)
+        console.log(this.perArray)
       },
 
       createSummary () {
@@ -183,9 +186,42 @@
             {
               data: this.countArray,
               label: 'Cadence',
-              backgroundColor: '#D63A09'
+              backgroundColor: '#D63A09',
+              xAxisId: 'x-axis-0'
             }
           ]
+        }
+
+        this.cadOptions = {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            xAxes: [{
+              categoryPercentage: 1.0,
+              barPercentage: 1.0,
+              id: 'x-axis-0',
+              position: 'bottom'
+            }]
+          },
+          annotation: {
+            annotations: [
+              {
+                type: 'line',
+                mode: 'vertical',
+                scaleID: 'x-axis-0',
+                value: this.jsonMsg.rawCadence,
+                borderColor: '#D63A09',
+                label: {
+                  content: '80%',
+                  enabled: true,
+                  position: 'top'
+                }
+              }
+            ]
+          },
+          legend: {
+            display: false
+          }
         }
       },
 

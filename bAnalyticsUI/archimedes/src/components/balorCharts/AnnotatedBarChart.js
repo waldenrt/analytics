@@ -3,11 +3,13 @@
  */
 
 import {Bar, mixins} from 'vue-chartjs'
+import 'chartjs-plugin-annotation'
 const {reactiveProp} = mixins
 
 export default Bar.extend({
+  props: ['options', 'chartData'],
   mixins: [reactiveProp],
-  data () {
+  /* data () {
     return {
       options: {
         responsive: true,
@@ -15,7 +17,9 @@ export default Bar.extend({
         scales: {
           xAxes: [{
             categoryPercentage: 1.0,
-            barPercentage: 1.0
+            barPercentage: 1.0,
+            id: 'x-axis-0',
+            position: 'bottom'
           }]
         },
         annotation: {
@@ -24,9 +28,9 @@ export default Bar.extend({
               type: 'line',
               mode: 'vertical',
               scaleID: 'x-axis-0',
-              value: 1,
+             // value: 47,
               label: {
-                content: 'Cadence Line',
+                content: '80%',
                 enabled: true,
                 position: 'top'
               }
@@ -38,7 +42,7 @@ export default Bar.extend({
         }
       }
     }
-  },
+  }, */
   mounted () {
     this.renderChart(this.chartData, this.options)
   }
