@@ -38,6 +38,7 @@
             </v-flex>
             <!--//Dropdown1-->
             <!--Dropdown2-->
+            <!--add in at later date
             <v-flex xs12 sm3>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
@@ -59,9 +60,10 @@
                   </v-flex>
                 </v-layout>
               </v-card>
-            </v-flex>
+            </v-flex> -->
             <!--//Dropdown2-->
             <!--Dropdown3-->
+            <!--add in at later date
             <v-flex xs12 sm3>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
@@ -84,7 +86,7 @@
                   </v-flex>
                 </v-layout>
               </v-card>
-            </v-flex>
+            </v-flex> -->
             <!--//Dropdown3-->
             <!--Dropdown4-->
             <v-flex xs12 sm3>
@@ -99,6 +101,7 @@
                     <v-card class="white">
                       <v-select v-bind:items="views"
                                 v-model="viewType"
+                                v-on:input="selectView()"
                                 label="View Table As"
                                 single-line
                                 bottom
@@ -169,6 +172,14 @@
                   <v-flex xs12 fill-height>
                     <v-layout row wrap>
                       <table cellpadding="0" cellspacing="0" width="100%" style="height:21vh !important;">
+                        <tr>
+                          <td>Quantile</td>
+                          <td>Prior Customers</td>
+                          <td>Retained Customers</td>
+                          <td>New Customers</td>
+                          <td>Post Customer Total</td>
+                          <td>Retention Rate</td>
+                        </tr>
                         <tr v-for="item in sumItems" v-bind:key="item.name">
                           <td class="pl-2 pr-2 pt-2 pb-0">
                             <div class="primary--text" v-text="item.name"></div>
@@ -218,17 +229,14 @@
                                   </v-flex>
                                   <v-flex xs12>
                                     <v-card class="white pa-0">
-                                      <!--****THIS IS JUST A PLACEHOLDER DROPDOWN****-->
                                       <v-select v-bind:items="quantArray"
                                                 v-model="quantileSelect"
-                                                label="Select Quantiles"
-                                                multiple
+                                                label="Select Quantile\"
                                                 single-line
                                                 bottom
                                                 v-on:input="selectQuantile()"
                                                 class="pl-1 pr-1 m-0">
                                       </v-select>
-                                      <!--//****THIS IS JUST A PLACEHOLDER DROPDOWN****//-->
                                     </v-card>
                                   </v-flex>
                                 </v-layout>
@@ -243,7 +251,7 @@
                     <!-- =====ROW2===== -->
                     <v-layout row wrap class="pt-0 mt-0">
                       <v-flex xs12>
-                        <img src="http://via.placeholder.com/450x200?text=Chart" width="100%" height="100%">
+                       <bar-chart :chart-data="quantbars"></bar-chart>
                       </v-flex>
                     </v-layout>
                     <!-- //=====ROW2===== -->
@@ -264,9 +272,13 @@
 </template>
 
 <script>
+  import BarChart from './balorCharts/BarChart'
+
   export default {
     name: 'quantMigration',
-    components: {},
+    components: {
+      BarChart
+    },
     data () {
       return {
         incomingJson: {
@@ -345,8 +357,8 @@
         viewType: 'Counts',
         views: ['Counts', 'Percentages'],
         tpArray: [],
-        quantArray: ['All', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        quantileSelect: [],
+        quantArray: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        quantileSelect: 1,
         quantHeaders: [
           {text: '', value: 'from'},
           {text: '1', value: 'key1'},
@@ -362,8 +374,11 @@
         ],
         quantMigItems: [],
         tableMigItems: [],
+        tableCounts: [],
+        tablePercents: [],
         sumItems: [],
-        sumItemsArray: []
+        sumItemsArray: [],
+        quantbars: {}
       }
     },
     computed: {
@@ -373,6 +388,7 @@
     },
     mounted () {
       this.createArrays()
+      this.selectQuantile()
     },
     methods: {
       createArrays () {
@@ -404,12 +420,10 @@
           }
           tpConverted.push(tempConvert)
         }
-        // tpConverted contains timePeriod arrays
-        console.log('completed tpConverted array..')
-        console.log(tpConverted)
 
         this.tableMigItems = JSON.parse(JSON.stringify(tpConverted))[this.tpSelect - 1]
         this.quantMigItems = JSON.parse(JSON.stringify(tpConverted))
+        this.tableCounts = JSON.parse(JSON.stringify(tpConverted))
         this.tpArray = tempTP
 
         // CALCULATE THE TOTAL RETAINED CUSTOMERS IN POST PERIOD
@@ -426,8 +440,24 @@
           tempTpSums.push(tempSums)
         }
 
-        console.log('tempTpSums should be 2 arrays of 2 vals each')
-        console.log(tempTpSums)
+        var tempPercentTable = []
+
+        // CALCULATE PERCENATAGE TABLE DATA
+        for (let i = 0; i < this.quantMigItems.length; i++) {
+          var newPercents = []
+          for (let j = 0; j < this.quantMigItems[i].length; j++) {
+            let val = Object.values(this.quantMigItems[i][j])
+            let keys = Object.keys(this.quantMigItems[i][j])
+            let obj = {'from': val[0]}
+            for (let k = 1; k < val.length; k++) {
+              obj[keys[k]] = val[k] / tempTpSums[i][j] * 100
+            }
+            newPercents.push(obj)
+          }
+          tempPercentTable.push(newPercents)
+        }
+
+        this.tablePercents = tempPercentTable
 
         // REFORMAT NEW CUST COUNT PER QUANTILE DATA
         var tpNewCust = []
@@ -439,8 +469,6 @@
           }
           tpNewCust.push(newCust)
         }
-        console.log('new quantile tp list')
-        console.log(tpNewCust)
 
         // CALCULATE THE POST CUSTOMER COUNT ARRAY (POST NEW + POST RETAINED)
         var tempTpPostCustCount = []
@@ -457,8 +485,6 @@
         }
 
         tempTpPostCustCount.push(tempCustCountZero)
-        console.log('post count tp list')
-        console.log(tempTpPostCustCount)
 
         // CREATE ARRAY OF OBJECTS TO POPULATE THE RETENTION RATE TABLE...
         var tempRetObj = []
@@ -477,8 +503,6 @@
           }
           tempRetObj.push(retObj)
         }
-        console.log('object to populate retention table')
-        console.log(tempRetObj)
 
         this.sumItems = tempRetObj[this.tpSelect - 1]
         this.sumItemsArray = tempRetObj
@@ -486,7 +510,42 @@
 
       selectTP () {
         this.sumItems = this.sumItemsArray[this.tpSelect - 1]
-        this.tableMigItems = this.quantMigItems[this.tpSelect - 1]
+        this.selectView()
+        this.selectQuantile()
+      },
+
+      selectView () {
+        if (this.viewType === 'Counts') {
+          this.tableMigItems = this.quantMigItems[this.tpSelect - 1]
+        } else if (this.viewType === 'Percentages') {
+          this.tableMigItems = this.tablePercents[this.tpSelect - 1]
+        }
+      },
+
+      selectQuantile () {
+        console.log(this.quantMigItems)
+        console.log(this.quantMigItems[this.tpSelect - 1][this.quantileSelect - 1])
+        var keyArray = ['key1', 'key2', 'key3', 'key4', 'key5', 'key6', 'key7', 'key8', 'key9', 'key10']
+        this.quantbars = {
+          labels: this.quantArray,
+          datasets: [{
+            data: [
+              this.quantMigItems[this.tpSelect - 1][0][keyArray[this.quantileSelect - 1]],
+              this.quantMigItems[this.tpSelect - 1][1][keyArray[this.quantileSelect - 1]]
+              // this.quantMigItems[this.tpSelect - 1][2][keyArray[this.quantileSelect - 1]],
+              // this.quantMigItems[this.tpSelect - 1][3][keyArray[this.quantileSelect - 1]]
+              // this.quantMigItems[this.tpSelect - 1][4][keyArray[this.quantileSelect - 1]],
+              // this.quantMigItems[this.tpSelect - 1][5][keyArray[this.quantileSelect - 1]],
+              // this.quantMigItems[this.tpSelect - 1][6][keyArray[this.quantileSelect - 1]],
+              // this.quantMigItems[this.tpSelect - 1][7][keyArray[this.quantileSelect - 1]],
+              // this.quantMigItems[this.tpSelect - 1][8][keyArray[this.quantileSelect - 1]],
+              // this.quantMigItems[this.tpSelect - 1][0][keyArray[this.quantileSelect - 1]]
+            ],
+            backgroundColor: '#F7970E'
+          }]
+        }
+
+        console.log(this.quantbars)
       }
     }
   }
