@@ -2,15 +2,50 @@
   <v-container fluid class="cadence pl-3 pr-3">
     <!-- =====ROW1===== -->
     <v-layout row wrap class="mb-2">
-      <!--Chart-->
       <v-flex xs12 sm12>
         <div class="cad_col1" :class="{'change_width1': openOver}">
           <v-card class="white">
             <v-card-title primary-title class="primary">
               <h6 class="white--text text-xs-left mb-0">Purchase Cadence Distribution</h6>
             </v-card-title>
-            <!--trendlines-->
-            <v-layout row wrap class="mb-3 pa-3">
+            <div row wrap class="mb-3 pt-2 pb-0">
+              <!--Cadence Summary Cards-->
+              <v-flex xs12 class="pb-3 white--text">
+                <v-layout row wrap class="cad_sum">
+                  <v-flex xs4>
+                    <v-card>
+                      <v-card-row class="green">
+                        <div><v-icon large light>web</v-icon></div>
+                      </v-card-row>
+                      <v-card-text class="green darken-2">
+                        Min. Date | Max. Date
+                      </v-card-text>
+                    </v-card>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-card>
+                      <v-card-row class="cyan">
+                        <div><v-icon large light>web</v-icon></div>
+                      </v-card-row>
+                      <v-card-text class="cyan darken-2">
+                        Some text
+                      </v-card-text>
+                    </v-card>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-card>
+                      <v-card-row class="red">
+                        <div><v-icon large light>web</v-icon></div>
+                      </v-card-row>
+                      <v-card-text class="red darken-2">
+                        Some text
+                      </v-card-text>
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+              <!--//Cadence Summary Cards-->
+              <!--Chart-->
               <v-flex xs12>
                 <annotated-bar-chart
                   :chart-data="cadenceBars"
@@ -18,8 +53,8 @@
                   class="bar_chart"
                   id="cadChart"></annotated-bar-chart>
               </v-flex>
-            </v-layout>
-            <!--//trendlines-->
+              <!--//Chart-->
+            </div>
           </v-card>
         </div>
         <div class="cad_col2" v-show="openOver" :class="{'change_width2': openOver}">
@@ -35,7 +70,6 @@
                     v-bind:headers="tableHeaders"
                     :items="tableData"
                     v-bind:search="search"
-                    v-bind:pagination.sync="pagination"
                     hide-actions>
                   <template slot="items" scope="props">
                     <td>{{ props.item.cadence }}</td>
@@ -43,17 +77,12 @@
                     <td>{{ props.item.cumFreq }}</td>
                   </template>
                 </v-data-table>
-                <div class="text-xs-center pt-2">
-                  <v-pagination v-model="pagination.page" :length="Math.ceil(pagination.totalItems / pagination.rowsPerPage)"></v-pagination>
-                </div>
                 </v-layout>
               </v-flex>
             </div>
           </v-card>
         </div>
-
       </v-flex>
-      <!--//Chart-->
     </v-layout>
     <!-- //=====ROW1===== -->
     <!-- =====ROW2===== -->
@@ -217,9 +246,6 @@
             display: false
           }
         }
-      },
-      openOverlay () {
-        document.getElementById('myDIV').style.overflow = 'scroll'
       }
     }
   }
@@ -233,6 +259,7 @@
   bottom:70px;
   right:30px;
 }
+.cad_sum div {margin:0 auto;}
 .bar_chart{height:40vh !important;}
 .cad_col1{
   display:inline-block;
@@ -244,17 +271,18 @@
   vertical-align:top;
 }
 .change_width1{
-  width: 65% !important;
+  width: 64% !important;
+  margin-right:16px;
+  display:inline-block;
 }
 .change_width2{
-  width: 33% !important;
+  width: 34% !important;
   display:inline-block;
-  margin-left:18px;
 }
 .change_height2{height: 47vh !important;}
 #raw_data_tbl{
-  overflow: scroll;
-  /*height:0;*/
+  overflow: auto;
+  height:45vh;
   background:rbga(0,0,0,.2);
 }
 </style>

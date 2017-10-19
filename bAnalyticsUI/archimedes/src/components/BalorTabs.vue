@@ -6,7 +6,7 @@
           <v-btn primary large router to="/Balor/NewBalor" class="white--text text-xs-left marTB8">+ NEW BALOR INPUT</v-btn>
       </v-flex>
       <v-flex xs12 s12 md9>
-        <v-tabs id="mobile-tabs-3" grow light class="elevation-1">
+        <v-tabs id="mobile-tabs-3" grow light style="z-index: 1 !important;">
           <v-tabs-bar slot="activators">
             <v-tabs-slider></v-tabs-slider>
             <v-tabs-item router to="/Balor/NewBalor">Input</v-tabs-item>
@@ -38,4 +38,5 @@
   font-size:17px;
 }
 .marTB8{margin-top:8px; margin-bottom:8px;}
+.bottom-nav{z-index: 1;}
 </style>
