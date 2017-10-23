@@ -177,7 +177,7 @@
         segSelect: [],
         prodArray: [],
         prodSelect: [],
-        jobId: 'QATestRun'
+        jobId: 'testLifecycle'
       }
     },
     computed: {
