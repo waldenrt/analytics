@@ -32,7 +32,7 @@
             <v-layout row wrap>
               <v-flex xs5>
                 <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
-                  Select BALOR<br />metrics:
+                  Select BALOR<br />dimension:
                 </div>
               </v-flex>
               <v-flex xs7>
@@ -57,7 +57,7 @@
             <v-layout row wrap>
               <v-flex xs5>
                 <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
-                  Select BALOR<br />segment:
+                  Select BALOR<br />average:
                 </div>
               </v-flex>
               <v-flex xs7>
@@ -108,6 +108,31 @@
           </v-card>
         </v-flex>
         <!--//Dropdown2-->
+          <!--Dropdown3-->
+          <v-flex xs12 sm6 md4>
+            <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
+              <v-layout row wrap>
+                <v-flex xs5>
+                  <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
+                    Select BALOR<br />segment:
+                  </div>
+                </v-flex>
+                <v-flex xs7>
+                  <v-card class="white pa-0">
+                    <v-select v-bind:items="segments"
+                              v-model="segSelect"
+                              label="Select Segment"
+                              single-line
+                              bottom
+                              v-on:input="selectDimension()"
+                              class="pa-1 m-0 v_font">
+                    </v-select>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-flex>
+          <!--//Dropdown3-->
         </v-layout>
       </v-card>
     </v-flex>
@@ -252,10 +277,18 @@
           'Avg Discount per Customer',
           'Avg Discount per Basket'
         ],
+        segments: [
+          'All',
+          'Lapsed',
+          'New',
+          'Returning',
+          'Reactivated'
+        ],
         dimensionSelect: 'Customer',
         avgSelect: 'Avg Spend per Customer',
         tpSelect: 1,
         tpAvgSelect: 'Spend per Customer',
+        segSelect: 'All',
         avgList: [
           'Spend per Customer',
           'Items per Customer',

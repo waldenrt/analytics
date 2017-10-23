@@ -14,6 +14,14 @@ export default HorizontalBar.extend({
         maintainAspectRatio: false,
         legend: {
           display: false
+        },
+        scales: {
+          xAxes: [{
+            gridLines: {
+              display: true,
+              color: '#848C98'
+            }
+          }]
         }
       }
     }

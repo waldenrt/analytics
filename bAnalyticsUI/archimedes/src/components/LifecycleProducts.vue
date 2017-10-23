@@ -24,13 +24,12 @@
                   <v-flex xs12>
                     <v-card class="white pa-0">
                       <!--SWAP OUT DROPDOWN-->
-                      <v-select v-bind:items="quantiles"
-                                v-model="quantileSelect"
-                                label="Select Quantiles"
-                                multiple
+                      <v-select v-bind:items="tpArray"
+                                v-model="tpSelect"
+                                label="Select Time Period"
                                 single-line
                                 bottom
-                                v-on:input="selectQuantile()"
+                                v-on:input="selectTP()"
                                 class="pl-1 pr-1 m-0">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
@@ -51,17 +50,16 @@
                   </v-flex>
                   <v-flex xs12>
                     <v-card class="white">
-                      <!--SWAP OUT DROPDOWN-->
                       <v-select
-                          v-bind:items="TPArray"
-                          v-model="TPSelect"
-                          label="Select Time Period"
+                          v-bind:items="prodArray"
+                          v-model="prodSelect"
+                          label="Select Product Category"
                           single-line
                           bottom
-                          v-on:input="selectTP()"
+                          multiple
+                          v-on:input="selectProd()"
                           class="pl-1 pr-1 m-0">
                       </v-select>
-                      <!--//SWAP OUT DROPDOWN-->
                     </v-card>
                   </v-flex>
                 </v-layout>
@@ -79,17 +77,16 @@
                   </v-flex>
                   <v-flex xs12>
                     <v-card class="white">
-                      <!--SWAP OUT DROPDOWN-->
                       <v-select
-                          v-bind:items="metrics"
-                          v-model="metricSelect"
-                          label="Select Metric"
+                          v-bind:items="segmentArray"
+                          v-model="segSelect"
+                          label="Select Segments"
                           single-line
                           bottom
-                          v-on:input="selectMetric()"
+                          multiple
+                          v-on:input="selectSegment()"
                           class="pl-1 pr-1 m-0">
                       </v-select>
-                      <!--//SWAP OUT DROPDOWN-->
                     </v-card>
                   </v-flex>
                 </v-layout>
@@ -107,17 +104,10 @@
                   </v-flex>
                   <v-flex xs12>
                     <v-card class="white">
-                      <!--SWAP OUT DROPDOWN-->
-                      <v-select
-                          v-bind:items="metrics"
-                          v-model="metricSelect"
-                          label="Select Metric"
-                          single-line
-                          bottom
-                          v-on:input="selectMetric()"
-                          class="pl-1 pr-1 m-0">
-                          <!--//SWAP OUT DROPDOWN-->
-                      </v-select>
+                      <v-text-field
+                        name="topProducts"
+                        label="How many products"
+                        id="topN"></v-text-field>
                     </v-card>
                   </v-flex>
                 </v-layout>
@@ -171,6 +161,7 @@
 </template>
 
 <script>
+  import { product } from './javascript/lifecycle.service'
 
   export default {
     name: 'lifecycleProducts',
@@ -180,12 +171,13 @@
       return {
         incomingJson: {},
         tpSelect: 1,
-        prods: [],
-        segments: [],
-        viewType: 'Counts',
-        views: ['Counts', 'Percentages'],
         tpArray: [],
-        quantArray: []
+        prods: [],
+        segmentArray: ['All', 'Best in Class', 'Rising Stars', 'Middle of the Road', 'Lapsing', 'Deeply Lapsed'],
+        segSelect: [],
+        prodArray: [],
+        prodSelect: [],
+        jobId: 'QATestRun'
       }
     },
     computed: {
@@ -194,9 +186,20 @@
       }
     },
     mounted () {
-
+      this.getResults()
     },
-    methods: {}
+    methods: {
+      getResults () {
+        product(this.jobId)
+          .catch(err => {
+            alert('Could not get Lifecycle Product results. ' + err.message.toString())
+          })
+          .then((response) => {
+            this.incomingJson = response.data
+            console.log(this.incomingJson)
+          })
+      }
+    }
   }
 
 </script>
