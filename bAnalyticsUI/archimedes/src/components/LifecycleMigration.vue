@@ -244,7 +244,6 @@
 </template>
 
 <script>
-  import { migration } from './javascript/lifecycle.service'
 
   export default {
     name: 'lifecycleMigration',
@@ -259,8 +258,7 @@
         viewType: 'Counts',
         views: ['Counts', 'Percentages'],
         tpArray: [],
-        quantArray: [],
-        jobId: 'testLifecycle'
+        quantArray: []
       }
     },
     computed: {
@@ -269,20 +267,9 @@
       }
     },
     mounted () {
-      this.getResults()
+
     },
-    methods: {
-      getResults () {
-        migration(this.jobId)
-          .catch(err => {
-            alert('Could not get Lifecycle Migration results. ' + err.message.toString())
-          })
-          .then((response) => {
-            this.incomingJson = response.data
-            console.log(this.incomingJson)
-          })
-      }
-    }
+    methods: {}
   }
 
 </script>
