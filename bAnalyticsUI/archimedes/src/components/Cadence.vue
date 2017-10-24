@@ -1,50 +1,60 @@
 <template>
   <v-container fluid class="cadence pl-3 pr-3">
     <!-- =====ROW1===== -->
+    <!--Cadence Summary Cards-->
+    <v-flex xs12 class="pl-0 pr-0 pb-3 white--text">
+      <v-layout row wrap class="cad_sum">
+        <v-flex xs4>
+          <v-card class="white card_height">
+            <v-card-row class="green darken-2">
+              <div><v-icon large light>web</v-icon></div>
+            </v-card-row>
+            <v-card-text class="white green--text card_pad">
+              Min. Date:
+              <v-divider class="green mt-2 mb-2"></v-divider>
+              Max. Date:
+            </v-card-text>
+          </v-card>
+        </v-flex>
+        <v-flex xs4>
+          <v-card class="white card_height">
+            <v-card-row class="cyan darken-2">
+              <div><v-icon large light>web</v-icon></div>
+            </v-card-row>
+            <v-card-text class="white cyan--text">
+              # Customer - 1 Purchase:
+              <v-divider class="cyan mt-2 mb-2"></v-divider>
+              Transactions:
+              <v-divider class="cyan mt-2 mb-2"></v-divider>
+              Raw Cadence - 80th Percentile:
+            </v-card-text>
+          </v-card>
+        </v-flex>
+        <v-flex xs4>
+          <v-card class="white card_height">
+            <v-card-row class="red darken-2">
+              <div><v-icon large light>web</v-icon></div>
+            </v-card-row>
+            <v-card-text class="white red--text card_pad">
+              Normalized Cadence Value:
+              <v-divider class="red mt-2 mb-2"></v-divider>
+              Time Period:
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-flex>
+    <!--//Cadence Summary Cards-->
+    <!-- //=====ROW1===== -->
+    <!-- =====ROW2===== -->
     <v-layout row wrap class="mb-2">
-      <v-flex xs12 sm12>
-        <div class="cad_col1" :class="{'change_width1': openOver}">
+      <!--+++++col1+++++-->
+      <v-flex xs8>
           <v-card class="white">
             <v-card-title primary-title class="primary">
               <h6 class="white--text text-xs-left mb-0">Purchase Cadence Distribution</h6>
             </v-card-title>
             <div row wrap class="mb-3 pt-2 pb-0">
-              <!--Cadence Summary Cards-->
-              <v-flex xs12 class="pb-3 white--text">
-                <v-layout row wrap class="cad_sum">
-                  <v-flex xs4>
-                    <v-card>
-                      <v-card-row class="green">
-                        <div><v-icon large light>web</v-icon></div>
-                      </v-card-row>
-                      <v-card-text class="green darken-2">
-                        Min. Date | Max. Date
-                      </v-card-text>
-                    </v-card>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-card>
-                      <v-card-row class="cyan">
-                        <div><v-icon large light>web</v-icon></div>
-                      </v-card-row>
-                      <v-card-text class="cyan darken-2">
-                        Some text
-                      </v-card-text>
-                    </v-card>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-card>
-                      <v-card-row class="red">
-                        <div><v-icon large light>web</v-icon></div>
-                      </v-card-row>
-                      <v-card-text class="red darken-2">
-                        Some text
-                      </v-card-text>
-                    </v-card>
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-              <!--//Cadence Summary Cards-->
               <!--Chart-->
               <v-flex xs12>
                 <annotated-bar-chart
@@ -56,40 +66,36 @@
               <!--//Chart-->
             </div>
           </v-card>
-        </div>
-        <div class="cad_col2" v-show="openOver" :class="{'change_width2': openOver}">
-          <v-card class="white" :class="{'change_height2': openOver}">
-            <div id="raw_data_tbl">
-              <v-card-title primary-title class="white">
-                <h6 class="primary--text text-xs-left mb-0">Cadence Raw Data</h6>
-              </v-card-title>
-              <v-divider class="primary pb-0"></v-divider>
-              <v-flex xs12 fill-height>
-                <v-layout row wrap>
-                  <v-data-table
-                    v-bind:headers="tableHeaders"
-                    :items="tableData"
-                    v-bind:search="search"
-                    hide-actions>
-                  <template slot="items" scope="props">
-                    <td>{{ props.item.cadence }}</td>
-                    <td>{{ props.item.frequency }}</td>
-                    <td>{{ props.item.cumFreq }}</td>
-                  </template>
-                </v-data-table>
-                </v-layout>
-              </v-flex>
-            </div>
-          </v-card>
-        </div>
       </v-flex>
+      <!--//+++++col1+++++-->
+      <!--+++++col2+++++-->
+      <v-flex xs4>
+        <v-card class="white">
+            <v-card-title primary-title class="white pl-0 pr-0">
+              <h6 class="primary--text text-xs-left mb-0">Cadence Raw Data</h6>
+            </v-card-title>
+            <v-divider class="primary pb-0 pl-3 pr-3"></v-divider>
+            <v-flex xs12 fill-height>
+              <v-layout row wrap>
+                <v-data-table
+                  v-bind:headers="tableHeaders"
+                  :items="tableData"
+                  v-bind:search="search"
+                  hide-actions>
+                    <div id="raw_data_tbl">
+                      <template slot="items" scope="props">
+                        <td>{{ props.item.cadence }}</td>
+                        <td>{{ props.item.frequency }}</td>
+                        <td>{{ props.item.cumFreq }}</td>
+                      </template>
+                    </div>
+              </v-data-table>
+              </v-layout>
+            </v-flex>
+        </v-card>
+      </v-flex>
+      <!--//+++++col2+++++-->
     </v-layout>
-    <!-- //=====ROW1===== -->
-    <!-- =====ROW2===== -->
-        <v-btn floating class="float_btn"
-        v-on:click.native="openOver = !openOver">
-          <v-icon light>add</v-icon>
-        </v-btn>
     <!-- //=====ROW2===== -->
     <!-- =====ROW3===== -->
     <v-layout row wrap class="mb-2">
@@ -253,33 +259,11 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.float_btn{
-  background-color:#D63A09;
-  position: fixed;
-  bottom:70px;
-  right:30px;
-}
 .cad_sum div {margin:0 auto;}
+.card_height{min-height:165px;}
+.card_pad{padding-top:35px;padding-bottom:35px;}
 .bar_chart{height:40vh !important;}
-.cad_col1{
-  display:inline-block;
-  width:100%;
-  vertical-align:top;
-}
-.cad_col2{
-  display:inline-block;
-  vertical-align:top;
-}
-.change_width1{
-  width: 64% !important;
-  margin-right:16px;
-  display:inline-block;
-}
-.change_width2{
-  width: 34% !important;
-  display:inline-block;
-}
-.change_height2{height: 47vh !important;}
+
 #raw_data_tbl{
   overflow: auto;
   height:45vh;
