@@ -83,6 +83,7 @@
 </template>
 
 <script>
+  import { summary } from './javascript/lifecycle.service'
 
   export default {
     name: 'lifecycleSummary',
@@ -97,7 +98,8 @@
         viewType: 'Counts',
         views: ['Counts', 'Percentages'],
         tpArray: [],
-        quantArray: []
+        quantArray: [],
+        jobId: 'testLifecycle'
       }
     },
     computed: {
@@ -106,9 +108,20 @@
       }
     },
     mounted () {
-
+      this.getResults()
     },
-    methods: {}
+    methods: {
+      getResults () {
+        summary(this.jobId)
+          .catch(err => {
+            alert('Could not get Lifecycle Summary results. ' + err.message.toString())
+          })
+          .then((response) => {
+            this.incomingJson = response.data
+            console.log(this.incomingJson)
+          })
+      }
+    }
   }
 
 </script>

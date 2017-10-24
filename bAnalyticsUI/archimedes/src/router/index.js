@@ -4,6 +4,7 @@ import Login from '@/components/Login'
 import Home from '@/components/Home'
 import JobHistory from '@/components/JobHistory'
 import Settings from '@/components/Settings'
+import Nav from '@/components/Navigation'
 
 import Balor from '@/components/Balor'
 import NewBalor from '@/components/NewBalor'
@@ -28,115 +29,121 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'Home',
-      component: Home
-    },
-    {
       path: '/Login',
       name: 'Login',
       component: Login
     },
     {
-      path: '/JobHistory',
-      name: 'JobHistory',
-      component: JobHistory
-    },
-    {
-      path: '/Help',
-      name: 'Help',
-      component: Home
-    },
-    {
-      path: '/Logout',
-      name: 'Logout',
-      component: Home
-    },
-    {
-      path: '/Settings',
-      name: 'Settings',
-      component: Settings
-    },
-    {
-      path: '/Balor',
-      name: 'BalorMain',
-      component: Balor,
+      path: '/',
+      name: 'UserHome',
+      component: Nav,
       children: [
         {
-          path: 'NewBalor',
-          name: 'NewBalor',
-          component: NewBalor
+          path: 'Home',
+          name: 'Home',
+          component: Home
         },
         {
-          path: 'Cadence',
-          name: 'Cadence',
-          component: Cadence
+          path: 'JobHistory',
+          name: 'JobHistory',
+          component: JobHistory
         },
         {
-          path: 'SegmentTrend',
-          name: 'BalorSegmentTrend',
-          component: BalorSegmentTrend
+          path: 'Help',
+          name: 'Help',
+          component: Home
         },
         {
-          path: 'Trend',
-          name: 'BalorTrend',
-          component: BalorTrend
-        }
-      ]
-    },
-    {
-      path: '/Quantile',
-      name: 'QuantileMain',
-      component: Quantile,
-      children: [
-        {
-          path: 'NewQuantile',
-          name: 'NewQuantile',
-          component: NewQuantile
+          path: 'Logout',
+          name: 'Logout',
+          component: Home
         },
         {
-          path: 'Summary',
-          name: 'QuantSummary',
-          component: QuantProfile
+          path: 'Settings',
+          name: 'Settings',
+          component: Settings
         },
         {
-          path: 'Migration',
-          name: 'QuantMig',
-          component: QuantMigration
+          path: 'Balor',
+          name: 'BalorMain',
+          component: Balor,
+          children: [
+            {
+              path: 'NewBalor',
+              name: 'NewBalor',
+              component: NewBalor
+            },
+            {
+              path: 'Cadence',
+              name: 'Cadence',
+              component: Cadence
+            },
+            {
+              path: 'SegmentTrend',
+              name: 'BalorSegmentTrend',
+              component: BalorSegmentTrend
+            },
+            {
+              path: 'Trend',
+              name: 'BalorTrend',
+              component: BalorTrend
+            }
+          ]
         },
         {
-          path: 'Products',
-          name: 'QuantProd',
-          component: QuantProducts
-        }
-      ]
-    },
-    {
-      path: '/Lifecycle',
-      name: 'LifecycleMain',
-      component: Lifecycle,
-      children: [
-        {
-          path: 'NewLifecycle',
-          name: 'NewLifecycle',
-          component: NewLifecycle
+          path: 'Quantile',
+          name: 'QuantileMain',
+          component: Quantile,
+          children: [
+            {
+              path: 'NewQuantile',
+              name: 'NewQuantile',
+              component: NewQuantile
+            },
+            {
+              path: 'Summary',
+              name: 'QuantSummary',
+              component: QuantProfile
+            },
+            {
+              path: 'Migration',
+              name: 'QuantMig',
+              component: QuantMigration
+            },
+            {
+              path: 'Products',
+              name: 'QuantProd',
+              component: QuantProducts
+            }
+          ]
         },
         {
-          path: 'Summary',
-          name: 'LifecycleSummary',
-          component: LifecycleSummary
-        },
-        {
-          path: 'Migration',
-          name: 'LifecycleMigration',
-          component: LifecycleMigration
-        },
-        {
-          path: 'Products',
-          name: 'LifecycleProd',
-          component: LifecycleProducts
-        }
-      ]
+          path: 'Lifecycle',
+          name: 'LifecycleMain',
+          component: Lifecycle,
+          children: [
+            {
+              path: 'NewLifecycle',
+              name: 'NewLifecycle',
+              component: NewLifecycle
+            },
+            {
+              path: 'Summary',
+              name: 'LifecycleSummary',
+              component: LifecycleSummary
+            },
+            {
+              path: 'Migration',
+              name: 'LifecycleMigration',
+              component: LifecycleMigration
+            },
+            {
+              path: 'Products',
+              name: 'LifecycleProd',
+              component: LifecycleProducts
+            }
+          ]
+        }]
     }
   ]
 })
