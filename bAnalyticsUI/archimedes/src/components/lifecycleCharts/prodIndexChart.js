@@ -17,14 +17,9 @@ export default HorizontalBar.extend({
         },
         scales: {
           yAxes: [{
-            id: 'best-y',
-            type: 'linear'
-          }, {
-            id: 'rising-y',
-            type: 'linear'
-          }, {
-            id: 'middle-y',
-            type: 'linear'
+            ticks: {
+              display: false
+            }
           }]
         }
       }
