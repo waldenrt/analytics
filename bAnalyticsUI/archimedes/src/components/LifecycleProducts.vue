@@ -155,12 +155,22 @@
       <v-flex xs8>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <h6 class="primary--text text-xs-center pa-1 mb-0">Product Index by Segment</h6>
-          <v-layout wrap row class="seg_sect">
-            <div><prod-index-chart :chart-data="bestBars" class="chart_height1"></prod-index-chart></div>
-            <div><prod-index-chart :chart-data="risingBars" class="chart_height1"></prod-index-chart></div>
-            <div><prod-index-chart :chart-data="middleBars" class="chart_height1"></prod-index-chart></div>
-            <div><prod-index-chart :chart-data="lapsingBars" class="chart_height1"></prod-index-chart></div>
-            <div><prod-index-chart :chart-data="deeplyBars" class="chart_height1"></prod-index-chart></div>
+          <v-layout wrap row>
+            <div v-if="showBest" class="seg_sect">
+              <prod-index-chart :chart-data="bestBars" class="chart_height1"></prod-index-chart>
+            </div>
+            <div v-if="showRising" class="seg_sect">
+              <prod-index-chart :chart-data="risingBars" class="chart_height1"></prod-index-chart>
+            </div>
+            <div v-if="showMiddle" class="seg_sect">
+              <prod-index-chart :chart-data="middleBars" class="chart_height1"></prod-index-chart>
+            </div>
+            <div v-if="showLapsing" class="seg_sect">
+              <prod-index-chart :chart-data="lapsingBars" class="chart_height1"></prod-index-chart>
+            </div>
+            <div v-if="showDeeply" class="seg_sect">
+              <prod-index-chart :chart-data="deeplyBars" class="chart_height1"></prod-index-chart>
+            </div>
           </v-layout>
           <!--<img src="http://via.placeholder.com/1050x480?text=Chart" width="100%" height="100%" style="height:475px;">-->
         </v-card>
@@ -188,9 +198,9 @@
         tpArray: [],
         prods: [],
         segmentArray: ['All', 'Best in Class', 'Rising Stars', 'Middle of the Road', 'Lapsing', 'Deeply Lapsed'],
-        segSelect: [],
+        segSelect: ['All'],
         prodArray: [],
-        prodSelect: [],
+        prodSelect: ['All'],
         jobId: 'testLifecycle',
         labels: [],
         spendPer: [],
@@ -205,7 +215,12 @@
         risingBars: {},
         lapsingBars: {},
         deeplyBars: {},
-        sortedProds: []
+        sortedProds: [],
+        showBest: true,
+        showRising: true,
+        showMiddle: true,
+        showLapsing: true,
+        showDeeply: true
       }
     },
     computed: {
@@ -244,6 +259,7 @@
         var tempLapsingIndex = []
         var tempDeeplyIndex = []
         var tempTpArray = []
+        var tempProdArray = []
 
         tps.sort(function (a, b) {
           return b.prodTotalSales - a.prodTotalSales
@@ -262,8 +278,11 @@
           }
         }
 
+        tempProdArray = JSON.parse(JSON.stringify(tempLabels))
+        tempProdArray.sort()
+        tempProdArray.unshift('All')
         this.labels = tempLabels
-        this.prodArray = tempLabels
+        this.prodArray = tempProdArray
         this.spendPer = tempSpendPer
         this.bestIndex = tempBestIndex
         this.risingIndex = tempRisingIndex
@@ -388,6 +407,39 @@
         this.deeplyIndex = tempDeeplyIndex
 
         this.createOverallBars()
+        this.createSegmentBars()
+      },
+
+      selectSegment () {
+        this.showBest = false
+        this.showRising = false
+        this.showMiddle = false
+        this.showLapsing = false
+        this.showDeeply = false
+
+        if (this.segSelect.includes('All')) {
+          this.showBest = true
+          this.showRising = true
+          this.showMiddle = true
+          this.showLapsing = true
+          this.showDeeply = true
+        } else {
+          if (this.segSelect.includes('Best in Class')) {
+            this.showBest = true
+          }
+          if (this.segSelect.includes('Rising Stars')) {
+            this.showRising = true
+          }
+          if (this.segSelect.includes('Middle of the Road')) {
+            this.showMiddle = true
+          }
+          if (this.segSelect.includes('Lapsing')) {
+            this.showLapsing = true
+          }
+          if (this.segSelect.includes('Deeply Lapsed')) {
+            this.showDeeply = true
+          }
+        }
       }
     }
   }
@@ -395,10 +447,13 @@
 </script>
 
 <style scoped>
-.seg_sect div{
-  width:20%;
-  display: inline-block;
-}
-.chart_height1{height:68vh !important;}
+  .seg_sect {
+    width: 20%;
+    display: inline-block;
+  }
+
+  .chart_height1 {
+    height: 74vh !important;
+  }
 
 </style>

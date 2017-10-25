@@ -21,7 +21,7 @@
                     <v-card class="white pa-0">
                       <v-select v-bind:items="quantiles"
                                 v-model="quantileSelect"
-                                label="Select Quantiles"
+                                label="Select Time Period"
                                 multiple
                                 single-line
                                 bottom
@@ -119,7 +119,13 @@
           .then((response) => {
             this.incomingJson = response.data
             console.log(this.incomingJson)
+            this.parseJson()
           })
+      },
+
+      parseJson () {
+        console.log('jsonMsg')
+        console.log(this.jsonMsg)
       }
     }
   }
