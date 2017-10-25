@@ -10,9 +10,9 @@
               <div><v-icon large light>web</v-icon></div>
             </v-card-row>
             <v-card-text class="white green--text card_pad">
-              {{this.sumItems[0].name}}: {{this.sumItems[0].vals}}
+              Min. Date: {{ jsonMsg.minDateCadence }}
               <v-divider class="green mt-2 mb-2"></v-divider>
-              Max. Date:
+              Max. Date': {{ jsonMsg.maxDateCadence }}
             </v-card-text>
           </v-card>
         </v-flex>
@@ -22,11 +22,11 @@
               <div><v-icon large light>web</v-icon></div>
             </v-card-row>
             <v-card-text class="white cyan--text">
-              # Customer - 1 Purchase:
+              # Customer - 1 Purchase: {{ this.jsonMsg.singleVisit }}
               <v-divider class="cyan mt-2 mb-2"></v-divider>
-              Transactions:
+              Transactions: {{ this.jsonMsg.numRecords }}
               <v-divider class="cyan mt-2 mb-2"></v-divider>
-              Raw Cadence - 80th Percentile:
+              Raw Cadence - 80th Percentile: {{ this.jsonMsg.rawCadence }}
             </v-card-text>
           </v-card>
         </v-flex>
@@ -36,9 +36,9 @@
               <div><v-icon large light>web</v-icon></div>
             </v-card-row>
             <v-card-text class="white red--text card_pad">
-              Normalized Cadence Value:
+              Normalized Cadence Value: {{ this.jsonMsg.normalizedCadence }}
               <v-divider class="red mt-2 mb-2"></v-divider>
-              Time Period:
+              Time Period: {{ this.jsonMsg.numTimePeriods }}
             </v-card-text>
           </v-card>
         </v-flex>
@@ -77,19 +77,19 @@
             <v-divider class="primary pb-0 pl-3 pr-3"></v-divider>
             <v-flex xs12 fill-height>
               <v-layout row wrap>
-                <v-data-table
-                  v-bind:headers="tableHeaders"
-                  :items="tableData"
-                  v-bind:search="search"
-                  hide-actions>
-                    <div id="raw_data_tbl">
+                <div id="raw_data_tbl">
+                  <v-data-table
+                    v-bind:headers="tableHeaders"
+                    :items="tableData"
+                    v-bind:search="search"
+                    hide-actions>
                       <template slot="items" scope="props">
-                        <td>{{ props.item.cadence }}</td>
-                        <td>{{ props.item.frequency }}</td>
-                        <td>{{ props.item.cumFreq }}</td>
+                          <td class="pa-3">{{ props.item.cadence }}</td>
+                          <td>{{ props.item.frequency }}</td>
+                          <td>{{ props.item.cumFreq }}</td>
                       </template>
-                    </div>
-              </v-data-table>
+                  </v-data-table>
+                </div>
               </v-layout>
             </v-flex>
         </v-card>
@@ -97,32 +97,6 @@
       <!--//+++++col2+++++-->
     </v-layout>
     <!-- //=====ROW2===== -->
-    <!-- =====ROW3===== -->
-    <v-layout row wrap class="mb-2">
-      <v-flex xs4 class="mb-3">
-        <v-card class="white">
-          <v-card-title primary-title class="white">
-            <h6 class="primary--text text-xs-left mb-0">Cadence Summary</h6>
-          </v-card-title>
-          <v-divider class="primary pb-0"></v-divider>
-          <v-flex xs12 fill-height>
-            <v-layout row wrap>
-              <table cellpadding="0" cellspacing="0" style="height:50px !important;">
-                <tr v-for="item in sumItems" v-bind:key="item.name">
-                  <td class="pa-2">
-                    <div class="primary--text" v-text="item.name"></div>
-                  </td>
-                  <td class="pa-2">
-                    <div v-text="item.vals"></div>
-                  </td>
-                </tr>
-              </table>
-            </v-layout>
-          </v-flex>
-        </v-card>
-      </v-flex>
-    </v-layout>
-    <!-- //=====ROW3===== -->
   </v-container>
 </template>
 
@@ -266,8 +240,7 @@
 .card_height2{height: 46vh !important;}
 
 #raw_data_tbl{
-  overflow: auto;
-  height:45vh;
-  background:rbga(0,0,0,.2);
+  overflow: scroll;
+  height:40vh;
 }
 </style>

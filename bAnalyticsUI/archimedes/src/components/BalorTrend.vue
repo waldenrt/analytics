@@ -296,7 +296,7 @@
         this.sumItems.push({name: 'Customer Base', vals: this.jsonMsg.totalCusts})
         this.sumItems.push({
           name: '% Customer - 1 Purchase',
-          vals: this.jsonMsg.singleVisit / this.jsonMsg.totalCusts * 100
+          vals: (this.jsonMsg.singleVisit / this.jsonMsg.totalCusts * 100).toFixed(2) + '%'
         })
         this.sumItems.push({name: 'Transactions', vals: this.jsonMsg.numRecords})
         this.sumItems.push({name: 'Purchase Cadence - 80th Percentile', vals: this.jsonMsg.normalizedCadence})
