@@ -2,10 +2,10 @@
 <v-container fluid class="ma-0 pa-0">
 <v-card class="white pa-3">
     <v-layout row wrap>
-      <v-flex xs12 s12 md3 class="text-xs-center">
+      <v-flex xs12 s3 md3 class="text-xs-center">
           <v-btn primary large router to="/Balor/NewBalor" class="white--text text-xs-left marTB8">+ NEW BALOR INPUT</v-btn>
       </v-flex>
-      <v-flex xs12 s12 md9>
+      <v-flex xs12 s9 md9>
         <v-tabs id="mobile-tabs-3" grow light style="z-index: 1 !important;">
           <v-tabs-bar slot="activators">
             <v-tabs-slider></v-tabs-slider>

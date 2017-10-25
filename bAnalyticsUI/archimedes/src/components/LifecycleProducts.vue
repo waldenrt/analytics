@@ -147,19 +147,20 @@
     <v-layout wrap row class="mt-3">
       <v-flex xs4>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
-          <div class="primary--text text-xs-center pa-1 subhead">Overall Product Share</div>
+          <h6 class="primary--text text-xs-center pa-1 mb-0 subhead">Overall Product Share</h6>
           <!--<img src="http://via.placeholder.com/1050x480?text=Chart" width="100%" height="100%" style="height:475px;">-->
-          <horizontal-chart :chart-data="overallBars"></horizontal-chart>
+          <horizontal-chart :chart-data="overallBars" class="chart_height1"></horizontal-chart>
         </v-card>
       </v-flex>
       <v-flex xs8>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
-          <div class="primary--text text-xs-center pa-1 subhead">Product Index by Segment</div>
-          <v-layout wrap row>
-          <prod-index-chart :chart-data="bestBars"></prod-index-chart><prod-index-chart :chart-data="risingBars"></prod-index-chart>
-          <prod-index-chart :chart-data="middleBars"></prod-index-chart>
-          <prod-index-chart :chart-data="lapsingBars"></prod-index-chart>
-          <prod-index-chart :chart-data="deeplyBars"></prod-index-chart>
+          <h6 class="primary--text text-xs-center pa-1 mb-0">Product Index by Segment</h6>
+          <v-layout wrap row class="seg_sect">
+            <div><prod-index-chart :chart-data="bestBars" class="chart_height1"></prod-index-chart></div>
+            <div><prod-index-chart :chart-data="risingBars" class="chart_height1"></prod-index-chart></div>
+            <div><prod-index-chart :chart-data="middleBars" class="chart_height1"></prod-index-chart></div>
+            <div><prod-index-chart :chart-data="lapsingBars" class="chart_height1"></prod-index-chart></div>
+            <div><prod-index-chart :chart-data="deeplyBars" class="chart_height1"></prod-index-chart></div>
           </v-layout>
           <!--<img src="http://via.placeholder.com/1050x480?text=Chart" width="100%" height="100%" style="height:475px;">-->
         </v-card>
@@ -393,6 +394,11 @@
 
 </script>
 
-<style>
+<style scoped>
+.seg_sect div{
+  width:20%;
+  display: inline-block;
+}
+.chart_height1{height:68vh !important;}
 
 </style>

@@ -10,7 +10,7 @@
               <div><v-icon large light>web</v-icon></div>
             </v-card-row>
             <v-card-text class="white green--text card_pad">
-              Min. Date:
+              {{this.sumItems[0].name}}: {{this.sumItems[0].vals}}
               <v-divider class="green mt-2 mb-2"></v-divider>
               Max. Date:
             </v-card-text>
@@ -50,11 +50,11 @@
     <v-layout row wrap class="mb-2">
       <!--+++++col1+++++-->
       <v-flex xs8>
-          <v-card class="white">
+          <v-card class="white card_height2">
             <v-card-title primary-title class="primary">
               <h6 class="white--text text-xs-left mb-0">Purchase Cadence Distribution</h6>
             </v-card-title>
-            <div row wrap class="mb-3 pt-2 pb-0">
+            <div row wrap class="pt-2 pb-0">
               <!--Chart-->
               <v-flex xs12>
                 <annotated-bar-chart
@@ -70,8 +70,8 @@
       <!--//+++++col1+++++-->
       <!--+++++col2+++++-->
       <v-flex xs4>
-        <v-card class="white">
-            <v-card-title primary-title class="white pl-0 pr-0">
+        <v-card class="white card_height2">
+            <v-card-title primary-title class="white">
               <h6 class="primary--text text-xs-left mb-0">Cadence Raw Data</h6>
             </v-card-title>
             <v-divider class="primary pb-0 pl-3 pr-3"></v-divider>
@@ -263,6 +263,7 @@
 .card_height{min-height:165px;}
 .card_pad{padding-top:35px;padding-bottom:35px;}
 .bar_chart{height:40vh !important;}
+.card_height2{height: 46vh !important;}
 
 #raw_data_tbl{
   overflow: auto;
