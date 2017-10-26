@@ -18,10 +18,56 @@
       </v-flex>
     </v-layout>
     <!-- //=====TABS-ROW===== -->
-
     <!-- =====ROW1===== -->
+    <!--Cadence Summary Cards-->
+    <v-flex xs12 class="pl-0 pr-0 pb-3 white--text">
+      <v-layout row wrap class="cad_sum">
+        <v-flex xs4>
+          <v-card class="white card_height">
+            <v-card-row class="green darken-2">
+              <div><v-icon large light>web</v-icon></div>
+            </v-card-row>
+            <v-card-text class="white green--text card_pad">
+              Min. Date: {{ jsonMsg.minDateBalor }}
+              <v-divider class="green mt-2 mb-2"></v-divider>
+              Max. Date': {{ jsonMsg.maxDateBalor }}
+            </v-card-text>
+          </v-card>
+        </v-flex>
+        <v-flex xs4>
+          <v-card class="white card_height">
+            <v-card-row class="cyan darken-2">
+              <div><v-icon large light>web</v-icon></div>
+            </v-card-row>
+            <v-card-text class="white cyan--text">
+              Customer Base: {{ jsonMsg.totalCusts }}
+              <v-divider class="cyan mt-2 mb-2"></v-divider>
+              % Customer - 1 Purchase:
+              <v-divider class="cyan mt-2 mb-2"></v-divider>
+              Transactions: {{ jsonMsg.numRecords }}
+            </v-card-text>
+          </v-card>
+        </v-flex>
+        <v-flex xs4>
+          <v-card class="white card_height">
+            <v-card-row class="red darken-2">
+              <div><v-icon large light>web</v-icon></div>
+            </v-card-row>
+            <v-card-text class="white red--text card_pad">
+              Purchase Cadence - 80th Percentile: {{ jsonMsg.normalizedCadence }}
+              <v-divider class="red mt-2 mb-2"></v-divider>
+              Time Periods: {{ jsonMsg.numTimePeriods }}
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-flex>
+    <!--//Cadence Summary Cards-->
+    <!-- //=====ROW1===== -->
+    <!-- =====ROW2===== -->
     <v-layout row wrap class="pa-0 mb-0">
-      <v-flex xs12 sm12 md8 lg9>
+      <!--+++++col1+++++-->
+      <v-flex xs12>
         <v-card class="white">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">BALOR Period Trendline</h6>
@@ -71,32 +117,11 @@
           <!--//trendlines-->
         </v-card>
       </v-flex>
-      <v-flex xs12 sm12 md4 lg3 fill-height>
-        <v-card class="white">
-          <v-card-title primary-title class="white">
-            <h6 class="primary--text text-xs-left mb-0">BALOR Summary</h6>
-          </v-card-title>
-          <v-divider class="primary pb-0"></v-divider>
-          <v-flex xs12 fill-height>
-            <v-layout row>
-              <table width="100%" cellpadding="0" cellspacing="0">
-                <tr v-for="item in sumItems" v-bind:key="item.name">
-                  <td class="pa-2" width="50%">
-                    <div class="primary--text" v-text="item.name"></div>
-                  </td>
-                  <td class="pa-2" width="50%">
-                    <div v-text="item.vals"></div>
-                  </td>
-                </tr>
-              </table>
-            </v-layout>
-          </v-flex>
-        </v-card>
-      </v-flex>
+      <!--//+++++col1+++++-->
     </v-layout>
-    <!-- //=====ROW1===== -->
+    <!-- //=====ROW2===== -->
 
-    <!-- =====ROW2===== -->
+    <!-- =====ROW3===== -->
     <v-layout row wrap class="mb-3">
       <v-flex xs12 fill-height>
         <v-card class="white">
@@ -155,26 +180,26 @@
           <!-- //LEGEND -->
           <!--Pie Charts-->
           <v-layout row wrap>
-            <v-flex xs12 sm6 md6 lg3>
+            <v-flex xs12 sm6 md3 lg3>
               <v-card flat class="white pa-3">
                 <pie-charts class="white pie_chart1" :chart-data='custData'></pie-charts>
                 <div primary-title class="primary--text text-xs-center pa-2">Customers</div>
               </v-card>
             </v-flex>
-            <v-flex xs12 sm6 md6 lg3>
+            <v-flex xs12 sm6 md3 lg3>
               <v-card flat class="white pa-3">
                 <pie-charts class="white pie_chart1" :chart-data='txnData'></pie-charts>
                 <div primary-title class="primary--text text-xs-center pa-2">Transactions</div>
               </v-card>
             </v-flex>
-            <v-flex xs12 sm6 md6 lg3>
+            <v-flex xs12 sm6 md3 lg3>
               <v-card flat class="white pa-3">
                 <pie-charts class="white pie_chart1" :chart-data='spendData'></pie-charts>
                 <div primary-title class="primary--text text-xs-center pa-2">Sales</div>
               </v-card>
             </v-flex>
-            <v-flex xs12 sm6 md6 lg3>
-              <v-card flat class="white pt-4 pr-3 pb-3 pl-3">
+            <v-flex xs12 sm6 md3 lg3>
+              <v-card flat class="white pt-4 pl-2 pr-2 pb-3">
                 <balor-trend-line class="white ratio_line" :chart-data='ratioLine'></balor-trend-line>
               </v-card>
             </v-flex>
@@ -183,7 +208,67 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <!-- //=====ROW2===== -->
+    <!-- //=====ROW3===== -->
+    <!-- =====ROW4===== -->
+    <v-layout row wrap>
+      <v-flex xs12 sm6 md6 fill-height class="mb-2">
+        <v-card class="white">
+          <v-layout row wrap>
+            <v-flex xs12>
+              <v-card-title primary-title class="white">
+                <h6 class="primary--text text-xs-left mb-0">BALOR Trend Raw Data</h6>
+              </v-card-title>
+              <v-data-table
+                v-bind:headers="headers1"
+                :items="items1"
+                hide-actions
+                class="elevation-1"
+              >
+              <template slot="items" scope="props">
+                <td>{{ props.item.name }}</td>
+                <td class="text-xs-right">{{ props.item.calories }}</td>
+                <td class="text-xs-right">{{ props.item.fat }}</td>
+                <td class="text-xs-right">{{ props.item.carbs }}</td>
+                <td class="text-xs-right">{{ props.item.protein }}</td>
+                <td class="text-xs-right">{{ props.item.sodium }}</td>
+                <td class="text-xs-right">{{ props.item.calcium }}</td>
+                <td class="text-xs-right">{{ props.item.iron }}</td>
+              </template>
+            </v-data-table>
+            </v-flex>
+          </v-layout>
+        </v-card>
+      </v-flex>
+      <v-flex xs12 sm6 md6 fill-height class="mb-2">
+        <v-card class="white">
+          <v-layout row wrap>
+            <v-flex xs12>
+              <v-card-title primary-title class="white">
+                <h6 class="primary--text text-xs-left mb-0">BALOR Composition and Metrics Raw Data</h6>
+              </v-card-title>
+              <v-data-table
+                v-bind:headers="headers2"
+                :items="items2"
+                hide-actions
+                class="elevation-1"
+              >
+              <template slot="items" scope="props">
+                <td>{{ props.item.name }}</td>
+                <td class="text-xs-right">{{ props.item.calories }}</td>
+                <td class="text-xs-right">{{ props.item.fat }}</td>
+                <td class="text-xs-right">{{ props.item.carbs }}</td>
+                <td class="text-xs-right">{{ props.item.protein }}</td>
+                <td class="text-xs-right">{{ props.item.sodium }}</td>
+                <td class="text-xs-right">{{ props.item.calcium }}</td>
+                <td class="text-xs-right">{{ props.item.iron }}</td>
+              </template>
+            </v-data-table>
+            </v-flex>
+          </v-layout>
+        </v-card>
+      </v-flex>
+    </v-layout>
+    <!-- //=====ROW4===== -->
 
   </v-container>
 
@@ -204,6 +289,260 @@
     },
     data () {
       return {
+        headers1: [
+          {
+            text: 'Dessert (100g serving)',
+            left: true,
+            sortable: false,
+            value: 'name'
+          },
+          { text: 'Calories', value: 'calories' },
+          { text: 'Fat (g)', value: 'fat' },
+          { text: 'Carbs (g)', value: 'carbs' },
+          { text: 'Protein (g)', value: 'protein' },
+          { text: 'Sodium (mg)', value: 'sodium' },
+          { text: 'Calcium (%)', value: 'calcium' },
+          { text: 'Iron (%)', value: 'iron' }
+        ],
+        items1: [
+          {
+            value: false,
+            name: 'Frozen Yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: '14%',
+            iron: '1%'
+          },
+          {
+            value: false,
+            name: 'Ice cream sandwich',
+            calories: 237,
+            fat: 9.0,
+            carbs: 37,
+            protein: 4.3,
+            sodium: 129,
+            calcium: '8%',
+            iron: '1%'
+          },
+          {
+            value: false,
+            name: 'Eclair',
+            calories: 262,
+            fat: 16.0,
+            carbs: 23,
+            protein: 6.0,
+            sodium: 337,
+            calcium: '6%',
+            iron: '7%'
+          },
+          {
+            value: false,
+            name: 'Cupcake',
+            calories: 305,
+            fat: 3.7,
+            carbs: 67,
+            protein: 4.3,
+            sodium: 413,
+            calcium: '3%',
+            iron: '8%'
+          },
+          {
+            value: false,
+            name: 'Gingerbread',
+            calories: 356,
+            fat: 16.0,
+            carbs: 49,
+            protein: 3.9,
+            sodium: 327,
+            calcium: '7%',
+            iron: '16%'
+          },
+          {
+            value: false,
+            name: 'Jelly bean',
+            calories: 375,
+            fat: 0.0,
+            carbs: 94,
+            protein: 0.0,
+            sodium: 50,
+            calcium: '0%',
+            iron: '0%'
+          },
+          {
+            value: false,
+            name: 'Lollipop',
+            calories: 392,
+            fat: 0.2,
+            carbs: 98,
+            protein: 0,
+            sodium: 38,
+            calcium: '0%',
+            iron: '2%'
+          },
+          {
+            value: false,
+            name: 'Honeycomb',
+            calories: 408,
+            fat: 3.2,
+            carbs: 87,
+            protein: 6.5,
+            sodium: 562,
+            calcium: '0%',
+            iron: '45%'
+          },
+          {
+            value: false,
+            name: 'Donut',
+            calories: 452,
+            fat: 25.0,
+            carbs: 51,
+            protein: 4.9,
+            sodium: 326,
+            calcium: '2%',
+            iron: '22%'
+          },
+          {
+            value: false,
+            name: 'KitKat',
+            calories: 518,
+            fat: 26.0,
+            carbs: 65,
+            protein: 7,
+            sodium: 54,
+            calcium: '12%',
+            iron: '6%'
+          }
+        ],
+        headers2: [
+          {
+            text: 'Dessert (100g serving)',
+            left: true,
+            sortable: false,
+            value: 'name'
+          },
+          { text: 'Calories', value: 'calories' },
+          { text: 'Fat (g)', value: 'fat' },
+          { text: 'Carbs (g)', value: 'carbs' },
+          { text: 'Protein (g)', value: 'protein' },
+          { text: 'Sodium (mg)', value: 'sodium' },
+          { text: 'Calcium (%)', value: 'calcium' },
+          { text: 'Iron (%)', value: 'iron' }
+        ],
+        items2: [
+          {
+            value: false,
+            name: 'Frozen Yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: '14%',
+            iron: '1%'
+          },
+          {
+            value: false,
+            name: 'Ice cream sandwich',
+            calories: 237,
+            fat: 9.0,
+            carbs: 37,
+            protein: 4.3,
+            sodium: 129,
+            calcium: '8%',
+            iron: '1%'
+          },
+          {
+            value: false,
+            name: 'Eclair',
+            calories: 262,
+            fat: 16.0,
+            carbs: 23,
+            protein: 6.0,
+            sodium: 337,
+            calcium: '6%',
+            iron: '7%'
+          },
+          {
+            value: false,
+            name: 'Cupcake',
+            calories: 305,
+            fat: 3.7,
+            carbs: 67,
+            protein: 4.3,
+            sodium: 413,
+            calcium: '3%',
+            iron: '8%'
+          },
+          {
+            value: false,
+            name: 'Gingerbread',
+            calories: 356,
+            fat: 16.0,
+            carbs: 49,
+            protein: 3.9,
+            sodium: 327,
+            calcium: '7%',
+            iron: '16%'
+          },
+          {
+            value: false,
+            name: 'Jelly bean',
+            calories: 375,
+            fat: 0.0,
+            carbs: 94,
+            protein: 0.0,
+            sodium: 50,
+            calcium: '0%',
+            iron: '0%'
+          },
+          {
+            value: false,
+            name: 'Lollipop',
+            calories: 392,
+            fat: 0.2,
+            carbs: 98,
+            protein: 0,
+            sodium: 38,
+            calcium: '0%',
+            iron: '2%'
+          },
+          {
+            value: false,
+            name: 'Honeycomb',
+            calories: 408,
+            fat: 3.2,
+            carbs: 87,
+            protein: 6.5,
+            sodium: 562,
+            calcium: '0%',
+            iron: '45%'
+          },
+          {
+            value: false,
+            name: 'Donut',
+            calories: 452,
+            fat: 25.0,
+            carbs: 51,
+            protein: 4.9,
+            sodium: 326,
+            calcium: '2%',
+            iron: '22%'
+          },
+          {
+            value: false,
+            name: 'KitKat',
+            calories: 518,
+            fat: 26.0,
+            carbs: 65,
+            protein: 7,
+            sodium: 54,
+            calcium: '12%',
+            iron: '6%'
+          }
+        ],
         retentionItems: [],
         sumItems: [],
         msg: 'Balor Trend Charts will go here!',

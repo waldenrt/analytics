@@ -1,51 +1,5 @@
 <template>
   <v-container fluid class="cadence pl-3 pr-3">
-    <!-- =====ROW1===== -->
-    <!--Cadence Summary Cards-->
-    <v-flex xs12 class="pl-0 pr-0 pb-3 white--text">
-      <v-layout row wrap class="cad_sum">
-        <v-flex xs4>
-          <v-card class="white card_height">
-            <v-card-row class="green darken-2">
-              <div><v-icon large light>web</v-icon></div>
-            </v-card-row>
-            <v-card-text class="white green--text card_pad">
-              Min. Date: {{ jsonMsg.minDateCadence }}
-              <v-divider class="green mt-2 mb-2"></v-divider>
-              Max. Date': {{ jsonMsg.maxDateCadence }}
-            </v-card-text>
-          </v-card>
-        </v-flex>
-        <v-flex xs4>
-          <v-card class="white card_height">
-            <v-card-row class="cyan darken-2">
-              <div><v-icon large light>web</v-icon></div>
-            </v-card-row>
-            <v-card-text class="white cyan--text">
-              # Customer - 1 Purchase: {{ this.jsonMsg.singleVisit }}
-              <v-divider class="cyan mt-2 mb-2"></v-divider>
-              Transactions: {{ this.jsonMsg.numRecords }}
-              <v-divider class="cyan mt-2 mb-2"></v-divider>
-              Raw Cadence - 80th Percentile: {{ this.jsonMsg.rawCadence }}
-            </v-card-text>
-          </v-card>
-        </v-flex>
-        <v-flex xs4>
-          <v-card class="white card_height">
-            <v-card-row class="red darken-2">
-              <div><v-icon large light>web</v-icon></div>
-            </v-card-row>
-            <v-card-text class="white red--text card_pad">
-              Normalized Cadence Value: {{ this.jsonMsg.normalizedCadence }}
-              <v-divider class="red mt-2 mb-2"></v-divider>
-              Time Period: {{ this.jsonMsg.numTimePeriods }}
-            </v-card-text>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-flex>
-    <!--//Cadence Summary Cards-->
-    <!-- //=====ROW1===== -->
     <!-- =====ROW2===== -->
     <v-layout row wrap class="mb-2">
       <!--+++++col1+++++-->
@@ -70,7 +24,27 @@
       <!--//+++++col1+++++-->
       <!--+++++col2+++++-->
       <v-flex xs4>
-        <v-card class="white card_height2">
+        <v-layout row wrap class="cad_sum">
+          <v-flex xs12 class="pb-3">
+            <div style="border-right: 3px solid red;">
+            <v-card horizontal class="white card_height">
+              <v-card-text class="white red--text card_pad">
+                <v-card-title primary-title class="pt-0 pb-3">
+                  <h6 class="red--text text-xs-left mb-0 pt-0 pb-0">Cadence Summary</h6>
+                </v-card-title>
+                <v-divider class="red"></v-divider>
+                <table width="100%">
+                <tr v-for="item in sumItems">
+                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important;">{{ item.name }}</td>
+                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important; margin-left:5px; text-align:right;">{{ item.vals }}</td>
+                </tr>
+                </table>
+              </v-card-text>
+            </v-card>
+            </div>
+          </v-flex>
+        </v-layout>
+        <v-card class="white card_height3">
             <v-card-title primary-title class="white">
               <h6 class="primary--text text-xs-left mb-0">Cadence Raw Data</h6>
             </v-card-title>
@@ -232,15 +206,17 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 .cad_sum div {margin:0 auto;}
 .card_height{min-height:165px;}
-.card_pad{padding-top:35px;padding-bottom:35px;}
-.bar_chart{height:40vh !important;}
-.card_height2{height: 46vh !important;}
+.card_pad{padding-top:20px;padding-bottom:20px;}
+.bar_chart{height:70vh !important;}
+.card_height2{height: 77vh !important;}
+.card_height3{height: 48vh !important;}
 
 #raw_data_tbl{
-  overflow: scroll;
-  height:40vh;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  overflow-y: scroll; /* Add vertical scrollbar */
+  height:42vh;
 }
 </style>
