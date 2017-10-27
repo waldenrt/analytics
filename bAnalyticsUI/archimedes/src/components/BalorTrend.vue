@@ -30,7 +30,7 @@
             <v-card-text class="white green--text card_pad">
               Min. Date: {{ jsonMsg.minDateBalor }}
               <v-divider class="green mt-2 mb-2"></v-divider>
-              Max. Date': {{ jsonMsg.maxDateBalor }}
+              Max. Date: {{ jsonMsg.maxDateBalor }}
             </v-card-text>
           </v-card>
         </v-flex>
@@ -42,7 +42,7 @@
             <v-card-text class="white cyan--text">
               Customer Base: {{ jsonMsg.totalCusts }}
               <v-divider class="cyan mt-2 mb-2"></v-divider>
-              % Customer - 1 Purchase:
+              % Customer - 1 Purchase: {{ (this.jsonMsg.singleVisit / this.jsonMsg.totalCusts * 100).toFixed(2) + '%' }}
               <v-divider class="cyan mt-2 mb-2"></v-divider>
               Transactions: {{ jsonMsg.numRecords }}
             </v-card-text>
@@ -56,7 +56,7 @@
             <v-card-text class="white red--text card_pad">
               Purchase Cadence - 80th Percentile: {{ jsonMsg.normalizedCadence }}
               <v-divider class="red mt-2 mb-2"></v-divider>
-              Time Periods: {{ jsonMsg.numTimePeriods }}
+              Time Periods: {{ this.jsonMsg.timePeriods.length }}
             </v-card-text>
           </v-card>
         </v-flex>
@@ -211,7 +211,7 @@
     <!-- //=====ROW3===== -->
     <!-- =====ROW4===== -->
     <v-layout row wrap>
-      <v-flex xs12 sm6 md6 fill-height class="mb-2">
+      <v-flex xs12 fill-height class="mb-2">
         <v-card class="white">
           <v-layout row wrap>
             <v-flex xs12>
@@ -219,48 +219,28 @@
                 <h6 class="primary--text text-xs-left mb-0">BALOR Trend Raw Data</h6>
               </v-card-title>
               <v-data-table
-                v-bind:headers="headers1"
+                v-bind:headers="headers"
                 :items="items1"
                 hide-actions
                 class="elevation-1"
               >
               <template slot="items" scope="props">
-                <td>{{ props.item.name }}</td>
-                <td class="text-xs-right">{{ props.item.calories }}</td>
-                <td class="text-xs-right">{{ props.item.fat }}</td>
-                <td class="text-xs-right">{{ props.item.carbs }}</td>
-                <td class="text-xs-right">{{ props.item.protein }}</td>
-                <td class="text-xs-right">{{ props.item.sodium }}</td>
-                <td class="text-xs-right">{{ props.item.calcium }}</td>
-                <td class="text-xs-right">{{ props.item.iron }}</td>
-              </template>
-            </v-data-table>
-            </v-flex>
-          </v-layout>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 sm6 md6 fill-height class="mb-2">
-        <v-card class="white">
-          <v-layout row wrap>
-            <v-flex xs12>
-              <v-card-title primary-title class="white">
-                <h6 class="primary--text text-xs-left mb-0">BALOR Composition and Metrics Raw Data</h6>
-              </v-card-title>
-              <v-data-table
-                v-bind:headers="headers2"
-                :items="items2"
-                hide-actions
-                class="elevation-1"
-              >
-              <template slot="items" scope="props">
-                <td>{{ props.item.name }}</td>
-                <td class="text-xs-right">{{ props.item.calories }}</td>
-                <td class="text-xs-right">{{ props.item.fat }}</td>
-                <td class="text-xs-right">{{ props.item.carbs }}</td>
-                <td class="text-xs-right">{{ props.item.protein }}</td>
-                <td class="text-xs-right">{{ props.item.sodium }}</td>
-                <td class="text-xs-right">{{ props.item.calcium }}</td>
-                <td class="text-xs-right">{{ props.item.iron }}</td>
+                <td>{{ props.item.timePeriod }}</td>
+                <td class="text-xs-right">{{ props.item.custBalor.toFixed(2) }}</td>
+                <td class="text-xs-right">{{ props.item.spendBalor.toFixed(2) }}</td>
+                <td class="text-xs-right">{{ props.item.txnBalor.toFixed(2) }}</td>
+                <td class="text-xs-right">{{ props.item.newCustCount }}</td>
+                <td class="text-xs-right">${{ props.item.newTxnAmt.toFixed(2) }}</td>
+                <td class="text-xs-right">{{ props.item.newTxnCount }}</td>
+                <td class="text-xs-right">{{ props.item.reactCustCount }}</td>
+                <td class="text-xs-right">${{ props.item.reactTxnAmt.toFixed(2) }}</td>
+                <td class="text-xs-right">{{ props.item.reactTxnCount }}</td>
+                <td class="text-xs-right">{{ props.item.returnCustCount }}</td>
+                <td class="text-xs-right">${{ props.item.returnTxnAmt.toFixed(2) }}</td>
+                <td class="text-xs-right">{{ props.item.returnTxnCount }}</td>
+                <td class="text-xs-right">{{ props.item.lapsedCustCount }}</td>
+                <td class="text-xs-right">${{ props.item.lapsedTxnAmt.toFixed(2) }}</td>
+                <td class="text-xs-right">{{ props.item.lapsedTxnCount }}</td>
               </template>
             </v-data-table>
             </v-flex>
@@ -289,259 +269,28 @@
     },
     data () {
       return {
-        headers1: [
+        headers: [
           {
-            text: 'Dessert (100g serving)',
+            text: 'Time Period',
             left: true,
-            sortable: false,
-            value: 'name'
+            sortable: true,
+            value: 'timePeriod'
           },
-          { text: 'Calories', value: 'calories' },
-          { text: 'Fat (g)', value: 'fat' },
-          { text: 'Carbs (g)', value: 'carbs' },
-          { text: 'Protein (g)', value: 'protein' },
-          { text: 'Sodium (mg)', value: 'sodium' },
-          { text: 'Calcium (%)', value: 'calcium' },
-          { text: 'Iron (%)', value: 'iron' }
-        ],
-        items1: [
-          {
-            value: false,
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            sodium: 87,
-            calcium: '14%',
-            iron: '1%'
-          },
-          {
-            value: false,
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            sodium: 129,
-            calcium: '8%',
-            iron: '1%'
-          },
-          {
-            value: false,
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            sodium: 337,
-            calcium: '6%',
-            iron: '7%'
-          },
-          {
-            value: false,
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            sodium: 413,
-            calcium: '3%',
-            iron: '8%'
-          },
-          {
-            value: false,
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            sodium: 327,
-            calcium: '7%',
-            iron: '16%'
-          },
-          {
-            value: false,
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-            sodium: 50,
-            calcium: '0%',
-            iron: '0%'
-          },
-          {
-            value: false,
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-            sodium: 38,
-            calcium: '0%',
-            iron: '2%'
-          },
-          {
-            value: false,
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-            sodium: 562,
-            calcium: '0%',
-            iron: '45%'
-          },
-          {
-            value: false,
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-            sodium: 326,
-            calcium: '2%',
-            iron: '22%'
-          },
-          {
-            value: false,
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-            sodium: 54,
-            calcium: '12%',
-            iron: '6%'
-          }
-        ],
-        headers2: [
-          {
-            text: 'Dessert (100g serving)',
-            left: true,
-            sortable: false,
-            value: 'name'
-          },
-          { text: 'Calories', value: 'calories' },
-          { text: 'Fat (g)', value: 'fat' },
-          { text: 'Carbs (g)', value: 'carbs' },
-          { text: 'Protein (g)', value: 'protein' },
-          { text: 'Sodium (mg)', value: 'sodium' },
-          { text: 'Calcium (%)', value: 'calcium' },
-          { text: 'Iron (%)', value: 'iron' }
-        ],
-        items2: [
-          {
-            value: false,
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            sodium: 87,
-            calcium: '14%',
-            iron: '1%'
-          },
-          {
-            value: false,
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            sodium: 129,
-            calcium: '8%',
-            iron: '1%'
-          },
-          {
-            value: false,
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            sodium: 337,
-            calcium: '6%',
-            iron: '7%'
-          },
-          {
-            value: false,
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            sodium: 413,
-            calcium: '3%',
-            iron: '8%'
-          },
-          {
-            value: false,
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            sodium: 327,
-            calcium: '7%',
-            iron: '16%'
-          },
-          {
-            value: false,
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-            sodium: 50,
-            calcium: '0%',
-            iron: '0%'
-          },
-          {
-            value: false,
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-            sodium: 38,
-            calcium: '0%',
-            iron: '2%'
-          },
-          {
-            value: false,
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-            sodium: 562,
-            calcium: '0%',
-            iron: '45%'
-          },
-          {
-            value: false,
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-            sodium: 326,
-            calcium: '2%',
-            iron: '22%'
-          },
-          {
-            value: false,
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-            sodium: 54,
-            calcium: '12%',
-            iron: '6%'
-          }
+          { text: 'Customer Balor Ratio', value: 'custBalor' },
+          { text: 'Spend Balor Ratio', value: 'spendBalor' },
+          { text: 'Txn Balor Ratio', value: 'txnBalor' },
+          { text: 'New Cust Count', value: 'newCustCount' },
+          { text: 'New Total Sales', value: 'newTxnAmt' },
+          { text: 'New Txn Count', value: 'newTxnCount' },
+          { text: 'Reactivated Cust Count', value: 'reactCustCount' },
+          { text: 'Reactivated Total Sales', value: 'reactTxnAmt' },
+          { text: 'Reactivated Txn Count', value: 'reactTxnCount' },
+          { text: 'Returning Cust Count', value: 'returnCustCount' },
+          { text: 'Returning Total Sales', value: 'returnTxnAmt' },
+          { text: 'Returning Txn Count', value: 'returnTxnCount' },
+          { text: 'Lapsed Cust Count', value: 'lapsedCustCount' },
+          { text: 'Lapsed Total Sales', value: 'lapsedTxnAmt' },
+          { text: 'Lapsed Txn Count', value: 'lapsedTxnCount' }
         ],
         retentionItems: [],
         sumItems: [],
@@ -607,6 +356,9 @@
     computed: {
       jsonMsg: function () {
         return this.incomingJson.data
+      },
+      items1: function () {
+        return this.incomingJson.data.timePeriods
       }
     },
     mounted () {
@@ -622,26 +374,17 @@
           })
           .then((response) => {
             this.incomingJson = response.data
+            this.items1 = response.data.data.timePeriods
             console.log(this.incomingJson)
             this.createPies()
             this.createLines()
             this.createSlider()
-            this.createSummary()
           })
       },
-      createSummary () {
-        this.sumItems.push({name: 'Min. Date', vals: this.jsonMsg.minDateBalor})
-        this.sumItems.push({name: 'Max. Date', vals: this.jsonMsg.maxDateBalor})
-        this.sumItems.push({name: 'Customer Base', vals: this.jsonMsg.totalCusts})
-        this.sumItems.push({
-          name: '% Customer - 1 Purchase',
-          vals: (this.jsonMsg.singleVisit / this.jsonMsg.totalCusts * 100).toFixed(2) + '%'
-        })
-        this.sumItems.push({name: 'Transactions', vals: this.jsonMsg.numRecords})
-        this.sumItems.push({name: 'Purchase Cadence - 80th Percentile', vals: this.jsonMsg.normalizedCadence})
-        this.sumItems.push({name: 'Time Periods', vals: this.jsonMsg.timePeriods.length})
-      },
       createLines () {
+        console.log('this.items1')
+        console.log(this.items1)
+
         var tempCust = []
         var tempTxn = []
         var tempSpend = []
