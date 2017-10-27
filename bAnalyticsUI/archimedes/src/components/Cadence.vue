@@ -3,7 +3,7 @@
     <!-- =====ROW2===== -->
     <v-layout row wrap class="mb-2">
       <!--+++++col1+++++-->
-      <v-flex xs8>
+      <v-flex xs8 lg9>
           <v-card class="white card_height2">
             <v-card-title primary-title class="primary">
               <h6 class="white--text text-xs-left mb-0">Purchase Cadence Distribution</h6>
@@ -23,10 +23,10 @@
       </v-flex>
       <!--//+++++col1+++++-->
       <!--+++++col2+++++-->
-      <v-flex xs4>
+      <v-flex xs4 lg3>
         <v-layout row wrap class="cad_sum">
           <v-flex xs12 class="pb-3">
-            <div style="border-right: 3px solid red;">
+            <div style="border-right: 7px solid red;">
             <v-card horizontal class="white card_height">
               <v-card-text class="white red--text card_pad">
                 <v-card-title primary-title class="pt-0 pb-3">

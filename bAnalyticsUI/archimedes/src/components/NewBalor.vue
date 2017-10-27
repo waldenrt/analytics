@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="NewBalor pl-3 pr-3">
     <v-layout row wrap>
-      <!-- COLUMN1 -->
+      <!--+++++col1+++++-->
       <v-flex d-flex xs12 sm12 md6>
         <!-- CARD1 -->
         <v-card class="white v_card_width">
@@ -53,21 +53,21 @@
         <v-btn :disabled="!formIsValid" @click="submit" :class="{ green: valid, red: !valid }" class="primary white--text">submit</v-btn>
         <v-btn @click="clear">clear</v-btn>
       </v-flex>
-      <!-- //COLUMN1 -->
-      <!-- COLUMN2 -->
+      <!--//+++++col1+++++-->
+      <!--+++++col2+++++-->
       <v-flex d-flex xs12 sm12 md6>
         <v-card class="white">
 
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Sample File Image</h6>
           </v-card-title>
-          <img src="../assets/images/balor_file_img.png" width="100%" height="100%" class="file_sample">
+          <img src="../assets/images/balor_file_img.png" width="500" height="100%" class="file_sample">
         </v-card>
         <!--<v-card class="white mt-3">
           <img src="http://via.placeholder.com/525x150/EDEDED/ffffff?text=User+File+Preview" width="100%" height="100%" class="file_sample">
         </v-card>-->
       </v-flex>
-      <!-- //COLUMN2 -->
+      <!--//+++++col2+++++-->
     </v-layout>
   </v-container>
 </template>

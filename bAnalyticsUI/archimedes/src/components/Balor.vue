@@ -5,10 +5,11 @@
     <v-layout row-sm column child-flex-sm class="ml-0 mr-0">
       <v-flex xs12 class="pa-0">
         <v-card flat>
-          <!--<p>first line</p>
-          <p>we can put notices here and they will be always visible from everywhere in the app..</p>-->
           <balorTabs></balorTabs>
+            <!--<p>first line</p>
+            <p>we can put notices here and they will be always visible from everywhere in the app..</p>-->
           <router-view></router-view>
+
         </v-card>
       </v-flex>
     </v-layout>
