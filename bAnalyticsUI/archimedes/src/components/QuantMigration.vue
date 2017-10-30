@@ -251,7 +251,7 @@
                     <!-- =====ROW2===== -->
                     <v-layout row wrap class="pt-0 mt-0">
                       <v-flex xs12>
-                       <bar-chart :chart-data="quantbars"></bar-chart>
+                        <bar-chart :chart-data="quantbars"></bar-chart>
                       </v-flex>
                     </v-layout>
                     <!-- //=====ROW2===== -->
@@ -273,6 +273,7 @@
 
 <script>
   import BarChart from './balorCharts/BarChart'
+  import {quantMig} from './javascript/quantile.service'
 
   export default {
     name: 'quantMigration',
@@ -281,76 +282,7 @@
     },
     data () {
       return {
-        incomingJson: {
-          'responseCode': 0,
-          'isError': '',
-          'httpStatusCode': 200,
-          'data': {
-            'quantileDimension': {
-              'numRecords': 1000,
-              'minDate': '01/01/2017',
-              'maxDate': '12/31/2017',
-              'dimension': 'Products'
-            },
-            'quantileMigration': [{
-              'timePeriod': 1,
-              'migrationData': [{
-                'fromQuantile': 1,
-                'currentQuantile': 2,
-                'migrationCount': 1000
-              }, {
-                'fromQuantile': 2,
-                'currentQuantile': 3,
-                'migrationCount': 2000
-              }, {
-                'fromQuantile': 1,
-                'currentQuantile': 1,
-                'migrationCount': 500
-              }, {
-                'fromQuantile': 2,
-                'currentQuantile': 4,
-                'migrationCount': 5000
-              }],
-              'quantileTotals': [{
-                'quantile': 1,
-                'newCount': 3000
-              }, {
-                'quantile': 2,
-                'newCount': 2500
-              }]
-            }, {
-              'timePeriod': 2,
-              'migrationData': [{
-                'fromQuantile': 1,
-                'currentQuantile': 2,
-                'migrationCount': 100
-              }, {
-                'fromQuantile': 2,
-                'currentQuantile': 3,
-                'migrationCount': 220
-              }, {
-                'fromQuantile': 1,
-                'currentQuantile': 1,
-                'migrationCount': 300
-              }, {
-                'fromQuantile': 2,
-                'currentQuantile': 4,
-                'migrationCount': 400
-              }],
-              'quantileTotals': [{
-                'quantile': 1,
-                'newCount': 1500
-              }, {
-                'quantile': 2,
-                'newCount': 7000
-              }]
-            }]
-          },
-          'errors': '',
-          'moreInfo': '',
-          'userMessage': 'Success',
-          'developerMessage': ''
-        },
+        jobId: 'QATestRun',
         tpSelect: 1,
         priorPeriod: ['All'],
         postPeriod: ['All'],
@@ -387,10 +319,22 @@
       }
     },
     mounted () {
-      this.createArrays()
-      this.selectQuantile()
+      this.getResults()
     },
     methods: {
+      getResults () {
+        quantMig(this.jobId)
+          .catch(err => {
+            alert('Could not get Quantile Migration results. ' + err.message.toString())
+          })
+          .then((response) => {
+            this.incomingJson = response.data
+            console.log(this.incomingJson)
+            this.createArrays()
+            this.selectQuantile()
+          })
+      },
+
       createArrays () {
         var initArray = this.jsonMsg.quantileMigration
         var tpConverted = []
@@ -398,7 +342,7 @@
         var tempTP = []
         var tempTpSums = []
 
-        var numQuants = Math.sqrt(initArray[1].migrationData.length)
+        var numQuants = Math.sqrt(initArray[0].migrationData.length)
 
         for (let i = 1; i <= numQuants; i++) {
           quants.push({'from': i})
@@ -413,8 +357,6 @@
               let key = 'key' + initArray[j].migrationData[x].currentQuantile
               if (tempConvert[k].from === initArray[j].migrationData[x].fromQuantile) {
                 tempConvert[k][key] = initArray[j].migrationData[x].migrationCount
-              } else {
-                tempConvert[k][key] = 0
               }
             }
           }
@@ -450,7 +392,7 @@
             let keys = Object.keys(this.quantMigItems[i][j])
             let obj = {'from': val[0]}
             for (let k = 1; k < val.length; k++) {
-              obj[keys[k]] = val[k] / tempTpSums[i][j] * 100
+              obj[keys[k]] = (val[k] / tempTpSums[i][j] * 100).toFixed(2) + '%'
             }
             newPercents.push(obj)
           }
@@ -523,29 +465,25 @@
       },
 
       selectQuantile () {
-        console.log(this.quantMigItems)
-        console.log(this.quantMigItems[this.tpSelect - 1][this.quantileSelect - 1])
         var keyArray = ['key1', 'key2', 'key3', 'key4', 'key5', 'key6', 'key7', 'key8', 'key9', 'key10']
         this.quantbars = {
           labels: this.quantArray,
           datasets: [{
             data: [
               this.quantMigItems[this.tpSelect - 1][0][keyArray[this.quantileSelect - 1]],
-              this.quantMigItems[this.tpSelect - 1][1][keyArray[this.quantileSelect - 1]]
-              // this.quantMigItems[this.tpSelect - 1][2][keyArray[this.quantileSelect - 1]],
-              // this.quantMigItems[this.tpSelect - 1][3][keyArray[this.quantileSelect - 1]]
-              // this.quantMigItems[this.tpSelect - 1][4][keyArray[this.quantileSelect - 1]],
-              // this.quantMigItems[this.tpSelect - 1][5][keyArray[this.quantileSelect - 1]],
-              // this.quantMigItems[this.tpSelect - 1][6][keyArray[this.quantileSelect - 1]],
-              // this.quantMigItems[this.tpSelect - 1][7][keyArray[this.quantileSelect - 1]],
-              // this.quantMigItems[this.tpSelect - 1][8][keyArray[this.quantileSelect - 1]],
-              // this.quantMigItems[this.tpSelect - 1][0][keyArray[this.quantileSelect - 1]]
+              this.quantMigItems[this.tpSelect - 1][1][keyArray[this.quantileSelect - 1]],
+              this.quantMigItems[this.tpSelect - 1][2][keyArray[this.quantileSelect - 1]],
+              this.quantMigItems[this.tpSelect - 1][3][keyArray[this.quantileSelect - 1]],
+              this.quantMigItems[this.tpSelect - 1][4][keyArray[this.quantileSelect - 1]],
+              this.quantMigItems[this.tpSelect - 1][5][keyArray[this.quantileSelect - 1]],
+              this.quantMigItems[this.tpSelect - 1][6][keyArray[this.quantileSelect - 1]],
+              this.quantMigItems[this.tpSelect - 1][7][keyArray[this.quantileSelect - 1]],
+              this.quantMigItems[this.tpSelect - 1][8][keyArray[this.quantileSelect - 1]],
+              this.quantMigItems[this.tpSelect - 1][9][keyArray[this.quantileSelect - 1]]
             ],
             backgroundColor: '#F7970E'
           }]
         }
-
-        console.log(this.quantbars)
       }
     }
   }

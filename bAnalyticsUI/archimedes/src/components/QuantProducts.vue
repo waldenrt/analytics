@@ -170,6 +170,7 @@
 </template>
 
 <script>
+  import {quantProd} from './javascript/quantile.service'
 
   export default {
     name: 'quantProducts',
@@ -186,7 +187,33 @@
             {name: '8', vals: '$30,481', percent: '29.60%'},
             {name: '9', vals: '$15,496', percent: '29.69%'},
             {name: '10', vals: '$13,111', percent: '37.76%'}
-        ]
+        ],
+        jobId: 'QATestRun'
+      }
+    },
+
+    computed: {
+      jsonMsg: function () {
+        return this.incomingJson.data
+      }
+    },
+
+    mounted () {
+      this.getResults()
+    },
+
+    methods: {
+      getResults () {
+        quantProd(this.jobId)
+          .catch(err => {
+            alert('Could not get Quantile Summary results. ' + err.message.toString())
+          })
+          .then((response) => {
+            this.incomingJson = response.data
+            console.log(this.incomingJson)
+            this.createPareto()
+            this.createTable()
+          })
       }
     }
   }
