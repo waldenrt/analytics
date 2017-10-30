@@ -4,15 +4,15 @@
     <v-layout row wrap style="height:100%;">
       <v-flex xs6 offset-xs3 class="pl-0 pr-0 mt-0">
         <div class="centereddiv">
-          <v-card class="white">
+          <v-card class="white" style="margin-top:50px;">
             <v-card-title primary-title class="primary">
               <div><h6 class="white--text text-xs-left mb-0">BALOR INPUT</h6></div>
               <v-spacer></v-spacer>
               <div>
                 <v-dialog v-model="dialog" width="550px">
                   <div slot="activator">
-                    <div class="subheading">sample file image</div>
-                    <div><v-icon primary light slot="activator" style="cursor:pointer;">image</v-icon></div>
+                    <div class="white--text subheading" style="display:inline-block;cursor:pointer;">Sample File Image</div>
+                    <div style="display:inline-block;"><v-icon primary light slot="activator" style="cursor:pointer;">image</v-icon></div>
                   </div>
                   <v-card>
                     <img src="../assets/images/balor_file_img.png" width="100%" height="100%" class="file_sample">
