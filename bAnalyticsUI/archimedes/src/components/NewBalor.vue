@@ -1,74 +1,90 @@
 <template>
-  <v-container fluid class="NewBalor pl-3 pr-3">
-    <v-layout row wrap>
-      <!--+++++col1+++++-->
-      <v-flex d-flex xs12 sm12 md6>
-        <!-- CARD1 -->
-        <v-card class="white v_card_width">
-          <v-card-title primary-title class="primary">
-            <h6 class="white--text text-xs-left mb-0">Enter Job Name</h6>
-          </v-card-title>
-          <v-text-field
-              name="input-1"
-              label="Enter job name"
-              class="ma-3 pr-4 pa-2"
-              required
-              id="job_balor">
-          </v-text-field>
-        </v-card>
-        <!-- //CARD1 -->
-        <!-- CARD2 -->
-        <v-card class="white v_card_width mb-3">
-          <v-card-title primary-title class="primary">
-            <h6 class="white--text text-xs-left mb-0">Select file for analysis</h6>
-          </v-card-title>
-          <form enctype="multipart/form-data">
-            <input
-              type="file"
-              :name="uploadFieldName"
-              @change="fileUpload($event.target.name, $event.target.files)"
-              class="pa-3"
-              id="input_balor">
-          </form>
-        </v-card>
-        <!-- //CARD2 -->
-        <!-- CARD3 -->
-        <v-card class="white v_card_width">
-          <v-card-title primary-title class="primary">
-            <h6 class="white--text text-xs-left mb-0">Select file type</h6>
-          </v-card-title>
-          <v-select
-              v-bind:items="items"
-              v-model="e1"
-              label="Select file type"
-              class="ma-3 pr-4 pa-2"
-              single-line
-              bottom
-              v-bind:error-messages="['Please select an option']"
-              required
-              id="select_balor">
-          </v-select>
-        </v-card>
-        <!-- //CARD3 -->
-        <v-btn :disabled="!formIsValid" @click="submit" :class="{ green: valid, red: !valid }" class="primary white--text">submit</v-btn>
-        <v-btn @click="clear">clear</v-btn>
-      </v-flex>
-      <!--//+++++col1+++++-->
-      <!--+++++col2+++++-->
-      <v-flex d-flex xs12 sm12 md6>
-        <v-card class="white">
+  <v-container fluid class="NewBalor pl-3 pr-3" style="height:100%;">
 
-          <v-card-title primary-title class="primary">
-            <h6 class="white--text text-xs-left mb-0">Sample File Image</h6>
-          </v-card-title>
-          <img src="../assets/images/balor_file_img.png" width="500" height="100%" class="file_sample">
-        </v-card>
-        <!--<v-card class="white mt-3">
-          <img src="http://via.placeholder.com/525x150/EDEDED/ffffff?text=User+File+Preview" width="100%" height="100%" class="file_sample">
-        </v-card>-->
+    <v-layout row wrap style="height:100%;">
+      <v-flex xs6 offset-xs3 class="pl-0 pr-0 mt-0">
+        <div class="centereddiv">
+          <v-card class="white">
+            <v-card-title primary-title class="primary">
+              <div><h6 class="white--text text-xs-left mb-0">BALOR INPUT</h6></div>
+              <v-spacer></v-spacer>
+              <div>
+                <v-dialog v-model="dialog" width="550px">
+                  <div slot="activator">
+                    <div class="subheading">sample file image</div>
+                    <div><v-icon primary light slot="activator" style="cursor:pointer;">image</v-icon></div>
+                  </div>
+                  <v-card>
+                    <img src="../assets/images/balor_file_img.png" width="100%" height="100%" class="file_sample">
+                  </v-card>
+                </v-dialog>
+              </div>
+            </v-card-title>
+            <v-layout row wrap style="">
+            <!--+++++col1+++++-->
+            <v-flex xs12 class="pa-3 pl-4 pr-4">
+            <form>
+              <!--FIELD-->
+              <b2>Enter Job Name</b2>
+              <v-card-row xs12 class="mt-0 mb-3">
+                <v-text-field
+                    name="input-1"
+                    label="Enter Job Name"
+                    class="mt-1 mb-0 input-group--focused elevation-1"
+                    single-line
+                    required
+                    id="job_balor">
+                </v-text-field>
+              </v-card-row>
+              <!--//FIELD-->
+              <!--FILE-LOADER-->
+              <b2>Select file for analysis</b2>
+              <v-card-row xs12 class="mb-3">
+                <form enctype="multipart/form-data" style="width:100%;">
+                  <input
+                    type="file"
+                    :name="uploadFieldName"
+                    @change="fileUpload($event.target.name, $event.target.files)"
+                    class="white elevation-1"
+                    style="width:100%;"
+                    id="input_balor">
+                </form>
+              </v-card-row>
+              <!--//FILE-LOADER-->
+              <!--SELECT-->
+              <b2>Select file type</b2>
+              <v-card-row xs12 class="mb-3">
+                <v-select
+                    v-bind:items="items"
+                    v-model="e1"
+                    label="Select file type"
+                    class="mt-1 mb-0 input-group--focused elevation-1"
+                    single-line
+                    bottom
+                    v-bind:error-messages="['Please select an option']"
+                    required
+                    id="select_balor">
+                </v-select>
+              </v-card-row>
+              <!--//SELECT-->
+              <!--BUTTONS-->
+              <v-card-row xs12>
+                <v-btn
+                  :disabled="!formIsValid"
+                  @click="submit"
+                  :class="{ green: valid, red: !valid }"
+                  class="primary white--text ma-0">submit</v-btn>
+              </v-card-row>
+              <!--//BUTTONS-->
+            </form>
+            </v-flex>
+            <!--//+++++col1+++++-->
+            </v-layout>
+          </v-card>
+        </div>
       </v-flex>
-      <!--//+++++col2+++++-->
     </v-layout>
+
   </v-container>
 </template>
 
@@ -128,4 +144,13 @@
 <style scoped>
 .v_card_width {max-width:450px;}
 .file_sample {padding:10px; position:relative; top:3px;}
+.centereddiv{
+  position:relative;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-52%, -50%);
+  min-width: 450px;
+  max-width: 1000px;
+}
 </style>
