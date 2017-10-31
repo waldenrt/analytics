@@ -132,7 +132,7 @@
     <!-- =====ROW3===== -->
     <v-layout wrap row>
       <v-flex xs12 class="pt-0 mt-0">
-        <v-card class="white pa-3">
+        <v-card class="white pa-3" style="width:100%;">
           <v-layout wrap row>
 
 
@@ -164,7 +164,7 @@
             <v-flex xs4 class="pr-4">
               <!--table-row-->
               <v-layout wrap row>
-                <v-card class="white card_width">
+                <v-card class="white" style="width:100%;">
                   <v-card-title primary-title class="white">
                     <h6 class="primary--text text-xs-center mb-0">Period-over-Period Retention Rate</h6>
                   </v-card-title>
@@ -208,7 +208,7 @@
               <!--//table-row-->
               <!--chart-row-->
               <v-layout wrap row>
-                <v-card class="white mt-3 pa-0">
+                <v-card class="white mt-3 pa-0" style="width:100%;">
                   <v-flex xs12 fill-height>
                     <!-- =====ROW1===== -->
                     <v-layout row wrap class="pt-0 mt-0">

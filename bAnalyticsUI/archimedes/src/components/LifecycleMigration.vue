@@ -133,6 +133,7 @@
             <!--+++++col1+++++-->
             <v-flex xs8>
               <!-- CHART GOES HERE -->
+              <img src="http://via.placeholder.com/450x200?text=Chart" width="100%" height="100%">
             </v-flex>
             <!--//+++++col1+++++-->
 
@@ -141,7 +142,7 @@
             <v-flex xs4 class="pr-4">
               <!--table-row-->
               <v-layout wrap row>
-                <v-card class="white card_width">
+                <v-card class="white" style="width:100%;">
                   <v-card-title primary-title class="white">
                     <h6 class="primary--text text-xs-center mb-0">Prior Period Segment Retention Rate</h6>
                   </v-card-title>
@@ -177,7 +178,7 @@
               <!--//table-row-->
               <!--chart-row-->
               <v-layout wrap row>
-                <v-card class="white mt-3 pa-0">
+                <v-card class="white mt-3 pa-0" style="width:100%;">
                   <v-flex xs12 fill-height>
                     <!-- =====ROW1===== -->
                     <v-layout row wrap class="pt-0 mt-0">

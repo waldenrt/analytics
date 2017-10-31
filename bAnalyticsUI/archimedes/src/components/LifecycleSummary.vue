@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="quantileSummary pl-3 pr-3 mb-3">
     <!-- =====ROW1===== -->
-    <v-layout row wrap class="pt-0 mt-0">
+    <v-layout row wrap class="pt-0 mt-0 mb-3">
       <v-flex xs12>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-card-title primary-title class="primary">
@@ -39,31 +39,30 @@
     </v-layout>
     <!-- //=====ROW1===== -->
     <!-- =====ROW2===== -->
-    <v-layout wrap row>
+    <v-layout wrap row class="mb-3">
       <!--+++++col1+++++-->
       <v-flex xs5 class="pt-0 mt-0">
-        <v-card class="white pl-3 pr-3 pt-1 pb-1">
-          <div class="title primary--text text-xs-center pa-1">Aggregate Metrics for Time Period {{ this.tpSelect }}
+        <v-card class="white pl-3 pr-3 pt-1 pb-1 card_height">
+          <div class="title primary--text text-xs-center pa-1 mb-2">Aggregate Metrics for Time Period {{ this.tpSelect }}
           </div>
-          <!-- CHART GOES HERE -->
-          <v-card class="green">
-            <v-card-text class="green darken-2 white--text">
-              Total Customers {{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalCustCount }}
+          <v-card class="green mb-2 height_bars1">
+            <v-card-text class="green darken-2 white--text height_bars2">
+              <div class="subheading">Total Customers <span style="float:right;">{{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalCustCount }}</span></div>
             </v-card-text>
           </v-card>
-          <v-card class="red">
-            <v-card-text class="red white--text">
-              Total Visits {{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalTxnCount }}
+          <v-card class="red mb-2 height_bars1">
+            <v-card-text class="red white--text height_bars2">
+              <div class="subheading">Total Visits <span style="float:right;">{{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalTxnCount }}</span></div>
             </v-card-text>
           </v-card>
-          <v-card class="blue">
-            <v-card-text class="cyan white--text">
-              Total Spend ${{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalSales.toFixed(2) }}
+          <v-card class="blue mb-2 height_bars1">
+            <v-card-text class="cyan white--text height_bars2">
+              <div class="subheading">Total Spend <span style="float:right;">${{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalSales.toFixed(2) }}</span></div>
             </v-card-text>
           </v-card>
-          <v-card class="orange">
-            <v-card-text class="orange white--text">
-              Total Units {{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalItems }}
+          <v-card class="orange mb-2 height_bars1">
+            <v-card-text class="orange white--text height_bars2">
+              <div class="subheading">Total Units <span style="float:right;">{{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalItems }}</span></div>
             </v-card-text>
           </v-card>
         </v-card>
@@ -72,40 +71,37 @@
       <!--+++++col2+++++-->
       <v-flex xs7 class="pt-0 mt-0">
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
-          <div class="title primary--text text-xs-center pa-1">Segment Percent of Total for Time Period {{ this.tpSelect
+          <div class="title primary--text text-xs-center pa-1 mb-2">Segment Percent of Total for Time Period {{ this.tpSelect
             }}
           </div>
-          <v-layout row>
-            <doughnut-chart :chart-data="bestCust" :width="100" :height="100"></doughnut-chart>
-            <doughnut-chart :chart-data="risingCust" :width="100" :height="100"></doughnut-chart>
-            <doughnut-chart :chart-data="middleCust" :width="100" :height="100"></doughnut-chart>
-            <doughnut-chart :chart-data="lapsingCust" :width="100" :height="100"></doughnut-chart>
-            <doughnut-chart :chart-data="deeplyCust" :width="100" :height="100"></doughnut-chart>
+          <v-layout row class="doughnuts">
+            <div><doughnut-chart :chart-data="bestCust" :width="100" :height="100"></doughnut-chart></div>
+            <div><doughnut-chart :chart-data="risingCust" :width="100" :height="100"></doughnut-chart></div>
+            <div><doughnut-chart :chart-data="middleCust" :width="100" :height="100"></doughnut-chart></div>
+            <div><doughnut-chart :chart-data="lapsingCust" :width="100" :height="100"></doughnut-chart></div>
+            <div><doughnut-chart :chart-data="deeplyCust" :width="100" :height="100"></doughnut-chart></div>
           </v-layout>
-          <v-layout row>
-            <doughnut-chart :chart-data="bestVisits" :width="100" :height="100"></doughnut-chart>
-            <doughnut-chart :chart-data="risingVisits" :width="100" :height="100"></doughnut-chart>
-            <doughnut-chart :chart-data="middleVisits" :width="100" :height="100"></doughnut-chart>
-            <doughnut-chart :chart-data="lapsingVisits" :width="100" :height="100"></doughnut-chart>
-            <doughnut-chart :chart-data="deeplyVisits" :width="100" :height="100"></doughnut-chart>
+          <v-layout row class="doughnuts">
+            <div><doughnut-chart :chart-data="bestVisits" :width="100" :height="100"></doughnut-chart></div>
+            <div><doughnut-chart :chart-data="risingVisits" :width="100" :height="100"></doughnut-chart></div>
+            <div><doughnut-chart :chart-data="middleVisits" :width="100" :height="100"></doughnut-chart></div>
+            <div><doughnut-chart :chart-data="lapsingVisits" :width="100" :height="100"></doughnut-chart></div>
+            <div><doughnut-chart :chart-data="deeplyVisits" :width="100" :height="100"></doughnut-chart></div>
           </v-layout>
-          <v-layout row>
-            <doughnut-chart :chart-data="bestSpend" :width="100" :height="100"></doughnut-chart>
-            <doughnut-chart :chart-data="risingSpend" :width="100" :height="100"></doughnut-chart>
-            <doughnut-chart :chart-data="middleSpend" :width="100" :height="100"></doughnut-chart>
-            <doughnut-chart :chart-data="lapsingSpend" :width="100" :height="100"></doughnut-chart>
-            <doughnut-chart :chart-data="deeplySpend" :width="100" :height="100"></doughnut-chart>
+          <v-layout row class="doughnuts">
+            <div><doughnut-chart :chart-data="bestSpend" :width="100" :height="100"></doughnut-chart></div>
+            <div><doughnut-chart :chart-data="risingSpend" :width="100" :height="100"></doughnut-chart></div>
+            <div><doughnut-chart :chart-data="middleSpend" :width="100" :height="100"></doughnut-chart></div>
+            <div><doughnut-chart :chart-data="lapsingSpend" :width="100" :height="100"></doughnut-chart></div>
+            <div><doughnut-chart :chart-data="deeplySpend" :width="100" :height="100"></doughnut-chart></div>
           </v-layout>
-          <v-layout row>
-            <doughnut-chart :chart-data="bestUnits" :width="100" :height="100"></doughnut-chart>
-            <doughnut-chart :chart-data="risingUnits" :width="100" :height="100"></doughnut-chart>
-            <doughnut-chart :chart-data="middleUnits" :width="100" :height="100"></doughnut-chart>
-            <doughnut-chart :chart-data="lapsingUnits" :width="100" :height="100"></doughnut-chart>
-            <doughnut-chart :chart-data="deeplyUnits" :width="100" :height="100"></doughnut-chart>
+          <v-layout row class="doughnuts">
+            <div><doughnut-chart :chart-data="bestUnits" :width="100" :height="100"></doughnut-chart></div>
+            <div><doughnut-chart :chart-data="risingUnits" :width="100" :height="100"></doughnut-chart></div>
+            <div><doughnut-chart :chart-data="middleUnits" :width="100" :height="100"></doughnut-chart></div>
+            <div><doughnut-chart :chart-data="lapsingUnits" :width="100" :height="100"></doughnut-chart></div>
+            <div><doughnut-chart :chart-data="deeplyUnits" :width="100" :height="100"></doughnut-chart></div>
           </v-layout>
-
-
-          <!-- CHART GOES HERE -->
         </v-card>
       </v-flex>
       <!--//+++++col2+++++-->
@@ -114,18 +110,16 @@
     <!-- =====ROW3===== -->
     <v-layout wrap row>
       <!--+++++col1+++++-->
-      <v-flex xs5 class="pt-0 mt-0">
-        <v-card class="white pl-3 pr-3 pt-1 pb-1">
+      <v-flex xs4 class="pt-0 mt-0">
+        <v-card class="pl-3 pr-3 pt-1 pb-1 elevation-0">
           <div class="title primary--text text-xs-center pa-1">Overall Metrics Time Period {{ this.tpSelect }}</div>
-          <!-- CHART GOES HERE -->
         </v-card>
       </v-flex>
       <!--//+++++col1+++++-->
       <!--+++++col2+++++-->
-      <v-flex xs7 class="pt-0 mt-0">
-        <v-card class="white pl-3 pr-3 pt-1 pb-1">
+      <v-flex xs8 class="pt-0 mt-0">
+        <v-card class="pl-3 pr-3 pt-1 pb-1 elevation-0">
           <div class="title primary--text text-xs-center pa-1">Segment Metrics for Time Period {{ this.tpSelect }}</div>
-          <!-- CHART GOES HERE -->
         </v-card>
       </v-flex>
       <!--//+++++col2+++++-->
@@ -134,6 +128,7 @@
     <!-- //=====ROW4===== -->
     <v-layout wrap row>
       <v-flex xs12>
+        <v-card class="white">
         <v-data-table
             v-bind:headers="tableHeaders"
             :items="tableData"
@@ -148,6 +143,7 @@
             <td class="text-xs-right">{{ props.item.deeplyAvg }}</td>
           </template>
         </v-data-table>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
@@ -475,6 +471,10 @@
 
 </script>
 
-<style>
-
+<style scoped>
+.doughnuts div {width:20%;}
+.card_height {height:100% !important;}
+.height_bars1 {height:20% !important;}
+.height_bars2 {height:100% !important; display:table;}
+.height_bars2 div {display:table-cell; vertical-align: middle !important;font-weight: bold;}
 </style>

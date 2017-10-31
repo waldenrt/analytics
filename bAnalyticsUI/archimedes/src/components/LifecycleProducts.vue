@@ -9,7 +9,7 @@
       <v-flex xs12>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-card-title primary-title class="primary">
-            <h6 class="white--text text-xs-left mb-0">Title Goes Here</h6>
+            <h6 class="white--text text-xs-left mb-0">Product Index</h6>
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
@@ -113,7 +113,7 @@
                     </v-card>
                   </v-flex>
                   <v-flex xs2 class="pt-2">
-                    <v-btn dark default v-on:click.native="topProds()">Filter</v-btn>
+                    <v-btn light primary default v-on:click.native="topProds()">Filter</v-btn>
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -177,7 +177,6 @@
               <prod-index-chart :chart-data="deeplyBars" class="chart_height1"></prod-index-chart>
             </div>
           </v-layout>
-          <!--<img src="http://via.placeholder.com/1050x480?text=Chart" width="100%" height="100%" style="height:475px;">-->
         </v-card>
       </v-flex>
     </v-layout>

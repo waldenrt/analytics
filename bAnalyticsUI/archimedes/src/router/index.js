@@ -69,6 +69,11 @@ export default new Router({
           component: Balor,
           children: [
             {
+              path: '/',
+              name: 'history',
+              component: JobHistory
+            },
+            {
               path: 'NewBalor',
               name: 'NewBalor',
               component: NewBalor
@@ -96,6 +101,11 @@ export default new Router({
           component: Quantile,
           children: [
             {
+              path: '/',
+              name: 'history',
+              component: JobHistory
+            },
+            {
               path: 'NewQuantile',
               name: 'NewQuantile',
               component: NewQuantile
@@ -122,6 +132,11 @@ export default new Router({
           name: 'LifecycleMain',
           component: Lifecycle,
           children: [
+            {
+              path: '/',
+              name: 'history',
+              component: JobHistory
+            },
             {
               path: 'NewLifecycle',
               name: 'NewLifecycle',
