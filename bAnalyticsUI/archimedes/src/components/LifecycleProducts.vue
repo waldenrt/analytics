@@ -57,7 +57,7 @@
                           single-line
                           bottom
                           multiple
-                          v-on:input="selectProd()"
+                          v-on:input="selectProds()"
                           class="pl-1 pr-1 m-0">
                       </v-select>
                     </v-card>
@@ -102,13 +102,18 @@
                       Select Top<br/>N Products:
                     </div>
                   </v-flex>
-                  <v-flex xs12>
+                  <v-flex xs10>
                     <v-card class="white">
                       <v-text-field
                           name="topProducts"
                           label="How many products"
-                          id="topN"></v-text-field>
+                          id="topN"
+                          v-model="topN"
+                          v-on:keyup.enter.native="topProds()"></v-text-field>
                     </v-card>
+                  </v-flex>
+                  <v-flex xs2 class="pt-2">
+                    <v-btn dark default v-on:click.native="topProds()">Filter</v-btn>
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -201,6 +206,7 @@
         segSelect: ['All'],
         prodArray: [],
         prodSelect: ['All'],
+        topN: null,
         jobId: 'testLifecycle',
         labels: [],
         spendPer: [],
@@ -209,6 +215,13 @@
         middleIndex: [],
         lapsingIndex: [],
         deeplyIndex: [],
+        labelsSelected: [],
+        spendPerSelected: [],
+        bestIndexSelected: [],
+        risingIndexSelected: [],
+        middleIndexSelected: [],
+        lapsingIndexSelected: [],
+        deeplyIndexSelected: [],
         overallBars: {},
         bestBars: {},
         middleBars: {},
@@ -239,7 +252,6 @@
           })
           .then((response) => {
             this.incomingJson = response.data
-            console.log(this.incomingJson)
             this.parseJson()
             this.createOverallBars()
             this.createSegmentBars()
@@ -247,8 +259,6 @@
       },
 
       parseJson () {
-        console.log(this.jsonMsg)
-
         var tps = this.jsonMsg.timePeriods
 
         var tempLabels = []
@@ -290,6 +300,15 @@
         this.lapsingIndex = tempLapsingIndex
         this.deeplyIndex = tempDeeplyIndex
 
+        // set selected to all for initial load
+        this.labelsSelected = tempLabels
+        this.spendPerSelected = tempSpendPer
+        this.bestIndexSelected = tempBestIndex
+        this.risingIndexSelected = tempRisingIndex
+        this.middleIndexSelected = tempMiddleIndex
+        this.lapsingIndexSelected = tempLapsingIndex
+        this.deeplyIndexSelected = tempDeeplyIndex
+
         for (let i = 0; i < tps.length; i++) {
           if (tempTpArray.includes(tps[i].timePeriod)) {
 
@@ -304,10 +323,10 @@
       createOverallBars () {
         this.overallBars = {
           type: 'horizontalBar',
-          labels: this.labels,
+          labels: this.labelsSelected,
           datasets: [
             {
-              data: this.spendPer,
+              data: this.spendPerSelected,
               label: 'Spend Percent',
               backgroundColor: '#8EAC1D'
             }
@@ -318,10 +337,10 @@
       createSegmentBars () {
         this.bestBars = {
           type: 'horizontalBar',
-          labels: this.labels,
+          labels: this.labelsSelected,
           datasets: [
             {
-              data: this.bestIndex,
+              data: this.bestIndexSelected,
               label: 'Best Spend Index',
               backgroundColor: '#003947'
             }
@@ -330,10 +349,10 @@
 
         this.risingBars = {
           type: 'horizontalBar',
-          labels: this.labels,
+          labels: this.labelsSelected,
           datasets: [
             {
-              data: this.risingIndex,
+              data: this.risingIndexSelected,
               label: 'Rising Spend Index',
               backgroundColor: '#8EAC1D'
             }
@@ -342,10 +361,10 @@
 
         this.middleBars = {
           type: 'horizontalBar',
-          labels: this.labels,
+          labels: this.labelsSelected,
           datasets: [
             {
-              data: this.middleIndex,
+              data: this.middleIndexSelected,
               label: 'Middle Spend Index',
               backgroundColor: '#0087AA'
             }
@@ -354,10 +373,10 @@
 
         this.lapsingBars = {
           type: 'horizontalBar',
-          labels: this.labels,
+          labels: this.labelsSelected,
           datasets: [
             {
-              data: this.lapsingIndex,
+              data: this.lapsingIndexSelected,
               label: 'Lapsing Spend Index',
               backgroundColor: '#F7970E'
             }
@@ -366,10 +385,10 @@
 
         this.deeplyBars = {
           type: 'horizontalBar',
-          labels: this.labels,
+          labels: this.labelsSelected,
           datasets: [
             {
-              data: this.deeplyIndex,
+              data: this.deeplyIndexSelected,
               label: 'Deeply Spend Index',
               backgroundColor: '#D63809'
             }
@@ -406,6 +425,7 @@
         this.lapsingIndex = tempLapsingIndex
         this.deeplyIndex = tempDeeplyIndex
 
+        this.selectProds()
         this.createOverallBars()
         this.createSegmentBars()
       },
@@ -440,6 +460,66 @@
             this.showDeeply = true
           }
         }
+      },
+
+      selectProds () {
+        var tempLabels = []
+        var tempSpendPer = []
+        var tempBestIndex = []
+        var tempRisingIndex = []
+        var tempMiddleIndex = []
+        var tempLapsingIndex = []
+        var tempDeeplyIndex = []
+
+        if (this.prodSelect.includes('All')) {
+          this.labelsSelected = this.labels
+          this.spendPerSelected = this.spendPer
+          this.bestIndexSelected = this.bestIndex
+          this.risingIndexSelected = this.risingIndex
+          this.middleIndexSelected = this.middleIndex
+          this.lapsingIndexSelected = this.lapsingIndex
+          this.deeplyIndexSelected = this.deeplyIndex
+        } else {
+          console.log(this.prodSelect)
+          for (let i = 0; i < this.labels.length; i++) {
+            if (this.prodSelect.includes(this.labels[i])) {
+              tempLabels.push(this.labels[i])
+              tempSpendPer.push(this.spendPer[i])
+              tempBestIndex.push(this.bestIndex[i])
+              tempRisingIndex.push(this.risingIndex[i])
+              tempMiddleIndex.push(this.middleIndex[i])
+              tempLapsingIndex.push(this.lapsingIndex[i])
+              tempDeeplyIndex.push(this.deeplyIndex[i])
+            }
+          }
+          this.labelsSelected = tempLabels
+          this.spendPerSelected = tempSpendPer
+          this.bestIndexSelected = tempBestIndex
+          this.risingIndexSelected = tempRisingIndex
+          this.middleIndexSelected = tempMiddleIndex
+          this.lapsingIndexSelected = tempLapsingIndex
+          this.deeplyIndexSelected = tempDeeplyIndex
+        }
+
+        this.createOverallBars()
+        this.createSegmentBars()
+      },
+
+      topProds () {
+        console.log('button clicked!')
+
+        this.labelsSelected = this.labels.slice(0, this.topN)
+        this.spendPerSelected = this.spendPer.slice(0, this.topN)
+        this.bestIndexSelected = this.bestIndex.slice(0, this.topN)
+        this.risingIndexSelected = this.risingIndex.slice(0, this.topN)
+        this.middleIndexSelected = this.middleIndex.slice(0, this.topN)
+        this.lapsingIndexSelected = this.lapsingIndex.slice(0, this.topN)
+        this.deeplyIndexSelected = this.deeplyIndex.slice(0, this.topN)
+
+        this.prodSelect = this.labelsSelected
+
+        this.createOverallBars()
+        this.createSegmentBars()
       }
     }
   }

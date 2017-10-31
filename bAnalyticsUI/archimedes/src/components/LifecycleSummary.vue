@@ -46,22 +46,22 @@
           <div class="title primary--text text-xs-center pa-1">Aggregate Metrics for Time Period {{ this.tpSelect }}
           </div>
           <!-- CHART GOES HERE -->
-          <v-card class="green darken-2">
+          <v-card class="green">
             <v-card-text class="green darken-2 white--text">
               Total Customers {{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalCustCount }}
             </v-card-text>
           </v-card>
-          <v-card class="red darken-2">
+          <v-card class="red">
             <v-card-text class="red white--text">
               Total Visits {{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalTxnCount }}
             </v-card-text>
           </v-card>
-          <v-card class="cyan darken-2">
+          <v-card class="blue">
             <v-card-text class="cyan white--text">
               Total Spend ${{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalSales.toFixed(2) }}
             </v-card-text>
           </v-card>
-          <v-card class="orange darken-2">
+          <v-card class="orange">
             <v-card-text class="orange white--text">
               Total Units {{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalItems }}
             </v-card-text>
@@ -468,6 +468,7 @@
 
       selectTP () {
         this.tableData = this.tpDataArray[this.tpSelect - 1]
+        this.createDoughnuts()
       }
     }
   }

@@ -211,8 +211,6 @@
           .then((response) => {
             this.incomingJson = response.data
             console.log(this.incomingJson)
-            this.createPareto()
-            this.createTable()
           })
       }
     }
