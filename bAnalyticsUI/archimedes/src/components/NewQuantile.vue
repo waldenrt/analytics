@@ -3,6 +3,9 @@
     <v-layout row wrap style="height:100%;">
       <v-flex xs6 offset-xs3 class="pl-0 pr-0 mt-0">
         <div class="centereddiv">
+
+          <!-- FORM STARTS -->
+          <form>
           <v-card class="white" style="margin-top:50px;">
             <v-card-title primary-title class="primary">
               <div><h6 class="white--text text-xs-left mb-0">QUANTILE INPUT</h6></div>
@@ -19,10 +22,9 @@
                 </v-dialog>
               </div>
             </v-card-title>
-            <v-layout row wrap style="">
+            <v-layout row wrap>
             <!--+++++col1+++++-->
             <v-flex xs12 class="pa-3 pl-4 pr-4">
-            <form>
               <!--FIELD-->
               <b2>Enter Job Name</b2>
               <v-card-row xs12 class="mt-0 mb-3">
@@ -66,16 +68,6 @@
                 </v-select>
               </v-card-row>
               <!--//SELECT-->
-              <!--BUTTONS-->
-              <v-card-row xs12>
-                <v-btn
-                  :disabled="!formIsValid"
-                  @click="submit"
-                  :class="{ green: valid, red: !valid }"
-                  class="primary white--text ma-0">submit</v-btn>
-              </v-card-row>
-              <!--//BUTTONS-->
-            </form>
             </v-flex>
             <!--//+++++col1+++++-->
             </v-layout>
@@ -169,8 +161,21 @@
                 <!--//FIELD-->
               </v-flex>
               <!--//+++++col2+++++-->
+              <v-flex xs12 class="pl-4 pr-4 pb-3">
+                <!--BUTTONS-->
+                <v-card-row xs12>
+                  <v-btn
+                    :disabled="!formIsValid"
+                    @click="submit"
+                    :class="{ green: valid, red: !valid }"
+                    class="primary white--text ma-0">submit</v-btn>
+                </v-card-row>
+                <!--//BUTTONS-->
+              </v-flex>
             </v-layout>
           </v-card>
+        </form>
+        <!-- FORM ENDS -->
         </div>
       </v-flex>
     </v-layout>

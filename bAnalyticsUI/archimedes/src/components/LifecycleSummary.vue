@@ -74,33 +74,33 @@
           <div class="title primary--text text-xs-center pa-1 mb-2">Segment Percent of Total for Time Period {{ this.tpSelect
             }}
           </div>
-          <v-layout row class="doughnuts">
-            <div><doughnut-chart :chart-data="bestCust" :width="100" :height="100"></doughnut-chart></div>
-            <div><doughnut-chart :chart-data="risingCust" :width="100" :height="100"></doughnut-chart></div>
-            <div><doughnut-chart :chart-data="middleCust" :width="100" :height="100"></doughnut-chart></div>
-            <div><doughnut-chart :chart-data="lapsingCust" :width="100" :height="100"></doughnut-chart></div>
-            <div><doughnut-chart :chart-data="deeplyCust" :width="100" :height="100"></doughnut-chart></div>
+          <v-layout row>
+            <div class="doughnuts"><doughnut-chart :chart-data="bestCust" :width="100" :height="100"></doughnut-chart></div>
+            <div class="doughnuts"><doughnut-chart :chart-data="risingCust" :width="100" :height="100"></doughnut-chart></div>
+            <div class="doughnuts"><doughnut-chart :chart-data="middleCust" :width="100" :height="100"></doughnut-chart></div>
+            <div class="doughnuts"><doughnut-chart :chart-data="lapsingCust" :width="100" :height="100"></doughnut-chart></div>
+            <div class="doughnuts"><doughnut-chart :chart-data="deeplyCust" :width="100" :height="100"></doughnut-chart></div>
           </v-layout>
-          <v-layout row class="doughnuts">
-            <div><doughnut-chart :chart-data="bestVisits" :width="100" :height="100"></doughnut-chart></div>
-            <div><doughnut-chart :chart-data="risingVisits" :width="100" :height="100"></doughnut-chart></div>
-            <div><doughnut-chart :chart-data="middleVisits" :width="100" :height="100"></doughnut-chart></div>
-            <div><doughnut-chart :chart-data="lapsingVisits" :width="100" :height="100"></doughnut-chart></div>
-            <div><doughnut-chart :chart-data="deeplyVisits" :width="100" :height="100"></doughnut-chart></div>
+          <v-layout row>
+            <div class="doughnuts"><doughnut-chart :chart-data="bestVisits" :width="100" :height="100"></doughnut-chart></div>
+            <div class="doughnuts"><doughnut-chart :chart-data="risingVisits" :width="100" :height="100"></doughnut-chart></div>
+            <div class="doughnuts"><doughnut-chart :chart-data="middleVisits" :width="100" :height="100"></doughnut-chart></div>
+            <div class="doughnuts"><doughnut-chart :chart-data="lapsingVisits" :width="100" :height="100"></doughnut-chart></div>
+            <div class="doughnuts"><doughnut-chart :chart-data="deeplyVisits" :width="100" :height="100"></doughnut-chart></div>
           </v-layout>
-          <v-layout row class="doughnuts">
-            <div><doughnut-chart :chart-data="bestSpend" :width="100" :height="100"></doughnut-chart></div>
-            <div><doughnut-chart :chart-data="risingSpend" :width="100" :height="100"></doughnut-chart></div>
-            <div><doughnut-chart :chart-data="middleSpend" :width="100" :height="100"></doughnut-chart></div>
-            <div><doughnut-chart :chart-data="lapsingSpend" :width="100" :height="100"></doughnut-chart></div>
-            <div><doughnut-chart :chart-data="deeplySpend" :width="100" :height="100"></doughnut-chart></div>
+          <v-layout row>
+            <div class="doughnuts"><doughnut-chart :chart-data="bestSpend" :width="100" :height="100"></doughnut-chart></div>
+            <div class="doughnuts"><doughnut-chart :chart-data="risingSpend" :width="100" :height="100"></doughnut-chart></div>
+            <div class="doughnuts"><doughnut-chart :chart-data="middleSpend" :width="100" :height="100"></doughnut-chart></div>
+            <div class="doughnuts"><doughnut-chart :chart-data="lapsingSpend" :width="100" :height="100"></doughnut-chart></div>
+            <div class="doughnuts"><doughnut-chart :chart-data="deeplySpend" :width="100" :height="100"></doughnut-chart></div>
           </v-layout>
-          <v-layout row class="doughnuts">
-            <div><doughnut-chart :chart-data="bestUnits" :width="100" :height="100"></doughnut-chart></div>
-            <div><doughnut-chart :chart-data="risingUnits" :width="100" :height="100"></doughnut-chart></div>
-            <div><doughnut-chart :chart-data="middleUnits" :width="100" :height="100"></doughnut-chart></div>
-            <div><doughnut-chart :chart-data="lapsingUnits" :width="100" :height="100"></doughnut-chart></div>
-            <div><doughnut-chart :chart-data="deeplyUnits" :width="100" :height="100"></doughnut-chart></div>
+          <v-layout row>
+            <div class="doughnuts"><doughnut-chart :chart-data="bestUnits" :width="100" :height="100"></doughnut-chart></div>
+            <div class="doughnuts"><doughnut-chart :chart-data="risingUnits" :width="100" :height="100"></doughnut-chart></div>
+            <div class="doughnuts"><doughnut-chart :chart-data="middleUnits" :width="100" :height="100"></doughnut-chart></div>
+            <div class="doughnuts"><doughnut-chart :chart-data="lapsingUnits" :width="100" :height="100"></doughnut-chart></div>
+            <div class="doughnuts"><doughnut-chart :chart-data="deeplyUnits" :width="100" :height="100"></doughnut-chart></div>
           </v-layout>
         </v-card>
       </v-flex>
@@ -472,7 +472,7 @@
 </script>
 
 <style scoped>
-.doughnuts div {width:20%;}
+.doughnuts {width:20%;}
 .card_height {height:100% !important;}
 .height_bars1 {height:20% !important;}
 .height_bars2 {height:100% !important; display:table;}

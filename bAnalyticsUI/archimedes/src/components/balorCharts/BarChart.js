@@ -11,7 +11,11 @@ export default Bar.extend({
     return {
       options: {
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        legend: {
+          display: false
+        },
+        barThickness: 200
       }
     }
   },
