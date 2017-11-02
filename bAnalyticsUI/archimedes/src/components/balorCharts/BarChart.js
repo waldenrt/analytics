@@ -15,7 +15,11 @@ export default Bar.extend({
         legend: {
           display: false
         },
-        barThickness: 200
+        scales: {
+          xAxes: [{
+            barPercentage: 0.9
+          }]
+        }
       }
     }
   },

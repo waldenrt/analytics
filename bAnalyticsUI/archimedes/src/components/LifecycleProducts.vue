@@ -30,7 +30,7 @@
                                 single-line
                                 bottom
                                 v-on:input="selectTP()"
-                                class="pl-1 pr-1 m-0">
+                                class="pl-1 pr-1 mt-1 mb-2">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
                     </v-card>
@@ -58,7 +58,7 @@
                           bottom
                           multiple
                           v-on:input="selectProds()"
-                          class="pl-1 pr-1 m-0">
+                          class="pl-1 pr-1 mt-1 mb-2">
                       </v-select>
                     </v-card>
                   </v-flex>
@@ -85,7 +85,7 @@
                           single-line
                           bottom
                           v-on:input="selectSegment()"
-                          class="pl-1 pr-1 m-0">
+                          class="pl-1 pr-1 mt-1 mb-2">
                       </v-select>
                     </v-card>
                   </v-flex>
@@ -109,11 +109,12 @@
                           label="How many products"
                           id="topN"
                           v-model="topN"
-                          v-on:keyup.enter.native="topProds()"></v-text-field>
+                          v-on:keyup.enter.native="topProds()"
+                          class="pl-1 pr-1 mt-1 mb-2"></v-text-field>
                     </v-card>
                   </v-flex>
-                  <v-flex xs2 class="pt-2">
-                    <v-btn light primary default v-on:click.native="topProds()">Filter</v-btn>
+                  <v-flex xs2>
+                    <v-btn light primary default v-on:click.native="topProds()" class="ma-0">Filter</v-btn>
                   </v-flex>
                 </v-layout>
               </v-card>

@@ -31,7 +31,7 @@
                                 single-line
                                 bottom
                                 v-on:input="selectQuantile()"
-                                class="pl-1 pr-1 m-0">
+                                class="pl-1 pr-1 mt-1 mb-2">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
                     </v-card>
@@ -59,7 +59,7 @@
                           single-line
                           bottom
                           v-on:input="selectTP()"
-                          class="pl-1 pr-1 m-0">
+                          class="pl-1 pr-1 mt-1 mb-2">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
                     </v-card>
@@ -87,7 +87,7 @@
                           single-line
                           bottom
                           v-on:input="selectMetric()"
-                          class="pl-1 pr-1 m-0">
+                          class="pl-1 pr-1 mt-1 mb-2">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
                     </v-card>

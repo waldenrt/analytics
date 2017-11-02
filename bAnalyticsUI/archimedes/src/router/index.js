@@ -24,6 +24,11 @@ import LifecycleSummary from '@/components/LifecycleSummary'
 import LifecycleMigration from '@/components/LifecycleMigration'
 import LifecycleProducts from '@/components/LifecycleProducts'
 
+import BRelevant from '@/components/BRelevant'
+import NewBRelevant from '@/components/NewBRelevant'
+import BRelevantProducts from '@/components/BRelevantProducts'
+import BRelevantCustomer from '@/components/BRelevantCustomer'
+
 Vue.use(Router)
 
 export default new Router({
@@ -156,6 +161,33 @@ export default new Router({
               path: 'Products',
               name: 'LifecycleProd',
               component: LifecycleProducts
+            }
+          ]
+        },
+        {
+          path: 'BRelevant',
+          name: 'BRelevantMain',
+          component: BRelevant,
+          children: [
+            {
+              path: '/',
+              name: 'history',
+              component: JobHistory
+            },
+            {
+              path: 'NewBRelevant',
+              name: 'NewBRelevant',
+              component: NewBRelevant
+            },
+            {
+              path: 'Products',
+              name: 'BRelevantProd',
+              component: BRelevantProducts
+            },
+            {
+              path: 'Customer',
+              name: 'BRelevantCustomer',
+              component: BRelevantCustomer
             }
           ]
         }]

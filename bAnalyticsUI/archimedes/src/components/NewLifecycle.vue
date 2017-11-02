@@ -109,7 +109,7 @@
         e1: null,
         items1: [
           {text: '.txt (tab separated)'},
-          {text: '.CSV ("|" delimeter)'},
+          {text: '.CSV ("," delimeter)'},
           {text: '.DSV ("|" delimeter)'},
           {text: '.DSV (";" delimeter)'}
         ],

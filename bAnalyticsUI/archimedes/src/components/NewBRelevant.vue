@@ -1,14 +1,12 @@
 <template>
-  <v-container fluid class="NewQuantile pl-3 pr-3">
+  <v-container fluid class="NewBRelevant pl-3 pr-3">
     <v-layout row wrap style="height:100%;">
       <v-flex xs6 offset-xs3 class="pl-0 pr-0 mt-0">
         <div class="centereddiv">
-
-          <!-- FORM STARTS -->
-          <form>
+        <form>
           <v-card class="white" style="margin-top:50px;">
             <v-card-title primary-title class="primary">
-              <div><h6 class="white--text text-xs-left mb-0">QUANTILE INPUT</h6></div>
+              <div><h6 class="white--text text-xs-left mb-0">BRELEVANT INPUT</h6></div>
               <v-spacer></v-spacer>
               <div>
                 <v-dialog v-model="dialog" width="550px">
@@ -22,7 +20,7 @@
                 </v-dialog>
               </div>
             </v-card-title>
-            <v-layout row wrap>
+            <v-layout row wrap style="">
             <!--+++++col1+++++-->
             <v-flex xs12 class="pa-3 pl-4 pr-4">
               <!--FIELD-->
@@ -34,7 +32,7 @@
                     class="mt-1 mb-0 input-group--focused elevation-1"
                     single-line
                     required
-                    id="job_quantile">
+                    id="job_balor">
                 </v-text-field>
               </v-card-row>
               <!--//FIELD-->
@@ -48,7 +46,7 @@
                     @change="fileUpload($event.target.name, $event.target.files)"
                     class="white elevation-1"
                     style="width:100%;"
-                    id="input_quantile1">
+                    id="input_balor">
                 </form>
               </v-card-row>
               <!--//FILE-LOADER-->
@@ -64,118 +62,24 @@
                     bottom
                     v-bind:error-messages="['Please select an option']"
                     required
-                    id="select_quantile1">
+                    id="select_balor">
                 </v-select>
               </v-card-row>
               <!--//SELECT-->
+              <!--BUTTONS-->
+              <v-card-row xs12>
+                <v-btn
+                  :disabled="!formIsValid"
+                  @click="submit"
+                  :class="{ green: valid, red: !valid }"
+                  class="primary white--text ma-0">submit</v-btn>
+              </v-card-row>
+              <!--//BUTTONS-->
             </v-flex>
             <!--//+++++col1+++++-->
             </v-layout>
-            <v-divider class="primary"></v-divider>
-            <v-layout wrap row>
-              <!--+++++col1+++++-->
-              <v-flex xs6 class="pa-3 pl-4 pr-4">
-                <!--SELECT-->
-                <b2>Select time period for quantile</b2>
-                <v-card-row xs12 class="mb-3">
-                  <v-select
-                      v-bind:items="items"
-                      v-model="e1"
-                      label="Select"
-                      class="mt-1 mb-0 input-group--focused elevation-1"
-                      single-line
-                      bottom
-                      v-bind:error-messages="['Please select an option']"
-                      required
-                      id="select_quantile2">
-                  </v-select>
-                </v-card-row>
-                <!--//SELECT-->
-                <!--SELECT-->
-                <b2>Select quantile value</b2>
-                <v-card-row xs12 class="mb-3">
-                  <v-select
-                      v-bind:items="items"
-                      v-model="e1"
-                      label="Select"
-                      class="mt-1 mb-0 input-group--focused elevation-1"
-                      single-line
-                      bottom
-                      v-bind:error-messages="['Please select an option']"
-                      required
-                      id="select_quantile3">
-                  </v-select>
-                </v-card-row>
-                <!--//SELECT-->
-                <!--SELECT-->
-                <b2>Select dimension to decile</b2>
-                <v-card-row xs12>
-                  <v-radio label="Customer Level" v-model="ex8" value="radio-1" dark></v-radio>
-                </v-card-row>
-                <v-card-row xs12>
-                  <v-radio label="Store Level" v-model="ex8" value="radio-2" dark></v-radio>
-                </v-card-row>
-                <!--//SELECT-->
-              </v-flex>
-              <!--//+++++col1+++++-->
-              <!--+++++col2+++++-->
-              <v-flex xs6 class="pa-3 pl-4 pr-4">
-                <!--FIELD-->
-                <b2>Enter product hierarchy level I</b2>
-                <v-card-row xs12 class="mt-0 mb-3">
-                  <v-text-field
-                      name="input-2"
-                      label="Enter hierarchy"
-                      class="mt-1 mb-0 input-group--focused elevation-1"
-                      single-line
-                      required
-                      id="product1">
-                  </v-text-field>
-                </v-card-row>
-                <!--//FIELD-->
-                <!--FIELD-->
-                <b2>Enter product hierarchy level II</b2>
-                <v-card-row xs12 class="mt-0 mb-3">
-                  <v-text-field
-                      name="input-3"
-                      label="Enter hierarchy"
-                      class="mt-1 mb-0 input-group--focused elevation-1"
-                      single-line
-                      required
-                      id="product2">
-                  </v-text-field>
-                </v-card-row>
-                <!--//FIELD-->
-                <!--FIELD-->
-                <b2>Enter product hierarchy level III</b2>
-                <v-card-row xs12 class="mt-0 mb-3">
-                  <v-text-field
-                      name="input-4"
-                      label="Enter hierarchy"
-                      class="mt-1 mb-0 input-group--focused elevation-1"
-                      single-line
-                      required
-                      id="product3">
-                  </v-text-field>
-                </v-card-row>
-                <!--//FIELD-->
-              </v-flex>
-              <!--//+++++col2+++++-->
-              <v-flex xs12 class="pl-4 pr-4 pb-3">
-                <!--BUTTONS-->
-                <v-card-row xs12>
-                  <v-btn
-                    :disabled="!formIsValid"
-                    @click="submit"
-                    :class="{ green: valid, red: !valid }"
-                    class="primary white--text ma-0">submit</v-btn>
-                </v-card-row>
-                <!--//BUTTONS-->
-              </v-flex>
-            </v-layout>
           </v-card>
         </form>
-        <!-- FORM ENDS -->
         </div>
       </v-flex>
     </v-layout>
