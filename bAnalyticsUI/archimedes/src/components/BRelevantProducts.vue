@@ -18,7 +18,7 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Select Time<br/>Period:
+                      Select #1:
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -45,7 +45,7 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Select Product<br/> Department Description:
+                      Select #2:
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -74,7 +74,7 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Select<br/>Segment(s):
+                      Select #3:
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -103,7 +103,7 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Select Top<br/>N Products:
+                      Select #4:
                     </div>
                   </v-flex>
                   <v-flex xs10>
@@ -133,7 +133,7 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-center pl-0 pr-0 pb-0 pt-2">
-                      Segment Legend:
+                      Legend:
                     </div>
                   </v-flex>
                 </v-layout>
