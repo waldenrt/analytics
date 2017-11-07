@@ -24,13 +24,12 @@
                   <v-flex xs12>
                     <v-card class="white pa-0">
                       <!--SWAP OUT DROPDOWN-->
-                      <v-select v-bind:items="quantiles"
-                                v-model="quantileSelect"
-                                label="Select Quantiles"
-                                multiple
+                      <v-select v-bind:items="tpArray"
+                                v-model="tpSelect"
+                                label="Select Time Period"
                                 single-line
                                 bottom
-                                v-on:input="selectQuantile()"
+                                v-on:input="selectTP()"
                                 class="pl-1 pr-1 m-0">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
@@ -53,12 +52,13 @@
                     <v-card class="white">
                       <!--SWAP OUT DROPDOWN-->
                       <v-select
-                          v-bind:items="TPArray"
-                          v-model="TPSelect"
-                          label="Select Time Period"
+                          v-bind:items="segments"
+                          v-model="priorSegSel"
+                          label="Select Segment"
+                          mulitple
                           single-line
                           bottom
-                          v-on:input="selectTP()"
+                          v-on:input="selectPriorSegment()"
                           class="pl-1 pr-1 m-0">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
@@ -81,12 +81,13 @@
                     <v-card class="white">
                       <!--SWAP OUT DROPDOWN-->
                       <v-select
-                          v-bind:items="metrics"
-                          v-model="metricSelect"
-                          label="Select Metric"
+                          v-bind:items="segments"
+                          v-model="postSegSel"
+                          label="Select Segment"
                           single-line
+                          mulitple
                           bottom
-                          v-on:input="selectMetric()"
+                          v-on:input="selectPostSegment()"
                           class="pl-1 pr-1 m-0">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
@@ -118,7 +119,9 @@
     <v-layout wrap row>
       <v-flex xs12 class="pt-0 mt-0">
         <v-card class="pl-3 pr-3 pt-1 pb-1">
-          <div class="title primary--text text-xs-center pa-1"><em>Period-over-Period Segment Migration from Prior Segment(s)<span class="grey--text darken-2">All</span> to Post Segment(s)<span class="grey--text darken-2">All</span> during Period <span class="grey--text darken-2">1</span></em></div>
+          <div class="title primary--text text-xs-center pa-1"><em>Period-over-Period Segment Migration from Prior
+            Segment(s)<span class="grey--text darken-2">All</span> to Post Segment(s)<span class="grey--text darken-2">All</span>
+            during Period <span class="grey--text darken-2">1</span></em></div>
         </v-card>
       </v-flex>
     </v-layout>
@@ -129,14 +132,12 @@
         <v-card class="white pa-3">
           <v-layout wrap row>
 
-
             <!--+++++col1+++++-->
             <v-flex xs8>
               <!-- CHART GOES HERE -->
-              <img src="http://via.placeholder.com/450x200?text=Chart" width="100%" height="100%">
+              <svg width="1000" height="600" id="sankeySvg"></svg>
             </v-flex>
             <!--//+++++col1+++++-->
-
 
             <!--+++++col2+++++-->
             <v-flex xs4 class="pr-4">
@@ -200,13 +201,12 @@
                                   <v-flex xs12>
                                     <v-card class="white pa-0">
                                       <!--****THIS IS JUST A PLACEHOLDER DROPDOWN****-->
-                                      <v-select v-bind:items="quantArray"
-                                                v-model="quantileSelect"
-                                                label="Select Quantiles"
-                                                multiple
+                                      <v-select v-bind:items="segments"
+                                                v-model="postSegComp"
+                                                label="Select Segments"
                                                 single-line
                                                 bottom
-                                                v-on:input="selectQuantile()"
+                                                v-on:input="selPostPeriodComp()"
                                                 class="pl-1 pr-1 m-0">
                                       </v-select>
                                       <!--//****THIS IS JUST A PLACEHOLDER DROPDOWN****//-->
@@ -224,7 +224,7 @@
                     <!-- =====ROW2===== -->
                     <v-layout row wrap class="pt-0 mt-0">
                       <v-flex xs12>
-                        <img src="http://via.placeholder.com/450x200?text=Chart" width="100%" height="100%">
+                        <bar-chart :chart-data="barData"></bar-chart>
                       </v-flex>
                     </v-layout>
                     <!-- //=====ROW2===== -->
@@ -234,8 +234,6 @@
               <!--//chart-row-->
             </v-flex>
             <!--//+++++col2+++++-->
-
-
           </v-layout>
         </v-card>
       </v-flex>
@@ -245,23 +243,44 @@
 </template>
 
 <script>
-  import { migration } from './javascript/lifecycle.service'
+  import {migration} from './javascript/lifecycle.service'
+  import * as d3 from 'd3'
+  import {sankey, sankeyLinkHorizontal} from 'd3-sankey'
+  import BarChart from './balorCharts/BarChart'
 
   export default {
     name: 'lifecycleMigration',
     components: {
+      BarChart
     },
     data () {
       return {
         incomingJson: {},
         tpSelect: 1,
-        prods: [],
-        segments: [],
-        viewType: 'Counts',
-        views: ['Counts', 'Percentages'],
         tpArray: [],
+        priorSegSel: ['All'],
+        postSegSel: ['All'],
+        postSegComp: 'Best in Class',
+        segments: ['All', 'Best in Class', 'Rising Stars', 'Middle of the Road', 'Lapsing', 'Deeply Lapsed'],
         quantArray: [],
-        jobId: 'testLifecycle'
+        jobId: 'testLifecycle',
+        nodes: [],
+        tpLinks: [],
+        links: [],
+        sumItems: [],
+        sankeyData: [],
+        barData: {},
+        allBestPost: [],
+        allRisingPost: [],
+        allMiddlePost: [],
+        allLapsingPost: [],
+        allDeeplyPost: [],
+        selBestPost: [],
+        selRisingPost: [],
+        selMiddlePost: [],
+        selLapsingPost: [],
+        selDeeplyPost: [],
+        barLabels: ['Best in Class', 'Rising Stars', 'Middle of the Road', 'Lapsing', 'Deeply Lapsed', 'New']
       }
     },
     computed: {
@@ -281,7 +300,379 @@
           .then((response) => {
             this.incomingJson = response.data
             console.log(this.incomingJson)
+            this.createSankeyJson()
+            this.parseBarData()
+            this.buildSankey()
           })
+      },
+
+      createSankeyJson () {
+        console.log(this.jsonMsg)
+        this.nodes = [
+          {'node': 0, 'name': 'Best in Class'},
+          {'node': 1, 'name': 'Rising Stars'},
+          {'node': 2, 'name': 'Middle of the Road'},
+          {'node': 3, 'name': 'Lapsing'},
+          {'node': 4, 'name': 'Deeply Lapsed'},
+          {'node': 5, 'name': 'Best in Class'},
+          {'node': 6, 'name': 'Rising Stars'},
+          {'node': 7, 'name': 'Middle of the Road'},
+          {'node': 8, 'name': 'Lapsing'},
+          {'node': 9, 'name': 'Deeply Lapsed'}
+        ]
+
+        var tempTpLink = []
+
+        for (let i = 0; i < this.jsonMsg.timePeriods.length; i++) {
+          var tempLinks = []
+          for (let j = 0; j < this.jsonMsg.timePeriods[i].migrationData.length; j++) {
+            let from = 0
+            let to = 0
+            switch (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment) {
+              case 'Best in Class':
+                from = 0
+                break
+              case 'Rising Stars':
+                from = 1
+                break
+              case 'Middle of the Road':
+                from = 2
+                break
+              case 'Lapsing':
+                from = 3
+                break
+              case 'Deeply Lapsed':
+                from = 4
+                break
+            }
+            switch (this.jsonMsg.timePeriods[i].migrationData[j].currentSegment) {
+              case 'Best in Class':
+                to = 5
+                break
+              case 'Rising Stars':
+                to = 6
+                break
+              case 'Middle of the Road':
+                to = 7
+                break
+              case 'Lapsing':
+                to = 8
+                break
+              case 'Deeply Lapsed':
+                to = 9
+                break
+            }
+            tempLinks.push(
+              {
+                'source': from,
+                'target': to,
+                'value': this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+              }
+            )
+          }
+          tempTpLink.push({
+            'nodes': this.nodes,
+            'links': tempLinks
+          })
+        }
+        this.tpLinks = tempTpLink
+      },
+
+      buildSankey () {
+        console.log('starting sankey build')
+
+        const colorScheme = {
+          'Best in Class': '#003947',
+          'Rising Stars': '#8EAC1D',
+          'Middle of the Road': '#0087AA',
+          'Lapsing': '#F7970E',
+          'Deeply Lapsed': '#D63809'
+        }
+
+        var units = 'Customers'
+
+        var svg = d3.select('#sankeySvg')
+        var width = +svg.attr('width')
+        var height = +svg.attr('height')
+
+        var formatNumber = d3.format(',.0f')    // decimal places
+        var format = function (d) {
+          return formatNumber(d) + ' ' + units
+        }
+
+        const data = this.tpLinks[1]
+        var mySankey = sankey()
+          .nodeWidth(45)
+          .nodePadding(5)
+          .extent([[1, 1], [width - 1, height - 6]])
+
+        var link = svg
+          .append('g')
+          .attr('class', 'links')
+          .attr('fill', 'none')
+          .attr('stroke-opacity', 0.5)
+          .selectAll('path')
+
+        var node = svg.append('g')
+          .attr('class', 'nodes')
+          .attr('fill', 'none')
+          .attr('font-family', 'sans-serif')
+          .attr('font-size', 10)
+          .selectAll('g')
+
+        // this is instead of any var path = sankey.link, same with sankeyLinkHorizontal
+        mySankey(data)
+
+        link = link.data(data.links)
+          .enter().append('path')
+          .attr('d', sankeyLinkHorizontal())
+          .style('stroke-width', function (d) {
+            return Math.max(1, d.width)
+          })
+          .attr('stroke', function (d) {
+            return colorScheme[d.source.name]
+          })
+
+        link.append('title')
+          .text(function (d) {
+            return d.source.name + ' → ' +
+              d.target.name + '\n' + format(d.value)
+          })
+
+        node = node
+          .data(data.nodes)
+          .enter().append('g')
+
+        node.append('rect')
+          .attr('x', function (d) {
+            return d.x0
+          })
+          .attr('y', function (d) {
+            return d.y0
+          })
+          .attr('height', function (d) {
+            return d.y1 - d.y0
+          })
+          .attr('width', function (d) {
+            return d.x1 - d.x0
+          })
+          .attr('fill', function (d) {
+            return colorScheme[d.name]
+          })
+          .attr('stroke', function (d) {
+            return colorScheme[d.name]
+          })
+
+        node.append('text')
+          .attr('x', function (d) {
+            return d.x0 - 6
+          })
+          .attr('y', function (d) {
+            return (d.y1 + d.y0) / 2
+          })
+          .attr('dy', '0.35em')
+          .attr('text-anchor', 'end')
+          .text(function (d) {
+            return d.name
+          })
+          .filter(function (d) {
+            return d.x0 < width / 2
+          })
+          .attr('x', function (d) {
+            return d.x1 + 6
+          })
+          .attr('text-anchor', 'start')
+
+        node.append('title')
+          .text(function (d) {
+            return d.name + '\n' + format(d.value)
+          })
+
+        console.log('finished building sankey')
+      },
+
+      selPostPeriodComp () {
+        console.log('update bar chart....')
+        if (this.postSegComp === 'Best in Class') {
+          this.barData = {
+            labels: this.barLabels,
+            datasets: [
+              {
+                data: this.selBestPost,
+                label: 'Prior Segment',
+                backgroundColor: '#003947'
+              }
+            ]
+          }
+        } else if (this.postSegComp === 'Rising Stars') {
+          this.barData = {
+            labels: this.barLabels,
+            datasets: [
+              {
+                data: this.selRisingPost,
+                label: 'Prior Segment',
+                backgroundColor: '#8EAC1D'
+              }
+            ]
+          }
+        } else if (this.postSegComp === 'Middle of the Road') {
+          this.barData = {
+            labels: this.barLabels,
+            datasets: [
+              {
+                data: this.selMiddlePost,
+                label: 'Prior Segment',
+                backgroundColor: '#0087AA'
+              }
+            ]
+          }
+        } else if (this.postSegComp === 'Lapsing') {
+          this.barData = {
+            labels: this.barLabels,
+            datasets: [
+              {
+                data: this.selLapsingPost,
+                label: 'Prior Segment',
+                backgroundColor: '#F7970E'
+              }
+            ]
+          }
+        } else if (this.postSegComp === 'Deeply Lapsed') {
+          this.barData = {
+            labels: this.barLabels,
+            datasets: [
+              {
+                data: this.selDeeplyPost,
+                label: 'Prior Segment',
+                backgroundColor: '#D63809'
+              }
+            ]
+          }
+        }
+      },
+
+      selectTP () {
+
+      },
+
+      parseBarData () {
+        let tempAllBest = []
+        let tempAllRising = []
+        let tempAllMiddle = []
+        let tempAllLapsing = []
+        let tempAllDeeply = []
+
+        for (let i = 0; i < this.jsonMsg.timePeriods.length; i++) {
+          let tempBest = [0, 0, 0, 0, 0, 0]
+          let tempRising = [0, 0, 0, 0, 0, 0]
+          let tempMiddle = [0, 0, 0, 0, 0, 0]
+          let tempLapsing = [0, 0, 0, 0, 0, 0]
+          let tempDeeply = [0, 0, 0, 0, 0, 0]
+
+          for (let j = 0; j < this.jsonMsg.timePeriods[i].migrationData.length; j++) {
+            switch (this.jsonMsg.timePeriods[i].migrationData[j].currentSegment) {
+              case 'Best in Class':
+                if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Best in Class') {
+                  tempBest[0] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Rising Stars') {
+                  tempBest[1] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Middle of the Road') {
+                  tempBest[2] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Lapsing') {
+                  tempBest[3] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Deeply Lapsed') {
+                  tempBest[4] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                }
+                break
+              case 'Rising Stars':
+                if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Best in Class') {
+                  tempRising[0] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Rising Stars') {
+                  tempRising[1] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Middle of the Road') {
+                  tempRising[2] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Lapsing') {
+                  tempRising[3] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Deeply Lapsed') {
+                  tempRising[4] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                }
+                break
+              case 'Middle of the Road':
+                if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Best in Class') {
+                  tempMiddle[0] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Rising Stars') {
+                  tempMiddle[1] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Middle of the Road') {
+                  tempMiddle[2] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Lapsing') {
+                  tempMiddle[3] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Deeply Lapsed') {
+                  tempMiddle[4] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                }
+                break
+              case 'Lapsing':
+                if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Best in Class') {
+                  tempLapsing[0] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Rising Stars') {
+                  tempLapsing[1] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Middle of the Road') {
+                  tempLapsing[2] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Lapsing') {
+                  tempLapsing[3] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Deeply Lapsed') {
+                  tempLapsing[4] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                }
+                break
+              case 'Deeply Lapsed':
+                if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Best in Class') {
+                  tempDeeply[0] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Rising Stars') {
+                  tempDeeply[1] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Middle of the Road') {
+                  tempDeeply[2] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Lapsing') {
+                  tempDeeply[3] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Deeply Lapsed') {
+                  tempDeeply[4] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
+                }
+                break
+            }
+          }
+          tempBest[5] = this.jsonMsg.timePeriods[i].segmentTotal[0].bestNewCount
+          tempRising[5] = this.jsonMsg.timePeriods[i].segmentTotal[0].risingNewCount
+          tempMiddle[5] = this.jsonMsg.timePeriods[i].segmentTotal[0].middleNewCount
+          tempLapsing[5] = this.jsonMsg.timePeriods[i].segmentTotal[0].lapsingNewCount
+          tempDeeply[5] = this.jsonMsg.timePeriods[i].segmentTotal[0].deeplyNewCount
+
+          tempAllBest.push(tempBest)
+          tempAllRising.push(tempRising)
+          tempAllMiddle.push(tempMiddle)
+          tempAllLapsing.push(tempLapsing)
+          tempAllDeeply.push(tempDeeply)
+        }
+
+        this.allBestPost = tempAllBest
+        this.allRisingPost = tempAllRising
+        this.allMiddlePost = tempAllMiddle
+        this.allLapsingPost = tempAllLapsing
+        this.allDeeplyPost = tempAllDeeply
+
+        this.selBestPost = tempAllBest[1]
+        this.selRisingPost = tempAllRising[1]
+        this.selMiddlePost = tempAllMiddle[1]
+        this.selLapsingPost = tempAllLapsing[1]
+        this.selDeeplyPost = tempAllDeeply[1]
+
+        this.barData = {
+          labels: this.barLabels,
+          datasets: [
+            {
+              data: this.selBestPost,
+              label: 'Prior Segment',
+              backgroundColor: '#003947'
+            }
+          ]
+        }
       }
     }
   }
@@ -289,5 +680,24 @@
 </script>
 
 <style>
+  .node rect {
+    cursor: move;
+    fill-opacity: .9;
+    shape-rendering: crispEdges;
+  }
 
+  .node text {
+    pointer-events: none;
+    text-shadow: 0 1px 0 #fff;
+  }
+
+  .link {
+    fill: none;
+    stroke: #000;
+    stroke-opacity: .2;
+  }
+
+  .link:hover {
+    stroke-opacity: .5;
+  }
 </style>
