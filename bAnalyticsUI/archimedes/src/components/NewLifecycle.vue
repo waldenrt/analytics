@@ -24,7 +24,7 @@
             <!--+++++col1+++++-->
             <v-flex xs12 class="pa-3 pl-4 pr-4">
               <!--FIELD-->
-              <b2>Enter Job Name</b2>
+              <div class="body-2">Enter Job Name</div>
               <v-card-row xs12 class="mt-0 mb-3">
                 <v-text-field
                     name="input-1"
@@ -37,7 +37,7 @@
               </v-card-row>
               <!--//FIELD-->
               <!--FILE-LOADER-->
-              <b2>Select file for analysis</b2>
+              <div class="body-2">Select file for analysis</div>
               <v-card-row xs12 class="mb-3">
                 <form enctype="multipart/form-data" style="width:100%;">
                   <input
@@ -51,7 +51,7 @@
               </v-card-row>
               <!--//FILE-LOADER-->
               <!--SELECT-->
-              <b2>Select file type</b2>
+              <div class="body-2">Select file type</div>
               <v-card-row xs12 class="mb-3">
                 <v-select
                     v-bind:items="items1"
@@ -67,7 +67,7 @@
               </v-card-row>
               <!--//SELECT-->
               <!--SELECT-->
-              <b2>Select time period for segmentation</b2>
+              <div class="body-2">Select time period for segmentation</div>
               <v-card-row xs12 class="mb-3">
                 <v-select
                     v-bind:items="items2"

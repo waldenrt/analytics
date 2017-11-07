@@ -26,7 +26,7 @@
             <!--+++++col1+++++-->
             <v-flex xs12 class="pa-3 pl-4 pr-4">
               <!--FIELD-->
-              <b2>Enter Job Name</b2>
+              <div class="body-2">Enter Job Name</div>
               <v-card-row xs12 class="mt-0 mb-3">
                 <v-text-field
                     name="input-1"
@@ -39,7 +39,7 @@
               </v-card-row>
               <!--//FIELD-->
               <!--FILE-LOADER-->
-              <b2>Select file for analysis</b2>
+              <div class="body-2">Select file for analysis</div>
               <v-card-row xs12 class="mb-3">
                 <form enctype="multipart/form-data" style="width:100%;">
                   <input
@@ -53,7 +53,7 @@
               </v-card-row>
               <!--//FILE-LOADER-->
               <!--SELECT-->
-              <b2>Select file type</b2>
+              <div class="body-2">Select file type</div>
               <v-card-row xs12 class="mb-3">
                 <v-select
                     v-bind:items="items"
@@ -76,7 +76,7 @@
               <!--+++++col1+++++-->
               <v-flex xs6 class="pa-3 pl-4 pr-4">
                 <!--SELECT-->
-                <b2>Select time period for quantile</b2>
+                <<div class="body-2">Select time period for quantile</div>
                 <v-card-row xs12 class="mb-3">
                   <v-select
                       v-bind:items="items"
@@ -92,7 +92,7 @@
                 </v-card-row>
                 <!--//SELECT-->
                 <!--SELECT-->
-                <b2>Select quantile value</b2>
+                <div class="body-2">Select quantile value</div>
                 <v-card-row xs12 class="mb-3">
                   <v-select
                       v-bind:items="items"
@@ -108,7 +108,7 @@
                 </v-card-row>
                 <!--//SELECT-->
                 <!--SELECT-->
-                <b2>Select dimension to decile</b2>
+                <div class="body-2">Select dimension to decile</div>
                 <v-card-row xs12>
                   <v-radio label="Customer Level" v-model="ex8" value="radio-1" dark></v-radio>
                 </v-card-row>
@@ -121,7 +121,7 @@
               <!--+++++col2+++++-->
               <v-flex xs6 class="pa-3 pl-4 pr-4">
                 <!--FIELD-->
-                <b2>Enter product hierarchy level I</b2>
+                <div class="body-2">Enter product hierarchy level I</div>
                 <v-card-row xs12 class="mt-0 mb-3">
                   <v-text-field
                       name="input-2"
@@ -134,7 +134,7 @@
                 </v-card-row>
                 <!--//FIELD-->
                 <!--FIELD-->
-                <b2>Enter product hierarchy level II</b2>
+                <div class="body-2">Enter product hierarchy level II</div>
                 <v-card-row xs12 class="mt-0 mb-3">
                   <v-text-field
                       name="input-3"
@@ -147,7 +147,7 @@
                 </v-card-row>
                 <!--//FIELD-->
                 <!--FIELD-->
-                <b2>Enter product hierarchy level III</b2>
+                <div class="body-2">Enter product hierarchy level III</div>
                 <v-card-row xs12 class="mt-0 mb-3">
                   <v-text-field
                       name="input-4"
