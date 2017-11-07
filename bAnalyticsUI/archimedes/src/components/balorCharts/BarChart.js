@@ -11,7 +11,15 @@ export default Bar.extend({
     return {
       options: {
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+            barPercentage: 0.9
+          }]
+        }
       }
     }
   },

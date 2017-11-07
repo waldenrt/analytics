@@ -29,7 +29,7 @@
                                 label="Select Time Period"
                                 single-line
                                 bottom
-                                class="pl-1 pr-1 m-0"></v-select>
+                                class="pl-1 pr-1 mt-1 mb-2"></v-select>
                       </v-select>
                     </v-card>
                   </v-flex>
@@ -55,7 +55,7 @@
                                 multiple
                                 single-line
                                 bottom
-                                class="pl-1 pr-1 m-0"></v-select>
+                                class="pl-1 pr-1 mt-1 mb-2"></v-select>
                     </v-card>
                   </v-flex>
                 </v-layout>
@@ -105,7 +105,7 @@
                                 label="View Table As"
                                 single-line
                                 bottom
-                                class="pl-1 pr-1 m-0"></v-select>
+                                class="pl-1 pr-1 mt-1 mb-2"></v-select>
                       </v-select>
                     </v-card>
                   </v-flex>
@@ -235,7 +235,7 @@
                                                 single-line
                                                 bottom
                                                 v-on:input="selectQuantile()"
-                                                class="pl-1 pr-1 m-0">
+                                                class="pl-1 pr-1 mt-1 mb-2">
                                       </v-select>
                                     </v-card>
                                   </v-flex>
@@ -251,7 +251,7 @@
                     <!-- =====ROW2===== -->
                     <v-layout row wrap class="pt-0 mt-0">
                       <v-flex xs12>
-                        <bar-chart :chart-data="quantbars"></bar-chart>
+                        <div class="pl-1 pr-1 pt-3 pb-2 bar_height"><bar-chart :chart-data="quantbars"></bar-chart></div>
                       </v-flex>
                     </v-layout>
                     <!-- //=====ROW2===== -->
@@ -491,7 +491,6 @@
 </script>
 
 <style scoped>
-  .card_width {
-    width: 100% !important;
-  }
+  .card_width { width: 100% !important; }
+  .bar_height { height: 23vh; }
 </style>

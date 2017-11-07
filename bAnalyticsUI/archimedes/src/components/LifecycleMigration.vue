@@ -30,7 +30,7 @@
                                 single-line
                                 bottom
                                 v-on:input="selectTP()"
-                                class="pl-1 pr-1 m-0">
+                                class="pl-1 pr-1 mt-1 mb-2">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
                     </v-card>
@@ -59,7 +59,7 @@
                           single-line
                           bottom
                           v-on:input="selectPriorSegment()"
-                          class="pl-1 pr-1 m-0">
+                          class="pl-1 pr-1 mt-1 mb-2">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
                     </v-card>
@@ -88,7 +88,7 @@
                           mulitple
                           bottom
                           v-on:input="selectPostSegment()"
-                          class="pl-1 pr-1 m-0">
+                          class="pl-1 pr-1 mt-1 mb-2">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
                     </v-card>

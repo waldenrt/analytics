@@ -19,8 +19,6 @@
     </v-layout>
     <!-- //=====TABS-ROW===== -->
     <!-- =====ROW1===== -->
-    <!-- //=====ROW1===== -->
-    <!-- =====ROW2===== -->
     <v-layout row wrap class="pa-0 mb-0">
       <!--+++++col1+++++-->
       <v-flex xs8 lg9>
@@ -123,9 +121,9 @@
       </v-flex>
       <!--//+++++col2+++++-->
     </v-layout>
-    <!-- //=====ROW2===== -->
+    <!-- //=====ROW1===== -->
 
-    <!-- =====ROW3===== -->
+    <!-- =====ROW2===== -->
     <v-layout row wrap class="mb-3">
       <v-flex xs12 fill-height>
         <v-card class="white">
@@ -212,10 +210,10 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <!-- //=====ROW3===== -->
-    <!-- =====ROW4===== -->
-    <v-layout row wrap>
-      <v-flex xs12 fill-height class="mb-2">
+    <!-- //=====ROW2===== -->
+    <!-- =====ROW3===== -->
+    <v-layout row wrap class="mb-3">
+      <v-flex xs12 fill-height class="mb-3">
         <v-card class="white">
           <v-layout row wrap>
             <v-flex xs12>
@@ -252,7 +250,7 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <!-- //=====ROW4===== -->
+    <!-- //=====ROW3===== -->
 
   </v-container>
 

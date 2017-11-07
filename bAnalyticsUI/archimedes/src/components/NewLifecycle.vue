@@ -3,6 +3,7 @@
     <v-layout row wrap style="height:100%;">
       <v-flex xs6 offset-xs3 class="pl-0 pr-0 mt-0">
         <div class="centereddiv">
+        <form>
           <v-card class="white" style="margin-top:50px;">
             <v-card-title primary-title class="primary">
               <div><h6 class="white--text text-xs-left mb-0">CORE LIFECYCLE INPUT</h6></div>
@@ -22,7 +23,6 @@
             <v-layout row wrap style="">
             <!--+++++col1+++++-->
             <v-flex xs12 class="pa-3 pl-4 pr-4">
-            <form>
               <!--FIELD-->
               <b2>Enter Job Name</b2>
               <v-card-row xs12 class="mt-0 mb-3">
@@ -91,11 +91,11 @@
                   class="primary white--text ma-0">submit</v-btn>
               </v-card-row>
               <!--//BUTTONS-->
-            </form>
             </v-flex>
             <!--//+++++col1+++++-->
             </v-layout>
           </v-card>
+        </form>
         </div>
       </v-flex>
     </v-layout>
@@ -109,7 +109,7 @@
         e1: null,
         items1: [
           {text: '.txt (tab separated)'},
-          {text: '.CSV ("|" delimeter)'},
+          {text: '.CSV ("," delimeter)'},
           {text: '.DSV ("|" delimeter)'},
           {text: '.DSV (";" delimeter)'}
         ],

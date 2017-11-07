@@ -26,7 +26,7 @@
                                 single-line
                                 bottom
                                 v-on:input="selectQuantile()"
-                                class="pl-1 pr-1 m-0">
+                                class="pl-1 pr-1 mt-1 mb-2">
                       </v-select>
                     </v-card>
                   </v-flex>
@@ -52,7 +52,7 @@
                           single-line
                           bottom
                           v-on:input="selectTP()"
-                          class="pl-1 pr-1 m-0">
+                          class="pl-1 pr-1 mt-1 mb-2">
                       </v-select>
                     </v-card>
                   </v-flex>
@@ -78,7 +78,7 @@
                           single-line
                           bottom
                           v-on:input="selectMetric()"
-                          class="pl-1 pr-1 m-0">
+                          class="pl-1 pr-1 mt-1 mb-2">
                       </v-select>
                     </v-card>
                   </v-flex>
@@ -121,9 +121,9 @@
               hide-actions>
             <template slot="items" scope="props">
               <td>{{ props.item.quantile }}</td>
-              <td class="text-xs-right">{{ props.item.avgCustSales }}</td>
-              <td class="text-xs-right">{{ props.item.avgVisitSpend }}</td>
-              <td class="text-xs-right">{{ props.item.avgItemSales }}</td>
+              <td class="text-xs-right">$ {{ props.item.avgCustSales }}</td>
+              <td class="text-xs-right">$ {{ props.item.avgVisitSpend }}</td>
+              <td class="text-xs-right">$ {{ props.item.avgItemSales }}</td>
               <td class="text-xs-right">{{ props.item.avgCustUnits }}</td>
               <td class="text-xs-right">{{ props.item.avgVisitUnits }}</td>
               <td class="text-xs-right">{{ props.item.avgCustVisits }}</td>
@@ -217,12 +217,12 @@
           if (this.jsonMsg.quantileResult[i].timePeriod === this.TPSelect) {
             tempObj.push({
               'quantile': this.jsonMsg.quantileResult[i].quantile,
-              'avgCustSales': this.jsonMsg.quantileResult[i].avgSpend,
-              'avgVisitSpend': this.jsonMsg.quantileResult[i].avgVisitSpend,
-              'avgItemSales': this.jsonMsg.quantileResult[i].avgItemSales,
+              'avgCustSales': this.jsonMsg.quantileResult[i].avgSpend.toFixed(2),
+              'avgVisitSpend': this.jsonMsg.quantileResult[i].avgVisitSpend.toFixed(2),
+              'avgItemSales': this.jsonMsg.quantileResult[i].avgItemSales.toFixed(2),
               'avgCustUnits': this.jsonMsg.quantileResult[i].avgCustUnits,
-              'avgVisitUnits': this.jsonMsg.quantileResult[i].avgVisitUnits,
-              'avgCustVisits': this.jsonMsg.quantileResult[i].avgVisits
+              'avgVisitUnits': this.jsonMsg.quantileResult[i].avgVisitUnits.toFixed(2),
+              'avgCustVisits': this.jsonMsg.quantileResult[i].avgVisits.toFixed(2)
             })
           }
         }
