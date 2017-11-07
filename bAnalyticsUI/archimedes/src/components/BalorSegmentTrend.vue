@@ -18,6 +18,8 @@
       </v-flex>
     </v-layout>
     <!-- //=====TABS-ROW===== -->
+
+
     <!-- =====ROW1===== -->
     <v-layout row wrap class="pt-0 mb-3">
       <v-flex xs12>
@@ -31,9 +33,9 @@
               <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs5>
-                    <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
-                      Select BALOR<br/>dimension:
-                    </div>
+                      <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
+                        Select BALOR<br/>dimension:
+                      </div>
                   </v-flex>
                   <v-flex xs7>
                     <v-card class="white pa-0">
