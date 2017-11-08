@@ -70,12 +70,11 @@ export default new Router({
         },
         {
           path: 'Balor',
-          name: 'BalorMain',
           component: Balor,
           children: [
             {
               path: '/',
-              name: 'history',
+              name: 'BalorHistory',
               component: JobHistory
             },
             {
@@ -102,12 +101,11 @@ export default new Router({
         },
         {
           path: 'Quantile',
-          name: 'QuantileMain',
           component: Quantile,
           children: [
             {
               path: '/',
-              name: 'history',
+              name: 'QuantHistory',
               component: JobHistory
             },
             {
@@ -134,12 +132,11 @@ export default new Router({
         },
         {
           path: 'Lifecycle',
-          name: 'LifecycleMain',
           component: Lifecycle,
           children: [
             {
               path: '/',
-              name: 'history',
+              name: 'LifecycleHistory',
               component: JobHistory
             },
             {
@@ -166,12 +163,11 @@ export default new Router({
         },
         {
           path: 'BRelevant',
-          name: 'BRelevantMain',
           component: BRelevant,
           children: [
             {
               path: '/',
-              name: 'history',
+              name: 'bHistory',
               component: JobHistory
             },
             {
