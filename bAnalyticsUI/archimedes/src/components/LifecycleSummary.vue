@@ -45,23 +45,23 @@
         <v-card class="white pl-3 pr-3 pt-1 pb-1 card_height">
           <div class="title primary--text text-xs-center pa-1 mb-2">Aggregate Metrics for Time Period {{ this.tpSelect }}
           </div>
-          <v-card class="green mb-2 height_bars1">
-            <v-card-text class="green darken-2 white--text height_bars2">
+          <v-card class="success mb-2 height_bars1">
+            <v-card-text class="success white--text height_bars2">
               <div class="subheading">Total Customers <span style="float:right;">{{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalCustCount }}</span></div>
             </v-card-text>
           </v-card>
-          <v-card class="red mb-2 height_bars1">
-            <v-card-text class="red white--text height_bars2">
+          <v-card class="error mb-2 height_bars1">
+            <v-card-text class="error white--text height_bars2">
               <div class="subheading">Total Visits <span style="float:right;">{{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalTxnCount }}</span></div>
             </v-card-text>
           </v-card>
-          <v-card class="blue mb-2 height_bars1">
-            <v-card-text class="cyan white--text height_bars2">
+          <v-card class="info mb-2 height_bars1">
+            <v-card-text class="info white--text height_bars2">
               <div class="subheading">Total Spend <span style="float:right;">${{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalSales.toFixed(2) }}</span></div>
             </v-card-text>
           </v-card>
-          <v-card class="orange mb-2 height_bars1">
-            <v-card-text class="orange white--text height_bars2">
+          <v-card class="warning mb-2 height_bars1">
+            <v-card-text class="warning white--text height_bars2">
               <div class="subheading">Total Units <span style="float:right;">{{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalItems }}</span></div>
             </v-card-text>
           </v-card>

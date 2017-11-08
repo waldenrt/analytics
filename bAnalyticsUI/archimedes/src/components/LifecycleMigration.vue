@@ -1,9 +1,5 @@
 <template>
   <v-container fluid class="quantileProducts pl-3 pr-3 mb-3">
-    <!-- ASHA STUFF HERE -->
-
-    <!--// ASHA STUFF HERE -->
-
     <!-- =====ROW1===== -->
     <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
@@ -150,28 +146,35 @@
                   <v-divider class="primary pb-0"></v-divider>
                   <v-flex xs12 fill-height>
                     <v-layout row wrap>
-                      <table cellpadding="0" cellspacing="0" width="100%" style="height:21vh !important;">
-                        <tr v-for="item in sumItems" v-bind:key="item.name">
-                          <td class="pl-2 pr-2 pt-2 pb-0">
-                            <div class="primary--text" v-text="item.name"></div>
-                          </td>
-                          <td class="pl-2 pr-2 pt-2 pb-0">
-                            <div v-text="item.priorCustCount"></div>
-                          </td>
-                          <td class="pl-2 pr-2 pt-2 pb-0">
-                            <div v-text="item.retained"></div>
-                          </td>
-                          <td class="pl-2 pr-2 pt-2 pb-0">
-                            <div v-text="item.new"></div>
-                          </td>
-                          <td class="pl-2 pr-2 pt-2 pb-0">
-                            <div v-text="item.postCustCount"></div>
-                          </td>
-                          <td class="pl-2 pr-2 pt-2 pb-0">
-                            <div v-text="item.retRate"></div>
-                          </td>
-                        </tr>
-                      </table>
+                      <v-flex xs12 class="pt-0 mt-0">
+                        <v-card class="accent mb-2 height_bars1">
+                          <v-card-text class="accent white--text height_bars2">
+                            <div class="subheading">Best in Class <span style="float:right;">{{ bestRet }}</span>
+                            </div>
+                          </v-card-text>
+                        </v-card>
+                        <v-card class="success mb-2 height_bars1">
+                          <v-card-text class="success white--text height_bars2">
+                            <div class="subheading">Rising Stars <span style="float:right;">{{ risingRet }}</span>
+                            </div>
+                          </v-card-text>
+                        </v-card>
+                        <v-card class="info mb-2 height_bars1">
+                          <v-card-text class="info white--text height_bars2">
+                            <div class="subheading">Middle of the Road <span style="float:right;">{{ middleRet }}</span></div>
+                          </v-card-text>
+                        </v-card>
+                        <v-card class="warning mb-2 height_bars1">
+                          <v-card-text class="warning white--text height_bars2">
+                            <div class="subheading">Lapsing <span style="float:right;">{{ lapsingRet }}</span></div>
+                          </v-card-text>
+                        </v-card>
+                        <v-card class="error mb-2 height_bars1">
+                          <v-card-text class="error white--text height_bars2">
+                            <div class="subheading">Deeply Lapsed <span style="float:right;">{{ deeplyRet }}</span></div>
+                          </v-card-text>
+                        </v-card>
+                      </v-flex>
                     </v-layout>
                   </v-flex>
                 </v-card>
@@ -280,7 +283,17 @@
         selMiddlePost: [],
         selLapsingPost: [],
         selDeeplyPost: [],
-        barLabels: ['Best in Class', 'Rising Stars', 'Middle of the Road', 'Lapsing', 'Deeply Lapsed', 'New']
+        barLabels: ['Best in Class', 'Rising Stars', 'Middle of the Road', 'Lapsing', 'Deeply Lapsed', 'New'],
+        bestMigArray: [],
+        risingMigArray: [],
+        middleMigArray: [],
+        lapsingMigArray: [],
+        deeplyMigArray: [],
+        bestRet: 0,
+        risingRet: 0,
+        middleRet: 0,
+        lapsingRet: 0,
+        deeplyRet: 0
       }
     },
     computed: {
@@ -552,15 +565,34 @@
       },
 
       selectTP () {
-
+        if ((this.tpSelect - 2) >= 0) {
+          this.bestRet = this.bestMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].bestTotalCount
+          this.risingRet = this.risingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].risingTotalCount
+          this.middleRet = this.middleMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].middleTotalCount
+          this.lapsingRet = this.lapsingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].lapsingTotalCount
+          this.deeplyRet = this.deeplyMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].deeplyTotalCount
+        } else {
+          this.bestRet = 0
+          this.risingRet = 0
+          this.middleRet = 0
+          this.lapsingRet = 0
+          this.deeplyRet = 0
+        }
       },
 
       parseBarData () {
+        let tempTpArray = []
         let tempAllBest = []
         let tempAllRising = []
         let tempAllMiddle = []
         let tempAllLapsing = []
         let tempAllDeeply = []
+
+        let tempBestMigArray = []
+        let tempRisingMigArray = []
+        let tempMiddleMigArray = []
+        let tempLapsingMigArray = []
+        let tempDeeplyMigArray = []
 
         for (let i = 0; i < this.jsonMsg.timePeriods.length; i++) {
           let tempBest = [0, 0, 0, 0, 0, 0]
@@ -568,6 +600,14 @@
           let tempMiddle = [0, 0, 0, 0, 0, 0]
           let tempLapsing = [0, 0, 0, 0, 0, 0]
           let tempDeeply = [0, 0, 0, 0, 0, 0]
+
+          let tempBestMig = 0
+          let tempRisingMig = 0
+          let tempMiddleMig = 0
+          let tempLapsingMig = 0
+          let tempDeeplyMig = 0
+
+          tempTpArray.push(this.jsonMsg.timePeriods[i].timePeriod)
 
           for (let j = 0; j < this.jsonMsg.timePeriods[i].migrationData.length; j++) {
             switch (this.jsonMsg.timePeriods[i].migrationData[j].currentSegment) {
@@ -583,6 +623,7 @@
                 } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Deeply Lapsed') {
                   tempBest[4] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
                 }
+                tempBestMig = tempBestMig + this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
                 break
               case 'Rising Stars':
                 if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Best in Class') {
@@ -596,6 +637,7 @@
                 } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Deeply Lapsed') {
                   tempRising[4] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
                 }
+                tempRisingMig = tempRisingMig + this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
                 break
               case 'Middle of the Road':
                 if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Best in Class') {
@@ -609,6 +651,7 @@
                 } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Deeply Lapsed') {
                   tempMiddle[4] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
                 }
+                tempMiddleMig = tempMiddleMig + this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
                 break
               case 'Lapsing':
                 if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Best in Class') {
@@ -622,6 +665,7 @@
                 } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Deeply Lapsed') {
                   tempLapsing[4] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
                 }
+                tempLapsingMig = tempLapsingMig + this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
                 break
               case 'Deeply Lapsed':
                 if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Best in Class') {
@@ -635,6 +679,7 @@
                 } else if (this.jsonMsg.timePeriods[i].migrationData[j].fromSegment === 'Deeply Lapsed') {
                   tempDeeply[4] = this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
                 }
+                tempDeeplyMig = tempDeeplyMig + this.jsonMsg.timePeriods[i].migrationData[j].migrationCount
                 break
             }
           }
@@ -649,6 +694,12 @@
           tempAllMiddle.push(tempMiddle)
           tempAllLapsing.push(tempLapsing)
           tempAllDeeply.push(tempDeeply)
+
+          tempBestMigArray.push(tempBestMig)
+          tempRisingMigArray.push(tempRisingMig)
+          tempMiddleMigArray.push(tempMiddleMig)
+          tempLapsingMigArray.push(tempLapsingMig)
+          tempDeeplyMigArray.push(tempDeeplyMig)
         }
 
         this.allBestPost = tempAllBest
@@ -672,6 +723,28 @@
               backgroundColor: '#003947'
             }
           ]
+        }
+
+        this.tpArray = tempTpArray
+
+        this.bestMigArray = tempBestMigArray
+        this.risingMigArray = tempRisingMigArray
+        this.middleMigArray = tempMiddleMigArray
+        this.lapsingMigArray = tempLapsingMigArray
+        this.deeplyMigArray = tempDeeplyMigArray
+
+        if ((this.tpSelect - 2) >= 0) {
+          this.bestRet = this.bestMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].bestTotalCount
+          this.risingRet = this.risingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].risingTotalCount
+          this.middleRet = this.middleMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].middleTotalCount
+          this.lapsingRet = this.lapsingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].lapsingTotalCount
+          this.deeplyRet = this.deeplyMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].deeplyTotalCount
+        } else {
+          this.bestRet = 0
+          this.risingRet = 0
+          this.middleRet = 0
+          this.lapsingRet = 0
+          this.deeplyRet = 0
         }
       }
     }
