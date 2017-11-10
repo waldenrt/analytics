@@ -18,6 +18,7 @@
     "chart.js": "^2.6.0",
     "chartjs-plugin-annotation": "^0.5.5",
     "d3": "^4.11.0",
+    "d3-sankey": "^0.7.1",
     "hdfs": "^1.0.1",
     "net": "^1.0.2",
     "nouislider": "^10.1.0",

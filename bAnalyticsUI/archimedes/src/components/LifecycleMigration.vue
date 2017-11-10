@@ -133,14 +133,17 @@
           <v-layout wrap row>
 
             <!--+++++col1+++++-->
-            <v-flex xs8>
+            <v-flex sm12 md8>
               <!-- CHART GOES HERE -->
-              <svg width="1000" height="600" id="sankeySvg"></svg>
+              <div class="scaling-svg-container"
+   style="padding-bottom: 92% /* 100% * 55/60 */">
+                <svg width="1050" height="1000" id="sankeySvg" class="scaling-svg" viewBox="0 10 1050 1000" ></svg>
+              </div>
             </v-flex>
             <!--//+++++col1+++++-->
 
             <!--+++++col2+++++-->
-            <v-flex xs4 class="pr-4">
+            <v-flex sm12 md4 class="pr-4">
               <!--table-row-->
               <v-layout wrap row>
                 <v-card class="white" style="width:100%;">
@@ -207,7 +210,7 @@
                                                 single-line
                                                 bottom
                                                 v-on:input="selPostPeriodComp()"
-                                                class="pl-1 pr-1 m-0">
+                                                class="pl-1 pr-1 mt-1 mb-2">
                                       </v-select>
                                       <!--//****THIS IS JUST A PLACEHOLDER DROPDOWN****//-->
                                     </v-card>
@@ -223,8 +226,8 @@
                     <!-- //=====ROW1===== -->
                     <!-- =====ROW2===== -->
                     <v-layout row wrap class="pt-0 mt-0">
-                      <v-flex xs12>
-                        <bar-chart :chart-data="barData"></bar-chart>
+                      <v-flex xs12 class="pa-0 ma-0">
+                        <div style="width:100%;"><bar-chart :chart-data="barData"></bar-chart></div>
                       </v-flex>
                     </v-layout>
                     <!-- //=====ROW2===== -->
@@ -699,5 +702,20 @@
 
   .link:hover {
     stroke-opacity: .5;
+  }
+  .scaling-svg-container {
+   position: relative;
+   height: 0;
+   width: 100%;
+   padding: 0;
+   padding-bottom: 100%;
+   /* override this inline for aspect ratio other than square */
+  }
+  .scaling-svg {
+   position: absolute;
+   height: 100%;
+   width: 100%;
+   left: 0;
+   top: 0;
   }
 </style>
