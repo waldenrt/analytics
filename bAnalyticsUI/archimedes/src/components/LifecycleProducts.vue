@@ -18,7 +18,7 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Select Time<br/>Period:
+                      Time Period:
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -45,7 +45,7 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Select Product<br/> Department Description:
+                      Product Dept Desc:
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -72,7 +72,7 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Select<br/>Segment(s):
+                      Segment(s):
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -99,7 +99,7 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Select Top<br/>N Products:
+                      Top N Products:
                     </div>
                   </v-flex>
                   <v-flex xs10>

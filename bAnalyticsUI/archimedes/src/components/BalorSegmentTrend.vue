@@ -34,7 +34,7 @@
                 <v-layout row wrap>
                   <v-flex xs5>
                       <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
-                        Select BALOR<br/>dimension:
+                        BALOR<br/>dimension:
                       </div>
                   </v-flex>
                   <v-flex xs7>
@@ -59,7 +59,7 @@
                 <v-layout row wrap>
                   <v-flex xs5>
                     <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
-                      Select BALOR<br/>average:
+                      BALOR<br/>average:
                     </div>
                   </v-flex>
                   <v-flex xs7>
@@ -116,7 +116,7 @@
                 <v-layout row wrap>
                   <v-flex xs5>
                     <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
-                      Select BALOR<br/>segment:
+                      BALOR<br/>segment:
                     </div>
                   </v-flex>
                   <v-flex xs7>
@@ -179,7 +179,7 @@
                 <v-layout row wrap>
                   <v-flex xs5>
                     <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
-                      Select BALOR<br/>time period:
+                      BALOR<br/>time period:
                     </div>
                   </v-flex>
                   <v-flex xs7>
@@ -205,7 +205,7 @@
                 <v-layout row wrap>
                   <v-flex xs5>
                     <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
-                      Select BALOR<br/>metric:
+                      BALOR<br/>metric:
                     </div>
                   </v-flex>
                   <v-flex xs7>

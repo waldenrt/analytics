@@ -14,7 +14,7 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Select Prior Period<br/> for Analysis:
+                      Prior Period<br/> for Analysis:
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -150,7 +150,7 @@
                   <v-flex xs12 fill-height>
                     <v-layout row wrap>
                       <v-flex xs12 class="pt-0 mt-0">
-                        <v-card class="accent mb-2 height_bars1">
+                        <v-card class="accent mt-2 mb-2 height_bars1">
                           <v-card-text class="accent white--text height_bars2">
                             <div class="subheading">Best in Class <span style="float:right;">{{ bestRet }}</span>
                             </div>
@@ -230,7 +230,7 @@
                     <!-- =====ROW2===== -->
                     <v-layout row wrap class="pt-0 mt-0">
                       <v-flex xs12 class="pa-0 ma-0">
-                        <div style="width:100%;"><bar-chart :chart-data="barData"></bar-chart></div>
+                        <div style="width:100%;" class="mt-3"><bar-chart :chart-data="barData"></bar-chart></div>
                       </v-flex>
                     </v-layout>
                     <!-- //=====ROW2===== -->

@@ -139,7 +139,6 @@
     flex-direction:column;
     background-color:#eff3f6;
   }
-  .input-group__details{display: none !important;}
   .padR6{padding-right:6px;}
 
   @media (max-width: 550px) {

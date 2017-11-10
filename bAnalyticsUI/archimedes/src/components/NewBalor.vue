@@ -4,7 +4,7 @@
     <v-layout row wrap style="height:100%;">
       <v-flex xs6 offset-xs3 class="pl-0 pr-0 mt-0">
         <div class="centereddiv">
-        <form>
+        <form name="balForm" @submit.prevent="submit()" novalidate>
           <v-card class="white" style="margin-top:50px;">
             <v-card-title primary-title class="primary">
               <div><h6 class="white--text text-xs-left mb-0">BALOR INPUT</h6></div>
@@ -33,6 +33,7 @@
                     class="mt-1 mb-0 input-group--focused elevation-1"
                     single-line
                     required
+                    v-model="e1"
                     id="job_balor">
                 </v-text-field>
               </v-card-row>
@@ -56,7 +57,7 @@
               <v-card-row xs12 class="mb-3">
                 <v-select
                     v-bind:items="items"
-                    v-model="e1"
+                    v-model="e2"
                     label="Select file type"
                     class="mt-1 mb-0 input-group--focused elevation-1"
                     single-line
@@ -71,7 +72,7 @@
               <v-card-row xs12>
                 <v-btn
                   :disabled="!formIsValid"
-                  @click="submit"
+                  @click.native="submit()"
                   :class="{ green: valid, red: !valid }"
                   class="primary white--text ma-0">submit</v-btn>
               </v-card-row>
@@ -95,6 +96,7 @@
     data () {
       return {
         e1: null,
+        e2: null,
         items: [
           {text: '.txt (tab separated)'},
           {text: '.CSV ("," delimeter)'},
@@ -110,11 +112,13 @@
       }
     },
     computed: {
-      formIsValid () {
-        return this.job_balor !== '' && this.input_balor !== '' && this.select_balor !== ''
-      }
     },
     methods: {
+      formIsValid () {
+        if (this.e1 === '') {
+          alert('Job must be entered')
+        }
+      },
       fileUpload (fieldName, fileNames) {
         console.log('Entering fileUpload')
         const formData = new FormData()
@@ -132,6 +136,7 @@
       },
       submit () {
         console.log('submit job now')
+        alert('submitted')
       },
       clear () {
         console.log('clear all fields')
