@@ -33,6 +33,25 @@
               </v-card>
             </v-flex>
             <!--//Dropdown1-->
+            <!-- LEGEND -->
+              <v-flex xs12 sm9>
+                <div class="primary--text text-xs-left pl-0 pr-0 pb-1 pt-2">
+                  Legend:
+                </div>
+                <v-card flat class="white pt-1 pb-1 pl-2 pr-2 mr-2">
+                  <div class="legend accent"></div>
+                  <div class="inliner padR5">Best in Class</div>
+                  <div class="legend success"></div>
+                  <div class="inliner padR5">Rising Stars</div>
+                  <div class="legend info"></div>
+                  <div class="inliner padR5">Middle of the road</div>
+                  <div class="legend warning"></div>
+                  <div class="inliner padR5">Lapsing</div>
+                  <div class="legend error"></div>
+                  <div class="inliner padR5">Deeply Lapsed</div>
+                </v-card>
+              </v-flex>
+            <!-- //LEGEND -->
           </v-layout>
         </v-card>
       </v-flex>
@@ -472,6 +491,20 @@
 </script>
 
 <style scoped>
+.inliner { display: inline-block; }
+.legend {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 5px;
+}
+
+.legend_color1 { background-color: #D63809; }
+.legend_color2 { background-color: #8EAC1D; }
+.legend_color3 { background-color: #F7970E; }
+.legend_color4 { background-color: #0087AA; }
+.legend_color5 { background-color: #0087AA; }
+
 .doughnuts {width:20%;}
 .card_height {height:100% !important;}
 .height_bars1 {height:20% !important;}

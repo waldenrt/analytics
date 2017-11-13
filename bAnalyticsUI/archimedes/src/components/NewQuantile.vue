@@ -76,7 +76,7 @@
               <!--+++++col1+++++-->
               <v-flex xs6 class="pa-3 pl-4 pr-4">
                 <!--SELECT-->
-                <<div class="body-2">Select time period for quantile</div>
+                <div class="body-2">Select time period for quantile</div>
                 <v-card-row xs12 class="mb-3">
                   <v-select
                       v-bind:items="items"
