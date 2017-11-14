@@ -9,11 +9,11 @@
             <v-card-title primary-title class="primary">
               <div><h6 class="white--text text-xs-left mb-0">BALOR INPUT</h6></div>
               <v-spacer></v-spacer>
-              <div>
+              <div class="file">
                 <v-dialog v-model="dialog" width="550px">
                   <div slot="activator">
-                    <div class="white--text subheading" style="display:inline-block;cursor:pointer;">Sample File Image</div>
-                    <div style="display:inline-block;"><v-icon primary light slot="activator" style="cursor:pointer;">image</v-icon></div>
+                    <div class="white--text subheading" style="display:inline-block;">Sample File Image</div>
+                    <div style="display:inline-block;"><v-icon primary light slot="activator">image</v-icon></div>
                   </div>
                   <v-card>
                     <img src="../assets/images/balor_file_img.png" width="100%" height="100%" class="file_sample">
@@ -28,12 +28,12 @@
               <div class="body-2">Enter Job Name</div>
               <v-card-row xs12 class="mt-0 mb-3">
                 <v-text-field
-                    name="input-1"
+                    name="job_balor"
                     label="Enter Job Name"
+                    v-model="job_balor"
                     class="mt-1 mb-0 input-group--focused elevation-1"
                     single-line
                     required
-                    v-model="e1"
                     id="job_balor">
                 </v-text-field>
               </v-card-row>
@@ -57,7 +57,7 @@
               <v-card-row xs12 class="mb-3">
                 <v-select
                     v-bind:items="items"
-                    v-model="e2"
+                    v-model="select_balor"
                     label="Select file type"
                     class="mt-1 mb-0 input-group--focused elevation-1"
                     single-line
@@ -95,8 +95,8 @@
   export default {
     data () {
       return {
-        e1: null,
-        e2: null,
+        job_balor: '',
+        select_balor: '',
         items: [
           {text: '.txt (tab separated)'},
           {text: '.CSV ("," delimeter)'},
@@ -112,13 +112,11 @@
       }
     },
     computed: {
+      formIsValid () {
+        return this.job_balor !== '' && this.select_balor !== ''
+      }
     },
     methods: {
-      formIsValid () {
-        if (this.e1 === '') {
-          alert('Job must be entered')
-        }
-      },
       fileUpload (fieldName, fileNames) {
         console.log('Entering fileUpload')
         const formData = new FormData()
@@ -136,10 +134,7 @@
       },
       submit () {
         console.log('submit job now')
-        alert('submitted')
-      },
-      clear () {
-        console.log('clear all fields')
+        alert('Job has been submitted. Please check the Job History page for status update.')
       }
     }
   }
@@ -148,6 +143,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .v_card_width {max-width:450px;}
+.file {cursor:pointer;}
 .file_sample {padding:10px; position:relative; top:3px;}
 .centereddiv{
   position:relative;

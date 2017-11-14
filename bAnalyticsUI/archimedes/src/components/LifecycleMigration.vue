@@ -97,11 +97,25 @@
             <v-flex xs12 sm6>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
-                  <v-flex xs12>
-                    <div class="primary--text text-xs-center pl-0 pr-0 pb-0 pt-2">
-                      Segment Legend:
-                    </div>
-                  </v-flex>
+                    <!-- LEGEND -->
+                    <v-flex xs12>
+                      <div class="primary--text text-xs-left pl-0 pr-0 pb-1 pt-2">
+                        Legend:<br /><br />
+                      </div>
+                      <v-card class="white pt-1 pb-1 pl-2 pr-2 mr-2 mb-2">
+                        <div class="legend accent"></div>
+                        <div class="caption inliner padR5">Best in Class</div>
+                        <div class="legend success"></div>
+                        <div class="caption inliner padR5">Rising Stars</div>
+                        <div class="legend info"></div>
+                        <div class="caption inliner padR5">Middle of the road</div>
+                        <div class="legend warning"></div>
+                        <div class="caption inliner padR5">Lapsing</div>
+                        <div class="legend error"></div>
+                        <div class="caption inliner padR5">Deeply Lapsed</div>
+                      </v-card>
+                    </v-flex>
+                    <!-- //LEGEND -->
                 </v-layout>
               </v-card>
             </v-flex>
@@ -790,5 +804,12 @@
    width: 100%;
    left: 0;
    top: 0;
+  }
+  .inliner { display: inline-block; }
+  .legend {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
   }
 </style>
