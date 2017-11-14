@@ -344,7 +344,12 @@ object Lifecycle {
 
     }
 
-    val orderCols = pivotDF
+    val invertedDF = pivotDF
+      .withColumn("TP", dense_rank().over(Window.orderBy(col("TimePeriod").desc)))
+      .drop("TimePeriod")
+      .withColumnRenamed("TP", "TimePeriod")
+
+    val orderCols = invertedDF
       .select("TimePeriod", "TotalCusts", "TotalTxns", "TotalSpend", "TotalItems",
         "BestCustCount", "BestTxnCount", "BestTxnAmt",  "BestRecency","BestItemQty",
         "BestPercentCustBase", "BestPercentTxnBase", "BestPercentSalesBase", "BestAvgFreq", "BestAvgRecency", "BestAvgSales", "BestAvgItems", "BestVisitSpend",
@@ -472,7 +477,12 @@ object Lifecycle {
 
     }
 
-    val orderCols = calcDF
+    val invertedDF = calcDF
+      .withColumn("TP", dense_rank().over(Window.orderBy(col("TimePeriod").desc)))
+      .drop("TimePeriod")
+      .withColumnRenamed("TP", "TimePeriod")
+
+    val orderCols = invertedDF
       .select("TimePeriod", columnName, "tpItemAmt", "ProdPercentSales", "tpTotalSales",
         "BestItemAmt", "BestTotalSales", "BestPercentSales", "BestIndex",
         "RisingItemAmt", "RisingTotalSales", "RisingPercentSales", "RisingIndex",
@@ -623,9 +633,27 @@ object Lifecycle {
 
     }
 
-    sumDF.sort("TimePeriod").collect().foreach(f => mapMigrations(f))
+    val invertedSumDF = sumDF
+      .withColumn("TP", dense_rank().over(Window.orderBy(col("TimePeriod").desc)))
+      .drop("TimePeriod")
+      .withColumnRenamed("TP", "TimePeriod")
+
+    val invertedCountDF = countDF
+      .withColumn("TP", dense_rank().over(Window.orderBy(col("TimePeriod").desc)))
+      .drop("TimePeriod")
+      .withColumnRenamed("TP", "TimePeriod")
+
+    val selectInvertedSum = invertedSumDF.select("TimePeriod", "CurrSeg", "PrevSeg", "Count")
+
+    val selectInvertedCount = invertedCountDF.select("TimePeriod", "Best in Class_sum(NewCount)", "Best in Class_sum(AllCount)",
+    "Rising Stars_sum(NewCount)", "Rising Stars_sum(AllCount)", "Middle of the Road_sum(NewCount)", "Middle of the Road_sum(AllCount)",
+    "Lapsing_sum(NewCount)", "Lapsing_sum(AllCount)", "Deeply Lapsed_sum(NewCount)", "Deeply Lapsed_sum(AllCount)")
+
+    selectInvertedSum.sort("TimePeriod").collect().foreach(f => mapMigrations(f))
     migList.get(migList.size() - 1).setMigrationData(innerMigArray)
-    countDF.sort("TimePeriod").collect().foreach(g => mapCounts(g))
+    selectInvertedCount.sort("TimePeriod").collect().foreach(g => mapCounts(g))
+
+    println(s"Migration avro output: $migList")
 
     migList
   }
@@ -688,11 +716,11 @@ object Lifecycle {
     val sc = new SparkContext(conf)
     val sqlCtx = new HiveContext(sc)
 
-    //val kafkaProps = sc.textFile("kafkaProps.txt")
-    /*val propsOnly = kafkaProps.filter(_.contains("analytics"))
+    val kafkaProps = sc.textFile("kafkaProps.txt")
+    val propsOnly = kafkaProps.filter(_.contains("analytics"))
       .map(_.split(" = "))
       .keyBy(_ (0))
-      .mapValues(_ (1))*/
+      .mapValues(_ (1))
 
     if (args.length != 5) {
       //sendError
@@ -759,11 +787,11 @@ object Lifecycle {
     avro match {
       case Success(avro) => {
         println(s"Lifecycle calculations were successful: $avro")
-        //KafkaProducer.sendSucess("lifecycle", propsOnly, avro)
+        KafkaProducer.sendSucess("lifecycle", propsOnly, avro)
         sc.stop()
       }
       case Failure(ex) => {
-        //sendLifecycleError(jobKey, "Lifecycle", "unknown", ex.toString, "System", propsOnly)
+        sendLifecycleError(jobKey, "Lifecycle", "unknown", ex.toString, "System", propsOnly)
         println(s"Lifecycle had an error: $ex")
         sc.stop()
         System.exit(-1)

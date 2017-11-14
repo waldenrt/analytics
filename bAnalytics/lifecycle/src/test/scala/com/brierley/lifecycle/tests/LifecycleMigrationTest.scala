@@ -100,6 +100,7 @@ class LifecycleMigrationTest extends FunSuite with DataFrameSuiteBase {
   test("sumMigrations 2 TPs, 3 in both") {
     new SumMigData {
       val sumDF = Lifecycle.sumMigrations(twoTPs, sqlCtx, sc) getOrElse orElseDF
+      sumDF.show()
       val count1DF = sumDF.filter(sumDF("Count") === 1)
       assert(count1DF.count() === 3)
 
