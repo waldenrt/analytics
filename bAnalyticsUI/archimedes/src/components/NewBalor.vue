@@ -49,6 +49,7 @@
                     class="white elevation-1"
                     style="width:100%;"
                     id="input_balor">
+                    <p>{{ uploadFieldName }}</p>
                 </form>
               </v-card-row>
               <!--//FILE-LOADER-->
@@ -97,6 +98,7 @@
       return {
         job_balor: '',
         select_balor: '',
+        input_balor: '',
         items: [
           {text: '.txt (tab separated)'},
           {text: '.CSV ("," delimeter)'},
@@ -112,8 +114,17 @@
       }
     },
     computed: {
+      fileIsValid () {
+        var inp = document.getElementById('input_balor')
+        if (inp.file.length === 0) {
+          alert('Attachment Required')
+          inp.focus()
+          return false
+        }
+      },
       formIsValid () {
-        return this.job_balor !== '' && this.select_balor !== ''
+        var inputField = document.getElementById('input_balor')
+        return this.job_balor !== '' && this.select_balor !== '' && inputField.value !== ''
       }
     },
     methods: {
