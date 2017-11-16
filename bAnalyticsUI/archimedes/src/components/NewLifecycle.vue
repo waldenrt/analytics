@@ -8,11 +8,11 @@
             <v-card-title primary-title class="primary">
               <div><h6 class="white--text text-xs-left mb-0">CORE LIFECYCLE INPUT</h6></div>
               <v-spacer></v-spacer>
-              <div>
+              <div class="file">
                 <v-dialog v-model="dialog" width="550px">
                   <div slot="activator">
-                    <div class="white--text subheading" style="display:inline-block;cursor:pointer;">Sample File Image</div>
-                    <div style="display:inline-block;"><v-icon primary light slot="activator" style="cursor:pointer;">image</v-icon></div>
+                    <div class="white--text subheading" style="display:inline-block;">Sample File Image</div>
+                    <div style="display:inline-block;"><v-icon primary light slot="activator">image</v-icon></div>
                   </div>
                   <v-card>
                     <img src="../assets/images/balor_file_img.png" width="100%" height="100%" class="file_sample">
@@ -166,6 +166,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .v_card_width {max-width:300px;}
+.file {cursor:pointer;}
 .file_sample {padding:10px; position:relative; top:3px;}
 .input-group {margin-top:0; margin-bottom:0;}
 .mar_field1 {margin-top:19px;}
