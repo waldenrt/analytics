@@ -131,10 +131,12 @@
             <!--+++++col1+++++-->
             <v-flex sm12 md8>
               <!-- CHART GOES HERE -->
-              <div class="scaling-svg-container"
+              <div v-if="showSankey" class="scaling-svg-container"
    style="padding-bottom: 92% /* 100% * 55/60 */">
                 <svg width="1050" height="1000" id="sankeySvg" class="scaling-svg" viewBox="0 10 1050 1000" ></svg>
               </div>
+              <div v-else> I need something to go here that explains that the last timePeriod does not have migration data
+              due to it being the baseline for all migrations.</div>
             </v-flex>
             <!--//+++++col1+++++-->
 
@@ -269,7 +271,7 @@
         postSegComp: 'Best in Class',
         segments: ['All', 'Best in Class', 'Rising Stars', 'Middle of the Road', 'Lapsing', 'Deeply Lapsed'],
         quantArray: [],
-        jobId: 'testLifecycle',
+        jobId: 'invertedLifecycle',
         nodes: [],
         tpLinks: [],
         links: [],
@@ -296,7 +298,8 @@
         risingRet: 0,
         middleRet: 0,
         lapsingRet: 0,
-        deeplyRet: 0
+        deeplyRet: 0,
+        showSankey: true
       }
     },
     computed: {
@@ -416,7 +419,7 @@
           return formatNumber(d) + ' ' + units
         }
 
-        const data = this.tpLinks[1]
+        const data = this.tpLinks[this.tpSelect - 1]
         var mySankey = sankey()
           .nodeWidth(45)
           .nodePadding(5)
@@ -568,19 +571,33 @@
       },
 
       selectTP () {
-        if ((this.tpSelect - 2) >= 0) {
-          this.bestRet = this.bestMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].bestTotalCount
-          this.risingRet = this.risingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].risingTotalCount
-          this.middleRet = this.middleMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].middleTotalCount
-          this.lapsingRet = this.lapsingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].lapsingTotalCount
-          this.deeplyRet = this.deeplyMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].deeplyTotalCount
+        // update retention cards
+        if (this.tpSelect <= this.bestMigArray.length - 1) {
+          this.bestRet = this.bestMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].bestTotalCount
+          this.risingRet = this.risingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].risingTotalCount
+          this.middleRet = this.middleMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].middleTotalCount
+          this.lapsingRet = this.lapsingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].lapsingTotalCount
+          this.deeplyRet = this.deeplyMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].deeplyTotalCount
+
+          this.showSankey = true
+          this.buildSankey()
         } else {
           this.bestRet = 0
           this.risingRet = 0
           this.middleRet = 0
           this.lapsingRet = 0
           this.deeplyRet = 0
+          this.showSankey = false
         }
+
+        // update bar chart data
+        this.selBestPost = this.allBestPost[this.tpSelect - 1]
+        this.selRisingPost = this.allRisingPost[this.tpSelect - 1]
+        this.selMiddlePost = this.allMiddlePost[this.tpSelect - 1]
+        this.selLapsingPost = this.allLapsingPost[this.tpSelect - 1]
+        this.selDeeplyPost = this.allDeeplyPost[this.tpSelect - 1]
+
+        this.selPostPeriodComp()
       },
 
       parseBarData () {
@@ -711,11 +728,11 @@
         this.allLapsingPost = tempAllLapsing
         this.allDeeplyPost = tempAllDeeply
 
-        this.selBestPost = tempAllBest[1]
-        this.selRisingPost = tempAllRising[1]
-        this.selMiddlePost = tempAllMiddle[1]
-        this.selLapsingPost = tempAllLapsing[1]
-        this.selDeeplyPost = tempAllDeeply[1]
+        this.selBestPost = tempAllBest[this.tpSelect - 1]
+        this.selRisingPost = tempAllRising[this.tpSelect - 1]
+        this.selMiddlePost = tempAllMiddle[this.tpSelect - 1]
+        this.selLapsingPost = tempAllLapsing[this.tpSelect - 1]
+        this.selDeeplyPost = tempAllDeeply[this.tpSelect - 1]
 
         this.barData = {
           labels: this.barLabels,
@@ -736,12 +753,12 @@
         this.lapsingMigArray = tempLapsingMigArray
         this.deeplyMigArray = tempDeeplyMigArray
 
-        if ((this.tpSelect - 2) >= 0) {
-          this.bestRet = this.bestMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].bestTotalCount
-          this.risingRet = this.risingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].risingTotalCount
-          this.middleRet = this.middleMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].middleTotalCount
-          this.lapsingRet = this.lapsingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].lapsingTotalCount
-          this.deeplyRet = this.deeplyMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect - 2].segmentTotal[0].deeplyTotalCount
+        if (this.tpSelect <= this.bestMigArray.length - 1) {
+          this.bestRet = this.bestMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].bestTotalCount
+          this.risingRet = this.risingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].risingTotalCount
+          this.middleRet = this.middleMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].middleTotalCount
+          this.lapsingRet = this.lapsingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].lapsingTotalCount
+          this.deeplyRet = this.deeplyMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].deeplyTotalCount
         } else {
           this.bestRet = 0
           this.risingRet = 0

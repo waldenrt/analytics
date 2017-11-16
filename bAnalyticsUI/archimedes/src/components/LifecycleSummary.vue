@@ -192,7 +192,7 @@
           {text: 'Deeply Lapsed', value: 'deeplyAvg'}],
         tableData: [],
         tpDataArray: [],
-        jobId: 'testLifecycle',
+        jobId: 'invertedLifecycle',
         bestCust: {},
         bestVisits: {},
         bestSpend: {},

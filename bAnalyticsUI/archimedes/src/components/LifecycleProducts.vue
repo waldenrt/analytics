@@ -207,7 +207,7 @@
         prodArray: [],
         prodSelect: ['All'],
         topN: null,
-        jobId: 'testLifecycle',
+        jobId: 'invertedLifecycle',
         labels: [],
         spendPer: [],
         bestIndex: [],
