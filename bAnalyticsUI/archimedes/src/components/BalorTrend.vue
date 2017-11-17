@@ -74,15 +74,16 @@
       <!--//+++++col1+++++-->
       <!--+++++col2+++++-->
       <v-flex xs4 lg3>
+        <!-- BALOR Summary -->
         <v-layout row wrap class="cad_sum">
           <v-flex xs12 class="pb-3">
-            <div style="border-right: 7px solid red;">
+            <div style="border-right: 7px solid #D63809;">
             <v-card horizontal class="white card_height">
-              <v-card-text class="white red--text card_pad">
-                <v-card-title primary-title class="pt-0 pb-3">
-                  <h6 class="red--text text-xs-left mb-0 pt-0 pb-0">BALOR Summary</h6>
+              <v-card-text class="white error--text card_pad">
+                <v-card-title primary-title class="pa-0 pb-3">
+                  <h6 class="error--text text-xs-left mb-0 pt-0 pb-0">BALOR Summary</h6>
                 </v-card-title>
-                <v-divider class="red"></v-divider>
+                <v-divider class="error"></v-divider>
                 <table width="100%">
                 <tr>
                   <td class="grey lighten-4" style="border-bottom:1px solid grey !important;">Min. Date:</td>
@@ -118,6 +119,29 @@
             </div>
           </v-flex>
         </v-layout>
+        <!--// BALOR Summary -->
+        <!-- Retention Summary -->
+        <v-layout row wrap class="ret_sum">
+          <v-flex xs12 class="pb-3">
+            <div style="border-right: 7px solid #f7970e;">
+            <v-card horizontal class="white card_height">
+              <v-card-text class="white warning--text card_pad">
+                <v-card-title primary-title class="pa-0 pb-3">
+                  <h6 class="warning--text text-xs-left mb-0 pt-0 pb-0">Retention Summary</h6>
+                </v-card-title>
+                <v-divider class="info"></v-divider>
+                <table width="100%">
+                  <tr v-for="item in retentionItems" v-bind:key="item.name">
+                    <td class="grey lighten-4" style="border-bottom:1px solid grey !important;">{{ item.name }}:</td>
+                    <td class="grey lighten-4" style="border-bottom:1px solid grey !important; margin-left:5px; text-align:right;">{{ item.vals }}</td>
+                  </tr>
+                </table>
+              </v-card-text>
+            </v-card>
+            </div>
+          </v-flex>
+        </v-layout>
+        <!--// Retention Summary -->
       </v-flex>
       <!--//+++++col2+++++-->
     </v-layout>
@@ -127,40 +151,44 @@
     <v-layout row wrap class="mb-3">
       <v-flex xs12 fill-height>
         <v-card class="white">
-          <v-layout row wrap>
-            <v-flex xs12>
-              <v-card-title primary-title class="primary">
-                <h6 class="white--text text-xs-left mb-0">BALOR Composition and Metrics for Period:</h6>
-              </v-card-title>
-            </v-flex>
-          </v-layout>
 
           <!-- SELECTION ROW -->
           <v-layout row wrap>
-            <!--selection-->
             <v-flex xs12>
-              <v-card flat class="pa-3">
+              <v-card class="pa-0 ma-0 grey lighten-2">
+                <v-card-title primary-title class="primary">
+                  <h6 class="white--text text-xs-left mb-0">BALOR Composition and Metrics for Period:</h6>
+                </v-card-title>
                 <v-layout row wrap>
-                  <v-flex xs12 sm3 md3>
-                      <v-card id="selection" class="white inliner">
-                        <v-select v-model="tp"
-                                  v-bind:items="tpArray"
-                                  label="Select Time Period"
-                                  v-on:input="setTP()"
-                                  style="width:175px;margin-bottom:0;"
-                                  class="pl-1 pt-1">
-                        </v-select>
-                      </v-card>
+                  <!--Dropdown1-->
+                  <v-flex xs12 sm2>
+                    <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
+                      <v-layout row wrap>
+                        <v-flex xs12>
+                          <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                            Time Period:
+                          </div>
+                        </v-flex>
+                        <v-flex xs12>
+                            <v-select v-model="tp"
+                                    v-bind:items="tpArray"
+                                    label="Select Time Period"
+                                    single-line
+                                    v-on:input="setTP()"
+                                    style="width:175px;"
+                                    class="pl-1 pt-1 mt-1 mb-2 white elevation-1"
+                                    hide-details
+                                    id="selection">
+                            </v-select>
+                        </v-flex>
+                      </v-layout>
+                    </v-card>
                   </v-flex>
-                  <v-flex xs12 sm3 offset-sm6 md3 offset-md6 class="text-sm-right padT15_mob">
-                      <v-card class="white primary--text inliner pt-3 pb-3 pl-2 pr-2" v-for="item in retentionItems"
-                           v-bind:key="item.name">
-                        {{ item.name }}: {{ item.vals }}
-                      </v-card>
-                  </v-flex>
+                  <!--//Dropdown1-->
                 </v-layout>
               </v-card>
             </v-flex>
+            <!--selection-->
             <!--//selection-->
           </v-layout>
           <!-- //SELECTION ROW -->

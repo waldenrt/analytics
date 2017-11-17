@@ -28,42 +28,41 @@
         </v-card-title>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-layout row wrap>
+
             <!--Dropdown1-->
-            <v-flex xs12 sm6 md4>
+            <v-flex xs12 sm3>
               <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
                 <v-layout row wrap>
-                  <v-flex xs5>
-                      <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
-                        BALOR<br/>dimension:
-                      </div>
+                  <v-flex xs12>
+                    <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                      BALOR dimension:
+                    </div>
                   </v-flex>
-                  <v-flex xs7>
-                    <v-card class="white pa-0">
+                  <v-flex xs12>
                       <v-select v-bind:items="dimensions"
                                 v-model="dimensionSelect"
                                 label="Select Dimension"
                                 single-line
                                 bottom
                                 v-on:input="selectDimension()"
-                                class="pa-1 m-0 v_font">
+                                class="pl-1 pr-1 mt-1 mb-2 white elevation-1"
+                                hide-details>
                       </v-select>
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>
             </v-flex>
             <!--//Dropdown1-->
             <!--Dropdown2-->
-            <v-flex xs12 sm6 md4>
+            <v-flex xs12 sm3>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
-                  <v-flex xs5>
-                    <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
-                      BALOR<br/>average:
+                  <v-flex xs12>
+                    <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                      BALOR average:
                     </div>
                   </v-flex>
-                  <v-flex xs7>
-                    <v-card class="white">
+                  <v-flex xs12>
                       <v-select
                           v-if="dimensionSelect === 'Customer'"
                           v-bind:items="custDim"
@@ -71,8 +70,9 @@
                           label="Select Average"
                           single-line
                           bottom
+                          hide-details
                           v-on:input="selectAvg()"
-                          class="pa-1 m-0">
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
                       <v-select
                           v-else-if="dimensionSelect === 'Visits'"
@@ -81,8 +81,9 @@
                           label="Select Average"
                           single-line
                           bottom
+                          hide-details
                           v-on:input="selectAvg()"
-                          class="pa-1 m-0">
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
                       <v-select
                           v-else-if="dimensionSelect === 'Spend'"
@@ -91,8 +92,9 @@
                           label="Select Average"
                           single-line
                           bottom
+                          hide-details
                           v-on:input="selectAvg()"
-                          class="pa-1 m-0">
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
                       <v-select
                           v-else-if="dimensionSelect === 'Discount'"
@@ -101,41 +103,42 @@
                           label="Select Average"
                           single-line
                           bottom
+                          hide-details
                           v-on:input="selectAvg()"
-                          class="pa-1 m-0">
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>
             </v-flex>
             <!--//Dropdown2-->
             <!--Dropdown3-->
-            <v-flex xs12 sm6 md4>
-              <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
+            <v-flex xs12 sm3>
+              <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
-                  <v-flex xs5>
-                    <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
-                      BALOR<br/>segment:
+                  <v-flex xs12>
+                    <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                      BALOR segment:
                     </div>
                   </v-flex>
-                  <v-flex xs7>
-                    <v-card class="white pa-0">
-                      <v-select v-bind:items="segments"
-                                v-model="segSelect"
-                                label="Select Segment"
-                                multiple
-                                single-line
-                                bottom
-                                v-on:input="selectAvg()"
-                                class="pa-1 m-0 v_font">
+                  <v-flex xs12>
+                      <v-select
+                              v-bind:items="segments"
+                               v-model="segSelect"
+                               label="Select Segment"
+                               multiple
+                               single-line
+                               bottom
+                               hide-details
+                               v-on:input="selectAvg()"
+                               class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>
             </v-flex>
             <!--//Dropdown3-->
+
           </v-layout>
         </v-card>
       </v-flex>
@@ -166,60 +169,61 @@
     <!-- //=====ROW1===== -->
 
     <!-- =====ROW2===== -->
-    <v-layout row wrap class="mt-4 mb-3">
+    <v-layout row wrap class="mt-4 mb-4">
       <v-flex xs12>
         <v-card-title primary-title class="primary">
           <h6 class="white--text text-xs-left mb-0">Segment Profiles</h6>
         </v-card-title>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-layout row wrap>
+
+
+
             <!--Dropdown1-->
-            <v-flex xs12 sm6 md4>
+            <v-flex xs12 sm3>
               <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
                 <v-layout row wrap>
-                  <v-flex xs5>
-                    <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
-                      BALOR<br/>time period:
+                  <v-flex xs12>
+                    <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                      BALOR time period:
                     </div>
                   </v-flex>
-                  <v-flex xs7>
-                    <v-card class="white pa-0">
+                  <v-flex xs12>
                       <v-select
-                          v-bind:items="tpArray"
-                          v-model="tpSelect"
-                          label="Select Balor Time Period"
-                          single-line
-                          bottom
-                          v-on:input="updateTPMetric"
-                          class="pa-1 m-0">
+                      v-bind:items="tpArray"
+                      v-model="tpSelect"
+                      label="Select Balor Time Period"
+                      single-line
+                      bottom
+                      hide-details
+                      v-on:input="updateTPMetric"
+                      class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>
             </v-flex>
             <!--//Dropdown1-->
             <!--Dropdown2-->
-            <v-flex xs12 sm6 md5>
+            <v-flex xs12 sm3>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
-                  <v-flex xs5>
-                    <div class="primary--text text-xs-right pl-0 pr-0 pb-0 padT18">
-                      BALOR<br/>metric:
+                  <v-flex xs12>
+                    <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                      BALOR metric:
                     </div>
                   </v-flex>
-                  <v-flex xs7>
-                    <v-card class="white">
+                  <v-flex xs12>
                       <v-select
-                          v-bind:items="avgList"
-                          v-model="tpAvgSelect"
-                          label="Select Balor Metric"
-                          single-line
-                          bottom
-                          v-on:input="updateTPMetric"
-                          class="pa-1 m-0">
+                      v-bind:items="avgList"
+                      v-model="tpAvgSelect"
+                      label="Select Balor Metric"
+                      single-line
+                      bottom
+                      hide-details
+                      v-on:input="updateTPMetric"
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>

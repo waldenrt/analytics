@@ -18,17 +18,16 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                    <v-card class="white pa-0">
                       <v-select v-bind:items="quantiles"
                                 v-model="quantileSelect"
                                 label="Select Quantiles"
                                 multiple
                                 single-line
                                 bottom
+                                hide-details
                                 v-on:input="selectQuantile()"
-                                class="pl-1 pr-1 mt-1 mb-2">
+                                class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -44,17 +43,16 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                    <v-card class="white">
                       <v-select
                           v-bind:items="TPArray"
                           v-model="TPSelect"
                           label="Select Time Period"
                           single-line
                           bottom
+                          hide-details
                           v-on:input="selectTP()"
-                          class="pl-1 pr-1 mt-1 mb-2">
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -70,17 +68,16 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                    <v-card class="white">
                       <v-select
                           v-bind:items="metrics"
                           v-model="metricSelect"
                           label="Select Metric"
                           single-line
                           bottom
+                          hide-details
                           v-on:input="selectMetric()"
-                          class="pl-1 pr-1 mt-1 mb-2">
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>

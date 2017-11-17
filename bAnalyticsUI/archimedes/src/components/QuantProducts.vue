@@ -30,8 +30,9 @@
                                 multiple
                                 single-line
                                 bottom
+                                hide-details
                                 v-on:input="selectQuantile()"
-                                class="pl-1 pr-1 mt-1 mb-2">
+                                class="pl-1 pr-1 mt-1 mb-2 white">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
                     </v-card>
@@ -58,8 +59,9 @@
                           label="Select Time Period"
                           single-line
                           bottom
+                          hide-details
                           v-on:input="selectTP()"
-                          class="pl-1 pr-1 mt-1 mb-2">
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
                     </v-card>
@@ -86,8 +88,9 @@
                           label="Select Metric"
                           single-line
                           bottom
+                          hide-details
                           v-on:input="selectMetric()"
-                          class="pl-1 pr-1 mt-1 mb-2">
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
                     </v-card>
@@ -114,8 +117,9 @@
                           label="Select Metric"
                           single-line
                           bottom
+                          hide-details
                           v-on:input="selectMetric()"
-                          class="pl-1 pr-1 mt-1 mb-2">
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                           <!--//SWAP OUT DROPDOWN-->
                       </v-select>
                     </v-card>

@@ -18,18 +18,17 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                    <v-card class="white pa-0">
                       <!--SWAP OUT DROPDOWN-->
                       <v-select v-bind:items="tpArray"
                                 v-model="tpSelect"
                                 label="Select Time Period"
                                 single-line
                                 bottom
+                                hide-details
                                 v-on:input="selectTP()"
-                                class="pl-1 pr-1 mt-1 mb-2">
+                                class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -45,7 +44,6 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                    <v-card class="white">
                       <!--SWAP OUT DROPDOWN-->
                       <v-select
                           v-bind:items="segments"
@@ -54,11 +52,11 @@
                           mulitple
                           single-line
                           bottom
+                          hide-details
                           v-on:input="selectPriorSegment()"
-                          class="pl-1 pr-1 mt-1 mb-2">
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -74,7 +72,6 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                    <v-card class="white">
                       <!--SWAP OUT DROPDOWN-->
                       <v-select
                           v-bind:items="segments"
@@ -83,11 +80,11 @@
                           single-line
                           mulitple
                           bottom
+                          hide-details
                           v-on:input="selectPostSegment()"
-                          class="pl-1 pr-1 mt-1 mb-2">
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -143,7 +140,7 @@
           <v-layout wrap row>
 
             <!--+++++col1+++++-->
-            <v-flex sm12 md8>
+            <v-flex xs12 sm12 md8>
               <!-- CHART GOES HERE -->
               <div class="scaling-svg-container"
    style="padding-bottom: 92% /* 100% * 55/60 */">
@@ -153,7 +150,7 @@
             <!--//+++++col1+++++-->
 
             <!--+++++col2+++++-->
-            <v-flex sm12 md4 class="pr-4">
+            <v-flex xs12 sm12 md4 class="pr-4">
               <!--table-row-->
               <v-layout wrap row>
                 <v-card class="white" style="width:100%;">
@@ -219,18 +216,17 @@
                                     </div>
                                   </v-flex>
                                   <v-flex xs12>
-                                    <v-card class="white pa-0">
                                       <!--****THIS IS JUST A PLACEHOLDER DROPDOWN****-->
                                       <v-select v-bind:items="segments"
                                                 v-model="postSegComp"
                                                 label="Select Segments"
                                                 single-line
                                                 bottom
+                                                hide-details
                                                 v-on:input="selPostPeriodComp()"
-                                                class="pl-1 pr-1 mt-1 mb-2">
+                                                class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                                       </v-select>
                                       <!--//****THIS IS JUST A PLACEHOLDER DROPDOWN****//-->
-                                    </v-card>
                                   </v-flex>
                                 </v-layout>
                               </v-card>

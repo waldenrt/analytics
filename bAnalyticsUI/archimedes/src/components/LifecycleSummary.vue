@@ -9,7 +9,7 @@
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
-            <v-flex xs12 sm3>
+            <v-flex xs12 sm2>
               <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
@@ -24,6 +24,7 @@
                                 label="Select Time Period"
                                 single-line
                                 bottom
+                                hide-details
                                 v-on:input="selectTP()"
                                 class="pl-1 pr-1 mt-1 mb-2">
                       </v-select>
@@ -34,7 +35,7 @@
             </v-flex>
             <!--//Dropdown1-->
             <!-- LEGEND -->
-            <v-flex xs12 sm9>
+            <v-flex xs12 sm6>
               <div class="primary--text text-xs-left pl-0 pr-0 pb-1 pt-2">
                 Legend:
               </div>

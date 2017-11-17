@@ -134,10 +134,4 @@
   text-decoration: none;
   color:#354052;
 }
-label[for="username"]{padding-left:15px !important;}
-.input-group--text-field label{display: none !important;}
-.input-group--text-field .input-group--single-line label{display: none !important;}
-</style>
-<style>
-  .input-group__details{display: none !important;}
 </style>

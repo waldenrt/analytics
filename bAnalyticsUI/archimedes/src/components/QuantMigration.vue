@@ -22,16 +22,15 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                    <v-card class="white pa-0">
                       <v-select v-bind:items="tpArray"
                                 v-model="tpSelect"
                                 v-on:input="selectTP()"
                                 label="Select Time Period"
                                 single-line
                                 bottom
-                                class="pl-1 pr-1 mt-1 mb-2"></v-select>
+                                hide-details
+                                class="pl-1 pr-1 mt-1 mb-2 white elevation-1"></v-select>
                       </v-select>
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -48,15 +47,14 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                    <v-card class="white">
                       <v-select v-bind:items="quantArray"
                                 v-model="priorPeriod"
                                 label="Select Prior Period Quantiles"
                                 multiple
                                 single-line
                                 bottom
-                                class="pl-1 pr-1 mt-1 mb-2"></v-select>
-                    </v-card>
+                                hide-details
+                                class="pl-1 pr-1 mt-1 mb-2 white elevation-1"></v-select>
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -73,16 +71,15 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                    <v-card class="white">
                       <v-select v-bind:items="quantArray"
                                 v-model="postPeriod"
                                 label="Select Post Period Quantiles"
                                 multiple
                                 single-line
                                 bottom
-                                class="pl-1 pr-1 m-0"></v-select>
+                                hide-details
+                                class="pl-1 pr-1 m-0 white elevation-1"></v-select>
                       </v-select>
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -98,16 +95,15 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                    <v-card class="white">
                       <v-select v-bind:items="views"
                                 v-model="viewType"
                                 v-on:input="selectView()"
                                 label="View Table As"
                                 single-line
                                 bottom
-                                class="pl-1 pr-1 mt-1 mb-2"></v-select>
+                                hide-details
+                                class="pl-1 pr-1 mt-1 mb-2 white elevation-1"></v-select>
                       </v-select>
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -228,16 +224,15 @@
                                     </div>
                                   </v-flex>
                                   <v-flex xs12>
-                                    <v-card class="white pa-0">
                                       <v-select v-bind:items="quantArray"
                                                 v-model="quantileSelect"
                                                 label="Select Quantile\"
                                                 single-line
                                                 bottom
+                                                hide-details
                                                 v-on:input="selectQuantile()"
-                                                class="pl-1 pr-1 mt-1 mb-2">
+                                                class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                                       </v-select>
-                                    </v-card>
                                   </v-flex>
                                 </v-layout>
                               </v-card>

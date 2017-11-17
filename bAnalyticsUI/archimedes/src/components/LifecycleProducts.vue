@@ -22,18 +22,17 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                    <v-card class="white pa-0">
                       <!--SWAP OUT DROPDOWN-->
                       <v-select v-bind:items="tpArray"
                                 v-model="tpSelect"
                                 label="Select Time Period"
                                 single-line
                                 bottom
+                                hide-details
                                 v-on:input="selectTP()"
-                                class="pl-1 pr-1 mt-1 mb-2">
+                                class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -49,7 +48,6 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                    <v-card class="white">
                       <v-select
                           v-bind:items="prodArray"
                           v-model="prodSelect"
@@ -57,10 +55,10 @@
                           single-line
                           bottom
                           multiple
+                          hide-details
                           v-on:input="selectProds()"
-                          class="pl-1 pr-1 mt-1 mb-2">
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -76,7 +74,6 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                    <v-card class="white">
                       <v-select
                           v-bind:items="segmentArray"
                           v-model="segSelect"
@@ -84,10 +81,10 @@
                           multiple
                           single-line
                           bottom
+                          hide-details
                           v-on:input="selectSegment()"
-                          class="pl-1 pr-1 mt-1 mb-2">
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
-                    </v-card>
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -103,15 +100,14 @@
                     </div>
                   </v-flex>
                   <v-flex xs8>
-                    <v-card class="white">
                       <v-text-field
                           name="topProducts"
                           label="How many products"
+                          hide-details
                           id="topN"
                           v-model="topN"
                           v-on:keyup.enter.native="topProds()"
-                          class="pl-1 pr-1 mt-1 mb-2"></v-text-field>
-                    </v-card>
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1"></v-text-field>
                   </v-flex>
                   <v-flex xs4>
                     <v-btn light primary default v-on:click.native="topProds()" class="ma-0">Filter</v-btn>

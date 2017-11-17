@@ -23,7 +23,12 @@
             </v-card-title>
             <v-layout row wrap style="">
             <!--+++++col1+++++-->
+
+
+
             <v-flex xs12 class="pa-3 pl-4 pr-4">
+
+
               <!--FIELD-->
               <div class="body-2">Enter Job Name</div>
               <v-card-row xs12 class="mt-0 mb-3">
@@ -31,9 +36,12 @@
                     name="job_balor"
                     label="Enter Job Name"
                     v-model="job_balor"
-                    class="mt-1 mb-0 input-group--focused elevation-1"
+                    class="mt-1 mb-0 input-group--focused"
                     single-line
                     required
+                    :errors="['I cannot be empty', 'Must be more than 2 characters']"
+                    hint="Job name"
+                    persistent-hint
                     id="job_balor">
                 </v-text-field>
               </v-card-row>
@@ -49,7 +57,6 @@
                     class="white elevation-1"
                     style="width:100%;"
                     id="input_balor">
-                    <p>{{ uploadFieldName }}</p>
                 </form>
               </v-card-row>
               <!--//FILE-LOADER-->
@@ -110,7 +117,7 @@
         uploadedFiles: [],
         uploadError: null,
         currentStatus: null,
-        uploadFieldName: 'file'
+        uploadFieldName: ''
       }
     },
     computed: {
@@ -123,8 +130,8 @@
         }
       },
       formIsValid () {
-        var inputField = document.getElementById('input_balor')
-        return this.job_balor !== '' && this.select_balor !== '' && inputField.value !== ''
+        // var inputField = document.getElementById('input_balor')
+        // return this.job_balor !== '' && this.select_balor !== '' && inputField.value !== ''
       }
     },
     methods: {
