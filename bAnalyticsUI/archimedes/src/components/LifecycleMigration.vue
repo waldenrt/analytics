@@ -97,25 +97,25 @@
             <v-flex xs12 sm6>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
-                    <!-- LEGEND -->
-                    <v-flex xs12>
-                      <div class="primary--text text-xs-left pl-0 pr-0 pb-1 pt-2">
-                        Legend:<br /><br />
-                      </div>
-                      <v-card class="white pt-1 pb-1 pl-2 pr-2 mr-2 mb-2">
-                        <div class="legend accent"></div>
-                        <div class="caption inliner padR5">Best in Class</div>
-                        <div class="legend success"></div>
-                        <div class="caption inliner padR5">Rising Stars</div>
-                        <div class="legend info"></div>
-                        <div class="caption inliner padR5">Middle of the road</div>
-                        <div class="legend warning"></div>
-                        <div class="caption inliner padR5">Lapsing</div>
-                        <div class="legend error"></div>
-                        <div class="caption inliner padR5">Deeply Lapsed</div>
-                      </v-card>
-                    </v-flex>
-                    <!-- //LEGEND -->
+                  <!-- LEGEND -->
+                  <v-flex xs12>
+                    <div class="primary--text text-xs-left pl-0 pr-0 pb-1 pt-2">
+                      Legend:<br/><br/>
+                    </div>
+                    <v-card class="white pt-1 pb-1 pl-2 pr-2 mr-2 mb-2">
+                      <div class="legend accent"></div>
+                      <div class="caption inliner padR5">Best in Class</div>
+                      <div class="legend success"></div>
+                      <div class="caption inliner padR5">Rising Stars</div>
+                      <div class="legend info"></div>
+                      <div class="caption inliner padR5">Middle of the road</div>
+                      <div class="legend warning"></div>
+                      <div class="caption inliner padR5">Lapsing</div>
+                      <div class="legend error"></div>
+                      <div class="caption inliner padR5">Deeply Lapsed</div>
+                    </v-card>
+                  </v-flex>
+                  <!-- //LEGEND -->
                 </v-layout>
               </v-card>
             </v-flex>
@@ -145,12 +145,13 @@
             <!--+++++col1+++++-->
             <v-flex sm12 md8>
               <!-- CHART GOES HERE -->
-              <div v-if="showSankey" class="scaling-svg-container"
-   style="padding-bottom: 92% /* 100% * 55/60 */">
-                <svg width="1050" height="1000" id="sankeySvg" class="scaling-svg" viewBox="0 10 1050 1000" ></svg>
+              <div v-show="showSankey" class="scaling-svg-container"
+                   style="padding-bottom: 92% /* 100% * 55/60 */">
+                <svg width="1050" height="1000" id="sankeySvg" class="scaling-svg" viewBox="0 10 1050 1000"></svg>
               </div>
-              <div v-else> I need something to go here that explains that the last timePeriod does not have migration data
-              due to it being the baseline for all migrations.</div>
+             <div v-show="showError"> I need something to go here that explains that the last timePeriod does not have migration
+                data due to it being the baseline for all migrations.
+              </div>
             </v-flex>
             <!--//+++++col1+++++-->
 
@@ -180,7 +181,8 @@
                         </v-card>
                         <v-card class="info mb-2 height_bars1">
                           <v-card-text class="info white--text height_bars2">
-                            <div class="subheading">Middle of the Road <span style="float:right;">{{ middleRet }}</span></div>
+                            <div class="subheading">Middle of the Road <span style="float:right;">{{ middleRet }}</span>
+                            </div>
                           </v-card-text>
                         </v-card>
                         <v-card class="warning mb-2 height_bars1">
@@ -190,7 +192,8 @@
                         </v-card>
                         <v-card class="error mb-2 height_bars1">
                           <v-card-text class="error white--text height_bars2">
-                            <div class="subheading">Deeply Lapsed <span style="float:right;">{{ deeplyRet }}</span></div>
+                            <div class="subheading">Deeply Lapsed <span style="float:right;">{{ deeplyRet }}</span>
+                            </div>
                           </v-card-text>
                         </v-card>
                       </v-flex>
@@ -246,7 +249,9 @@
                     <!-- =====ROW2===== -->
                     <v-layout row wrap class="pt-0 mt-0">
                       <v-flex xs12 class="pa-0 ma-0">
-                        <div style="width:100%;" class="mt-3"><bar-chart :chart-data="barData"></bar-chart></div>
+                        <div style="width:100%;" class="mt-3">
+                          <bar-chart :chart-data="barData"></bar-chart>
+                        </div>
                       </v-flex>
                     </v-layout>
                     <!-- //=====ROW2===== -->
@@ -313,7 +318,8 @@
         middleRet: 0,
         lapsingRet: 0,
         deeplyRet: 0,
-        showSankey: true
+        showSankey: true,
+        showError: false
       }
     },
     computed: {
@@ -425,8 +431,10 @@
         var units = 'Customers'
 
         var svg = d3.select('#sankeySvg')
-        var width = +svg.attr('width')
-        var height = +svg.attr('height')
+          .append('svg')
+          .attr('id', 'stankey')
+        var width = 1050
+        var height = 1000
 
         var formatNumber = d3.format(',.0f')    // decimal places
         var format = function (d) {
@@ -438,6 +446,7 @@
           .nodeWidth(45)
           .nodePadding(5)
           .extent([[1, 1], [width - 1, height - 6]])
+          .iterations(0)
 
         var link = svg
           .append('g')
@@ -594,7 +603,9 @@
           this.deeplyRet = this.deeplyMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].deeplyTotalCount
 
           this.showSankey = true
-          this.buildSankey()
+          this.showError = false
+          // d3.select('stankey').remove()
+          this.update()
         } else {
           this.bestRet = 0
           this.risingRet = 0
@@ -602,6 +613,7 @@
           this.lapsingRet = 0
           this.deeplyRet = 0
           this.showSankey = false
+          this.showError = true
         }
 
         // update bar chart data
@@ -780,6 +792,53 @@
           this.lapsingRet = 0
           this.deeplyRet = 0
         }
+      },
+
+      update () {
+        const data = this.tpLinks[this.tpSelect - 1]
+
+        var svg = d3.select('#sankeyChart')
+
+        sankey
+          .nodes(data.nodes)
+          .links(data.links)
+
+        sankey.update()
+
+        svg.selectAll('.link')
+          .data(data.links, function (d) {
+            return d.id
+          })
+          .transition()
+          .duration(1300)
+          .attr('d', sankeyLinkHorizontal())
+          .style('stroke-width', function (d) {
+            return Math.max(1, d.width)
+          })
+
+        svg.selectAll('.node')
+          .data(data.nodes, function (d) {
+            return d.name
+          })
+          .transition()
+          .duration(1300)
+          .attr('transform', function (d) {
+            return 'translate(' + d.x + ',' + d.y + ')'
+          })
+
+        svg.selectAll('.node rect')
+          .transition()
+          .duration(1300)
+          .attr('height', function (d) {
+            return d.dy
+          })
+
+        svg.selectAll('.node text')
+          .transition()
+          .duration(1300)
+          .attr('y', function (d) {
+            return d.dy / 2
+          })
       }
     }
   }
@@ -807,22 +866,28 @@
   .link:hover {
     stroke-opacity: .5;
   }
+
   .scaling-svg-container {
-   position: relative;
-   height: 0;
-   width: 100%;
-   padding: 0;
-   padding-bottom: 100%;
-   /* override this inline for aspect ratio other than square */
+    position: relative;
+    height: 0;
+    width: 100%;
+    padding: 0;
+    padding-bottom: 100%;
+    /* override this inline for aspect ratio other than square */
   }
+
   .scaling-svg {
-   position: absolute;
-   height: 100%;
-   width: 100%;
-   left: 0;
-   top: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
   }
-  .inliner { display: inline-block; }
+
+  .inliner {
+    display: inline-block;
+  }
+
   .legend {
     display: inline-block;
     width: 12px;
