@@ -70,6 +70,7 @@
                     class="mt-1 mb-0 input-group--focused elevation-1"
                     single-line
                     bottom
+                    hide-details
                     v-bind:error-messages="['Please select an option']"
                     required
                     id="select_balor">
@@ -84,6 +85,7 @@
                   :class="{ green: valid, red: !valid }"
                   class="primary white--text ma-0">submit</v-btn>
               </v-card-row>
+              <small>*indicates required field</small>
               <!--//BUTTONS-->
             </v-flex>
             <!--//+++++col1+++++-->
