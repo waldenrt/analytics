@@ -30,21 +30,24 @@
 
 
               <!--FIELD-->
-              <div class="body-2">Enter Job Name</div>
-              <v-card-row xs12 class="mt-0 mb-3">
-                <v-text-field
-                    name="job_balor"
-                    label="Enter Job Name"
-                    v-model="job_balor"
-                    class="mt-1 mb-0 input-group--focused"
-                    single-line
-                    required
-                    :errors="['I cannot be empty', 'Must be more than 2 characters']"
-                    hint="Job name"
-                    persistent-hint
-                    id="job_balor">
-                </v-text-field>
-              </v-card-row>
+              <div class="xs12 pb-3">
+                <label class="body-2">Enter Job Name</label>
+                <v-layout class="xs12 ma-0">
+                  <v-text-field
+                      name="job_balor"
+                      label="Enter Job Name"
+                      v-model="job_balor"
+                      class="ma-0 input-group--focused"
+                      single-line
+                      hide-details
+                      v-validate="'required'"
+                      id="job_balor">
+                  </v-text-field>
+                </v-layout>
+                <v-layout class="xs12 ma-0">
+                  <small v-show="errors.has('job_balor')" class="error--text">* {{ errors.first('job_balor') }}</small>
+                </v-layout>
+              </div>
               <!--//FIELD-->
               <!--FILE-LOADER-->
               <div class="body-2">Select file for analysis</div>
