@@ -4,7 +4,9 @@
     <v-layout row wrap style="height:100%;">
       <v-flex xs6 offset-xs3 class="pl-0 pr-0 mt-0">
         <div class="centereddiv">
-        <form name="balForm" @submit.prevent="submit()" novalidate>
+
+        <!-- FORM STARTS -->
+        <form name="balForm" @submit.prevent="validateBeforeSubmit()">
           <v-card class="white" style="margin-top:50px;">
             <v-card-title primary-title class="primary">
               <div><h6 class="white--text text-xs-left mb-0">BALOR INPUT</h6></div>
@@ -21,25 +23,23 @@
                 </v-dialog>
               </div>
             </v-card-title>
-            <v-layout row wrap style="">
+            <v-layout row wrap>
             <!--+++++col1+++++-->
 
 
 
             <v-flex xs12 class="pa-3 pl-4 pr-4">
-
-
               <!--FIELD-->
               <div class="xs12 pb-3">
                 <label class="body-2">Enter Job Name</label>
                 <v-layout class="xs12 ma-0">
                   <v-text-field
-                      name="job_balor"
                       label="Enter Job Name"
                       v-model="job_balor"
                       class="ma-0 input-group--focused"
                       single-line
                       hide-details
+                      data-vv-name="job_balor"
                       v-validate="'required'"
                       id="job_balor">
                   </v-text-field>
@@ -50,51 +50,62 @@
               </div>
               <!--//FIELD-->
               <!--FILE-LOADER-->
-              <div class="body-2">Select file for analysis</div>
-              <v-card-row xs12 class="mb-3">
-                <form enctype="multipart/form-data" style="width:100%;">
-                  <input
-                    type="file"
-                    :name="uploadFieldName"
-                    @change="fileUpload($event.target.name, $event.target.files)"
-                    class="white elevation-1"
-                    style="width:100%;"
-                    id="input_balor">
-                </form>
-              </v-card-row>
+              <div class="xs12 pb-3">
+                <label class="body-2">Select file for analysis</label>
+                <v-layout xs12 style="padding-left:12px;padding-right:12px;">
+                  <form enctype="multipart/form-data" style="width:100%;">
+                    <input
+                      type="file"
+                      :name="uploadFieldName"
+                      @change="fileUpload($event.target.name, $event.target.files)"
+                      class="ma-0 input-group--focused"
+                      style="width:100%;"
+                      data-vv-name="file_balor"
+                      v-validate="'required|ext:txt,csv,dsv'"
+                      id="input_balor">
+                  </form>
+                </v-layout>
+                <v-layout class="xs12 ma-0">
+                  <small v-show="errors.has('file_balor')" class="error--text">* {{ errors.first('file_balor') }}</small>
+                </v-layout>
+              </div>
               <!--//FILE-LOADER-->
               <!--SELECT-->
-              <div class="body-2">Select file type</div>
-              <v-card-row xs12 class="mb-3">
-                <v-select
-                    v-bind:items="items"
-                    v-model="select_balor"
-                    label="Select file type"
-                    class="mt-1 mb-0 input-group--focused elevation-1"
-                    single-line
-                    bottom
-                    hide-details
-                    v-bind:error-messages="['Please select an option']"
-                    required
-                    id="select_balor">
-                </v-select>
-              </v-card-row>
+              <div class="xs12 pb-3">
+                <label class="body-2">Select file type</label>
+                <v-layout xs12  style="padding-left:12px;padding-right:12px;">
+                  <v-select
+                      v-bind:items="items"
+                      v-model="select_balor"
+                      label="Select file type"
+                      class="ma-0 input-group--focused"
+                      single-line
+                      hide-details
+                      data-vv-name="select_balor"
+                      v-validate="'required'"
+                      id="select_balor">
+                  </v-select>
+                </v-layout>
+                <v-layout class="xs12 ma-0">
+                  <small v-show="errors.has('select_balor')" class="error--text">* {{ errors.first('select_balor') }}</small>
+                </v-layout>
+              </div>
               <!--//SELECT-->
-              <!--BUTTONS-->
+              <!--BUTTON-->
               <v-card-row xs12>
                 <v-btn
-                  :disabled="!formIsValid"
-                  @click.native="submit()"
+                  :disabled="disabledBtn"
+                  @click.native="validateBeforeSubmit()"
                   :class="{ green: valid, red: !valid }"
                   class="primary white--text ma-0">submit</v-btn>
               </v-card-row>
-              <small>*indicates required field</small>
-              <!--//BUTTONS-->
+              <!--//BUTTON-->
             </v-flex>
             <!--//+++++col1+++++-->
             </v-layout>
           </v-card>
         </form>
+        <!-- //FORM ENDS -->
         </div>
       </v-flex>
     </v-layout>
@@ -111,6 +122,7 @@
         job_balor: '',
         select_balor: '',
         input_balor: '',
+        disabledBtn: '',
         items: [
           {text: '.txt (tab separated)'},
           {text: '.CSV ("," delimeter)'},
@@ -152,12 +164,25 @@
       save (formData) {
         upload(formData)
           .catch(err => {
-            alert('There was an error uploading the file.  Please try again.  ' + err.message.toString())
+            alert('There was an error uploading the file.  Please try again.' + err.message.toString())
           })
       },
       submit () {
         console.log('submit job now')
         alert('Job has been submitted. Please check the Job History page for status update.')
+      },
+      validateBeforeSubmit () {
+        var vm = this
+        this.$validator.validateAll().then((result) => {
+          if (result) {
+            alert('Form Submitted!')
+            vm.disabledBtn = false
+            return
+          } else {
+            alert('Correct them errors!')
+            vm.disabledBtn = true
+          }
+        })
       }
     }
   }
