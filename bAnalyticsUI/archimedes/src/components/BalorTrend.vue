@@ -75,44 +75,44 @@
       <!--+++++col2+++++-->
       <v-flex xs4 lg3>
         <!-- BALOR Summary -->
-        <v-layout row wrap class="cad_sum">
+        <v-layout row wrap>
           <v-flex xs12 class="pb-3">
-            <div style="border-right: 7px solid #D63809;">
+            <div class="sum_brd1">
             <v-card horizontal class="white card_height">
               <v-card-text class="white error--text card_pad">
                 <v-card-title primary-title class="pa-0 pb-3">
                   <h6 class="error--text text-xs-left mb-0 pt-0 pb-0">BALOR Summary</h6>
                 </v-card-title>
                 <v-divider class="error"></v-divider>
-                <table width="100%">
-                <tr>
-                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important;">Min. Date:</td>
-                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important; margin-left:5px; text-align:right;">{{ jsonMsg.minDateBalor }}</td>
-                </tr>
-                <tr>
-                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important;">Max. Date:</td>
-                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important; margin-left:5px; text-align:right;">{{ jsonMsg.maxDateBalor }}</td>
-                </tr>
-                <tr>
-                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important;">Customer Base:</td>
-                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important; margin-left:5px; text-align:right;">{{ jsonMsg.totalCusts }}</td>
-                </tr>
-                <tr>
-                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important;">% Customer - 1 Purchase:</td>
-                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important; margin-left:5px; text-align:right;">{{ (jsonMsg.singleVisit / jsonMsg.totalCusts * 100).toFixed(2) + '%' }}</td>
-                </tr>
-                <tr>
-                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important;">Transactions:</td>
-                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important; margin-left:5px; text-align:right;">{{ jsonMsg.numRecords }}</td>
-                </tr>
-                <tr>
-                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important;">Purchase Cadence - 80th Percentile:</td>
-                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important; margin-left:5px; text-align:right;">{{ jsonMsg.normalizedCadence }}</td>
-                </tr>
-                <tr>
-                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important;">Time Periods:</td>
-                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important; margin-left:5px; text-align:right;">{{ jsonMsg.timePeriods.length }}</td>
-                </tr>
+                <table width="100%" class="summary">
+                  <tr>
+                    <td class="grey lighten-4">Min. Date:</td>
+                    <td class="grey lighten-4">{{ this.sumItems.minDateBalor }}</td>
+                  </tr>
+                  <tr>
+                    <td class="grey lighten-4">Max. Date:</td>
+                    <td class="grey lighten-4">{{ this.sumItems.maxDateBalor }}</td>
+                  </tr>
+                  <tr>
+                    <td class="grey lighten-4">Customer Base:</td>
+                    <td class="grey lighten-4">{{ this.sumItems.totalCusts }}</td>
+                  </tr>
+                  <tr>
+                    <td class="grey lighten-4">% Customer - 1 Purchase:</td>
+                    <td class="grey lighten-4">{{ this.sumItems.percentCust }}</td>
+                  </tr>
+                  <tr>
+                    <td class="grey lighten-4">Transactions:</td>
+                    <td class="grey lighten-4">{{ this.sumItems.numRecords }}</td>
+                  </tr>
+                  <tr>
+                    <td class="grey lighten-4">Purchase Cadence - 80th Percentile:</td>
+                    <td class="grey lighten-4">{{ this.sumItems.normalizedCadence }}</td>
+                  </tr>
+                  <tr>
+                    <td class="grey lighten-4">Time Periods:</td>
+                    <td class="grey lighten-4">{{ this.sumItems.timePeriods.length }}</td>
+                  </tr>
                 </table>
               </v-card-text>
             </v-card>
@@ -123,17 +123,17 @@
         <!-- Retention Summary -->
         <v-layout row wrap class="ret_sum">
           <v-flex xs12 class="pb-3">
-            <div style="border-right: 7px solid #f7970e;">
+            <div class="sum_brd2">
             <v-card horizontal class="white card_height">
               <v-card-text class="white warning--text card_pad">
                 <v-card-title primary-title class="pa-0 pb-3">
                   <h6 class="warning--text text-xs-left mb-0 pt-0 pb-0">Retention Summary</h6>
                 </v-card-title>
                 <v-divider class="info"></v-divider>
-                <table width="100%">
+                <table width="100%" class="summary">
                   <tr v-for="item in retentionItems" v-bind:key="item.name">
-                    <td class="grey lighten-4" style="border-bottom:1px solid grey !important;">{{ item.name }}:</td>
-                    <td class="grey lighten-4" style="border-bottom:1px solid grey !important; margin-left:5px; text-align:right;">{{ item.vals }}</td>
+                    <td class="grey lighten-4">{{ item.name }}:</td>
+                    <td class="grey lighten-4">{{ item.vals }}</td>
                   </tr>
                 </table>
               </v-card-text>
@@ -256,20 +256,20 @@
               >
               <template slot="items" scope="props">
                 <td>{{ props.item.timePeriod }}</td>
-                <td class="text-xs-right">{{ props.item.custBalor.toFixed(2) }}</td>
-                <td class="text-xs-right">{{ props.item.spendBalor.toFixed(2) }}</td>
-                <td class="text-xs-right">{{ props.item.txnBalor.toFixed(2) }}</td>
+                <td class="text-xs-right">{{ props.item.custBalor }}</td>
+                <td class="text-xs-right">{{ props.item.spendBalor }}</td>
+                <td class="text-xs-right">{{ props.item.txnBalor }}</td>
                 <td class="text-xs-right">{{ props.item.newCustCount }}</td>
-                <td class="text-xs-right">${{ props.item.newTxnAmt.toFixed(2) }}</td>
+                <td class="text-xs-right">{{ props.item.newTxnAmt }}</td>
                 <td class="text-xs-right">{{ props.item.newTxnCount }}</td>
                 <td class="text-xs-right">{{ props.item.reactCustCount }}</td>
-                <td class="text-xs-right">${{ props.item.reactTxnAmt.toFixed(2) }}</td>
+                <td class="text-xs-right">{{ props.item.reactTxnAmt }}</td>
                 <td class="text-xs-right">{{ props.item.reactTxnCount }}</td>
                 <td class="text-xs-right">{{ props.item.returnCustCount }}</td>
-                <td class="text-xs-right">${{ props.item.returnTxnAmt.toFixed(2) }}</td>
+                <td class="text-xs-right">{{ props.item.returnTxnAmt }}</td>
                 <td class="text-xs-right">{{ props.item.returnTxnCount }}</td>
                 <td class="text-xs-right">{{ props.item.lapsedCustCount }}</td>
-                <td class="text-xs-right">${{ props.item.lapsedTxnAmt.toFixed(2) }}</td>
+                <td class="text-xs-right">{{ props.item.lapsedTxnAmt }}</td>
                 <td class="text-xs-right">{{ props.item.lapsedTxnCount }}</td>
               </template>
             </v-data-table>
@@ -290,6 +290,8 @@
   import PieCharts from './balorCharts/PieCharts.js'
   import noUiSlider from 'noUiSlider'
   import {summary} from './javascript/balor.service'
+
+  var numeral = require('numeral')
 
   export default {
     name: 'balorTrend',
@@ -323,7 +325,7 @@
           { text: 'Lapsed Txn Count', value: 'lapsedTxnCount' }
         ],
         retentionItems: [],
-        sumItems: [],
+        sumItems: {},
         msg: 'Balor Trend Charts will go here!',
         custData: null,
         txnData: null,
@@ -388,7 +390,28 @@
         return this.incomingJson.data
       },
       items1: function () {
-        return this.incomingJson.data.timePeriods
+        var formatArray = []
+        for (let i = 0; i < this.incomingJson.data.timePeriods.length; i++) {
+          formatArray.push({
+            'timePeriod': numeral(this.incomingJson.data.timePeriods[i].timePeriod).format(),
+            'custBalor': numeral(this.incomingJson.data.timePeriods[i].custBalor).format('0.00'),
+            'spendBalor': numeral(this.incomingJson.data.timePeriods[i].spendBalor).format('0.00'),
+            'txnBalor': numeral(this.incomingJson.data.timePeriods[i].txnBalor).format('0.00'),
+            'newCustCount': numeral(this.incomingJson.data.timePeriods[i].newCustCount).format(),
+            'newTxnAmt': numeral(this.incomingJson.data.timePeriods[i].newTxnAmt).format('$0,0.00'),
+            'newTxnCount': numeral(this.incomingJson.data.timePeriods[i].newTxnCount).format(),
+            'reactCustCount': numeral(this.incomingJson.data.timePeriods[i].reactCustCount).format(),
+            'reactTxnAmt': numeral(this.incomingJson.data.timePeriods[i].reactTxnAmt).format('$0,0.00'),
+            'reactTxnCount': numeral(this.incomingJson.data.timePeriods[i].reactTxnCount).format(),
+            'returnCustCount': numeral(this.incomingJson.data.timePeriods[i].returnCustCount).format(),
+            'returnTxnAmt': numeral(this.incomingJson.data.timePeriods[i].returnTxnAmt).format('$0,0.00'),
+            'returnTxnCount': numeral(this.incomingJson.data.timePeriods[i].returnTxnCount).format(),
+            'lapsedCustCount': numeral(this.incomingJson.data.timePeriods[i].lapsedCustCount).format(),
+            'lapsedTxnAmt': numeral(this.incomingJson.data.timePeriods[i].lapsedTxnAmt).format('$0,0.00'),
+            'lapsedTxnCount': numeral(this.incomingJson.data.timePeriods[i].lapsedTxnCount).format()
+          })
+        }
+        return formatArray // this.incomingJson.data.timePeriods
       }
     },
     mounted () {
@@ -408,8 +431,21 @@
             console.log(this.incomingJson)
             this.createPies()
             this.createLines()
+            this.createBalSumItems()
             this.createSlider()
           })
+      },
+      createBalSumItems () {
+        this.sumItems = {
+          'minDateBalor': this.jsonMsg.minDateBalor,
+          'maxDateBalor': this.jsonMsg.maxDateBalor,
+          'totalCusts': numeral(this.jsonMsg.totalCusts).format('0,0'),
+          'singleVisit': this.jsonMsg.singleVisit,
+          'percentCust': numeral(this.jsonMsg.singleVisit / this.jsonMsg.totalCusts).format('0.00%'),
+          'numRecords': numeral(this.jsonMsg.numRecords).format('0,0'),
+          'normalizedCadence': this.jsonMsg.normalizedCadence,
+          'timePeriods': this.jsonMsg.timePeriods
+        }
       },
       createLines () {
         console.log('this.items1')
@@ -637,7 +673,7 @@
       },
       createPies () {
         var tp = 0
-        this.retentionItems = [{name: 'Retention', vals: this.jsonMsg.timePeriods[tp].returnTxnCount}]
+        this.retentionItems = [{name: 'Retention', vals: numeral(this.jsonMsg.timePeriods[tp].returnTxnCount).format()}]
 
         this.custData = {
           datasets: [{
@@ -812,6 +848,19 @@
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
   .inliner { display: inline-block; }
+
+  .sum_brd1 { border-right: 7px solid #D63809; }
+
+  .sum_brd2 { border-right: 7px solid #f7970e; }
+
+  .summary td {
+    border-bottom:1px solid grey !important;
+  }
+
+  .summary td:last-child {
+    margin-left:5px;
+    text-align:right;
+  }
 
   .line_chart {
     position: relative;
