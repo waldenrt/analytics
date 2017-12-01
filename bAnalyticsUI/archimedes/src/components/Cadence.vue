@@ -26,17 +26,17 @@
       <v-flex xs4 lg3>
         <v-layout row wrap class="cad_sum">
           <v-flex xs12 class="pb-3">
-            <div style="border-right: 7px solid red;">
+            <div class="sum_brd1">
             <v-card horizontal class="white card_height">
               <v-card-text class="white red--text card_pad">
                 <v-card-title primary-title class="pt-0 pb-3">
                   <h6 class="red--text text-xs-left mb-0 pt-0 pb-0">Cadence Summary</h6>
                 </v-card-title>
                 <v-divider class="red"></v-divider>
-                <table width="100%">
+                <table width="100%" class="summary">
                 <tr v-for="item in sumItems">
-                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important;">{{ item.name }}</td>
-                  <td class="grey lighten-4" style="border-bottom:1px solid grey !important; margin-left:5px; text-align:right;">{{ item.vals }}</td>
+                  <td class="grey lighten-4">{{ item.name }}</td>
+                  <td class="grey lighten-4">{{ item.vals }}</td>
                 </tr>
                 </table>
               </v-card-text>
@@ -77,6 +77,9 @@
 <script>
   import AnnotatedBarChart from './balorCharts/AnnotatedBarChart'
   import {cadence} from './javascript/balor.service'
+
+  var numeral = require('numeral')
+
   export default {
     name: 'cadence',
     components: {
@@ -138,8 +141,8 @@
           tempPer.push(this.jsonMsg.freqTable[i].cumFreq / this.jsonMsg.numRecords)
           tempTable.push({
             'cadence': this.jsonMsg.freqTable[i].cadence,
-            'frequency': this.jsonMsg.freqTable[i].frequency,
-            'cumFreq': this.jsonMsg.freqTable[i].cumFreq
+            'frequency': numeral(this.jsonMsg.freqTable[i].frequency).format('0,0'),
+            'cumFreq': numeral(this.jsonMsg.freqTable[i].cumFreq).format('0,0')
           })
         }
         this.cadArray = tempCad
@@ -151,8 +154,8 @@
       createSummary () {
         this.sumItems.push({name: 'Min. Date', vals: this.jsonMsg.minDateCadence})
         this.sumItems.push({name: 'Max. Date', vals: this.jsonMsg.maxDateCadence})
-        this.sumItems.push({name: '# Customer - 1 Purchase', vals: this.jsonMsg.singleVisit})
-        this.sumItems.push({name: 'Transactions', vals: this.jsonMsg.numRecords})
+        this.sumItems.push({name: '# Customer - 1 Purchase', vals: numeral(this.jsonMsg.singleVisit).format()})
+        this.sumItems.push({name: 'Transactions', vals: numeral(this.jsonMsg.numRecords).format()})
         this.sumItems.push({name: 'Raw Cadence - 80th Percentile', vals: this.jsonMsg.rawCadence})
         this.sumItems.push({name: 'Normalized Cadence Value', vals: this.jsonMsg.normalizedCadence})
         this.sumItems.push({name: 'Time Period', vals: this.jsonMsg.numTimePeriods})
@@ -207,6 +210,13 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
+.sum_brd1 { border-right: 7px solid #D63809; }
+.sum_brd2 { border-right: 7px solid #f7970e; }
+
+.summary td:last-child {
+  margin-left:5px;
+  text-align:right;
+}
 .cad_sum div {margin:0 auto;}
 .card_height{min-height:165px;}
 .card_pad{padding-top:20px;padding-bottom:20px;}

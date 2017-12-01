@@ -94,7 +94,6 @@
               <!--BUTTON-->
               <v-card-row xs12>
                 <v-btn
-                  :disabled="disabledBtn"
                   @click.native="validateBeforeSubmit()"
                   :class="{ green: valid, red: !valid }"
                   class="primary white--text ma-0">submit</v-btn>

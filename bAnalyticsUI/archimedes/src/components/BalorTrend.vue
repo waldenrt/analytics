@@ -129,7 +129,7 @@
                 <v-card-title primary-title class="pa-0 pb-3">
                   <h6 class="warning--text text-xs-left mb-0 pt-0 pb-0">Retention Summary</h6>
                 </v-card-title>
-                <v-divider class="info"></v-divider>
+                <v-divider class="warning"></v-divider>
                 <table width="100%" class="summary">
                   <tr v-for="item in retentionItems" v-bind:key="item.name">
                     <td class="grey lighten-4">{{ item.name }}:</td>
@@ -852,10 +852,6 @@
   .sum_brd1 { border-right: 7px solid #D63809; }
 
   .sum_brd2 { border-right: 7px solid #f7970e; }
-
-  .summary td {
-    border-bottom:1px solid grey !important;
-  }
 
   .summary td:last-child {
     margin-left:5px;
