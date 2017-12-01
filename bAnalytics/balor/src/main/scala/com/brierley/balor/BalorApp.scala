@@ -66,28 +66,30 @@ object BalorApp {
       dateDF
         .select("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT", "Date", "max(Date)")
         .withColumn("TimePeriod", (datediff(dateDF("max(Date)"), dateDF("Date")) / cadence.periodDivisor).cast(IntegerType) + 1)
-        //.sort(col("TP").desc)
-        //.withColumn("TimePeriod", dense_rank().over(Window.orderBy(col("TP").desc)))
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date", "TimePeriod")
         .withColumn("StartDate", min("Date").over(Window.partitionBy("TimePeriod")))
 
     }
 
     def monthTimePeriod(trimDF: DataFrame): DataFrame = {
-      val maxDateDF = trimDF.select(max("Date"))
+      val maxDateDF = trimDF.select(max("Date"), min("Date"))
 
-      trimDF
+      val monthTrimDF = trimDF
         .select("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT", "Date")
         .withColumn("max(Date)", lit(maxDateDF.select("max(Date)").first().getDate(0)))
+        .withColumn("min(Date)", lit(maxDateDF.select("min(Date)").first().getDate(0)))
         .withColumn("Month", month(dateDF("Date")))
         .withColumn("Year", year(dateDF("Date")))
         .withColumn("MaxMonth", month(col("max(Date)")))
         .withColumn("MaxYear", year(col("max(Date)")))
+        .withColumn("MinMonth", month(col("min(Date)")))
+        .withColumn("minYear", year(col("min(Date)")))
         .withColumn("TimePeriod", (((col("MaxMonth") - col("Month")) + (col("MaxYear") - col("Year")) * 12) / cadence.periodDivisor).cast(IntegerType) + 1)
-        //.sort(col("TP").desc)
-        //.withColumn("TimePeriod", dense_rank().over(Window.orderBy(col("TP").desc)))
-        .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date", "TimePeriod")
         .withColumn("StartDate", min("Date").over(Window.partitionBy("TimePeriod")))
+
+      monthTrimDF
+        .filter(col("TimePeriod") <= (((col("MaxMonth") - col("MinMonth") + 1) + (col("MaxYear") - col("MinYear")) * 12) / cadence.periodDivisor).cast(IntegerType))
+        .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date", "TimePeriod", "StartDate")
     }
 
     val timePeriodDF = cadence match {
