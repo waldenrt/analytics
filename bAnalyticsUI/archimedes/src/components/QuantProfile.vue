@@ -118,9 +118,9 @@
               hide-actions>
             <template slot="items" scope="props">
               <td>{{ props.item.quantile }}</td>
-              <td class="text-xs-right">$ {{ props.item.avgCustSales }}</td>
-              <td class="text-xs-right">$ {{ props.item.avgVisitSpend }}</td>
-              <td class="text-xs-right">$ {{ props.item.avgItemSales }}</td>
+              <td class="text-xs-right">{{ props.item.avgCustSales }}</td>
+              <td class="text-xs-right">{{ props.item.avgVisitSpend }}</td>
+              <td class="text-xs-right">{{ props.item.avgItemSales }}</td>
               <td class="text-xs-right">{{ props.item.avgCustUnits }}</td>
               <td class="text-xs-right">{{ props.item.avgVisitUnits }}</td>
               <td class="text-xs-right">{{ props.item.avgCustVisits }}</td>
@@ -136,6 +136,9 @@
 <script>
   import ParetoChart from './balorCharts/ParetoChart'
   import {quantSum} from './javascript/quantile.service'
+
+  // [JF] initiates numeral.js library in this vue component. must use together with numeral() or numeral().format()
+  var numeral = require('numeral')
 
   export default {
     name: 'quantProfile',
@@ -214,12 +217,12 @@
           if (this.jsonMsg.quantileResult[i].timePeriod === this.TPSelect) {
             tempObj.push({
               'quantile': this.jsonMsg.quantileResult[i].quantile,
-              'avgCustSales': this.jsonMsg.quantileResult[i].avgSpend.toFixed(2),
-              'avgVisitSpend': this.jsonMsg.quantileResult[i].avgVisitSpend.toFixed(2),
-              'avgItemSales': this.jsonMsg.quantileResult[i].avgItemSales.toFixed(2),
+              'avgCustSales': numeral(this.jsonMsg.quantileResult[i].avgSpend).format('$0.00'),
+              'avgVisitSpend': numeral(this.jsonMsg.quantileResult[i].avgVisitSpend).format('$0.00'),
+              'avgItemSales': numeral(this.jsonMsg.quantileResult[i].avgItemSales).format('$0.00'),
               'avgCustUnits': this.jsonMsg.quantileResult[i].avgCustUnits,
-              'avgVisitUnits': this.jsonMsg.quantileResult[i].avgVisitUnits.toFixed(2),
-              'avgCustVisits': this.jsonMsg.quantileResult[i].avgVisits.toFixed(2)
+              'avgVisitUnits': numeral(this.jsonMsg.quantileResult[i].avgVisitUnits).format('0.00'),
+              'avgCustVisits': numeral(this.jsonMsg.quantileResult[i].avgVisits).format('0.00')
             })
           }
         }
