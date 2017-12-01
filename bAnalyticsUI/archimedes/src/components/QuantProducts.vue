@@ -24,14 +24,13 @@
                   <v-flex xs12>
                     <v-card class="white pa-0">
                       <!--SWAP OUT DROPDOWN-->
-                      <v-select v-bind:items="quantiles"
-                                v-model="quantileSelect"
-                                label="Select Quantiles"
-                                multiple
+                      <v-select v-bind:items="topBottom"
+                                v-model="topBottomSelect"
+                                label="Select Top or Bottom"
                                 single-line
                                 bottom
                                 hide-details
-                                v-on:input="selectQuantile()"
+                                v-on:input="selectTopBottom()"
                                 class="pl-1 pr-1 mt-1 mb-2 white">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
@@ -54,13 +53,13 @@
                     <v-card class="white">
                       <!--SWAP OUT DROPDOWN-->
                       <v-select
-                          v-bind:items="TPArray"
-                          v-model="TPSelect"
-                          label="Select Time Period"
+                          v-bind:items="measure"
+                          v-model="measureSelect"
+                          label="Select Measure"
                           single-line
                           bottom
                           hide-details
-                          v-on:input="selectTP()"
+                          v-on:input="selectMeasure()"
                           class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
@@ -83,13 +82,13 @@
                     <v-card class="white">
                       <!--SWAP OUT DROPDOWN-->
                       <v-select
-                          v-bind:items="metrics"
-                          v-model="metricSelect"
-                          label="Select Metric"
+                          v-bind:items="tpArray"
+                          v-model="tpSelect"
+                          label="Select Time Period"
                           single-line
                           bottom
                           hide-details
-                          v-on:input="selectMetric()"
+                          v-on:input="selectTP()"
                           class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
                       <!--//SWAP OUT DROPDOWN-->
@@ -112,13 +111,14 @@
                     <v-card class="white">
                       <!--SWAP OUT DROPDOWN-->
                       <v-select
-                          v-bind:items="metrics"
-                          v-model="metricSelect"
-                          label="Select Metric"
+                          v-bind:items="quantiles"
+                          v-model="quantSelect"
+                          label="Select Quantiles"
                           single-line
+                          multiple
                           bottom
                           hide-details
-                          v-on:input="selectMetric()"
+                          v-on:input="selectQuantiles()"
                           class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                           <!--//SWAP OUT DROPDOWN-->
                       </v-select>
@@ -180,6 +180,14 @@
     name: 'quantProducts',
     data () {
       return {
+        topBottom: ['Top', 'Bottom'],
+        topBottomSelect: 'Top',
+        measure: ['Spend', 'Count'],
+        measureSelect: 'Spend',
+        tpArray: [],
+        tpSelect: '1',
+        quantiles: [],
+        quantSelect: ['All'],
         custItems: [
             {name: '1', vals: '$42,7700', percent: '46.37%'},
             {name: '2', vals: '$22,1234', percent: '47.44%'},

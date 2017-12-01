@@ -111,7 +111,7 @@
                   </tr>
                   <tr>
                     <td class="grey lighten-4">Time Periods:</td>
-                    <td class="grey lighten-4">{{ this.sumItems.timePeriods.length }}</td>
+                    <td class="grey lighten-4">{{ this.sumItems.timePeriods }}</td>
                   </tr>
                 </table>
               </v-card-text>
@@ -336,7 +336,7 @@
         txnBalorArray: [],
         spendBalorArray: [],
         tpArray: [],
-        jobId: 'macysDemo',
+        jobId: 'mgiBrandt',
         custTrendData: {
           labels: this.tpArray,
           datasets: [
@@ -381,6 +381,7 @@
           max: 10 // this.tpArray.length}
         },
         Slider: null,
+        mySlider: {},
         tp: 1,
         trendLine: this.allTrendData
       }
@@ -411,13 +412,16 @@
             'lapsedTxnCount': numeral(this.incomingJson.data.timePeriods[i].lapsedTxnCount).format()
           })
         }
-        return formatArray // this.incomingJson.data.timePeriods
+        return formatArray
+      }
+    },
+    updated () {
+      if (document.getElementsByClassName('noUi-target').length === 0) {
+        this.createSlider()
       }
     },
     mounted () {
       this.getResults()
-
-      // this.createTrend()
     },
     methods: {
       getResults () {
@@ -427,12 +431,10 @@
           })
           .then((response) => {
             this.incomingJson = response.data
-            this.items1 = response.data.data.timePeriods
             console.log(this.incomingJson)
             this.createPies()
             this.createLines()
             this.createBalSumItems()
-            this.createSlider()
           })
       },
       createBalSumItems () {
@@ -444,7 +446,7 @@
           'percentCust': numeral(this.jsonMsg.singleVisit / this.jsonMsg.totalCusts).format('0.00%'),
           'numRecords': numeral(this.jsonMsg.numRecords).format('0,0'),
           'normalizedCadence': this.jsonMsg.normalizedCadence,
-          'timePeriods': this.jsonMsg.timePeriods
+          'timePeriods': this.jsonMsg.timePeriods.length
         }
       },
       createLines () {
