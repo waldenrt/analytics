@@ -67,22 +67,22 @@
           </div>
           <v-card class="success mb-2 height_bars1">
             <v-card-text class="success white--text height_bars2">
-              <div class="subheading">Total Customers <span style="float:right;">{{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalCustCount }}</span></div>
+              <div class="subheading">Total Customers <span>{{ this.metricsItems.totalCusts }}</span></div>
             </v-card-text>
           </v-card>
           <v-card class="error mb-2 height_bars1">
             <v-card-text class="error white--text height_bars2">
-              <div class="subheading">Total Visits <span style="float:right;">{{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalTxnCount }}</span></div>
+              <div class="subheading">Total Visits <span>{{ this.metricsItems.totalVisits }}</span></div>
             </v-card-text>
           </v-card>
           <v-card class="info mb-2 height_bars1">
             <v-card-text class="info white--text height_bars2">
-              <div class="subheading">Total Spend <span style="float:right;">${{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalSales.toFixed(2) }}</span></div>
+              <div class="subheading">Total Spend <span>{{ this.metricsItems.totalSpend }}</span></div>
             </v-card-text>
           </v-card>
           <v-card class="warning mb-2 height_bars1">
             <v-card-text class="warning white--text height_bars2">
-              <div class="subheading">Total Units <span style="float:right;">{{ this.jsonMsg.timePeriods[this.tpSelect - 1].totalItems }}</span></div>
+              <div class="subheading">Total Units <span>{{ this.metricsItems.totalUnits }}</span></div>
             </v-card-text>
           </v-card>
         </v-card>
@@ -222,6 +222,15 @@
     computed: {
       jsonMsg: function () {
         return this.incomingJson.data
+      },
+      metricsItems: function () {
+        let compItems = {
+          'totalCusts': numeral(this.jsonMsg.timePeriods[this.tpSelect - 1].totalCustCount).format('0,0'),
+          'totalVisits': numeral(this.jsonMsg.timePeriods[this.tpSelect - 1].totalTxnCount).format('0,0'),
+          'totalSpend': numeral(this.jsonMsg.timePeriods[this.tpSelect - 1].totalSales).format('$0,0.00'),
+          'totalUnits': numeral(this.jsonMsg.timePeriods[this.tpSelect - 1].totalItems).format('0,0')
+        }
+        return compItems
       }
     },
     mounted () {
@@ -238,6 +247,7 @@
             console.log(this.incomingJson)
             this.parseJson()
             this.createDoughnuts()
+            this.createAggMetrics()
           })
       },
 
@@ -509,4 +519,5 @@
 .height_bars1 {height:20% !important;}
 .height_bars2 {height:100% !important; display:table;}
 .height_bars2 div {display:table-cell; vertical-align: middle !important;font-weight: bold;}
+.height_bars2 span {float:right;}
 </style>

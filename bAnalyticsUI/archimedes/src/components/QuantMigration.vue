@@ -133,7 +133,7 @@
 
 
             <!--+++++col1+++++-->
-            <v-flex xs8>
+            <v-flex xs12 md8 lg9>
               <v-data-table
                   v-bind:headers="quantHeaders"
                   :items="tableMigItems"
@@ -157,7 +157,9 @@
 
 
             <!--+++++col2+++++-->
-            <v-flex xs4 class="pr-4">
+            <v-flex xs12 md4 lg3 class="pr-4">
+              <v-layout wrap row>
+              <v-flex xs12 sm6 md12 class="mb-3">
               <!--table-row-->
               <v-layout wrap row>
                 <v-card class="white" style="width:100%;">
@@ -170,19 +172,19 @@
                       <table cellpadding="0" cellspacing="0" width="100%" style="height:21vh !important;">
                         <tr>
                           <td>Quantile</td>
-                          <td>Prior Customers</td>
-                          <td>Retained Customers</td>
-                          <td>New Customers</td>
-                          <td>Post Customer Total</td>
-                          <td>Retention Rate</td>
+                          <!--<td>Prior Customers</td>-->
+                          <td>Retained<br />Customers</td>
+                          <td>New<br />Customers</td>
+                          <td>Post<br />Customer<br />Total</td>
+                          <!--<td>Retention Rate</td>-->
                         </tr>
                         <tr v-for="item in sumItems" v-bind:key="item.name">
                           <td class="pl-2 pr-2 pt-2 pb-0">
                             <div class="primary--text" v-text="item.name"></div>
                           </td>
-                          <td class="pl-2 pr-2 pt-2 pb-0">
+                          <!--<td class="pl-2 pr-2 pt-2 pb-0">
                             <div v-text="item.priorCustCount"></div>
-                          </td>
+                          </td>-->
                           <td class="pl-2 pr-2 pt-2 pb-0">
                             <div v-text="item.retained"></div>
                           </td>
@@ -192,9 +194,9 @@
                           <td class="pl-2 pr-2 pt-2 pb-0">
                             <div v-text="item.postCustCount"></div>
                           </td>
-                          <td class="pl-2 pr-2 pt-2 pb-0">
+                          <!--<td class="pl-2 pr-2 pt-2 pb-0">
                             <div v-text="item.retRate"></div>
-                          </td>
+                          </td>-->
                         </tr>
                       </table>
                     </v-layout>
@@ -202,9 +204,13 @@
                 </v-card>
               </v-layout>
               <!--//table-row-->
+              </v-flex>
+
+
+              <v-flex xs12 sm6 md12 class="mb-3">
               <!--chart-row-->
               <v-layout wrap row>
-                <v-card class="white mt-3 pa-0" style="width:100%;">
+                <v-card class="white pa-0" style="width:100%;">
                   <v-flex xs12 fill-height>
                     <!-- =====ROW1===== -->
                     <v-layout row wrap class="pt-0 mt-0">
@@ -246,12 +252,14 @@
                     <!-- =====ROW2===== -->
                     <v-layout row wrap class="pt-0 mt-0">
                       <v-flex xs12>
-                        <div class="pl-1 pr-1 pt-3 pb-2 bar_height"><bar-chart :chart-data="quantbars"></bar-chart></div>
+                        <div class="pl-1 pr-1 pt-3 pb-2"><bar-chart :chart-data="quantbars" class="bar_height"></bar-chart></div>
                       </v-flex>
                     </v-layout>
                     <!-- //=====ROW2===== -->
                   </v-flex>
                 </v-card>
+              </v-layout>
+              </v-flex>
               </v-layout>
               <!--//chart-row-->
             </v-flex>
@@ -271,7 +279,7 @@
   import {quantMig} from './javascript/quantile.service'
 
   // [JF] initiates numeral.js library in this vue component. must use together with numeral() or numeral().format()
-  // var numeral = require('numeral')
+  var numeral = require('numeral')
 
   export default {
     name: 'quantMigration',
@@ -361,8 +369,25 @@
           tpConverted.push(tempConvert)
         }
 
-        this.tableMigItems = JSON.parse(JSON.stringify(tpConverted))[this.tpSelect - 1]
+        // this.tableMigItems = JSON.parse(JSON.stringify(tpConverted))[this.tpSelect - 1]
         this.quantMigItems = JSON.parse(JSON.stringify(tpConverted))
+        var tempMig = []
+        for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+          tempMig.push({
+            'from': this.quantMigItems[this.tpSelect - 1][i].from,
+            'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+            'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
+            'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
+            'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0'),
+            'key5': numeral(this.quantMigItems[this.tpSelect - 1][i].key5).format('0,0'),
+            'key6': numeral(this.quantMigItems[this.tpSelect - 1][i].key6).format('0,0'),
+            'key7': numeral(this.quantMigItems[this.tpSelect - 1][i].key7).format('0,0'),
+            'key8': numeral(this.quantMigItems[this.tpSelect - 1][i].key8).format('0,0'),
+            'key9': numeral(this.quantMigItems[this.tpSelect - 1][i].key9).format('0,0'),
+            'key10': numeral(this.quantMigItems[this.tpSelect - 1][i].key10).format('0,0')
+          })
+        }
+        this.tableMigItems = tempMig
         this.tableCounts = JSON.parse(JSON.stringify(tpConverted))
         this.tpArray = tempTP
 
@@ -434,11 +459,11 @@
           for (let j = 0; j < tempTpSums[i].length; j++) {
             retObj.push({
               name: j + 1,
-              priorCustCount: tempTpPostCustCount[i + 1][j],
-              retained: tempTpSums[i][j],
-              new: tpNewCust[i][j],
-              postCustCount: tempTpPostCustCount[i][j],
-              retRate: tempTpSums[i][j] / tempTpPostCustCount[i + 1][j] * 100
+              // priorCustCount: tempTpPostCustCount[i + 1][j],
+              retained: numeral(tempTpSums[i][j]).format('0,0'),
+              new: numeral(tpNewCust[i][j]).format('0,0'),
+              postCustCount: numeral(tempTpPostCustCount[i][j]).format('0,0')
+              // retRate: tempTpSums[i][j] / tempTpPostCustCount[i + 1][j] * 100
             })
           }
           tempRetObj.push(retObj)
@@ -456,7 +481,23 @@
 
       selectView () {
         if (this.viewType === 'Counts') {
-          this.tableMigItems = this.quantMigItems[this.tpSelect - 1]
+          var tempFormatted = []
+          for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+            tempFormatted.push({
+              'from': this.quantMigItems[this.tpSelect - 1][i].from,
+              'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+              'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
+              'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
+              'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0'),
+              'key5': numeral(this.quantMigItems[this.tpSelect - 1][i].key5).format('0,0'),
+              'key6': numeral(this.quantMigItems[this.tpSelect - 1][i].key6).format('0,0'),
+              'key7': numeral(this.quantMigItems[this.tpSelect - 1][i].key7).format('0,0'),
+              'key8': numeral(this.quantMigItems[this.tpSelect - 1][i].key8).format('0,0'),
+              'key9': numeral(this.quantMigItems[this.tpSelect - 1][i].key9).format('0,0'),
+              'key10': numeral(this.quantMigItems[this.tpSelect - 1][i].key10).format('0,0')
+            })
+          }
+          this.tableMigItems = tempFormatted
         } else if (this.viewType === 'Percentages') {
           this.tableMigItems = this.tablePercents[this.tpSelect - 1]
         }
@@ -490,5 +531,5 @@
 
 <style scoped>
   .card_width { width: 100% !important; }
-  .bar_height { height: 23vh; }
+  .bar_height { height: 23vh !important; }
 </style>

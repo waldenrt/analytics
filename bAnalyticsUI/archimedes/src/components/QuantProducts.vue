@@ -176,6 +176,9 @@
 <script>
   import {quantProd} from './javascript/quantile.service'
 
+  // [JF] initiates numeral.js library in this vue component. must use together with numeral() or numeral().format()
+  var numeral = require('numeral')
+
   export default {
     name: 'quantProducts',
     data () {
@@ -189,16 +192,16 @@
         quantiles: [],
         quantSelect: ['All'],
         custItems: [
-            {name: '1', vals: '$42,7700', percent: '46.37%'},
-            {name: '2', vals: '$22,1234', percent: '47.44%'},
-            {name: '3', vals: '$15,5746', percent: '45.37%'},
-            {name: '4', vals: '$12,6114', percent: '49.70%'},
-            {name: '5', vals: '$84,081', percent: '40.06%'},
-            {name: '6', vals: '$59,079', percent: '35.94%'},
-            {name: '7', vals: '$35,986', percent: '28.99%'},
-            {name: '8', vals: '$30,481', percent: '29.60%'},
-            {name: '9', vals: '$15,496', percent: '29.69%'},
-            {name: '10', vals: '$13,111', percent: '37.76%'}
+            {name: '1', vals: numeral('427700').format('$0,0'), percent: numeral('.4637').format('0.00%')},
+            {name: '2', vals: numeral('221234').format('$0,0'), percent: numeral('.4744').format('0.00%')},
+            {name: '3', vals: numeral('155746').format('$0,0'), percent: numeral('.4537').format('0.00%')},
+            {name: '4', vals: numeral('126114').format('$0,0'), percent: numeral('.4970').format('0.00%')},
+            {name: '5', vals: numeral('84081').format('$0,0'), percent: numeral('.4006').format('0.00%')},
+            {name: '6', vals: numeral('59079').format('$0,0'), percent: numeral('.3594').format('0.00%')},
+            {name: '7', vals: numeral('35986').format('$0,0'), percent: numeral('.2899').format('0.00%')},
+            {name: '8', vals: numeral('30481').format('$0,0'), percent: numeral('.2960').format('0.00%')},
+            {name: '9', vals: numeral('15496').format('$0,0'), percent: numeral('.2969').format('0.00%')},
+            {name: '10', vals: numeral('13111').format('$0,0'), percent: numeral('.3776').format('0.00%')}
         ],
         jobId: 'QATestRun'
       }
