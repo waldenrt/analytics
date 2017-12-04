@@ -261,7 +261,7 @@
     data () {
       return {
         msg: 'Balor Segment Trend Charts will go here!',
-        jobId: 'macysDemo',
+        jobId: 'mgiBrandt2',
         dimensions: [
           'Customer', 'Visits', 'Spend', 'Discount'
         ],

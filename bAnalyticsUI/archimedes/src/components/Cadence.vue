@@ -95,7 +95,7 @@
         cadArray: [],
         countArray: [],
         perArray: [],
-        jobId: 'macysDemo',
+        jobId: 'mgiBrandt2',
         incomingJson: {},
         tableHeaders: [
           {text: 'Cadence', value: 'cadence'},
