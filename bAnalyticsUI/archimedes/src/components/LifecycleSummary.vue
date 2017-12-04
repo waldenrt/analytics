@@ -173,6 +173,9 @@
   import {summary} from './javascript/lifecycle.service'
   import DoughnutChart from './lifecycleCharts/doughnutChart'
 
+  // [JF] initiates numeral.js library in this vue component. must use together with numeral() or numeral().format()
+  var numeral = require('numeral')
+
   export default {
     name: 'lifecycleSummary',
     components: {
@@ -250,54 +253,54 @@
           tempTpArray.push(this.jsonMsg.timePeriods[i].timePeriod)
           tempTableData.push([{
             'avgName': tableRows[0],
-            'overallAvg': ((this.jsonMsg.timePeriods[i].bestRecencyTotal + this.jsonMsg.timePeriods[i].risingRecencyTotal +
+            'overallAvg': numeral((this.jsonMsg.timePeriods[i].bestRecencyTotal + this.jsonMsg.timePeriods[i].risingRecencyTotal +
             this.jsonMsg.timePeriods[i].middleRecencyTotal + this.jsonMsg.timePeriods[i].lapsingRecencyTotal +
-            this.jsonMsg.timePeriods[i].deeplyRecencyTotal) / this.jsonMsg.timePeriods[i].totalCustCount).toFixed(2),
-            'bestAvg': this.jsonMsg.timePeriods[i].bestAvgRecency.toFixed(2),
-            'risingAvg': this.jsonMsg.timePeriods[i].risingAvgRecency.toFixed(2),
-            'middleAvg': this.jsonMsg.timePeriods[i].middleAvgRecency.toFixed(2),
-            'lapsingAvg': this.jsonMsg.timePeriods[i].lapsingAvgRecency.toFixed(2),
-            'deeplyAvg': this.jsonMsg.timePeriods[i].deeplyAvgRecency.toFixed(2)
+            this.jsonMsg.timePeriods[i].deeplyRecencyTotal) / this.jsonMsg.timePeriods[i].totalCustCount).format('0.00'),
+            'bestAvg': numeral(this.jsonMsg.timePeriods[i].bestAvgRecency).format('0.00'),
+            'risingAvg': numeral(this.jsonMsg.timePeriods[i].risingAvgRecency).format('0.00'),
+            'middleAvg': numeral(this.jsonMsg.timePeriods[i].middleAvgRecency).format('0.00'),
+            'lapsingAvg': numeral(this.jsonMsg.timePeriods[i].lapsingAvgRecency).format('0.00'),
+            'deeplyAvg': numeral(this.jsonMsg.timePeriods[i].deeplyAvgRecency).format('0.00')
           }, {
             'avgName': tableRows[1],
-            'overallAvg': ((this.jsonMsg.timePeriods[i].bestTxnTotal + this.jsonMsg.timePeriods[i].risingTxnTotal +
+            'overallAvg': numeral((this.jsonMsg.timePeriods[i].bestTxnTotal + this.jsonMsg.timePeriods[i].risingTxnTotal +
             this.jsonMsg.timePeriods[i].middleTxnTotal + this.jsonMsg.timePeriods[i].lapsingTxnTotal +
-            this.jsonMsg.timePeriods[i].deeplyTxnTotal) / this.jsonMsg.timePeriods[i].totalCustCount).toFixed(2),
-            'bestAvg': this.jsonMsg.timePeriods[i].bestAvgFreq.toFixed(2),
-            'risingAvg': this.jsonMsg.timePeriods[i].risingAvgFreq.toFixed(2),
-            'middleAvg': this.jsonMsg.timePeriods[i].middleAvgFreq.toFixed(2),
-            'lapsingAvg': this.jsonMsg.timePeriods[i].lapsingAvgFreq.toFixed(2),
-            'deeplyAvg': this.jsonMsg.timePeriods[i].deeplyAvgFreq.toFixed(2)
+            this.jsonMsg.timePeriods[i].deeplyTxnTotal) / this.jsonMsg.timePeriods[i].totalCustCount).format('0.00'),
+            'bestAvg': numeral(this.jsonMsg.timePeriods[i].bestAvgFreq).format('0.00'),
+            'risingAvg': numeral(this.jsonMsg.timePeriods[i].risingAvgFreq).format('0.00'),
+            'middleAvg': numeral(this.jsonMsg.timePeriods[i].middleAvgFreq).format('0.00'),
+            'lapsingAvg': numeral(this.jsonMsg.timePeriods[i].lapsingAvgFreq).format('0.00'),
+            'deeplyAvg': numeral(this.jsonMsg.timePeriods[i].deeplyAvgFreq).format('0.00')
           }, {
             'avgName': tableRows[2],
-            'overallAvg': '$' + ((this.jsonMsg.timePeriods[i].bestSalesTotal + this.jsonMsg.timePeriods[i].risingSalesTotal +
+            'overallAvg': numeral((this.jsonMsg.timePeriods[i].bestSalesTotal + this.jsonMsg.timePeriods[i].risingSalesTotal +
             this.jsonMsg.timePeriods[i].middleSalesTotal + this.jsonMsg.timePeriods[i].lapsingSalesTotal +
-            this.jsonMsg.timePeriods[i].deeplySalesTotal) / this.jsonMsg.timePeriods[i].totalCustCount).toFixed(2),
-            'bestAvg': '$' + this.jsonMsg.timePeriods[i].bestAvgSales.toFixed(2),
-            'risingAvg': '$' + this.jsonMsg.timePeriods[i].risingAvgSales.toFixed(2),
-            'middleAvg': '$' + this.jsonMsg.timePeriods[i].middleAvgSales.toFixed(2),
-            'lapsingAvg': '$' + this.jsonMsg.timePeriods[i].lapsingAvgSales.toFixed(2),
-            'deeplyAvg': '$' + this.jsonMsg.timePeriods[i].deeplyAvgSales.toFixed(2)
+            this.jsonMsg.timePeriods[i].deeplySalesTotal) / this.jsonMsg.timePeriods[i].totalCustCount).format('$0.00'),
+            'bestAvg': numeral(this.jsonMsg.timePeriods[i].bestAvgSales).format('$0.00'),
+            'risingAvg': numeral(this.jsonMsg.timePeriods[i].risingAvgSales).format('$0.00'),
+            'middleAvg': numeral(this.jsonMsg.timePeriods[i].middleAvgSales).format('$0.00'),
+            'lapsingAvg': numeral(this.jsonMsg.timePeriods[i].lapsingAvgSales).format('$0.00'),
+            'deeplyAvg': numeral(this.jsonMsg.timePeriods[i].deeplyAvgSales).format('$0.00')
           }, {
             'avgName': tableRows[3],
-            'overallAvg': ((this.jsonMsg.timePeriods[i].bestItemTotal + this.jsonMsg.timePeriods[i].risingItemTotal +
+            'overallAvg': numeral((this.jsonMsg.timePeriods[i].bestItemTotal + this.jsonMsg.timePeriods[i].risingItemTotal +
             this.jsonMsg.timePeriods[i].middleItemTotal + this.jsonMsg.timePeriods[i].lapsingItemTotal +
-            this.jsonMsg.timePeriods[i].deeplyItemTotal) / this.jsonMsg.timePeriods[i].totalCustCount).toFixed(2),
-            'bestAvg': this.jsonMsg.timePeriods[i].bestAvgItems.toFixed(2),
-            'risingAvg': this.jsonMsg.timePeriods[i].risingAvgItems.toFixed(2),
-            'middleAvg': this.jsonMsg.timePeriods[i].middleAvgItems.toFixed(2),
-            'lapsingAvg': this.jsonMsg.timePeriods[i].lapsingAvgItems.toFixed(2),
-            'deeplyAvg': this.jsonMsg.timePeriods[i].deeplyAvgItems.toFixed(2)
+            this.jsonMsg.timePeriods[i].deeplyItemTotal) / this.jsonMsg.timePeriods[i].totalCustCount).format('0.00'),
+            'bestAvg': numeral(this.jsonMsg.timePeriods[i].bestAvgItems).format('0.00'),
+            'risingAvg': numeral(this.jsonMsg.timePeriods[i].risingAvgItems).format('0.00'),
+            'middleAvg': numeral(this.jsonMsg.timePeriods[i].middleAvgItems).format('0.00'),
+            'lapsingAvg': numeral(this.jsonMsg.timePeriods[i].lapsingAvgItems).format('0.00'),
+            'deeplyAvg': numeral(this.jsonMsg.timePeriods[i].deeplyAvgItems).format('0.00')
           }, {
             'avgName': tableRows[4],
-            'overallAvg': '$' + ((this.jsonMsg.timePeriods[i].bestSalesTotal + this.jsonMsg.timePeriods[i].risingSalesTotal +
+            'overallAvg': numeral((this.jsonMsg.timePeriods[i].bestSalesTotal + this.jsonMsg.timePeriods[i].risingSalesTotal +
             this.jsonMsg.timePeriods[i].middleSalesTotal + this.jsonMsg.timePeriods[i].lapsingSalesTotal +
-            this.jsonMsg.timePeriods[i].deeplySalesTotal) / this.jsonMsg.timePeriods[i].totalTxnCount).toFixed(2),
-            'bestAvg': '$' + (this.jsonMsg.timePeriods[i].bestSalesTotal / this.jsonMsg.timePeriods[i].bestTxnTotal).toFixed(2),
-            'risingAvg': '$' + (this.jsonMsg.timePeriods[i].risingSalesTotal / this.jsonMsg.timePeriods[i].risingTxnTotal).toFixed(2),
-            'middleAvg': '$' + (this.jsonMsg.timePeriods[i].middleSalesTotal / this.jsonMsg.timePeriods[i].middleTxnTotal).toFixed(2),
-            'lapsingAvg': '$' + (this.jsonMsg.timePeriods[i].lapsingSalesTotal / this.jsonMsg.timePeriods[i].lapsingTxnTotal).toFixed(2),
-            'deeplyAvg': '$' + (this.jsonMsg.timePeriods[i].deeplySalesTotal / this.jsonMsg.timePeriods[i].deeplyTxnTotal).toFixed(2)
+            this.jsonMsg.timePeriods[i].deeplySalesTotal) / this.jsonMsg.timePeriods[i].totalTxnCount).format('$0.00'),
+            'bestAvg': numeral(this.jsonMsg.timePeriods[i].bestSalesTotal / this.jsonMsg.timePeriods[i].bestTxnTotal).format('$0.00'),
+            'risingAvg': numeral(this.jsonMsg.timePeriods[i].risingSalesTotal / this.jsonMsg.timePeriods[i].risingTxnTotal).format('$0.00'),
+            'middleAvg': numeral(this.jsonMsg.timePeriods[i].middleSalesTotal / this.jsonMsg.timePeriods[i].middleTxnTotal).format('$0.00'),
+            'lapsingAvg': numeral(this.jsonMsg.timePeriods[i].lapsingSalesTotal / this.jsonMsg.timePeriods[i].lapsingTxnTotal).format('$0.00'),
+            'deeplyAvg': numeral(this.jsonMsg.timePeriods[i].deeplySalesTotal / this.jsonMsg.timePeriods[i].deeplyTxnTotal).format('$0.00')
           }
           ])
         }

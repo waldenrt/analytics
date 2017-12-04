@@ -270,6 +270,9 @@
   import BarChart from './balorCharts/BarChart'
   import {quantMig} from './javascript/quantile.service'
 
+  // [JF] initiates numeral.js library in this vue component. must use together with numeral() or numeral().format()
+  // var numeral = require('numeral')
+
   export default {
     name: 'quantMigration',
     components: {
