@@ -336,7 +336,7 @@
         txnBalorArray: [],
         spendBalorArray: [],
         tpArray: [],
-        jobId: 'mgiBrandt',
+        jobId: 'mgiBrandt2',
         custTrendData: {
           labels: this.tpArray,
           datasets: [
