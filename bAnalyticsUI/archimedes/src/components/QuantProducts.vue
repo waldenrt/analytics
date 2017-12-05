@@ -1,9 +1,5 @@
 <template>
   <v-container fluid class="quantileProducts pl-3 pr-3 mb-3">
-    <!-- ASHA STUFF HERE -->
-
-    <!--// ASHA STUFF HERE -->
-
     <!-- =====ROW1===== -->
     <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
@@ -23,7 +19,6 @@
                   </v-flex>
                   <v-flex xs12>
                     <v-card class="white pa-0">
-                      <!--SWAP OUT DROPDOWN-->
                       <v-select v-bind:items="topBottom"
                                 v-model="topBottomSelect"
                                 label="Select Top or Bottom"
@@ -33,7 +28,6 @@
                                 v-on:input="selectTopBottom()"
                                 class="pl-1 pr-1 mt-1 mb-2 white">
                       </v-select>
-                      <!--//SWAP OUT DROPDOWN-->
                     </v-card>
                   </v-flex>
                 </v-layout>
@@ -51,7 +45,6 @@
                   </v-flex>
                   <v-flex xs12>
                     <v-card class="white">
-                      <!--SWAP OUT DROPDOWN-->
                       <v-select
                           v-bind:items="measure"
                           v-model="measureSelect"
@@ -62,7 +55,6 @@
                           v-on:input="selectMeasure()"
                           class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
-                      <!--//SWAP OUT DROPDOWN-->
                     </v-card>
                   </v-flex>
                 </v-layout>
@@ -80,7 +72,6 @@
                   </v-flex>
                   <v-flex xs12>
                     <v-card class="white">
-                      <!--SWAP OUT DROPDOWN-->
                       <v-select
                           v-bind:items="tpArray"
                           v-model="tpSelect"
@@ -91,7 +82,6 @@
                           v-on:input="selectTP()"
                           class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
-                      <!--//SWAP OUT DROPDOWN-->
                     </v-card>
                   </v-flex>
                 </v-layout>
@@ -109,7 +99,6 @@
                   </v-flex>
                   <v-flex xs12>
                     <v-card class="white">
-                      <!--SWAP OUT DROPDOWN-->
                       <v-select
                           v-bind:items="quantiles"
                           v-model="quantSelect"
@@ -120,7 +109,6 @@
                           hide-details
                           v-on:input="selectQuantiles()"
                           class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
-                          <!--//SWAP OUT DROPDOWN-->
                       </v-select>
                     </v-card>
                   </v-flex>
@@ -128,6 +116,33 @@
               </v-card>
             </v-flex>
             <!--//Dropdown4-->
+            <!--Dropdown5-->
+            <v-flex xs12 sm2>
+              <v-card flat class="pl-2 pr-2 grey lighten-2">
+                <v-layout row wrap>
+                  <v-flex xs12>
+                    <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                      Choose A<br/>Product Level:
+                    </div>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-card class="white">
+                      <v-select
+                          v-bind:items="prodLevels"
+                          v-model="levelSelect"
+                          label="Select Product Level"
+                          single-line
+                          bottom
+                          hide-details
+                          v-on:input="selectProdLevel()"
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
+                      </v-select>
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+              </v-card>
+            </v-flex>
+            <!--//Dropdown5-->
           </v-layout>
         </v-card>
       </v-flex>
@@ -137,34 +152,35 @@
     <v-layout wrap row>
       <v-flex xs12 class="pt-0 mt-0">
         <v-card class="pl-3 pr-3 pt-1 pb-1">
-          <div class="title primary--text text-xs-center pa-1"><em><span class="grey--text darken-2">Top</span> Products by <span class="grey--text darken-2">Spend</span> during Period <span class="grey--text darken-2">2</span>, with Customer Quantiles <span class="grey--text darken-2">All</span></em></div>
+          <div class="title primary--text text-xs-center pa-1"><em><span class="grey--text darken-2">{{ topBottomSelect }}</span>
+            Products by <span class="grey--text darken-2">{{ measureSelect }}</span> during Period
+            <span class="grey--text darken-2">{{ tpSelect }}</span>, with Customer Quantiles
+            <span class="grey--text darken-2">{{ quantSelect }} </span></em></div>
         </v-card>
       </v-flex>
     </v-layout>
     <!-- //=====ROW2===== -->
     <!-- =====ROW3===== -->
     <v-layout wrap row class="mt-3">
-      <v-flex xs4>
+      <v-flex xs3>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <!--****THIS IS JUST A PLACEHOLDER TABLE****-->
           <table cellpadding="0" cellspacing="0" width="100%" style="height:21vh !important;">
             <tr>
               <th class="pa-2 primary--text">Quantiles</th>
-              <th class="pa-2 primary--text">Top Products by<br />Spend</th>
-              <th class="pa-2 primary--text">Top Products<br />Percent of Total</th>
+              <th class="pa-2 primary--text">Top Products<br />Total Spend</th>
             </tr>
             <tr v-for="item in custItems" v-bind:key="item.name">
               <td class="pa-2"><div class="text-xs-center" v-text="item.name"></div></td>
               <td class="pa-2"><div class="text-xs-center" v-text="item.vals"></div></td>
-              <td class="pa-2"><div class="text-xs-center" v-text="item.percent"></div></td>
             </tr>
           </table>
           <!--//****THIS IS JUST A PLACEHOLDER TABLE****//-->
         </v-card>
       </v-flex>
-      <v-flex xs8>
+      <v-flex xs9>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
-          <div class="primary--text text-xs-center pa-1 subhead">Products Treemap<br />by Spend</div>
+          <div class="primary--text text-xs-center pa-1 subhead">Products</div>
           <img src="http://via.placeholder.com/1050x480?text=Chart" width="100%" height="100%" style="height:475px;">
         </v-card>
       </v-flex>
@@ -188,6 +204,8 @@
         tpSelect: '1',
         quantiles: [],
         quantSelect: ['All'],
+        prodLevels: ['Level 1', 'Level 2', 'Level 3'],
+        levelSelect: 'Level 1',
         custItems: [
             {name: '1', vals: '$42,7700', percent: '46.37%'},
             {name: '2', vals: '$22,1234', percent: '47.44%'},
@@ -224,6 +242,18 @@
             this.incomingJson = response.data
             console.log(this.incomingJson)
           })
+      },
+
+      selectTP () {
+
+      },
+
+      selectProdLevel () {
+
+      },
+
+      selectQuantiles () {
+
       }
     }
   }
