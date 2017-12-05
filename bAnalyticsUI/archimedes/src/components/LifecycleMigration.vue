@@ -34,7 +34,8 @@
               </v-card>
             </v-flex>
             <!--//Dropdown1-->
-            <!--Dropdown2-->
+            <!-- don't filter by segment currently
+            Dropdown2
             <v-flex xs12 sm2>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
@@ -44,7 +45,7 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                      <!--SWAP OUT DROPDOWN-->
+                      SWAP OUT DROPDOWN
                       <v-select
                           v-bind:items="segments"
                           v-model="priorSegSel"
@@ -56,13 +57,13 @@
                           v-on:input="selectPriorSegment()"
                           class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
-                      <!--//SWAP OUT DROPDOWN-->
+                      //SWAP OUT DROPDOWN
                   </v-flex>
                 </v-layout>
               </v-card>
             </v-flex>
-            <!--//Dropdown2-->
-            <!--Dropdown3-->
+            //Dropdown2
+            Dropdown3
             <v-flex xs12 sm2>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
@@ -72,7 +73,7 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                      <!--SWAP OUT DROPDOWN-->
+                      SWAP OUT DROPDOWN
                       <v-select
                           v-bind:items="segments"
                           v-model="postSegSel"
@@ -84,12 +85,13 @@
                           v-on:input="selectPostSegment()"
                           class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
-                      <!--//SWAP OUT DROPDOWN-->
+                      //SWAP OUT DROPDOWN
                   </v-flex>
                 </v-layout>
               </v-card>
             </v-flex>
-            <!--//Dropdown3-->
+            //Dropdown3
+            maybe readd the drop downs if its a deal breaker later -->
             <!--Legend-->
             <v-flex xs12 sm6>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
@@ -287,7 +289,7 @@
         postSegComp: 'Best in Class',
         segments: ['All', 'Best in Class', 'Rising Stars', 'Middle of the Road', 'Lapsing', 'Deeply Lapsed'],
         quantArray: [],
-        jobId: 'invertedLifecycle',
+        jobId: 'largeLifecycle',
         nodes: [],
         tpLinks: [],
         links: [],
@@ -316,7 +318,8 @@
         lapsingRet: 0,
         deeplyRet: 0,
         showSankey: true,
-        showError: false
+        showError: false,
+        stankey: null
       }
     },
     computed: {
@@ -439,7 +442,7 @@
         }
 
         const data = this.tpLinks[this.tpSelect - 1]
-        var mySankey = sankey()
+        this.stankey = sankey()
           .nodeWidth(45)
           .nodePadding(5)
           .extent([[1, 1], [width - 1, height - 6]])
@@ -460,7 +463,7 @@
           .selectAll('g')
 
         // this is instead of any var path = sankey.link, same with sankeyLinkHorizontal
-        mySankey(data)
+        this.stankey(data)
 
         link = link.data(data.links)
           .enter().append('path')
@@ -537,7 +540,7 @@
             labels: this.barLabels,
             datasets: [
               {
-                data: this.selBestPost,
+                data: this.allBestPost[this.tpSelect - 1],
                 label: 'Prior Segment',
                 backgroundColor: '#003947'
               }
@@ -548,7 +551,7 @@
             labels: this.barLabels,
             datasets: [
               {
-                data: this.selRisingPost,
+                data: this.allRisingPost[this.tpSelect - 1],
                 label: 'Prior Segment',
                 backgroundColor: '#8EAC1D'
               }
@@ -559,7 +562,7 @@
             labels: this.barLabels,
             datasets: [
               {
-                data: this.selMiddlePost,
+                data: this.allMiddlePost[this.tpSelect - 1],
                 label: 'Prior Segment',
                 backgroundColor: '#0087AA'
               }
@@ -570,7 +573,7 @@
             labels: this.barLabels,
             datasets: [
               {
-                data: this.selLapsingPost,
+                data: this.allLapsingPost[this.tpSelect - 1],
                 label: 'Prior Segment',
                 backgroundColor: '#F7970E'
               }
@@ -581,7 +584,7 @@
             labels: this.barLabels,
             datasets: [
               {
-                data: this.selDeeplyPost,
+                data: this.allDeeplyPost[this.tpSelect - 1],
                 label: 'Prior Segment',
                 backgroundColor: '#D63809'
               }
@@ -591,6 +594,9 @@
       },
 
       selectTP () {
+        // update bars
+        this.selPostPeriodComp()
+
         // update retention cards
         if (this.tpSelect <= this.bestMigArray.length - 1) {
           this.bestRet = numeral(this.bestMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].bestTotalCount).format('0.00%')
@@ -601,8 +607,10 @@
 
           this.showSankey = true
           this.showError = false
-          // d3.select('stankey').remove()
-          this.update()
+
+          // remove current sankey and rebuild with new data
+          d3.select('#stankey').remove()
+          this.buildSankey()
         } else {
           this.bestRet = 0
           this.risingRet = 0
@@ -612,15 +620,6 @@
           this.showSankey = false
           this.showError = true
         }
-
-        // update bar chart data
-        this.selBestPost = this.allBestPost[this.tpSelect - 1]
-        this.selRisingPost = this.allRisingPost[this.tpSelect - 1]
-        this.selMiddlePost = this.allMiddlePost[this.tpSelect - 1]
-        this.selLapsingPost = this.allLapsingPost[this.tpSelect - 1]
-        this.selDeeplyPost = this.allDeeplyPost[this.tpSelect - 1]
-
-        this.selPostPeriodComp()
       },
 
       parseBarData () {
@@ -789,53 +788,6 @@
           this.lapsingRet = 0
           this.deeplyRet = 0
         }
-      },
-
-      update () {
-        const data = this.tpLinks[this.tpSelect - 1]
-
-        var svg = d3.select('#sankeyChart')
-
-        sankey
-          .nodes(data.nodes)
-          .links(data.links)
-
-        sankey.update()
-
-        svg.selectAll('.link')
-          .data(data.links, function (d) {
-            return d.id
-          })
-          .transition()
-          .duration(1300)
-          .attr('d', sankeyLinkHorizontal())
-          .style('stroke-width', function (d) {
-            return Math.max(1, d.width)
-          })
-
-        svg.selectAll('.node')
-          .data(data.nodes, function (d) {
-            return d.name
-          })
-          .transition()
-          .duration(1300)
-          .attr('transform', function (d) {
-            return 'translate(' + d.x + ',' + d.y + ')'
-          })
-
-        svg.selectAll('.node rect')
-          .transition()
-          .duration(1300)
-          .attr('height', function (d) {
-            return d.dy
-          })
-
-        svg.selectAll('.node text')
-          .transition()
-          .duration(1300)
-          .attr('y', function (d) {
-            return d.dy / 2
-          })
       }
     }
   }
