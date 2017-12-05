@@ -166,30 +166,30 @@
                       <v-flex xs12 class="pt-0 mt-0">
                         <v-card class="accent mt-2 mb-2 height_bars1">
                           <v-card-text class="accent white--text height_bars2">
-                            <div class="subheading">Best in Class <span style="float:right;">{{ bestRet }}</span>
+                            <div class="subheading">Best in Class <span>{{ bestRet }}</span>
                             </div>
                           </v-card-text>
                         </v-card>
                         <v-card class="success mb-2 height_bars1">
                           <v-card-text class="success white--text height_bars2">
-                            <div class="subheading">Rising Stars <span style="float:right;">{{ risingRet }}</span>
+                            <div class="subheading">Rising Stars <span>{{ risingRet }}</span>
                             </div>
                           </v-card-text>
                         </v-card>
                         <v-card class="info mb-2 height_bars1">
                           <v-card-text class="info white--text height_bars2">
-                            <div class="subheading">Middle of the Road <span style="float:right;">{{ middleRet }}</span>
+                            <div class="subheading">Middle of the Road <span>{{ middleRet }}</span>
                             </div>
                           </v-card-text>
                         </v-card>
                         <v-card class="warning mb-2 height_bars1">
                           <v-card-text class="warning white--text height_bars2">
-                            <div class="subheading">Lapsing <span style="float:right;">{{ lapsingRet }}</span></div>
+                            <div class="subheading">Lapsing <span>{{ lapsingRet }}</span></div>
                           </v-card-text>
                         </v-card>
                         <v-card class="error mb-2 height_bars1">
                           <v-card-text class="error white--text height_bars2">
-                            <div class="subheading">Deeply Lapsed <span style="float:right;">{{ deeplyRet }}</span>
+                            <div class="subheading">Deeply Lapsed <span>{{ deeplyRet }}</span>
                             </div>
                           </v-card-text>
                         </v-card>
@@ -221,7 +221,6 @@
                                     </div>
                                   </v-flex>
                                   <v-flex xs12>
-                                      <!--****THIS IS JUST A PLACEHOLDER DROPDOWN****-->
                                       <v-select v-bind:items="segments"
                                                 v-model="postSegComp"
                                                 label="Select Segments"
@@ -231,7 +230,6 @@
                                                 v-on:input="selPostPeriodComp()"
                                                 class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                                       </v-select>
-                                      <!--//****THIS IS JUST A PLACEHOLDER DROPDOWN****//-->
                                   </v-flex>
                                 </v-layout>
                               </v-card>
@@ -270,6 +268,9 @@
   import * as d3 from 'd3'
   import {sankey, sankeyLinkHorizontal} from 'd3-sankey'
   import BarChart from './balorCharts/BarChart'
+
+  // [JF] initiates numeral.js library in this vue component. must use together with numeral() or numeral().format()
+  var numeral = require('numeral')
 
   export default {
     name: 'lifecycleMigration',
@@ -592,11 +593,11 @@
       selectTP () {
         // update retention cards
         if (this.tpSelect <= this.bestMigArray.length - 1) {
-          this.bestRet = this.bestMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].bestTotalCount
-          this.risingRet = this.risingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].risingTotalCount
-          this.middleRet = this.middleMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].middleTotalCount
-          this.lapsingRet = this.lapsingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].lapsingTotalCount
-          this.deeplyRet = this.deeplyMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].deeplyTotalCount
+          this.bestRet = numeral(this.bestMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].bestTotalCount).format('0.00%')
+          this.risingRet = numeral(this.risingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].risingTotalCount).format('0.00%')
+          this.middleRet = numeral(this.middleMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].middleTotalCount).format('0.00%')
+          this.lapsingRet = numeral(this.lapsingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].lapsingTotalCount).format('0.00%')
+          this.deeplyRet = numeral(this.deeplyMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].deeplyTotalCount).format('0.00%')
 
           this.showSankey = true
           this.showError = false
@@ -776,11 +777,11 @@
         this.deeplyMigArray = tempDeeplyMigArray
 
         if (this.tpSelect <= this.bestMigArray.length - 1) {
-          this.bestRet = this.bestMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].bestTotalCount
-          this.risingRet = this.risingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].risingTotalCount
-          this.middleRet = this.middleMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].middleTotalCount
-          this.lapsingRet = this.lapsingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].lapsingTotalCount
-          this.deeplyRet = this.deeplyMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].deeplyTotalCount
+          this.bestRet = numeral(this.bestMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].bestTotalCount).format('0.00%')
+          this.risingRet = numeral(this.risingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].risingTotalCount).format('0.00%')
+          this.middleRet = numeral(this.middleMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].middleTotalCount).format('0.00%')
+          this.lapsingRet = numeral(this.lapsingMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].lapsingTotalCount).format('0.00%')
+          this.deeplyRet = numeral(this.deeplyMigArray[this.tpSelect - 1] / this.jsonMsg.timePeriods[this.tpSelect].segmentTotal[0].deeplyTotalCount).format('0.00%')
         } else {
           this.bestRet = 0
           this.risingRet = 0
@@ -890,4 +891,6 @@
     height: 12px;
     margin-right: 5px;
   }
+
+  .height_bars2 span { float: right; }
 </style>
