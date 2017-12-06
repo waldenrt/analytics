@@ -1,9 +1,5 @@
 <template>
   <v-container fluid class="quantileProducts pl-3 pr-3 mb-3">
-    <!-- ASHA STUFF HERE -->
-
-    <!--// ASHA STUFF HERE -->
-
     <!-- =====ROW1===== -->
     <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
@@ -161,30 +157,29 @@
     <!-- //=====ROW2===== -->
     <!-- =====ROW3===== -->
     <v-layout wrap row class="mt-3">
-      <v-flex xs4>
+      <v-flex xs12 sm4>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <h6 class="primary--text text-xs-center pa-1 mb-0 subhead">Overall Product Share</h6>
-          <!--<img src="http://via.placeholder.com/1050x480?text=Chart" width="100%" height="100%" style="height:475px;">-->
           <horizontal-chart :chart-data="overallBars" class="chart_height1"></horizontal-chart>
         </v-card>
       </v-flex>
-      <v-flex xs8>
+      <v-flex xs12 sm8>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <h6 class="primary--text text-xs-center pa-1 mb-0">Product Index by Segment</h6>
           <v-layout wrap row>
-            <div v-if="showBest" class="seg_sect">
+            <div v-if="showBest" class="seg_sect" :style="segCount">
               <prod-index-chart :chart-data="bestBars" class="chart_height1"></prod-index-chart>
             </div>
-            <div v-if="showRising" class="seg_sect">
+            <div v-if="showRising" class="seg_sect" :style="segCount">
               <prod-index-chart :chart-data="risingBars" class="chart_height1"></prod-index-chart>
             </div>
-            <div v-if="showMiddle" class="seg_sect">
+            <div v-if="showMiddle" class="seg_sect" :style="segCount">
               <prod-index-chart :chart-data="middleBars" class="chart_height1"></prod-index-chart>
             </div>
-            <div v-if="showLapsing" class="seg_sect">
+            <div v-if="showLapsing" class="seg_sect" :style="segCount">
               <prod-index-chart :chart-data="lapsingBars" class="chart_height1"></prod-index-chart>
             </div>
-            <div v-if="showDeeply" class="seg_sect">
+            <div v-if="showDeeply" class="seg_sect" :style="segCount">
               <prod-index-chart :chart-data="deeplyBars" class="chart_height1"></prod-index-chart>
             </div>
           </v-layout>
@@ -243,12 +238,27 @@
         showRising: true,
         showMiddle: true,
         showLapsing: true,
-        showDeeply: true
+        showDeeply: true,
+        styleObject: { width: '20%' }
       }
     },
     computed: {
       jsonMsg: function () {
         return this.incomingJson.data
+      },
+      segCount: function () {
+        if (this.segSelect.includes('All') || this.segSelect.length === 5) {
+          this.styleObject.width = '20%'
+        } else if (this.segSelect.length === 4) {
+          this.styleObject.width = '25%'
+        } else if (this.segSelect.length === 3) {
+          this.styleObject.width = '33%'
+        } else if (this.segSelect.length === 2) {
+          this.styleObject.width = '50%'
+        } else if (this.segSelect.length === 1) {
+          this.styleObject.width = '100%'
+        }
+        return this.styleObject
       }
     },
     mounted () {
