@@ -1,9 +1,9 @@
 <template>
-  <v-container fluid class="NewQuantile pl-3 pr-3">
+  <v-container fluid class="NewLifecycle pl-3 pr-3">
     <v-layout row wrap style="height:100%;">
       <v-flex xs6 offset-xs3 class="pl-0 pr-0 mt-0">
         <div class="centereddiv">
-        <form>
+        <form name="lifeForm" @submit.prevent="validateBeforeSubmit()">
           <v-card class="white" style="margin-top:50px;">
             <v-card-title primary-title class="primary">
               <div><h6 class="white--text text-xs-left mb-0">CORE LIFECYCLE INPUT</h6></div>
@@ -24,21 +24,29 @@
             <!--+++++col1+++++-->
             <v-flex xs12 class="pa-3 pl-4 pr-4">
               <!--FIELD-->
-              <div class="body-2">Enter Job Name</div>
-              <v-card-row xs12 class="mt-0 mb-3">
+              <div class="xs12 pb-3">
+                <label class="body-2">Enter Job Name</label>
+                <v-layout class="xs12 ma-0">
                 <v-text-field
-                    name="input-1"
                     label="Enter Job Name"
-                    class="mt-1 mb-0 input-group--focused elevation-1"
+                    v-model="job_lifecycle"
+                    class="ma-0 input-group--focused"
                     single-line
-                    required
+                    hide-details
+                    data-vv-name="job_lifecycle"
+                    v-validate="'required'"
                     id="job_lifecycle">
                 </v-text-field>
-              </v-card-row>
+              </v-layout>
+              <v-layout class="xs12 ma-0">
+                <small v-show="errors.has('job_lifecycle')" class="error--text">* {{ errors.first('job_lifecycle') }}</small>
+              </v-layout>
+            </div>
               <!--//FIELD-->
               <!--FILE-LOADER-->
-              <div class="body-2">Select file for analysis</div>
-              <v-card-row xs12 class="mb-3">
+              <div class="xs12 pb-3">
+                <label class="body-2">Select file for analysis</label>
+                <v-layout xs12 class="pad_LR12">
                 <form enctype="multipart/form-data" style="width:100%;">
                   <input
                     type="file"
@@ -46,48 +54,62 @@
                     @change="fileUpload($event.target.name, $event.target.files)"
                     class="white elevation-1"
                     style="width:100%;"
+                    data-vv-name="file_lifecycle"
+                    v-validate="'required|ext:txt,csv,dsv'"
                     id="input_lifecycle">
                 </form>
-              </v-card-row>
+                </v-layout>
+                <v-layout class="xs12 ma-0">
+                  <small v-show="errors.has('file_lifecycle')" class="error--text">* {{ errors.first('file_lifecycle') }}</small>
+                </v-layout>
+              </div>
               <!--//FILE-LOADER-->
               <!--SELECT-->
-              <div class="body-2">Select file type</div>
-              <v-card-row xs12 class="mb-3">
+              <div class="xs12 pb-3">
+                <label class="body-2">Select file type</label>
+                <v-layout xs12 class="pad_LR12">
                 <v-select
                     v-bind:items="items1"
-                    v-model="e1"
+                    v-model="select_lifecycle1"
                     label="Select file type"
-                    class="mt-1 mb-0 input-group--focused elevation-1"
+                    class="ma-0 input-group--focused"
                     single-line
-                    bottom
-                    v-bind:error-messages="['Please select an option']"
-                    required
+                    hide-details
+                    data-vv-name="select_lifecycle1"
+                    v-validate="'required'"
                     id="select_lifecycle1">
                 </v-select>
-              </v-card-row>
+              </v-layout>
+              <v-layout class="xs12 ma-0">
+                <small v-show="errors.has('select_lifecycle1')" class="error--text">* {{ errors.first('select_lifecycle1') }}</small>
+              </v-layout>
+            </div>
               <!--//SELECT-->
               <!--SELECT-->
-              <div class="body-2">Select time period for segmentation</div>
-              <v-card-row xs12 class="mb-3">
+              <div class="xs12 pb-3">
+              <label class="body-2">Select time period for segmentation</label>
+              <v-layout xs12 class="pad_LR12">
                 <v-select
                     v-bind:items="items2"
-                    v-model="e2"
-                    label="Select time period"
-                    class="mt-1 mb-0 input-group--focused elevation-1"
+                    v-model="select_lifecycle2"
+                    label="Select file type"
+                    class="ma-0 input-group--focused"
                     single-line
-                    bottom
-                    v-bind:error-messages="['Please select an option']"
-                    required
+                    hide-details
+                    data-vv-name="select_lifecycle2"
+                    v-validate="'required'"
                     id="select_lifecycle2">
                 </v-select>
-              </v-card-row>
+                </v-layout>
+                <v-layout class="xs12 ma-0">
+                  <small v-show="errors.has('select_lifecycle2')" class="error--text">* {{ errors.first('select_lifecycle2') }}</small>
+                </v-layout>
+              </div>
               <!--//SELECT-->
               <!--BUTTONS-->
               <v-card-row xs12>
                 <v-btn
-                  :disabled="!formIsValid"
-                  @click="submit"
-                  :class="{ green: valid, red: !valid }"
+                  @click.native="validateBeforeSubmit()"
                   class="primary white--text ma-0">submit</v-btn>
               </v-card-row>
               <!--//BUTTONS-->
@@ -106,14 +128,15 @@
   export default {
     data () {
       return {
-        e1: null,
+        job_lifecycle: '',
+        select_lifecycle1: '',
+        select_lifecycle2: '',
         items1: [
           {text: '.txt (tab separated)'},
           {text: '.CSV ("," delimeter)'},
           {text: '.DSV ("|" delimeter)'},
           {text: '.DSV (";" delimeter)'}
         ],
-        e2: null,
         items2: [
           {text: '3 months'},
           {text: '6 months'},
@@ -153,11 +176,18 @@
           // Upload is done
         })
       },
-      submit () {
-        console.log('submit job now')
-      },
-      clear () {
-        console.log('clear all fields')
+      validateBeforeSubmit () {
+        var vm = this
+        this.$validator.validateAll().then((result) => {
+          if (result) {
+            alert('Form Submitted!')
+            vm.disabledBtn = false
+            return
+          } else {
+            alert('Correct them errors!')
+            vm.disabledBtn = true
+          }
+        })
       }
     }
   }
@@ -168,6 +198,7 @@
 .v_card_width {max-width:300px;}
 .file {cursor:pointer;}
 .file_sample {padding:10px; position:relative; top:3px;}
+.pad_LR12 { padding-left:12px; padding-right: 12px;}
 .input-group {margin-top:0; margin-bottom:0;}
 .mar_field1 {margin-top:19px;}
 .mar_field2 {margin-top:34px;}

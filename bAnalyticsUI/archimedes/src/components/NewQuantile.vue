@@ -5,7 +5,7 @@
         <div class="centereddiv">
 
           <!-- FORM STARTS -->
-          <form name="balForm" @submit.prevent="validateBeforeSubmit()">
+          <form name="quantForm" @submit.prevent="validateBeforeSubmit()">
           <v-card class="white" style="margin-top:50px;">
             <v-card-title primary-title class="primary">
               <div><h6 class="white--text text-xs-left mb-0">QUANTILE INPUT</h6></div>
@@ -13,8 +13,8 @@
               <div class="file">
                 <v-dialog v-model="dialog" width="550px">
                   <div slot="activator">
-                    <div class="white--text subheading" style="display:inline-block;">Sample File Image</div>
-                    <div style="display:inline-block;"><v-icon primary light slot="activator">image</v-icon></div>
+                    <div class="white--text subheading inliner">Sample File Image</div>
+                    <div class="inliner"><v-icon primary light slot="activator">image</v-icon></div>
                   </div>
                   <v-card>
                     <img src="../assets/images/balor_file_img.png" width="100%" height="100%" class="file_sample">
@@ -71,7 +71,7 @@
                 <label class="body-2">Select file type</label>
                 <v-layout xs12 class="pad_LR12">
                   <v-select
-                      v-bind:items="items"
+                      v-bind:items="items1"
                       v-model="select_balor"
                       label="Select file type"
                       class="ma-0 input-group--focused"
@@ -99,7 +99,7 @@
                 <label class="body-2">Select time period for quantile</label>
                   <v-layout xs12 class="pad_LR12">
                     <v-select
-                        v-bind:items="items"
+                        v-bind:items="items2"
                         v-model="select_quantile2"
                         label="Select"
                         class="ma-0 input-group--focused"
@@ -120,7 +120,7 @@
                   <label class="body-2">Select quantile value</label>
                   <v-layout xs12 class="pad_LR12">
                     <v-select
-                      v-bind:items="items"
+                      v-bind:items="items3"
                       v-model="select_quantile3"
                       label="Select quantile value"
                       class="ma-0 input-group--focused"
@@ -176,6 +176,7 @@
                   <v-layout xs12 class="pad_LR12">
                   <v-text-field
                       label="Enter hierarchy"
+                      v-model="product1"
                       class="ma-0 input-group--focused"
                       single-line
                       hide-details
@@ -195,6 +196,7 @@
                   <v-layout xs12 class="pad_LR12">
                   <v-text-field
                       label="Enter hierarchy"
+                      v-model="product2"
                       class="ma-0 input-group--focused"
                       single-line
                       hide-details
@@ -214,6 +216,7 @@
                   <v-layout xs12 class="pad_LR12">
                   <v-text-field
                       label="Enter hierarchy"
+                      v-model="product3"
                       class="ma-0 input-group--focused"
                       single-line
                       hide-details
@@ -252,13 +255,33 @@
   export default {
     data () {
       return {
-        e1: null,
+        job_quantile: '',
+        select_balor: '',
+        select_quantile2: '',
+        select_quantile3: '',
+        product1: '',
+        product2: '',
+        product3: '',
         radio_group1: '',
-        items: [
+        disabledBtn: '',
+        items1: [
           {text: '.txt (tab separated)'},
           {text: '.CSV ("," delimeter)'},
           {text: '.DSV ("|" delimeter)'},
           {text: '.DSV (";" delimeter)'}
+        ],
+        items2: [
+          {text: 'month'},
+          {text: 'quarter'},
+          {text: '6 months'},
+          {text: '12 months'}
+        ],
+        items3: [
+          {text: 'Ventile (groups of 5%)'},
+          {text: 'Decile (groups of 10%)'},
+          {text: 'Quintiles (groups of 20%)'},
+          {text: 'Quartiles (groups of 25%)'},
+          {text: 'Median (groups of 50%)'}
         ],
         dialog: false,
         valid: true
@@ -312,6 +335,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.inliner {display:inline-block;}
 .v_card_width {max-width:300px;}
 .file {cursor:pointer;}
 .file_sample {padding:10px; position:relative; top:3px;}
