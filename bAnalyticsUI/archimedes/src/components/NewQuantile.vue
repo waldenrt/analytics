@@ -5,7 +5,7 @@
         <div class="centereddiv">
 
           <!-- FORM STARTS -->
-          <form>
+          <form name="balForm" @submit.prevent="validateBeforeSubmit()">
           <v-card class="white" style="margin-top:50px;">
             <v-card-title primary-title class="primary">
               <div><h6 class="white--text text-xs-left mb-0">QUANTILE INPUT</h6></div>
@@ -26,138 +26,206 @@
             <!--+++++col1+++++-->
             <v-flex xs12 class="pa-3 pl-4 pr-4">
               <!--FIELD-->
-              <div class="body-2">Enter Job Name</div>
-              <v-card-row xs12 class="mt-0 mb-3">
-                <v-text-field
-                    name="input-1"
-                    label="Enter Job Name"
-                    class="mt-1 mb-0 input-group--focused elevation-1"
-                    single-line
-                    required
-                    id="job_quantile">
-                </v-text-field>
-              </v-card-row>
+              <div class="xs12 pb-3">
+                <label class="body-2">Enter Job Name</label>
+                <v-layout class="xs12 ma-0">
+                  <v-text-field
+                      label="Enter Job Name"
+                      v-model="job_quantile"
+                      class="ma-0 input-group--focused"
+                      single-line
+                      hide-details
+                      data-vv-name="job_quantile"
+                      v-validate="'required'"
+                      id="job_quantile">
+                  </v-text-field>
+                </v-layout>
+                <v-layout class="xs12 ma-0">
+                  <small v-show="errors.has('job_quantile')" class="error--text">* {{ errors.first('job_quantile') }}</small>
+                </v-layout>
+              </div>
               <!--//FIELD-->
               <!--FILE-LOADER-->
-              <div class="body-2">Select file for analysis</div>
-              <v-card-row xs12 class="mb-3">
+              <div class="xs12 pb-3">
+                <label class="body-2">Select file for analysis</label>
+                <v-layout xs12 class="pad_LR12">
                 <form enctype="multipart/form-data" style="width:100%;">
                   <input
                     type="file"
                     :name="uploadFieldName"
                     @change="fileUpload($event.target.name, $event.target.files)"
-                    class="white elevation-1"
+                    class="ma-0 input-group--focused"
                     style="width:100%;"
+                    data-vv-name="file_quantile"
+                    v-validate="'required|ext:txt,csv,dsv'"
                     id="input_quantile1">
                 </form>
-              </v-card-row>
+                </v-layout>
+                <v-layout class="xs12 ma-0">
+                  <small v-show="errors.has('file_quantile')" class="error--text">* {{ errors.first('file_quantile') }}</small>
+                </v-layout>
+              </div>
               <!--//FILE-LOADER-->
               <!--SELECT-->
-              <div class="body-2">Select file type</div>
-              <v-card-row xs12 class="mb-3">
-                <v-select
-                    v-bind:items="items"
-                    v-model="e1"
-                    label="Select file type"
-                    class="mt-1 mb-0 input-group--focused elevation-1"
-                    single-line
-                    bottom
-                    v-bind:error-messages="['Please select an option']"
-                    required
-                    id="select_quantile1">
-                </v-select>
-              </v-card-row>
+              <div class="xs12 pb-3">
+                <label class="body-2">Select file type</label>
+                <v-layout xs12 class="pad_LR12">
+                  <v-select
+                      v-bind:items="items"
+                      v-model="select_balor"
+                      label="Select file type"
+                      class="ma-0 input-group--focused"
+                      single-line
+                      hide-details
+                      data-vv-name="select_quantile1"
+                      v-validate="'required'"
+                      id="select_quantile1">
+                  </v-select>
+                </v-layout>
+                <v-layout class="xs12 ma-0">
+                  <small v-show="errors.has('select_quantile1')" class="error--text">* {{ errors.first('select_quantile1') }}</small>
+                </v-layout>
+              </div>
               <!--//SELECT-->
             </v-flex>
             <!--//+++++col1+++++-->
             </v-layout>
-            <v-divider class="primary"></v-divider>
+            <v-divider class="grey"></v-divider>
             <v-layout wrap row>
               <!--+++++col1+++++-->
-              <v-flex xs6 class="pa-3 pl-4 pr-4">
+              <v-flex xs6 class="pt-3 pb-0 pl-4 pr-4">
                 <!--SELECT-->
-                <div class="body-2">Select time period for quantile</div>
-                <v-card-row xs12 class="mb-3">
-                  <v-select
-                      v-bind:items="items"
-                      v-model="e1"
-                      label="Select"
-                      class="mt-1 mb-0 input-group--focused elevation-1"
-                      single-line
-                      bottom
-                      v-bind:error-messages="['Please select an option']"
-                      required
-                      id="select_quantile2">
-                  </v-select>
-                </v-card-row>
+                <div class="xs12 pb-3">
+                <label class="body-2">Select time period for quantile</label>
+                  <v-layout xs12 class="pad_LR12">
+                    <v-select
+                        v-bind:items="items"
+                        v-model="select_quantile2"
+                        label="Select"
+                        class="ma-0 input-group--focused"
+                        single-line
+                        hide-details
+                        data-vv-name="select_quantile2"
+                        v-validate="'required'"
+                        id="select_quantile2">
+                    </v-select>
+                  </v-layout>
+                  <v-layout class="xs12 ma-0">
+                    <small v-show="errors.has('select_quantile2')" class="error--text">* {{ errors.first('select_quantile2') }}</small>
+                  </v-layout>
+                </div>
                 <!--//SELECT-->
                 <!--SELECT-->
-                <div class="body-2">Select quantile value</div>
-                <v-card-row xs12 class="mb-3">
-                  <v-select
+                <div class="xs12 pb-3">
+                  <label class="body-2">Select quantile value</label>
+                  <v-layout xs12 class="pad_LR12">
+                    <v-select
                       v-bind:items="items"
-                      v-model="e1"
-                      label="Select"
-                      class="mt-1 mb-0 input-group--focused elevation-1"
+                      v-model="select_quantile3"
+                      label="Select quantile value"
+                      class="ma-0 input-group--focused"
                       single-line
-                      bottom
-                      v-bind:error-messages="['Please select an option']"
-                      required
+                      hide-details
+                      data-vv-name="select_quantile3"
+                      v-validate="'required'"
                       id="select_quantile3">
-                  </v-select>
-                </v-card-row>
+                    </v-select>
+                  </v-layout>
+                  <v-layout class="xs12 ma-0">
+                    <small v-show="errors.has('select_quantile3')" class="error--text">* {{ errors.first('select_quantile3') }}</small>
+                  </v-layout>
+                </div>
                 <!--//SELECT-->
                 <!--SELECT-->
-                <div class="body-2">Select dimension to decile</div>
-                <v-card-row xs12>
-                  <v-radio label="Customer Level" v-model="ex8" value="radio-1" dark></v-radio>
-                </v-card-row>
-                <v-card-row xs12>
-                  <v-radio label="Store Level" v-model="ex8" value="radio-2" dark></v-radio>
-                </v-card-row>
+                <div class="xs12 pb-0">
+                  <label class="body-2">Select dimension to decile</label>
+                  <p class="control">
+                    <v-layout xs12 class="pad_LR12">
+                    <v-radio
+                        label="Customer Level"
+                        v-model="radio_group1"
+                        value="radio1"
+                        hide-details
+                        data-vv-name="radio_group1"
+                        v-validate="'required|in:radio1,radio2'"
+                        dark></v-radio>
+                    </v-layout>
+                    <v-layout xs12 class="pad_LR12">
+                    <v-radio
+                        label="Store Level"
+                        v-model="radio_group1"
+                        value="radio2"
+                        hide-details
+                        data-vv-name="radio_group1"
+                        v-validate="'required'"
+                        dark></v-radio>
+                      </v-layout>
+                    </p>
+                    <v-layout class="xs12 ma-0">
+                      <small v-show="errors.has('radio_group1')" class="error--text">* {{ errors.first('radio_group1') }}</small>
+                    </v-layout>
+                </div>
                 <!--//SELECT-->
               </v-flex>
               <!--//+++++col1+++++-->
               <!--+++++col2+++++-->
-              <v-flex xs6 class="pa-3 pl-4 pr-4">
+              <v-flex xs6 class="pt-3 pb-0 pl-4 pr-4">
                 <!--FIELD-->
-                <div class="body-2">Enter product hierarchy level I</div>
-                <v-card-row xs12 class="mt-0 mb-3">
+                <div class="xs12 pb-3">
+                  <label class="body-2">Enter product hierarchy level I</label>
+                  <v-layout xs12 class="pad_LR12">
                   <v-text-field
-                      name="input-2"
                       label="Enter hierarchy"
-                      class="mt-1 mb-0 input-group--focused elevation-1"
+                      class="ma-0 input-group--focused"
                       single-line
-                      required
+                      hide-details
+                      data-vv-name="product1"
+                      v-validate="'required'"
                       id="product1">
                   </v-text-field>
-                </v-card-row>
+                  </v-layout>
+                  <v-layout class="xs12 ma-0">
+                    <small v-show="errors.has('product1')" class="error--text">* {{ errors.first('product1') }}</small>
+                  </v-layout>
+                </div>
                 <!--//FIELD-->
                 <!--FIELD-->
-                <div class="body-2">Enter product hierarchy level II</div>
-                <v-card-row xs12 class="mt-0 mb-3">
+                <div class="xs12 pb-3">
+                  <label class="body-2">Enter product hierarchy level II</label>
+                  <v-layout xs12 class="pad_LR12">
                   <v-text-field
-                      name="input-3"
                       label="Enter hierarchy"
-                      class="mt-1 mb-0 input-group--focused elevation-1"
+                      class="ma-0 input-group--focused"
                       single-line
-                      required
+                      hide-details
+                      data-vv-name="product2"
+                      v-validate="'required'"
                       id="product2">
                   </v-text-field>
-                </v-card-row>
+                  </v-layout>
+                  <v-layout class="xs12 ma-0">
+                    <small v-show="errors.has('product2')" class="error--text">* {{ errors.first('product2') }}</small>
+                  </v-layout>
+                </div>
                 <!--//FIELD-->
                 <!--FIELD-->
-                <div class="body-2">Enter product hierarchy level III</div>
-                <v-card-row xs12 class="mt-0 mb-3">
+                <div class="xs12 pb-3">
+                  <label class="body-2">Enter product hierarchy level III</label>
+                  <v-layout xs12 class="pad_LR12">
                   <v-text-field
-                      name="input-4"
                       label="Enter hierarchy"
-                      class="mt-1 mb-0 input-group--focused elevation-1"
+                      class="ma-0 input-group--focused"
                       single-line
-                      required
+                      hide-details
+                      data-vv-name="product3"
+                      v-validate="'required'"
                       id="product3">
                   </v-text-field>
-                </v-card-row>
+                  </v-layout>
+                  <v-layout class="xs12 ma-0">
+                    <small v-show="errors.has('product3')" class="error--text">* {{ errors.first('product3') }}</small>
+                  </v-layout>
+                </div>
                 <!--//FIELD-->
               </v-flex>
               <!--//+++++col2+++++-->
@@ -165,9 +233,7 @@
                 <!--BUTTONS-->
                 <v-card-row xs12>
                   <v-btn
-                    :disabled="!formIsValid"
-                    @click="submit"
-                    :class="{ green: valid, red: !valid }"
+                    @click.native="validateBeforeSubmit()"
                     class="primary white--text ma-0">submit</v-btn>
                 </v-card-row>
                 <!--//BUTTONS-->
@@ -187,6 +253,7 @@
     data () {
       return {
         e1: null,
+        radio_group1: '',
         items: [
           {text: '.txt (tab separated)'},
           {text: '.CSV ("," delimeter)'},
@@ -226,11 +293,18 @@
           // Upload is done
         })
       },
-      submit () {
-        console.log('submit job now')
-      },
-      clear () {
-        console.log('clear all fields')
+      validateBeforeSubmit () {
+        var vm = this
+        this.$validator.validateAll().then((result) => {
+          if (result) {
+            alert('Form Submitted!')
+            vm.disabledBtn = false
+            return
+          } else {
+            alert('Correct them errors!')
+            vm.disabledBtn = true
+          }
+        })
       }
     }
   }
@@ -241,6 +315,7 @@
 .v_card_width {max-width:300px;}
 .file {cursor:pointer;}
 .file_sample {padding:10px; position:relative; top:3px;}
+.pad_LR12 { padding-left:12px; padding-right: 12px;}
 .input-group {margin-top:0; margin-bottom:0;}
 .mar_field1 {margin-top:19px;}
 .mar_field2 {margin-top:34px;}

@@ -52,7 +52,7 @@
               <!--FILE-LOADER-->
               <div class="xs12 pb-3">
                 <label class="body-2">Select file for analysis</label>
-                <v-layout xs12 style="padding-left:12px;padding-right:12px;">
+                <v-layout xs12 class="pad_LR12">
                   <form enctype="multipart/form-data" style="width:100%;">
                     <input
                       type="file"
@@ -73,7 +73,7 @@
               <!--SELECT-->
               <div class="xs12 pb-3">
                 <label class="body-2">Select file type</label>
-                <v-layout xs12  style="padding-left:12px;padding-right:12px;">
+                <v-layout xs12 class="pad_LR12">
                   <v-select
                       v-bind:items="items"
                       v-model="select_balor"
@@ -95,7 +95,6 @@
               <v-card-row xs12>
                 <v-btn
                   @click.native="validateBeforeSubmit()"
-                  :class="{ green: valid, red: !valid }"
                   class="primary white--text ma-0">submit</v-btn>
               </v-card-row>
               <!--//BUTTON-->
@@ -137,18 +136,6 @@
       }
     },
     computed: {
-      fileIsValid () {
-        var inp = document.getElementById('input_balor')
-        if (inp.file.length === 0) {
-          alert('Attachment Required')
-          inp.focus()
-          return false
-        }
-      },
-      formIsValid () {
-        // var inputField = document.getElementById('input_balor')
-        // return this.job_balor !== '' && this.select_balor !== '' && inputField.value !== ''
-      }
     },
     methods: {
       fileUpload (fieldName, fileNames) {
@@ -165,10 +152,6 @@
           .catch(err => {
             alert('There was an error uploading the file.  Please try again.' + err.message.toString())
           })
-      },
-      submit () {
-        console.log('submit job now')
-        alert('Job has been submitted. Please check the Job History page for status update.')
       },
       validateBeforeSubmit () {
         var vm = this
@@ -192,7 +175,8 @@
 .v_card_width {max-width:450px;}
 .file {cursor:pointer;}
 .file_sample {padding:10px; position:relative; top:3px;}
-.centereddiv{
+.pad_LR12 {padding-left:12px; padding-right: 12px;}
+.centereddiv {
   position:relative;
   width: 100%;
   top: 50%;
