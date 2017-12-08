@@ -167,20 +167,20 @@
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <h6 class="primary--text text-xs-center pa-1 mb-0">Product Index by Segment</h6>
           <v-layout wrap row>
-            <div v-if="showBest" class="seg_sect" :style="segCount">
-              <prod-index-chart :chart-data="bestBars" class="chart_height1"></prod-index-chart>
+            <div v-show="showBest" class="seg_sect" :style="segCount">
+              <prod-index-chart :style="segChart" :chart-data="bestBars" class="chart_height1"></prod-index-chart>
             </div>
-            <div v-if="showRising" class="seg_sect" :style="segCount">
-              <prod-index-chart :chart-data="risingBars" class="chart_height1"></prod-index-chart>
+            <div v-show="showRising" class="seg_sect" :style="segCount">
+              <prod-index-chart :style="segChart" :chart-data="risingBars" class="chart_height1"></prod-index-chart>
             </div>
-            <div v-if="showMiddle" class="seg_sect" :style="segCount">
-              <prod-index-chart :chart-data="middleBars" class="chart_height1"></prod-index-chart>
+            <div v-show="showMiddle" class="seg_sect" :style="segCount">
+              <prod-index-chart :style="segChart" :chart-data="middleBars" class="chart_height1"></prod-index-chart>
             </div>
-            <div v-if="showLapsing" class="seg_sect" :style="segCount">
-              <prod-index-chart :chart-data="lapsingBars" class="chart_height1"></prod-index-chart>
+            <div v-show="showLapsing" class="seg_sect" :style="segCount">
+              <prod-index-chart :style="segChart" :chart-data="lapsingBars" class="chart_height1"></prod-index-chart>
             </div>
-            <div v-if="showDeeply" class="seg_sect" :style="segCount">
-              <prod-index-chart :chart-data="deeplyBars" class="chart_height1"></prod-index-chart>
+            <div v-show="showDeeply" class="seg_sect" :style="segCount">
+              <prod-index-chart :style="segChart" :chart-data="deeplyBars" class="chart_height1"></prod-index-chart>
             </div>
           </v-layout>
         </v-card>
@@ -239,7 +239,8 @@
         showMiddle: true,
         showLapsing: true,
         showDeeply: true,
-        styleObject: { width: '20%' }
+        styleObject: { width: '20%' },
+        segChart: { width: '100%' }
       }
     },
     computed: {
@@ -249,14 +250,19 @@
       segCount: function () {
         if (this.segSelect.includes('All') || this.segSelect.length === 5) {
           this.styleObject.width = '20%'
+          this.segChart.width = '100%'
         } else if (this.segSelect.length === 4) {
           this.styleObject.width = '25%'
+          this.segChart.width = '100%'
         } else if (this.segSelect.length === 3) {
           this.styleObject.width = '33%'
+          this.segChart.width = '100%'
         } else if (this.segSelect.length === 2) {
           this.styleObject.width = '50%'
+          this.segChart.width = '100%'
         } else if (this.segSelect.length === 1) {
           this.styleObject.width = '100%'
+          this.segChart.width = '100%'
         }
         return this.styleObject
       }
@@ -549,11 +555,16 @@
 <style scoped>
   .seg_sect {
     width: 20%;
-    display: inline-block;
+    height:100%;
+    display: table-cell;
+    position: relative;
   }
 
   .chart_height1 {
+    width: 100% !important;
     height: 74vh !important;
   }
+
+  canvas { width:100% !important; }
 
 </style>
