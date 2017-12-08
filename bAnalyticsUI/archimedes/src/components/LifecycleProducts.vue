@@ -157,34 +157,40 @@
     <!-- //=====ROW2===== -->
     <!-- =====ROW3===== -->
     <v-layout wrap row class="mt-3">
+      <!--+++++col1+++++-->
       <v-flex xs12 sm4>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <h6 class="primary--text text-xs-center pa-1 mb-0 subhead">Overall Product Share</h6>
-          <horizontal-chart :chart-data="overallBars" class="chart_height1"></horizontal-chart>
+          <div class="prod_share_container">
+            <horizontal-chart :chart-data="overallBars" class="chart_height1"></horizontal-chart>
+          </div>
         </v-card>
       </v-flex>
+      <!--//+++++col1+++++-->
+      <!--+++++col2+++++-->
       <v-flex xs12 sm8>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <h6 class="primary--text text-xs-center pa-1 mb-0">Product Index by Segment</h6>
           <v-layout wrap row>
             <div v-show="showBest" class="seg_sect" :style="segCount">
-              <prod-index-chart :style="segChart" :chart-data="bestBars" class="chart_height1"></prod-index-chart>
+              <prod-index-chart :width="segChart" :chart-data="bestBars" class="chart_height1"></prod-index-chart>
             </div>
             <div v-show="showRising" class="seg_sect" :style="segCount">
-              <prod-index-chart :style="segChart" :chart-data="risingBars" class="chart_height1"></prod-index-chart>
+              <prod-index-chart :width="segChart" :chart-data="risingBars" class="chart_height1"></prod-index-chart>
             </div>
             <div v-show="showMiddle" class="seg_sect" :style="segCount">
-              <prod-index-chart :style="segChart" :chart-data="middleBars" class="chart_height1"></prod-index-chart>
+              <prod-index-chart :width="segChart" :chart-data="middleBars" class="chart_height1"></prod-index-chart>
             </div>
             <div v-show="showLapsing" class="seg_sect" :style="segCount">
-              <prod-index-chart :style="segChart" :chart-data="lapsingBars" class="chart_height1"></prod-index-chart>
+              <prod-index-chart :width="segChart" :chart-data="lapsingBars" class="chart_height1"></prod-index-chart>
             </div>
             <div v-show="showDeeply" class="seg_sect" :style="segCount">
-              <prod-index-chart :style="segChart" :chart-data="deeplyBars" class="chart_height1"></prod-index-chart>
+              <prod-index-chart :width="segChart" :chart-data="deeplyBars" class="chart_height1"></prod-index-chart>
             </div>
           </v-layout>
         </v-card>
       </v-flex>
+      <!--//+++++col2+++++-->
     </v-layout>
     <!-- //=====ROW3===== -->
   </v-container>
@@ -240,7 +246,7 @@
         showLapsing: true,
         showDeeply: true,
         styleObject: { width: '20%' },
-        segChart: { width: '100%' }
+        segChart: '100%'
       }
     },
     computed: {
@@ -250,19 +256,14 @@
       segCount: function () {
         if (this.segSelect.includes('All') || this.segSelect.length === 5) {
           this.styleObject.width = '20%'
-          this.segChart.width = '100%'
         } else if (this.segSelect.length === 4) {
           this.styleObject.width = '25%'
-          this.segChart.width = '100%'
         } else if (this.segSelect.length === 3) {
           this.styleObject.width = '33%'
-          this.segChart.width = '100%'
         } else if (this.segSelect.length === 2) {
           this.styleObject.width = '50%'
-          this.segChart.width = '100%'
         } else if (this.segSelect.length === 1) {
           this.styleObject.width = '100%'
-          this.segChart.width = '100%'
         }
         return this.styleObject
       }
@@ -565,6 +566,6 @@
     height: 74vh !important;
   }
 
-  canvas { width:100% !important; }
+  canvas, .prod_share_container { width:100% !important; }
 
 </style>

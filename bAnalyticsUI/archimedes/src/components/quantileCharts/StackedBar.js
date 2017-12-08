@@ -8,6 +8,14 @@
  export default HorizontalBar.extend({
    props: ['options', 'chartData'],
    mixins: [reactiveProp],
+   data () {
+     return {
+       options: {
+         responsive: true,
+         maintainAspectRatio: false
+       }
+     }
+   },
    mounted () {
      this.renderChart(this.chartData, this.options)
    }

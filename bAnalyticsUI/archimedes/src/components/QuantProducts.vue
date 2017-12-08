@@ -162,7 +162,7 @@
     <!-- //=====ROW2===== -->
     <!-- =====ROW3===== -->
     <v-layout wrap row class="mt-3">
-      <v-flex xs3>
+      <v-flex xs3 fill-height>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <!--****THIS IS JUST A PLACEHOLDER TABLE****-->
           <table cellpadding="0" cellspacing="0" width="100%" style="height:21vh !important;">
@@ -182,10 +182,10 @@
           <!--//****THIS IS JUST A PLACEHOLDER TABLE****//-->
         </v-card>
       </v-flex>
-      <v-flex xs9>
-        <v-card class="white pl-3 pr-3 pt-1 pb-1">
+      <v-flex xs9 fill-height>
+        <v-card fill-height class="white pl-3 pr-3 pt-1 pb-1" style="height:100%">
           <div class="primary--text text-xs-center pa-1 subhead">Products</div>
-          <stacked-bar :chart-data="barData" :options="barOptions"></stacked-bar>
+          <stacked-bar :chart-data="barData" :options="barOptions" class="prod_chart"></stacked-bar>
         </v-card>
       </v-flex>
     </v-layout>
@@ -966,5 +966,14 @@
   .subhead {
     line-height: 21px;
     font-weight: bold;
+  }
+  .prod_container {
+    width:100% !important;
+    height: 400px;
+  }
+  .prod_chart {
+    position: relative;
+    margin: 0 auto;
+    /* height: 385px !important; */
   }
 </style>
