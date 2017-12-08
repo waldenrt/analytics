@@ -157,6 +157,7 @@
     <!-- //=====ROW2===== -->
     <!-- =====ROW3===== -->
     <v-layout wrap row class="mt-3">
+      <!--+++++col1+++++-->
       <v-flex xs12 sm4>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <h6 class="primary--text text-xs-center pa-1 mb-0 subhead">Overall Product Share</h6>
@@ -165,6 +166,8 @@
           </div>
         </v-card>
       </v-flex>
+      <!--//+++++col1+++++-->
+      <!--+++++col2+++++-->
       <v-flex xs12 sm8>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <h6 class="primary--text text-xs-center pa-1 mb-0">Product Index by Segment</h6>
@@ -187,6 +190,7 @@
           </v-layout>
         </v-card>
       </v-flex>
+      <!--//+++++col2+++++-->
     </v-layout>
     <!-- //=====ROW3===== -->
   </v-container>
