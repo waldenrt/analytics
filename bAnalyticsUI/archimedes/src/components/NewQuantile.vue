@@ -41,7 +41,7 @@
                   </v-text-field>
                 </v-layout>
                 <v-layout class="xs12 ma-0">
-                  <small v-show="errors.has('job_quantile')" class="error--text">* {{ errors.first('job_quantile') }}</small>
+                  <small v-show="vErrors.has('job_quantile')" class="error--text">* {{ vErrors.first('job_quantile') }}</small>
                 </v-layout>
               </div>
               <!--//FIELD-->
@@ -62,7 +62,7 @@
                 </form>
                 </v-layout>
                 <v-layout class="xs12 ma-0">
-                  <small v-show="errors.has('file_quantile')" class="error--text">* {{ errors.first('file_quantile') }}</small>
+                  <small v-show="vErrors.has('file_quantile')" class="error--text">* {{ vErrors.first('file_quantile') }}</small>
                 </v-layout>
               </div>
               <!--//FILE-LOADER-->
@@ -83,7 +83,7 @@
                   </v-select>
                 </v-layout>
                 <v-layout class="xs12 ma-0">
-                  <small v-show="errors.has('select_quantile1')" class="error--text">* {{ errors.first('select_quantile1') }}</small>
+                  <small v-show="vErrors.has('select_quantile1')" class="error--text">* {{ vErrors.first('select_quantile1') }}</small>
                 </v-layout>
               </div>
               <!--//SELECT-->
@@ -111,7 +111,7 @@
                     </v-select>
                   </v-layout>
                   <v-layout class="xs12 ma-0">
-                    <small v-show="errors.has('select_quantile2')" class="error--text">* {{ errors.first('select_quantile2') }}</small>
+                    <small v-show="vErrors.has('select_quantile2')" class="error--text">* {{ vErrors.first('select_quantile2') }}</small>
                   </v-layout>
                 </div>
                 <!--//SELECT-->
@@ -132,7 +132,7 @@
                     </v-select>
                   </v-layout>
                   <v-layout class="xs12 ma-0">
-                    <small v-show="errors.has('select_quantile3')" class="error--text">* {{ errors.first('select_quantile3') }}</small>
+                    <small v-show="vErrors.has('select_quantile3')" class="error--text">* {{ vErrors.first('select_quantile3') }}</small>
                   </v-layout>
                 </div>
                 <!--//SELECT-->
@@ -162,7 +162,7 @@
                       </v-layout>
                     </p>
                     <v-layout class="xs12 ma-0">
-                      <small v-show="errors.has('radio_group1')" class="error--text">* {{ errors.first('radio_group1') }}</small>
+                      <small v-show="vErrors.has('radio_group1')" class="error--text">* {{ vErrors.first('radio_group1') }}</small>
                     </v-layout>
                 </div>
                 <!--//SELECT-->
@@ -186,7 +186,7 @@
                   </v-text-field>
                   </v-layout>
                   <v-layout class="xs12 ma-0">
-                    <small v-show="errors.has('product1')" class="error--text">* {{ errors.first('product1') }}</small>
+                    <small v-show="vErrors.has('product1')" class="error--text">* {{ vErrors.first('product1') }}</small>
                   </v-layout>
                 </div>
                 <!--//FIELD-->
@@ -206,7 +206,7 @@
                   </v-text-field>
                   </v-layout>
                   <v-layout class="xs12 ma-0">
-                    <small v-show="errors.has('product2')" class="error--text">* {{ errors.first('product2') }}</small>
+                    <small v-show="vErrors.has('product2')" class="error--text">* {{ vErrors.first('product2') }}</small>
                   </v-layout>
                 </div>
                 <!--//FIELD-->
@@ -226,7 +226,7 @@
                   </v-text-field>
                   </v-layout>
                   <v-layout class="xs12 ma-0">
-                    <small v-show="errors.has('product3')" class="error--text">* {{ errors.first('product3') }}</small>
+                    <small v-show="vErrors.has('product3')" class="error--text">* {{ vErrors.first('product3') }}</small>
                   </v-layout>
                 </div>
                 <!--//FIELD-->
@@ -324,7 +324,7 @@
             vm.disabledBtn = false
             return
           } else {
-            alert('Correct them errors!')
+            alert('Correct them vErrors!')
             vm.disabledBtn = true
           }
         })

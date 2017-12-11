@@ -39,7 +39,7 @@
                 </v-text-field>
               </v-layout>
               <v-layout class="xs12 ma-0">
-                <small v-show="errors.has('job_lifecycle')" class="error--text">* {{ errors.first('job_lifecycle') }}</small>
+                <small v-show="vErrors.has('job_lifecycle')" class="error--text">* {{ vErrors.first('job_lifecycle') }}</small>
               </v-layout>
             </div>
               <!--//FIELD-->
@@ -60,7 +60,7 @@
                 </form>
                 </v-layout>
                 <v-layout class="xs12 ma-0">
-                  <small v-show="errors.has('file_lifecycle')" class="error--text">* {{ errors.first('file_lifecycle') }}</small>
+                  <small v-show="vErrors.has('file_lifecycle')" class="error--text">* {{ vErrors.first('file_lifecycle') }}</small>
                 </v-layout>
               </div>
               <!--//FILE-LOADER-->
@@ -81,7 +81,7 @@
                 </v-select>
               </v-layout>
               <v-layout class="xs12 ma-0">
-                <small v-show="errors.has('select_lifecycle1')" class="error--text">* {{ errors.first('select_lifecycle1') }}</small>
+                <small v-show="vErrors.has('select_lifecycle1')" class="error--text">* {{ vErrors.first('select_lifecycle1') }}</small>
               </v-layout>
             </div>
               <!--//SELECT-->
@@ -102,7 +102,7 @@
                 </v-select>
                 </v-layout>
                 <v-layout class="xs12 ma-0">
-                  <small v-show="errors.has('select_lifecycle2')" class="error--text">* {{ errors.first('select_lifecycle2') }}</small>
+                  <small v-show="vErrors.has('select_lifecycle2')" class="error--text">* {{ vErrors.first('select_lifecycle2') }}</small>
                 </v-layout>
               </div>
               <!--//SELECT-->
@@ -184,7 +184,7 @@
             vm.disabledBtn = false
             return
           } else {
-            alert('Correct them errors!')
+            alert('Correct them vErrors!')
             vm.disabledBtn = true
           }
         })

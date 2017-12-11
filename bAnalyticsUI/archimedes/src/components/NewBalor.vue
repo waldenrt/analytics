@@ -45,7 +45,7 @@
                   </v-text-field>
                 </v-layout>
                 <v-layout class="xs12 ma-0">
-                  <small v-show="errors.has('job_balor')" class="error--text">* {{ errors.first('job_balor') }}</small>
+                  <small v-show="vErrors.has('job_balor')" class="error--text">* {{ vErrors.first('job_balor') }}</small>
                 </v-layout>
               </div>
               <!--//FIELD-->
@@ -66,7 +66,7 @@
                   </form>
                 </v-layout>
                 <v-layout class="xs12 ma-0">
-                  <small v-show="errors.has('file_balor')" class="error--text">* {{ errors.first('file_balor') }}</small>
+                  <small v-show="vErrors.has('file_balor')" class="error--text">* {{ vErrors.first('file_balor') }}</small>
                 </v-layout>
               </div>
               <!--//FILE-LOADER-->
@@ -87,7 +87,7 @@
                   </v-select>
                 </v-layout>
                 <v-layout class="xs12 ma-0">
-                  <small v-show="errors.has('select_balor')" class="error--text">* {{ errors.first('select_balor') }}</small>
+                  <small v-show="vErrors.has('select_balor')" class="error--text">* {{ vErrors.first('select_balor') }}</small>
                 </v-layout>
               </div>
               <!--//SELECT-->
@@ -161,7 +161,7 @@
             vm.disabledBtn = false
             return
           } else {
-            alert('Correct them errors!')
+            alert('Correct them vErrors!')
             vm.disabledBtn = true
           }
         })
