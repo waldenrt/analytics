@@ -10,7 +10,7 @@
             <v-list-tile ripple class="white">
               <v-icon class="primary--text pr-3">home</v-icon>
               <v-list-tile-title class="primary--text">
-                <router-link to="/" tag="span" style="cursor:pointer;">Dashboard</router-link>
+                <router-link to="/Home" tag="span" style="cursor:pointer;">Dashboard</router-link>
               </v-list-tile-title>
             </v-list-tile>
           </v-list-item>
