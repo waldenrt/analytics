@@ -222,7 +222,7 @@
                                       Select Post Period Segment:
                                     </div>
                                   </v-flex>
-                                  <v-flex xs12>
+                                  <v-flex xs12 sm9>
                                       <v-select v-bind:items="segments"
                                                 v-model="postSegComp"
                                                 label="Select Segments"
@@ -232,6 +232,10 @@
                                                 v-on:input="selPostPeriodComp()"
                                                 class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                                       </v-select>
+                                  </v-flex>
+                                  <v-flex xs12 sm3>
+                                    <v-checkbox label="Show new" v-model="showNew" class="pl-1 pr-1 mt-1 mb-2"
+                                    @change="selPostPeriodComp()"></v-checkbox>
                                   </v-flex>
                                 </v-layout>
                               </v-card>
@@ -319,7 +323,8 @@
         deeplyRet: 0,
         showSankey: true,
         showError: false,
-        stankey: null
+        stankey: null,
+        showNew: true
       }
     },
     computed: {
@@ -534,61 +539,119 @@
       },
 
       selPostPeriodComp () {
-        console.log('update bar chart....')
-        if (this.postSegComp === 'Best in Class') {
-          this.barData = {
-            labels: this.barLabels,
-            datasets: [
-              {
-                data: this.allBestPost[this.tpSelect - 1],
-                label: 'Prior Segment',
-                backgroundColor: '#003947'
-              }
-            ]
+        if (this.showNew) {
+          if (this.postSegComp === 'Best in Class') {
+            this.barData = {
+              labels: this.barLabels,
+              datasets: [
+                {
+                  data: this.allBestPost[this.tpSelect - 1],
+                  label: 'Prior Segment',
+                  backgroundColor: '#003947'
+                }
+              ]
+            }
+          } else if (this.postSegComp === 'Rising Stars') {
+            this.barData = {
+              labels: this.barLabels,
+              datasets: [
+                {
+                  data: this.allRisingPost[this.tpSelect - 1],
+                  label: 'Prior Segment',
+                  backgroundColor: '#8EAC1D'
+                }
+              ]
+            }
+          } else if (this.postSegComp === 'Middle of the Road') {
+            this.barData = {
+              labels: this.barLabels,
+              datasets: [
+                {
+                  data: this.allMiddlePost[this.tpSelect - 1],
+                  label: 'Prior Segment',
+                  backgroundColor: '#0087AA'
+                }
+              ]
+            }
+          } else if (this.postSegComp === 'Lapsing') {
+            this.barData = {
+              labels: this.barLabels,
+              datasets: [
+                {
+                  data: this.allLapsingPost[this.tpSelect - 1],
+                  label: 'Prior Segment',
+                  backgroundColor: '#F7970E'
+                }
+              ]
+            }
+          } else if (this.postSegComp === 'Deeply Lapsed') {
+            this.barData = {
+              labels: this.barLabels,
+              datasets: [
+                {
+                  data: this.allDeeplyPost[this.tpSelect - 1],
+                  label: 'Prior Segment',
+                  backgroundColor: '#D63809'
+                }
+              ]
+            }
           }
-        } else if (this.postSegComp === 'Rising Stars') {
-          this.barData = {
-            labels: this.barLabels,
-            datasets: [
-              {
-                data: this.allRisingPost[this.tpSelect - 1],
-                label: 'Prior Segment',
-                backgroundColor: '#8EAC1D'
-              }
-            ]
-          }
-        } else if (this.postSegComp === 'Middle of the Road') {
-          this.barData = {
-            labels: this.barLabels,
-            datasets: [
-              {
-                data: this.allMiddlePost[this.tpSelect - 1],
-                label: 'Prior Segment',
-                backgroundColor: '#0087AA'
-              }
-            ]
-          }
-        } else if (this.postSegComp === 'Lapsing') {
-          this.barData = {
-            labels: this.barLabels,
-            datasets: [
-              {
-                data: this.allLapsingPost[this.tpSelect - 1],
-                label: 'Prior Segment',
-                backgroundColor: '#F7970E'
-              }
-            ]
-          }
-        } else if (this.postSegComp === 'Deeply Lapsed') {
-          this.barData = {
-            labels: this.barLabels,
-            datasets: [
-              {
-                data: this.allDeeplyPost[this.tpSelect - 1],
-                label: 'Prior Segment',
-                backgroundColor: '#D63809'
-              }
-            ]
+        } else {
+          if (this.postSegComp === 'Best in Class') {
+            this.barData = {
+              labels: this.barLabels.slice(0, 5),
+              datasets: [
+                {
+                  data: this.allBestPost[this.tpSelect - 1].slice(0, 5),
+                  label: 'Prior Segment',
+                  backgroundColor: '#003947'
+                }
+              ]
+            }
+          } else if (this.postSegComp === 'Rising Stars') {
+            this.barData = {
+              labels: this.barLabels.slice(0, 5),
+              datasets: [
+                {
+                  data: this.allRisingPost[this.tpSelect - 1].slice(0, 5),
+                  label: 'Prior Segment',
+                  backgroundColor: '#8EAC1D'
+                }
+              ]
+            }
+          } else if (this.postSegComp === 'Middle of the Road') {
+            this.barData = {
+              labels: this.barLabels.slice(0, 5),
+              datasets: [
+                {
+                  data: this.allMiddlePost[this.tpSelect - 1].slice(0, 5),
+                  label: 'Prior Segment',
+                  backgroundColor: '#0087AA'
+                }
+              ]
+            }
+          } else if (this.postSegComp === 'Lapsing') {
+            this.barData = {
+              labels: this.barLabels.slice(0, 5),
+              datasets: [
+                {
+                  data: this.allLapsingPost[this.tpSelect - 1].slice(0, 5),
+                  label: 'Prior Segment',
+                  backgroundColor: '#F7970E'
+                }
+              ]
+            }
+          } else if (this.postSegComp === 'Deeply Lapsed') {
+            this.barData = {
+              labels: this.barLabels.slice(0, 5),
+              datasets: [
+                {
+                  data: this.allDeeplyPost[this.tpSelect - 1].slice(0, 5),
+                  label: 'Prior Segment',
+                  backgroundColor: '#D63809'
+                }
+              ]
+            }
           }
         }
       },

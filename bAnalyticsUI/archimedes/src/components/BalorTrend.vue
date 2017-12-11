@@ -27,31 +27,6 @@
             <h6 class="white--text text-xs-left mb-0">BALOR Period Trendline</h6>
           </v-card-title>
           <v-layout row wrap>
-            <!--checkboxes-->
-            <v-flex xs12>
-              <v-card flat>
-                <v-layout row wrap class="checkboxes pl-3 pr-3">
-                  <v-flex xs12 sm6 md2 grey--text subheading>
-                    <input class="mr-1" type='checkbox' id='allTrends'
-                           checked='true' @change="allUpdate()">All
-                  </v-flex>
-                  <v-flex xs12 sm6 md3 grey--text subheading>
-                    <input class="mr-1" type='checkbox' id='custTrend'
-                           @change="singleUpdate()">Customer
-                  </v-flex>
-                  <v-flex xs12 sm6 md3 grey--text subheading>
-                    <input class="mr-1" type='checkbox' id='txnTrend'
-                           @change="singleUpdate()">Transaction
-                  </v-flex>
-                  <v-flex xs12 sm6 md3 grey--text subheading>
-                    <input class="mr-1" type='checkbox' id='spendTrend'
-                           @change="singleUpdate()">Spend
-                  </v-flex>
-                </v-layout>
-              </v-card>
-            </v-flex>
-            <!--//checkboxes-->
-
             <!--slider-->
             <v-flex xs12>
               <v-layout row wrap class="mt-2 mb-3 pl-4 pr-4">
@@ -654,24 +629,6 @@
               }]
           }
         }
-      },
-      singleUpdate () {
-        if (document.getElementById('custTrend').checked && document.getElementById('txnTrend').checked && document.getElementById('spendTrend').checked) {
-          document.getElementById('custTrend').checked = false
-          document.getElementById('txnTrend').checked = false
-          document.getElementById('spendTrend').checked = false
-          document.getElementById('allTrends').checked = true
-          this.slideUpdateTrends()
-        } else {
-          document.getElementById('allTrends').checked = false
-          this.slideUpdateTrends()
-        }
-      },
-      allUpdate () {
-        document.getElementById('custTrend').checked = false
-        document.getElementById('txnTrend').checked = false
-        document.getElementById('spendTrend').checked = false
-        this.slideUpdateTrends()
       },
       createPies () {
         var tp = 0
