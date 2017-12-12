@@ -61,7 +61,7 @@
     <!-- =====ROW2===== -->
     <v-layout wrap row class="mb-3">
       <!--+++++col1+++++-->
-      <v-flex xs5 class="pt-0 mt-0">
+      <v-flex xs12 md5 class="pt-0 mt-0">
         <v-card class="white pl-3 pr-3 pt-1 pb-1 card_height">
           <div class="title primary--text text-xs-center pa-1 mb-2">Aggregate Metrics for Time Period {{ this.tpSelect }}
           </div>
@@ -89,9 +89,9 @@
       </v-flex>
       <!--//+++++col1+++++-->
       <!--+++++col2+++++-->
-      <v-flex xs7 class="pt-0 mt-0">
+      <v-flex xs12 md7 class="pt-0 mt-0">
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
-          <div class="title primary--text text-xs-center pa-1 mb-2">Segment Percent of Total for Time Period {{ this.tpSelect
+          <div class="title primary--text text-xs-center pa-1 mb-2">Segment Percent of Total Aggregate Metrics for Time Period {{ this.tpSelect
             }}
           </div>
           <v-layout row>

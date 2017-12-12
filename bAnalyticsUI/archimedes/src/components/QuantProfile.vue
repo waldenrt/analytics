@@ -5,7 +5,7 @@
       <v-flex xs12>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-card-title primary-title class="primary">
-            <h6 class="white--text text-xs-left mb-0">Customer Quantile Summary & Pareto Analysis</h6>
+            <h6 class="white--text text-xs-left mb-0">Customer Pareto Analysis</h6>
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->

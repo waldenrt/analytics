@@ -6,9 +6,9 @@
 
           <!-- FORM STARTS -->
           <form name="quantForm" @submit.prevent="validateBeforeSubmit()">
-          <v-card class="white" style="margin-top:50px;">
+          <v-card class="white v_card">
             <v-card-title primary-title class="primary">
-              <div><h6 class="white--text text-xs-left mb-0">QUANTILE INPUT</h6></div>
+              <div><h6 class="white--text text-xs-left mb-0">Pareto Input</h6></div>
               <v-spacer></v-spacer>
               <div class="file">
                 <v-dialog v-model="dialog" width="550px">
@@ -31,17 +31,17 @@
                 <v-layout class="xs12 ma-0">
                   <v-text-field
                       label="Enter Job Name"
-                      v-model="job_quantile"
+                      v-model="job_pareto"
                       class="ma-0 input-group--focused"
                       single-line
                       hide-details
-                      data-vv-name="job_quantile"
+                      data-vv-name="job_pareto"
                       v-validate="'required'"
-                      id="job_quantile">
+                      id="job_pareto">
                   </v-text-field>
                 </v-layout>
                 <v-layout class="xs12 ma-0">
-                  <small v-show="vErrors.has('job_quantile')" class="error--text">* {{ vErrors.first('job_quantile') }}</small>
+                  <small v-show="vErrors.has('job_pareto')" class="error--text">* {{ vErrors.first('job_pareto') }}</small>
                 </v-layout>
               </div>
               <!--//FIELD-->
@@ -56,18 +56,18 @@
                     @change="fileUpload($event.target.name, $event.target.files)"
                     class="ma-0 input-group--focused"
                     style="width:100%;"
-                    data-vv-name="file_quantile"
+                    data-vv-name="file_pareto"
                     v-validate="'required|ext:txt,csv,dsv'"
-                    id="input_quantile1">
+                    id="input_pareto1">
                 </form>
                 </v-layout>
                 <v-layout class="xs12 ma-0">
-                  <small v-show="vErrors.has('file_quantile')" class="error--text">* {{ vErrors.first('file_quantile') }}</small>
+                  <small v-show="vErrors.has('file_pareto')" class="error--text">* {{ vErrors.first('file_pareto') }}</small>
                 </v-layout>
               </div>
               <!--//FILE-LOADER-->
               <!--SELECT-->
-              <div class="xs12 pb-3">
+              <div class="xs12">
                 <label class="body-2">Select file type</label>
                 <v-layout xs12 class="pad_LR12">
                   <v-select
@@ -77,69 +77,69 @@
                       class="ma-0 input-group--focused"
                       single-line
                       hide-details
-                      data-vv-name="select_quantile1"
+                      data-vv-name="select_pareto1"
                       v-validate="'required'"
-                      id="select_quantile1">
+                      id="select_pareto1">
                   </v-select>
                 </v-layout>
                 <v-layout class="xs12 ma-0">
-                  <small v-show="vErrors.has('select_quantile1')" class="error--text">* {{ vErrors.first('select_quantile1') }}</small>
+                  <small v-show="vErrors.has('select_pareto1')" class="error--text">* {{ vErrors.first('select_pareto1') }}</small>
                 </v-layout>
               </div>
               <!--//SELECT-->
             </v-flex>
             <!--//+++++col1+++++-->
             </v-layout>
-            <v-divider class="grey"></v-divider>
+            <v-divider class="grey lighten-2"></v-divider>
             <v-layout wrap row>
               <!--+++++col1+++++-->
               <v-flex xs6 class="pt-3 pb-0 pl-4 pr-4">
                 <!--SELECT-->
                 <div class="xs12 pb-3">
-                <label class="body-2">Select time period for quantile</label>
+                <label class="body-2">Select time period for pareto</label>
                   <v-layout xs12 class="pad_LR12">
                     <v-select
                         v-bind:items="items2"
-                        v-model="select_quantile2"
+                        v-model="select_pareto2"
                         label="Select"
                         class="ma-0 input-group--focused"
                         single-line
                         hide-details
-                        data-vv-name="select_quantile2"
+                        data-vv-name="select_pareto2"
                         v-validate="'required'"
-                        id="select_quantile2">
+                        id="select_pareto2">
                     </v-select>
                   </v-layout>
                   <v-layout class="xs12 ma-0">
-                    <small v-show="vErrors.has('select_quantile2')" class="error--text">* {{ vErrors.first('select_quantile2') }}</small>
+                    <small v-show="vErrors.has('select_pareto2')" class="error--text">* {{ vErrors.first('select_pareto2') }}</small>
                   </v-layout>
                 </div>
                 <!--//SELECT-->
                 <!--SELECT-->
                 <div class="xs12 pb-3">
-                  <label class="body-2">Select quantile value</label>
+                  <label class="body-2">Select pareto value</label>
                   <v-layout xs12 class="pad_LR12">
                     <v-select
                       v-bind:items="items3"
-                      v-model="select_quantile3"
-                      label="Select quantile value"
+                      v-model="select_pareto3"
+                      label="Select pareto value"
                       class="ma-0 input-group--focused"
                       single-line
                       hide-details
-                      data-vv-name="select_quantile3"
+                      data-vv-name="select_pareto3"
                       v-validate="'required'"
-                      id="select_quantile3">
+                      id="select_pareto3">
                     </v-select>
                   </v-layout>
                   <v-layout class="xs12 ma-0">
-                    <small v-show="vErrors.has('select_quantile3')" class="error--text">* {{ vErrors.first('select_quantile3') }}</small>
+                    <small v-show="vErrors.has('select_pareto3')" class="error--text">* {{ vErrors.first('select_pareto3') }}</small>
                   </v-layout>
                 </div>
                 <!--//SELECT-->
                 <!--SELECT-->
-                <div class="xs12 pb-0">
+                <div class="xs12 pb-3">
                   <label class="body-2">Select dimension to decile</label>
-                  <p class="control">
+                  <p class="control mb-0">
                     <v-layout xs12 class="pad_LR12">
                     <v-radio
                         label="Customer Level"
@@ -232,15 +232,18 @@
                 <!--//FIELD-->
               </v-flex>
               <!--//+++++col2+++++-->
-              <v-flex xs12 class="pl-4 pr-4 pb-3">
-                <!--BUTTONS-->
-                <v-card-row xs12>
-                  <v-btn
-                    @click.native="validateBeforeSubmit()"
-                    class="primary white--text ma-0">submit</v-btn>
-                </v-card-row>
-                <!--//BUTTONS-->
-              </v-flex>
+            </v-layout>
+            <v-divider class="grey lighten-2"></v-divider>
+            <v-layout wrap row>
+            <v-flex xs12 class="pt-3 pl-4 pr-4 pb-3">
+              <!--BUTTONS-->
+              <v-card-row xs12 style="float:right;">
+                <v-btn
+                  @click.native="validateBeforeSubmit()"
+                  class="success white--text ma-0">submit</v-btn>
+              </v-card-row>
+              <!--//BUTTONS-->
+            </v-flex>
             </v-layout>
           </v-card>
         </form>
@@ -255,10 +258,10 @@
   export default {
     data () {
       return {
-        job_quantile: '',
+        job_pareto: '',
         select_balor: '',
-        select_quantile2: '',
-        select_quantile3: '',
+        select_pareto2: '',
+        select_pareto3: '',
         product1: '',
         product2: '',
         product3: '',
@@ -324,7 +327,7 @@
             vm.disabledBtn = false
             return
           } else {
-            alert('Correct them vErrors!')
+            alert('Correct the errors!')
             vm.disabledBtn = true
           }
         })
@@ -336,10 +339,10 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .inliner {display:inline-block;}
-.v_card_width {max-width:300px;}
+.v_card {border-radius:4px;}
 .file {cursor:pointer;}
 .file_sample {padding:10px; position:relative; top:3px;}
-.pad_LR12 { padding-left:12px; padding-right: 12px;}
+.pad_LR12 { padding-left:12px; padding-right:12px;}
 .input-group {margin-top:0; margin-bottom:0;}
 .mar_field1 {margin-top:19px;}
 .mar_field2 {margin-top:34px;}

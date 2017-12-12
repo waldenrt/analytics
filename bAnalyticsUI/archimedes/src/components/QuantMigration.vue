@@ -9,7 +9,7 @@
       <v-flex xs12>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-card-title primary-title class="primary">
-            <h6 class="white--text text-xs-left mb-0">Customer Quantile Migration</h6>
+            <h6 class="white--text text-xs-left mb-0">Customer Pareto Migration</h6>
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
@@ -119,155 +119,155 @@
       <v-flex xs12 class="pt-0 mt-0">
         <v-card class="pl-3 pr-3 pt-1 pb-1">
           <div class="title primary--text text-xs-center pa-1 emphasis"><em>Period <span class="grey--text darken-2">{{ tpSelect }}</span>
-            Quantile Migration from Prior Period Quantiles <span class="grey--text darken-2">{{ priorPeriod }}</span> to
-            Post Period Quantiles <span class="grey--text darken-2">{{ postPeriod }}</span></em></div>
+            [Quantile] Migration from Prior Period [Quantiles] <span class="grey--text darken-2">{{ priorPeriod }}</span> to
+            Post Period [Quantiles] <span class="grey--text darken-2">{{ postPeriod }}</span></em></div>
         </v-card>
       </v-flex>
     </v-layout>
     <!-- //=====ROW2===== -->
     <!-- =====ROW3===== -->
-    <v-layout wrap row>
-      <v-flex xs12 class="pt-0 mt-0">
-        <v-card class="white pa-3" style="width:100%;">
-          <v-layout wrap row>
-
-
-            <!--+++++col1+++++-->
-            <v-flex xs12 md8 lg9>
-              <v-data-table
-                  v-bind:headers="quantHeaders"
-                  :items="tableMigItems"
-                  hide-actions>
-                <template slot="items" scope="props">
-                  <td>{{ props.item.from }}</td>
-                  <td>{{ props.item.key1 }}</td>
-                  <td>{{ props.item.key2 }}</td>
-                  <td>{{ props.item.key3 }}</td>
-                  <td>{{ props.item.key4 }}</td>
-                  <td>{{ props.item.key5 }}</td>
-                  <td>{{ props.item.key6 }}</td>
-                  <td>{{ props.item.key7 }}</td>
-                  <td>{{ props.item.key8 }}</td>
-                  <td>{{ props.item.key9 }}</td>
-                  <td>{{ props.item.key10 }}</td>
-                </template>
-              </v-data-table>
-            </v-flex>
-            <!--//+++++col1+++++-->
-
-
-            <!--+++++col2+++++-->
-            <v-flex xs12 md4 lg3 class="pr-4">
-              <v-layout wrap row>
-              <v-flex xs12 sm6 md12 class="mb-3">
-              <!--table-row-->
-              <v-layout wrap row>
-                <v-card class="white" style="width:100%;">
-                  <v-card-title primary-title class="white">
-                    <h6 class="primary--text text-xs-center mb-0">Period-over-Period Retention Rate</h6>
-                  </v-card-title>
-                  <v-divider class="primary pb-0"></v-divider>
-                  <v-flex xs12 fill-height>
-                    <v-layout row wrap>
-                      <table cellpadding="0" cellspacing="0" width="100%" style="height:21vh !important;">
-                        <tr>
-                          <td>Quantile</td>
-                          <!--<td>Prior Customers</td>-->
-                          <td>Retained<br />Customers</td>
-                          <td>New<br />Customers</td>
-                          <td>Post<br />Customer<br />Total</td>
-                          <!--<td>Retention Rate</td>-->
-                        </tr>
-                        <tr v-for="item in sumItems" v-bind:key="item.name">
-                          <td class="pl-2 pr-2 pt-2 pb-0">
-                            <div class="primary--text" v-text="item.name"></div>
-                          </td>
-                          <!--<td class="pl-2 pr-2 pt-2 pb-0">
-                            <div v-text="item.priorCustCount"></div>
-                          </td>-->
-                          <td class="pl-2 pr-2 pt-2 pb-0">
-                            <div v-text="item.retained"></div>
-                          </td>
-                          <td class="pl-2 pr-2 pt-2 pb-0">
-                            <div v-text="item.new"></div>
-                          </td>
-                          <td class="pl-2 pr-2 pt-2 pb-0">
-                            <div v-text="item.postCustCount"></div>
-                          </td>
-                          <!--<td class="pl-2 pr-2 pt-2 pb-0">
-                            <div v-text="item.retRate"></div>
-                          </td>-->
-                        </tr>
-                      </table>
-                    </v-layout>
-                  </v-flex>
-                </v-card>
+    <v-layout wrap row class="pt-0 mt-0">
+      <!--+++++col1+++++-->
+      <v-flex xs12 md8 lg9>
+        <v-card class="white" style="width:100%;">
+        <v-data-table
+            v-bind:headers="quantHeaders"
+            :items="tableMigItems"
+            hide-actions>
+          <template slot="items" scope="props">
+            <td>{{ props.item.from }}</td>
+            <td>{{ props.item.key1 }}</td>
+            <td>{{ props.item.key2 }}</td>
+            <td>{{ props.item.key3 }}</td>
+            <td>{{ props.item.key4 }}</td>
+            <td>{{ props.item.key5 }}</td>
+            <td>{{ props.item.key6 }}</td>
+            <td>{{ props.item.key7 }}</td>
+            <td>{{ props.item.key8 }}</td>
+            <td>{{ props.item.key9 }}</td>
+            <td>{{ props.item.key10 }}</td>
+          </template>
+        </v-data-table>
+        </v-card>
+      </v-flex>
+      <!--//+++++col1+++++-->
+      <!--+++++col2+++++-->
+      <v-flex xs12 md4 lg3 class="pl-4 pr-4">
+        <v-layout wrap row>
+        <v-flex xs12 sm6 md12 class="mb-3">
+        <!--table-row-->
+        <v-layout wrap row>
+          <v-card class="white" style="width:100%;">
+            <v-card-title primary-title class="white">
+              <h6 class="primary--text text-xs-center mb-0">Period-over-Period Retention Rate</h6>
+            </v-card-title>
+            <v-divider class="primary pb-0"></v-divider>
+            <v-flex xs12 fill-height>
+              <v-layout row wrap>
+                <table cellpadding="0" cellspacing="0" width="100%" style="height:21vh !important;">
+                  <tr>
+                    <td>Quantile</td>
+                    <!--<td>Prior Customers</td>-->
+                    <td>Retained<br />Customers</td>
+                    <td>New<br />Customers</td>
+                    <td>Post<br />Customer<br />Total</td>
+                    <!--<td>Retention Rate</td>-->
+                  </tr>
+                  <tr v-for="item in sumItems" v-bind:key="item.name">
+                    <td class="pl-2 pr-2 pt-2 pb-0">
+                      <div class="primary--text" v-text="item.name"></div>
+                    </td>
+                    <!--<td class="pl-2 pr-2 pt-2 pb-0">
+                      <div v-text="item.priorCustCount"></div>
+                    </td>-->
+                    <td class="pl-2 pr-2 pt-2 pb-0">
+                      <div v-text="item.retained"></div>
+                    </td>
+                    <td class="pl-2 pr-2 pt-2 pb-0">
+                      <div v-text="item.new"></div>
+                    </td>
+                    <td class="pl-2 pr-2 pt-2 pb-0">
+                      <div v-text="item.postCustCount"></div>
+                    </td>
+                    <!--<td class="pl-2 pr-2 pt-2 pb-0">
+                      <div v-text="item.retRate"></div>
+                    </td>-->
+                  </tr>
+                </table>
               </v-layout>
-              <!--//table-row-->
-              </v-flex>
+            </v-flex>
+          </v-card>
+        </v-layout>
+        <!--//table-row-->
+        </v-flex>
 
 
-              <v-flex xs12 sm6 md12 class="mb-3">
-              <!--chart-row-->
-              <v-layout wrap row>
-                <v-card class="white pa-0" style="width:100%;">
-                  <v-flex xs12 fill-height>
-                    <!-- =====ROW1===== -->
-                    <v-layout row wrap class="pt-0 mt-0">
-                      <v-flex xs12 class="pa-0 ma-0">
-                        <v-card class="pa-0 ma-0 grey lighten-2">
-                          <v-card-title primary-title class="white">
-                            <h6 class="primary--text text-xs-left mb-0">Post Period Quantile Composition</h6>
-                          </v-card-title>
+        <v-flex xs12 sm6 md12 class="mb-3">
+        <!--chart-row-->
+        <v-layout wrap row>
+          <v-card class="white pa-0" style="width:100%;">
+            <v-flex xs12 fill-height>
+              <!-- =====ROW1===== -->
+              <v-layout row wrap class="pt-0 mt-0">
+                <v-flex xs12 class="pa-0 ma-0">
+                  <v-card class="pa-0 ma-0 grey lighten-2">
+                    <v-card-title primary-title class="white">
+                      <h6 class="primary--text text-xs-left mb-0">Post Period [Quantile] Composition</h6>
+                    </v-card-title>
+                    <v-layout row wrap>
+                      <!--Dropdown1-->
+                      <v-flex xs12>
+                        <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
                           <v-layout row wrap>
-                            <!--Dropdown1-->
                             <v-flex xs12>
-                              <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
-                                <v-layout row wrap>
-                                  <v-flex xs12>
-                                    <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                                      Select Post Period Segment for Analysis:
-                                    </div>
-                                  </v-flex>
-                                  <v-flex xs12>
-                                      <v-select v-bind:items="quantArray"
-                                                v-model="quantileSelect"
-                                                label="Select Quantile\"
-                                                single-line
-                                                bottom
-                                                hide-details
-                                                v-on:input="selectQuantile()"
-                                                class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
-                                      </v-select>
-                                  </v-flex>
-                                </v-layout>
-                              </v-card>
+                              <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                                Select Post Period Segment for Analysis:
+                              </div>
                             </v-flex>
-                            <!--//Dropdown1-->
+                            <v-flex xs12>
+                                <v-select v-bind:items="quantArray"
+                                          v-model="quantileSelect"
+                                          label="Select Quantile\"
+                                          single-line
+                                          bottom
+                                          hide-details
+                                          v-on:input="selectQuantile()"
+                                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
+                                </v-select>
+                            </v-flex>
                           </v-layout>
                         </v-card>
                       </v-flex>
+                      <!--//Dropdown1-->
                     </v-layout>
-                    <!-- //=====ROW1===== -->
-                    <!-- =====ROW2===== -->
-                    <v-layout row wrap class="pt-0 mt-0">
-                      <v-flex xs12>
-                        <div class="pl-1 pr-1 pt-3 pb-2"><bar-chart :chart-data="quantbars" class="bar_height"></bar-chart></div>
-                      </v-flex>
-                    </v-layout>
-                    <!-- //=====ROW2===== -->
-                  </v-flex>
-                </v-card>
+                  </v-card>
+                </v-flex>
               </v-layout>
-              </v-flex>
+              <!-- //=====ROW1===== -->
+              <!-- =====ROW2===== -->
+              <v-layout row wrap class="pt-0 mt-0">
+                <v-flex xs12>
+                  <div class="pl-1 pr-1 pt-3 pb-2"><bar-chart :chart-data="quantbars" class="bar_height"></bar-chart></div>
+                </v-flex>
               </v-layout>
-              <!--//chart-row-->
+              <!-- //=====ROW2===== -->
             </v-flex>
-            <!--//+++++col2+++++-->
+          </v-card>
+        </v-layout>
+        </v-flex>
+        </v-layout>
+        <!--//chart-row-->
+      </v-flex>
+      <!--//+++++col2+++++-->
+
+
+
 
 
           </v-layout>
         </v-card>
+      </v-flex>
+      <v-flex xs12 md4 class="pt-0 mt-0">
       </v-flex>
     </v-layout>
     <!-- //=====ROW3===== -->

@@ -105,7 +105,7 @@
         ],
         modules: [
           {name: 'Balor', active: true, icon: 'label', link: '/Balor'},
-          {name: 'Quantile', active: false, icon: 'label', link: '/Quantile'},
+          {name: 'Pareto', active: false, icon: 'label', link: '/Quantile'},
           {name: 'Core Lifecycle', active: false, icon: 'label', link: '/Lifecycle'},
           {name: 'bRelevant', active: false, icon: 'label', link: '/bRelevant'},
           {name: 'History', active: false, icon: 'history', link: '/JobHistory'},

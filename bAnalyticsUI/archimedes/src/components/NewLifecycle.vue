@@ -4,9 +4,9 @@
       <v-flex xs6 offset-xs3 class="pl-0 pr-0 mt-0">
         <div class="centereddiv">
         <form name="lifeForm" @submit.prevent="validateBeforeSubmit()">
-          <v-card class="white" style="margin-top:50px;">
+          <v-card class="white v_card">
             <v-card-title primary-title class="primary">
-              <div><h6 class="white--text text-xs-left mb-0">CORE LIFECYCLE INPUT</h6></div>
+              <div><h6 class="white--text text-xs-left mb-0">Core Lifecycle Input</h6></div>
               <v-spacer></v-spacer>
               <div class="file">
                 <v-dialog v-model="dialog" width="550px">
@@ -86,7 +86,7 @@
             </div>
               <!--//SELECT-->
               <!--SELECT-->
-              <div class="xs12 pb-3">
+              <div class="xs12">
               <label class="body-2">Select time period for segmentation</label>
               <v-layout xs12 class="pad_LR12">
                 <v-select
@@ -106,15 +106,20 @@
                 </v-layout>
               </div>
               <!--//SELECT-->
+            </v-flex>
+            <!--//+++++col1+++++-->
+            </v-layout>
+            <v-divider class="grey lighten-2"></v-divider>
+            <v-layout wrap row>
+            <v-flex xs12 class="pt-3 pl-4 pr-4 pb-3">
               <!--BUTTONS-->
-              <v-card-row xs12>
+              <v-card-row xs12 style="float:right;">
                 <v-btn
                   @click.native="validateBeforeSubmit()"
-                  class="primary white--text ma-0">submit</v-btn>
+                  class="success white--text ma-0">submit</v-btn>
               </v-card-row>
               <!--//BUTTONS-->
             </v-flex>
-            <!--//+++++col1+++++-->
             </v-layout>
           </v-card>
         </form>
@@ -195,7 +200,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.v_card_width {max-width:300px;}
+.v_card {border-radius:4px;}
 .file {cursor:pointer;}
 .file_sample {padding:10px; position:relative; top:3px;}
 .pad_LR12 { padding-left:12px; padding-right: 12px;}
