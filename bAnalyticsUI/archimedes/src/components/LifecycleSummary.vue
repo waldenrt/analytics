@@ -65,23 +65,23 @@
         <v-card class="white pl-3 pr-3 pt-1 pb-1 card_height">
           <div class="title primary--text text-xs-center pa-1 mb-2">Aggregate Metrics for Time Period {{ this.tpSelect }}
           </div>
-          <v-card class="success mb-2 height_bars1">
-            <v-card-text class="success white--text height_bars2">
+          <v-card class="mb-2 height_bars1" style="background-color:#848C98;">
+            <v-card-text class="white--text height_bars2">
               <div class="subheading">Total Customers <span>{{ this.metricsItems.totalCusts }}</span></div>
             </v-card-text>
           </v-card>
-          <v-card class="error mb-2 height_bars1">
-            <v-card-text class="error white--text height_bars2">
+          <v-card class="mb-2 height_bars1" style="background-color:#005E76;">
+            <v-card-text class="white--text height_bars2">
               <div class="subheading">Total Visits <span>{{ this.metricsItems.totalVisits }}</span></div>
             </v-card-text>
           </v-card>
-          <v-card class="info mb-2 height_bars1">
-            <v-card-text class="info white--text height_bars2">
+          <v-card class="mb-2 height_bars1" style="background-color:#848C98;">
+            <v-card-text class="white--text height_bars2">
               <div class="subheading">Total Spend <span>{{ this.metricsItems.totalSpend }}</span></div>
             </v-card-text>
           </v-card>
-          <v-card class="warning mb-2 height_bars1">
-            <v-card-text class="warning white--text height_bars2">
+          <v-card class="mb-2 height_bars1" style="background-color:#005E76;">
+            <v-card-text class="white--text height_bars2">
               <div class="subheading">Total Units <span>{{ this.metricsItems.totalUnits }}</span></div>
             </v-card-text>
           </v-card>
