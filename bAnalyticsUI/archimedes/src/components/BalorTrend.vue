@@ -53,44 +53,44 @@
         <v-layout row wrap>
           <v-flex xs12 class="pb-3">
             <div class="sum_brd1">
-            <v-card horizontal class="white card_height">
-              <v-card-text class="white error--text card_pad">
-                <v-card-title primary-title class="pa-0 pb-3">
-                  <h6 class="error--text text-xs-left mb-0 pt-0 pb-0">BALOR Summary</h6>
-                </v-card-title>
-                <v-divider class="error"></v-divider>
-                <table width="100%" class="summary">
-                  <tr>
-                    <td class="grey lighten-4">Min. Date:</td>
-                    <td class="grey lighten-4">{{ this.sumItems.minDateBalor }}</td>
-                  </tr>
-                  <tr>
-                    <td class="grey lighten-4">Max. Date:</td>
-                    <td class="grey lighten-4">{{ this.sumItems.maxDateBalor }}</td>
-                  </tr>
-                  <tr>
-                    <td class="grey lighten-4">Customer Base:</td>
-                    <td class="grey lighten-4">{{ this.sumItems.totalCusts }}</td>
-                  </tr>
-                  <tr>
-                    <td class="grey lighten-4">% Customer - 1 Purchase:</td>
-                    <td class="grey lighten-4">{{ this.sumItems.percentCust }}</td>
-                  </tr>
-                  <tr>
-                    <td class="grey lighten-4">Transactions:</td>
-                    <td class="grey lighten-4">{{ this.sumItems.numRecords }}</td>
-                  </tr>
-                  <tr>
-                    <td class="grey lighten-4">Purchase Cadence - 80th Percentile:</td>
-                    <td class="grey lighten-4">{{ this.sumItems.normalizedCadence }}</td>
-                  </tr>
-                  <tr>
-                    <td class="grey lighten-4">Time Periods:</td>
-                    <td class="grey lighten-4">{{ this.sumItems.timePeriods }}</td>
-                  </tr>
-                </table>
-              </v-card-text>
-            </v-card>
+              <v-card horizontal class="white card_height">
+                <v-card-text class="white error--text card_pad">
+                  <v-card-title primary-title class="pa-0 pb-3">
+                    <h6 class="error--text text-xs-left mb-0 pt-0 pb-0">BALOR Summary</h6>
+                  </v-card-title>
+                  <v-divider class="error"></v-divider>
+                  <table width="100%" class="summary">
+                    <tr>
+                      <td class="grey lighten-4">Min. Date:</td>
+                      <td class="grey lighten-4">{{ this.sumItems.minDateBalor }}</td>
+                    </tr>
+                    <tr>
+                      <td class="grey lighten-4">Max. Date:</td>
+                      <td class="grey lighten-4">{{ this.sumItems.maxDateBalor }}</td>
+                    </tr>
+                    <tr>
+                      <td class="grey lighten-4">Customer Base:</td>
+                      <td class="grey lighten-4">{{ this.sumItems.totalCusts }}</td>
+                    </tr>
+                    <tr>
+                      <td class="grey lighten-4">% Customer - 1 Purchase:</td>
+                      <td class="grey lighten-4">{{ this.sumItems.percentCust }}</td>
+                    </tr>
+                    <tr>
+                      <td class="grey lighten-4">Transactions:</td>
+                      <td class="grey lighten-4">{{ this.sumItems.numRecords }}</td>
+                    </tr>
+                    <tr>
+                      <td class="grey lighten-4">Purchase Cadence - 80th Percentile:</td>
+                      <td class="grey lighten-4">{{ this.sumItems.normalizedCadence }}</td>
+                    </tr>
+                    <tr>
+                      <td class="grey lighten-4">Time Periods:</td>
+                      <td class="grey lighten-4">{{ this.sumItems.timePeriods }}</td>
+                    </tr>
+                  </table>
+                </v-card-text>
+              </v-card>
             </div>
           </v-flex>
         </v-layout>
@@ -99,20 +99,20 @@
         <v-layout row wrap class="ret_sum">
           <v-flex xs12 class="pb-3">
             <div class="sum_brd2">
-            <v-card horizontal class="white card_height">
-              <v-card-text class="white warning--text card_pad">
-                <v-card-title primary-title class="pa-0 pb-3">
-                  <h6 class="warning--text text-xs-left mb-0 pt-0 pb-0">Retention Summary</h6>
-                </v-card-title>
-                <v-divider class="warning"></v-divider>
-                <table width="100%" class="summary">
-                  <tr v-for="item in retentionItems" v-bind:key="item.name">
-                    <td class="grey lighten-4">{{ item.name }}:</td>
-                    <td class="grey lighten-4">{{ item.vals }}</td>
-                  </tr>
-                </table>
-              </v-card-text>
-            </v-card>
+              <v-card horizontal class="white card_height">
+                <v-card-text class="white warning--text card_pad">
+                  <v-card-title primary-title class="pa-0 pb-3">
+                    <h6 class="warning--text text-xs-left mb-0 pt-0 pb-0">Retention Summary</h6>
+                  </v-card-title>
+                  <v-divider class="warning"></v-divider>
+                  <table width="100%" class="summary">
+                    <tr v-for="item in retentionItems" v-bind:key="item.name">
+                      <td class="grey lighten-4">{{ item.name }}:</td>
+                      <td class="grey lighten-4">{{ item.vals }}</td>
+                    </tr>
+                  </table>
+                </v-card-text>
+              </v-card>
             </div>
           </v-flex>
         </v-layout>
@@ -145,7 +145,7 @@
                           </div>
                         </v-flex>
                         <v-flex xs12>
-                            <v-select v-model="tp"
+                          <v-select v-model="tp"
                                     v-bind:items="tpArray"
                                     label="Select Time Period"
                                     single-line
@@ -154,7 +154,7 @@
                                     class="pl-1 pt-1 mt-1 mb-2 white elevation-1"
                                     hide-details
                                     id="selection">
-                            </v-select>
+                          </v-select>
                         </v-flex>
                       </v-layout>
                     </v-card>
@@ -224,30 +224,30 @@
                 <h6 class="primary--text text-xs-left mb-0">BALOR Trend Raw Data</h6>
               </v-card-title>
               <v-data-table
-                v-bind:headers="headers"
-                :items="items1"
-                hide-actions
-                class="elevation-1"
+                  v-bind:headers="headers"
+                  :items="items1"
+                  hide-actions
+                  class="elevation-1"
               >
-              <template slot="items" scope="props">
-                <td>{{ props.item.timePeriod }}</td>
-                <td class="text-xs-right">{{ props.item.custBalor }}</td>
-                <td class="text-xs-right">{{ props.item.spendBalor }}</td>
-                <td class="text-xs-right">{{ props.item.txnBalor }}</td>
-                <td class="text-xs-right">{{ props.item.newCustCount }}</td>
-                <td class="text-xs-right">{{ props.item.newTxnAmt }}</td>
-                <td class="text-xs-right">{{ props.item.newTxnCount }}</td>
-                <td class="text-xs-right">{{ props.item.reactCustCount }}</td>
-                <td class="text-xs-right">{{ props.item.reactTxnAmt }}</td>
-                <td class="text-xs-right">{{ props.item.reactTxnCount }}</td>
-                <td class="text-xs-right">{{ props.item.returnCustCount }}</td>
-                <td class="text-xs-right">{{ props.item.returnTxnAmt }}</td>
-                <td class="text-xs-right">{{ props.item.returnTxnCount }}</td>
-                <td class="text-xs-right">{{ props.item.lapsedCustCount }}</td>
-                <td class="text-xs-right">{{ props.item.lapsedTxnAmt }}</td>
-                <td class="text-xs-right">{{ props.item.lapsedTxnCount }}</td>
-              </template>
-            </v-data-table>
+                <template slot="items" scope="props">
+                  <td>{{ props.item.timePeriod }}</td>
+                  <td class="text-xs-right">{{ props.item.custBalor }}</td>
+                  <td class="text-xs-right">{{ props.item.spendBalor }}</td>
+                  <td class="text-xs-right">{{ props.item.txnBalor }}</td>
+                  <td class="text-xs-right">{{ props.item.newCustCount }}</td>
+                  <td class="text-xs-right">{{ props.item.newTxnAmt }}</td>
+                  <td class="text-xs-right">{{ props.item.newTxnCount }}</td>
+                  <td class="text-xs-right">{{ props.item.reactCustCount }}</td>
+                  <td class="text-xs-right">{{ props.item.reactTxnAmt }}</td>
+                  <td class="text-xs-right">{{ props.item.reactTxnCount }}</td>
+                  <td class="text-xs-right">{{ props.item.returnCustCount }}</td>
+                  <td class="text-xs-right">{{ props.item.returnTxnAmt }}</td>
+                  <td class="text-xs-right">{{ props.item.returnTxnCount }}</td>
+                  <td class="text-xs-right">{{ props.item.lapsedCustCount }}</td>
+                  <td class="text-xs-right">{{ props.item.lapsedTxnAmt }}</td>
+                  <td class="text-xs-right">{{ props.item.lapsedTxnCount }}</td>
+                </template>
+              </v-data-table>
             </v-flex>
           </v-layout>
         </v-card>
@@ -283,21 +283,21 @@
             sortable: true,
             value: 'timePeriod'
           },
-          { text: 'Customer Balor Ratio', value: 'custBalor' },
-          { text: 'Spend Balor Ratio', value: 'spendBalor' },
-          { text: 'Txn Balor Ratio', value: 'txnBalor' },
-          { text: 'New Cust Count', value: 'newCustCount' },
-          { text: 'New Total Sales', value: 'newTxnAmt' },
-          { text: 'New Txn Count', value: 'newTxnCount' },
-          { text: 'Reactivated Cust Count', value: 'reactCustCount' },
-          { text: 'Reactivated Total Sales', value: 'reactTxnAmt' },
-          { text: 'Reactivated Txn Count', value: 'reactTxnCount' },
-          { text: 'Returning Cust Count', value: 'returnCustCount' },
-          { text: 'Returning Total Sales', value: 'returnTxnAmt' },
-          { text: 'Returning Txn Count', value: 'returnTxnCount' },
-          { text: 'Lapsed Cust Count', value: 'lapsedCustCount' },
-          { text: 'Lapsed Total Sales', value: 'lapsedTxnAmt' },
-          { text: 'Lapsed Txn Count', value: 'lapsedTxnCount' }
+          {text: 'Customer Balor Ratio', value: 'custBalor'},
+          {text: 'Spend Balor Ratio', value: 'spendBalor'},
+          {text: 'Txn Balor Ratio', value: 'txnBalor'},
+          {text: 'New Cust Count', value: 'newCustCount'},
+          {text: 'New Total Sales', value: 'newTxnAmt'},
+          {text: 'New Txn Count', value: 'newTxnCount'},
+          {text: 'Reactivated Cust Count', value: 'reactCustCount'},
+          {text: 'Reactivated Total Sales', value: 'reactTxnAmt'},
+          {text: 'Reactivated Txn Count', value: 'reactTxnCount'},
+          {text: 'Returning Cust Count', value: 'returnCustCount'},
+          {text: 'Returning Total Sales', value: 'returnTxnAmt'},
+          {text: 'Returning Txn Count', value: 'returnTxnCount'},
+          {text: 'Lapsed Cust Count', value: 'lapsedCustCount'},
+          {text: 'Lapsed Total Sales', value: 'lapsedTxnAmt'},
+          {text: 'Lapsed Txn Count', value: 'lapsedTxnCount'}
         ],
         retentionItems: [],
         sumItems: {},
@@ -493,141 +493,36 @@
         var vals = this.Slider.noUiSlider.get()
         var min = parseInt(vals[0]) - 1
         var max = parseInt(vals[1])
-        var allChbx = document.getElementById('allTrends')
-        var custChbx = document.getElementById('custTrend')
-        var txnChbx = document.getElementById('txnTrend')
-        var spendChbx = document.getElementById('spendTrend')
 
         var newData = {}
         newData.labels = this.tpArray
         newData.datasets = []
 
-        if (allChbx.checked) {
-          this.trendLine = {
-            labels: this.tpArray.slice(min, max),
-            datasets: [
-              {
-                label: 'Customer',
-                data: this.custBalorArray.slice(min, max),
-                fill: false,
-                lineTension: 0,
-                backgroundColor: '#8EAC1D',
-                borderColor: '#8EAC1D'
-              }, {
-                label: 'Transaction',
-                fill: false,
-                data: this.txnBalorArray.slice(min, max),
-                lineTension: 0,
-                backgroundColor: '#F7970E',
-                borderColor: '#F7970E'
-              }, {
-                label: 'Spend',
-                fill: false,
-                data: this.spendBalorArray.slice(min, max),
-                lineTension: 0,
-                backgroundColor: '#0087AA',
-                borderColor: '#0087AA'
-              }]
-          }
-        } else if (custChbx.checked && txnChbx.checked) {
-          this.trendLine = {
-            labels: this.tpArray.slice(min, max),
-            datasets: [
-              {
-                label: 'Customer',
-                data: this.custBalorArray.slice(min, max),
-                fill: false,
-                lineTension: 0,
-                backgroundColor: '#8EAC1D',
-                borderColor: '#8EAC1D'
-              }, {
-                label: 'Transaction',
-                fill: false,
-                data: this.txnBalorArray.slice(min, max),
-                lineTension: 0,
-                backgroundColor: '#F7970E',
-                borderColor: '#F7970E'
-              }]
-          }
-        } else if (custChbx.checked && spendChbx.checked) {
-          this.trendLine = {
-            labels: this.tpArray.slice(min, max),
-            datasets: [
-              {
-                label: 'Customer',
-                data: this.custBalorArray.slice(min, max),
-                fill: false,
-                lineTension: 0,
-                backgroundColor: '#8EAC1D',
-                borderColor: '#8EAC1D'
-              }, {
-                label: 'Spend',
-                fill: false,
-                data: this.spendBalorArray.slice(min, max),
-                lineTension: 0,
-                backgroundColor: '#0087AA',
-                borderColor: '#0087AA'
-              }]
-          }
-        } else if (txnChbx.checked && spendChbx.checked) {
-          this.trendLine = {
-            labels: this.tpArray.slice(min, max),
-            datasets: [
-              {
-                label: 'Transaction',
-                fill: false,
-                data: this.txnBalorArray.slice(min, max),
-                lineTension: 0,
-                backgroundColor: '#F7970E',
-                borderColor: '#F7970E'
-              }, {
-                label: 'Spend',
-                fill: false,
-                data: this.spendBalorArray.slice(min, max),
-                lineTension: 0,
-                backgroundColor: '#0087AA',
-                borderColor: '#0087AA'
-              }]
-          }
-        } else if (custChbx.checked) {
-          this.trendLine = {
-            labels: this.tpArray.slice(min, max),
-            datasets: [
-              {
-                label: 'Customer',
-                data: this.custBalorArray.slice(min, max),
-                fill: false,
-                lineTension: 0,
-                backgroundColor: '#8EAC1D',
-                borderColor: '#8EAC1D'
-              }]
-          }
-        } else if (txnChbx.checked) {
-          this.trendLine = {
-            labels: this.tpArray.slice(min, max),
-            datasets: [
-              {
-                label: 'Transaction',
-                fill: false,
-                data: this.txnBalorArray.slice(min, max),
-                lineTension: 0,
-                backgroundColor: '#F7970E',
-                borderColor: '#F7970E'
-              }]
-          }
-        } else if (spendChbx.checked) {
-          this.trendLine = {
-            labels: this.tpArray.slice(min, max),
-            datasets: [
-              {
-                label: 'Spend',
-                fill: false,
-                data: this.spendBalorArray.slice(min, max),
-                lineTension: 0,
-                backgroundColor: '#0087AA',
-                borderColor: '#0087AA'
-              }]
-          }
+        this.trendLine = {
+          labels: this.tpArray.slice(min, max),
+          datasets: [
+            {
+              label: 'Customer',
+              data: this.custBalorArray.slice(min, max),
+              fill: false,
+              lineTension: 0,
+              backgroundColor: '#8EAC1D',
+              borderColor: '#8EAC1D'
+            }, {
+              label: 'Transaction',
+              fill: false,
+              data: this.txnBalorArray.slice(min, max),
+              lineTension: 0,
+              backgroundColor: '#F7970E',
+              borderColor: '#F7970E'
+            }, {
+              label: 'Spend',
+              fill: false,
+              data: this.spendBalorArray.slice(min, max),
+              lineTension: 0,
+              backgroundColor: '#0087AA',
+              borderColor: '#0087AA'
+            }]
         }
       },
       createPies () {
@@ -806,15 +701,21 @@
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-  .inliner { display: inline-block; }
+  .inliner {
+    display: inline-block;
+  }
 
-  .sum_brd1 { border-right: 7px solid #D63809; }
+  .sum_brd1 {
+    border-right: 7px solid #D63809;
+  }
 
-  .sum_brd2 { border-right: 7px solid #f7970e; }
+  .sum_brd2 {
+    border-right: 7px solid #f7970e;
+  }
 
   .summary td:last-child {
-    margin-left:5px;
-    text-align:right;
+    margin-left: 5px;
+    text-align: right;
   }
 
   .line_chart {
@@ -835,9 +736,13 @@
     height: 20vw !important;
   }
 
-  .left_float { float: left; }
+  .left_float {
+    float: left;
+  }
 
-  .right_float { float: right; }
+  .right_float {
+    float: right;
+  }
 
   .legend {
     display: inline-block;
@@ -846,22 +751,44 @@
     margin-right: 5px;
   }
 
-  .legend_color1 { background-color: #D63809; }
-  .legend_color2 { background-color: #8EAC1D; }
-  .legend_color3 { background-color: #F7970E; }
-  .legend_color4 { background-color: #0087AA; }
-  .padR5{padding-right:5px;}
+  .legend_color1 {
+    background-color: #D63809;
+  }
 
-  .tabs__item{padding:0 !important;}
-  .tabs__container a{padding:0;}
+  .legend_color2 {
+    background-color: #8EAC1D;
+  }
+
+  .legend_color3 {
+    background-color: #F7970E;
+  }
+
+  .legend_color4 {
+    background-color: #0087AA;
+  }
+
+  .padR5 {
+    padding-right: 5px;
+  }
+
+  .tabs__item {
+    padding: 0 !important;
+  }
+
+  .tabs__container a {
+    padding: 0;
+  }
 
   /* Smartphones (portrait and landscape) ----------- */
-  @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
-  /* Styles */
+  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    /* Styles */
     .pie_chart1 {
       height: 30vh !important;
     }
-    .padT15_mob{ padding-top:15px;}
+
+    .padT15_mob {
+      padding-top: 15px;
+    }
   }
 
 </style>

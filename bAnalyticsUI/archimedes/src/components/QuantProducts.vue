@@ -726,10 +726,19 @@
         this.barOptions = {
           scales: {
             xAxes: [{
-              stacked: true
+              stacked: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Percent of Total ' + this.measureSelect + ' on ' + this.topBottomSelect + ' ' +
+                this.topSpendLvl1[this.tpSelect - 1].length + ' Products'
+              }
             }],
             yAxes: [{
-              stacked: true
+              stacked: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Customer Quantile Group'
+              }
             }]
           },
           legend: {
@@ -762,6 +771,33 @@
       },
 
       updateData () {
+        this.barOptions = {
+          scales: {
+            xAxes: [{
+              stacked: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Percent of Total ' + this.measureSelect + ' on ' + this.topBottomSelect + ' ' +
+                this.topSpendLvl1[this.tpSelect - 1].length + ' Products'
+              }
+            }],
+            yAxes: [{
+              stacked: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Customer Quantile Group'
+              }
+            }]
+          },
+          legend: {
+            display: false
+          },
+          animation: {
+            onComplete: function () {
+              // TODO fill out to populate inner text
+            }
+          }
+        }
         // using to update no matter which drop down is changed
         var barDataset = []
         var quants = []
