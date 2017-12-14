@@ -52,7 +52,7 @@
                     type="file"
                     :name="uploadFieldName"
                     @change="fileUpload($event.target.name, $event.target.files)"
-                    class="white elevation-1"
+                    class="ma-0 input-group--focused"
                     style="width:100%;"
                     data-vv-name="file_lifecycle"
                     v-validate="'required|ext:txt,csv,dsv'"
