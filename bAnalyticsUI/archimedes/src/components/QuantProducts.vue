@@ -439,9 +439,6 @@
             templvl1TPSpendTop.push(templvl1SpendTop)
             templvl1TPSpendBot.push(templvl1SpendBot)
 
-            console.log('should be total of top count lvl1')
-            console.log(lvl1ttlspendtop)
-
             ttl1countTopObj.push({'Quantile': j + 1, 'total': numeral(lvl1ttlcounttop).format('0,0')})
             ttl1countBotObj.push({'Quantile': j + 1, 'total': numeral(lvl1ttlcountbot).format('0,0')})
             ttl1spendTopObj.push({'Quantile': j + 1, 'total': numeral(lvl1ttlspendtop).format('$0,0.00')})
@@ -563,9 +560,6 @@
         this.topTtlCount3 = ttl3countTopObjTP
         this.botTtlSpend3 = ttl3spendBotObjTP
         this.botTtlCount3 = ttl3countBotObjTP
-
-        console.log('parseJson() topttlspend1 array')
-        console.log(this.topTtlSpend1)
 
         var countTop1TP = []
         var countBot1TP = []
@@ -724,6 +718,8 @@
 
       createBarChart () {
         this.barOptions = {
+          responsive: true,
+          maintainAspectRatio: false,
           scales: {
             xAxes: [{
               stacked: true,
@@ -772,6 +768,8 @@
 
       updateData () {
         this.barOptions = {
+          responsive: true,
+          maintainAspectRatio: false,
           scales: {
             xAxes: [{
               stacked: true,

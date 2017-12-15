@@ -6,13 +6,13 @@
  const {reactiveProp} = mixins
 
  export default HorizontalBar.extend({
-   props: ['options', 'chartData'],
+   props: ['options'],
    mixins: [reactiveProp],
-   data () {
-     return {
-       options: {
-         responsive: true,
-         maintainAspectRatio: false
+   watch: {
+     'options': {
+       handler (newOption, oldOption) {
+         this._chart.destroy()
+         this.renderChart(this.chartData, this.options)
        }
      }
    },
