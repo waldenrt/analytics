@@ -5,29 +5,13 @@ import { Bar, mixins } from 'vue-chartjs'
 const { reactiveProp } = mixins
 
 export default Bar.extend({
+  props: ['options'],
   mixins: [reactiveProp],
-  data () {
-    return {
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          yAxes: [{
-            id: 'left-y-axis',
-            type: 'linear',
-            position: 'left'
-          }, {
-            id: 'right-y-axis',
-            type: 'linear',
-            position: 'right'
-          }],
-          xAxes: [{
-            barPercentage: 0.8
-          }]
-        },
-        legend: {
-          display: false
-        }
+  watch: {
+    'options': {
+      handler (newOption, oldOption) {
+        this._chart.destroy()
+        this.renderChart(this.chartData, this.options)
       }
     }
   },

@@ -96,7 +96,7 @@
         cadArray: [],
         countArray: [],
         perArray: [],
-        jobId: 'mgiBrandt2',
+        jobId: 'aeoOnlineMayank',
         incomingJson: {},
         tableHeaders: [
           {text: 'Cadence', value: 'cadence'},
@@ -157,7 +157,6 @@
         this.countArray = tempCount
         this.perArray = tempPer
         this.tableData = tempTable
-        console.log(this.perArray)
       },
       createSummary () {
         this.sumItems.push({name: 'Min. Date', vals: this.jsonMsg.minDateCadence})
@@ -170,6 +169,8 @@
       },
       createBar () {
         if (this.jsonMsg.rawCadence > 30) {
+          let cadLine = Math.trunc(this.jsonMsg.rawCadence / 7)
+          console.log('cadLine is: ' + cadLine)
           this.cadOptions = {
             responsive: true,
             maintainAspectRatio: false,
@@ -187,7 +188,7 @@
                   type: 'line',
                   mode: 'vertical',
                   scaleID: 'x-axis-0',
-                  value: this.jsonMsg.rawCadence / 7,
+                  value: cadLine,
                   borderColor: '#D63A09',
                   label: {
                     content: '80%',

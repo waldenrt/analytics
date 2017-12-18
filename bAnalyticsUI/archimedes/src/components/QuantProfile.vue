@@ -102,7 +102,7 @@
       <v-flex xs12 class="pt-0 mt-0">
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <div class="title primary--text text-xs-center pa-1">Quantile Pareto Analysis</div>
-          <pareto-chart :chart-data="paretoData" style="height:23vh;"></pareto-chart>
+          <pareto-chart :chart-data="paretoData" :options="paretoOptions" style="height:23vh;"></pareto-chart>
         </v-card>
       </v-flex>
     </v-layout>
@@ -189,6 +189,42 @@
     computed: {
       jsonMsg: function () {
         return this.incomingJson.data
+      },
+      paretoOptions: function () {
+        let opts = {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            yAxes: [{
+              id: 'left-y-axis',
+              type: 'linear',
+              position: 'left',
+              scaleLabel: {
+                display: true,
+                labelString: this.metricSelect
+              }
+            }, {
+              id: 'right-y-axis',
+              type: 'linear',
+              position: 'right',
+              scaleLabel: {
+                display: true,
+                labelString: 'Percent of Total ' + this.metricSelect
+              }
+            }],
+            xAxes: [{
+              barPercentage: 0.8,
+              scaleLabel: {
+                display: true,
+                labelString: 'Customer Decile Groups'
+              }
+            }]
+          },
+          legend: {
+            display: false
+          }
+        }
+        return opts
       }
     },
     components: {

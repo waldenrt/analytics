@@ -261,7 +261,7 @@
     data () {
       return {
         msg: 'Balor Segment Trend Charts will go here!',
-        jobId: 'mgiBrandt2',
+        jobId: 'aeoOnlineMayank',
         dimensions: [
           'Customer', 'Visits', 'Spend', 'Discount'
         ],
