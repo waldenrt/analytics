@@ -161,7 +161,7 @@
             </v-flex>
           </v-layout>
           <!-- //LEGEND -->
-          <pareto-chart :chart-data="totalBars" class="pa-2 chart_h"></pareto-chart>
+          <pareto-chart :chart-data="totalBars" :options="paretoOptions" class="pa-2 chart_h"></pareto-chart>
         </v-card>
       </v-flex>
       <!--//chart-->
@@ -261,7 +261,7 @@
     data () {
       return {
         msg: 'Balor Segment Trend Charts will go here!',
-        jobId: 'aeoOnlineMayank',
+        jobId: 'aeoInstoreMayank',
         dimensions: [
           'Customer', 'Visits', 'Spend', 'Discount'
         ],
@@ -362,6 +362,42 @@
     computed: {
       jsonMsg: function () {
         return this.incomingJson.data
+      },
+      paretoOptions: function () {
+        let opts = {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            yAxes: [{
+              id: 'left-y-axis',
+              type: 'linear',
+              position: 'left',
+              scaleLabel: {
+                display: true,
+                labelString: 'Total ' + this.dimensionSelect
+              }
+            }, {
+              id: 'right-y-axis',
+              type: 'linear',
+              position: 'right',
+              scaleLabel: {
+                display: true,
+                labelString: this.avgSelect
+              }
+            }],
+            xAxes: [{
+              barPercentage: 0.8,
+              scaleLabel: {
+                display: true,
+                labelString: 'BALOR Period'
+              }
+            }]
+          },
+          legend: {
+            display: false
+          }
+        }
+        return opts
       }
     },
     mounted () {
@@ -2513,7 +2549,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
   .chart_h {
-    height: 31vh !important;
+    height: 40vh !important;
   }
 
   .padT18 {

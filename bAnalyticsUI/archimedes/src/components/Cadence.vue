@@ -96,7 +96,7 @@
         cadArray: [],
         countArray: [],
         perArray: [],
-        jobId: 'aeoOnlineMayank',
+        jobId: 'aeoInstoreMayank',
         incomingJson: {},
         tableHeaders: [
           {text: 'Cadence', value: 'cadence'},

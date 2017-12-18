@@ -311,7 +311,7 @@
         txnBalorArray: [],
         spendBalorArray: [],
         tpArray: [],
-        jobId: 'aeoOnlineMayank',
+        jobId: 'aeoInstoreMayank',
         custTrendData: {
           labels: this.tpArray,
           datasets: [
