@@ -179,7 +179,17 @@
                 categoryPercentage: 1.0,
                 barPercentage: 1.0,
                 id: 'x-axis-0',
-                position: 'bottom'
+                position: 'bottom',
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Purchase Cadence Weeks'
+                }
+              }],
+              yAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Frequency'
+                }
               }]
             },
             annotation: {
@@ -211,7 +221,17 @@
                 categoryPercentage: 1.0,
                 barPercentage: 1.0,
                 id: 'x-axis-0',
-                position: 'bottom'
+                position: 'bottom',
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Purchase Cadence Days'
+                }
+              }],
+              yAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Frequency'
+                }
               }]
             },
             annotation: {

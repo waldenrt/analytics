@@ -11,7 +11,21 @@ export default Line.extend({
     return {
       options: {
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'BALOR Time Period Start'
+            }
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'BALOR Ratio'
+            }
+          }]
+        }
       }
     }
   },
