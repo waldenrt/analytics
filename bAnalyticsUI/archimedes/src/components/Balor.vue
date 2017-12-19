@@ -25,6 +25,9 @@
     name: 'balor',
     components: {
       balorTabs
+    },
+    mounted () {
+      this.$store.commit('switchBalor')
     }
   }
 

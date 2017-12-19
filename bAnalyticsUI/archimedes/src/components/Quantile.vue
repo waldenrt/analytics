@@ -24,6 +24,9 @@
     name: 'quantile',
     components: {
       QuantileTabs
+    },
+    mounted () {
+      this.$store.commit('switchPareto')
     }
   }
 

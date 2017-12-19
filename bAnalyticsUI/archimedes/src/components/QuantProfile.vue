@@ -183,7 +183,8 @@
           {text: 'avgVisitMember', value: 'avgCustVisits'}
         ],
         custItems: [],
-        jobId: 'QATestRun'
+        jobId: 'QATestRun',
+        groupName: 'Quantile'
       }
     },
     computed: {
@@ -216,7 +217,7 @@
               barPercentage: 0.8,
               scaleLabel: {
                 display: true,
-                labelString: 'Customer Decile Groups'
+                labelString: 'Customer ' + this.groupName + ' Groups'
               }
             }]
           },
@@ -264,6 +265,20 @@
         }
         this.custItems = tempObj
         console.log(tempObj)
+
+        if (tempObj.length === 2) {
+          this.groupName = 'Median'
+        } else if (tempObj.length === 4) {
+          this.groupName = 'Quartile'
+        } else if (tempObj.length === 5) {
+          this.groupName = 'Quintile'
+        } else if (tempObj.length === 10) {
+          this.groupName = 'Decile'
+        } else if (tempObj.length === 20) {
+          this.groupName = 'Ventile'
+        } else {
+          this.groupName = 'Quantile'
+        }
       },
       selectQuantile () {
         if (this.quantileSelect.indexOf('All') !== -1) {

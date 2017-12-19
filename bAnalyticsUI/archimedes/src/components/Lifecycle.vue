@@ -25,6 +25,9 @@
     name: 'lifecycle',
     components: {
       LifecycleTabs
+    },
+    mounted () {
+      this.$store.commit('switchLifecycle')
     }
   }
 
