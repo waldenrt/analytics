@@ -9,10 +9,10 @@
         <v-tabs id="mobile-tabs-3" grow light class="elevation-1">
           <v-tabs-bar slot="activators">
             <v-tabs-slider></v-tabs-slider>
-            <v-tabs-item router to="/Quantile/NewQuantile">Input</v-tabs-item>
-            <v-tabs-item router to="/Quantile/Summary">Pareto Profiles</v-tabs-item>
-            <v-tabs-item router to="/Quantile/Migration">Migration</v-tabs-item>
-            <v-tabs-item router to="/Quantile/Products">Top/Bottom Products</v-tabs-item>
+            <v-tabs-item router to="/Pareto/NewPareto">Input</v-tabs-item>
+            <v-tabs-item router to="/Pareto/Summary">Pareto Profiles</v-tabs-item>
+            <v-tabs-item router to="/Pareto/Migration">Migration</v-tabs-item>
+            <v-tabs-item router to="/Pareto/Products">Top/Bottom Products</v-tabs-item>
           </v-tabs-bar>
         </v-tabs>
       </v-flex>

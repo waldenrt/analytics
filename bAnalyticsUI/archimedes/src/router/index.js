@@ -100,7 +100,7 @@ export default new Router({
           ]
         },
         {
-          path: 'Quantile',
+          path: 'Pareto',
           component: Quantile,
           children: [
             {
@@ -109,7 +109,7 @@ export default new Router({
               component: JobHistory
             },
             {
-              path: 'NewQuantile',
+              path: 'NewPareto',
               name: 'NewQuantile',
               component: NewQuantile
             },
