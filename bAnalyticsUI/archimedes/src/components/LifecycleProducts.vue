@@ -18,7 +18,6 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                      <!--SWAP OUT DROPDOWN-->
                       <v-select v-bind:items="tpArray"
                                 v-model="tpSelect"
                                 label="Select Time Period"
@@ -28,7 +27,6 @@
                                 v-on:input="selectTP()"
                                 class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
-                      <!--//SWAP OUT DROPDOWN-->
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -119,20 +117,30 @@
                   <!-- LEGEND -->
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-1 pt-2">
-                      Legend:<br />
+                      Legend:
                     </div>
-                    <v-card class="white pt-1 pb-1 pl-2 pr-2 mr-2 mb-2">
-                      <div class="legend accent"></div>
-                      <div class="caption inliner padR5">Best in Class</div>
-                      <div class="legend success"></div>
-                      <div class="caption inliner padR5">Rising Stars</div>
-                      <div class="legend info"></div>
-                      <div class="caption inliner padR5">Middle of the road</div>
-                      <div class="legend warning"></div>
-                      <div class="caption inliner padR5">Lapsing</div>
-                      <div class="legend error"></div>
-                      <div class="caption inliner padR5">Deeply Lapsed</div>
-                    </v-card>
+                    <div class="legend_contain white elevation-1">
+                      <div class="inliner">
+                        <div class="legend accent"></div>
+                        <div class="caption inliner padR5">Best in Class</div>
+                      </div>
+                      <div class="inliner">
+                        <div class="legend success"></div>
+                        <div class="caption inliner padR5">Rising Stars</div>
+                      </div>
+                      <div class="inliner">
+                        <div class="legend info"></div>
+                        <div class="caption inliner padR5">Middle of the road</div>
+                      </div>
+                      <div class="inliner">
+                        <div class="legend warning"></div>
+                        <div class="caption inliner padR5">Lapsing</div>
+                      </div>
+                      <div class="inliner">
+                        <div class="legend error"></div>
+                        <div class="caption inliner padR5">Deeply Lapsed</div>
+                      </div>
+                    </div>
                   </v-flex>
                   <!-- //LEGEND -->
                 </v-layout>
@@ -171,7 +179,7 @@
       <v-flex xs12 sm8>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <h6 class="primary--text text-xs-center pa-1 mb-0">Product Index by Segment</h6>
-          <v-layout wrap row>
+          <v-layout wrap row class="pt-1">
             <div v-show="showBest" class="seg_sect" :style="segCount">
               <prod-index-chart :width="segChart" :chart-data="bestBars" class="chart_height1"></prod-index-chart>
             </div>
@@ -567,5 +575,24 @@
   }
 
   canvas, .prod_share_container { width:100% !important; }
+
+  .inliner {
+    display: inline-block;
+  }
+
+  .legend {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+  }
+
+  .legend_contain {
+    display: inline-block;
+    line-height: 26px;
+    min-height: 34px;
+    padding: 4px 8px 4px 8px;
+    margin:0 0 8px 0;
+  }
 
 </style>
