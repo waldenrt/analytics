@@ -162,7 +162,7 @@
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <h6 class="primary--text text-xs-center pa-1 mb-0 subhead">Overall Product Share</h6>
           <div class="prod_share_container">
-            <horizontal-chart :chart-data="overallBars" class="chart_height1"></horizontal-chart>
+            <horizontal-chart :chart-data="overallBars" :options="overallOpts" class="chart_height1"></horizontal-chart>
           </div>
         </v-card>
       </v-flex>
@@ -246,7 +246,22 @@
         showLapsing: true,
         showDeeply: true,
         styleObject: { width: '20%' },
-        segChart: '100%'
+        segChart: '100%',
+        overallOpts: {
+          responsive: true,
+          maintainAspectRatio: false,
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              gridLines: {
+                display: true,
+                color: '#848C98'
+              }
+            }]
+          }
+        }
       }
     },
     computed: {

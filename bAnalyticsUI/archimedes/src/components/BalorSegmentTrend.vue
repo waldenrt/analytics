@@ -235,7 +235,7 @@
       <!--chart-->
       <v-flex xs12>
         <v-card class="white">
-          <horizontal-chart :chart-data="avgBars" class="pa-2 chart_h"></horizontal-chart>
+          <horizontal-chart :chart-data="avgBars" :options="avgOptions" class="pa-2 chart_h"></horizontal-chart>
         </v-card>
       </v-flex>
       <!--//chart-->
@@ -398,6 +398,34 @@
           }
         }
         return opts
+      },
+      avgOptions: function () {
+        let options = {
+          responsive: true,
+          maintainAspectRatio: false,
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              gridLines: {
+                display: true,
+                color: '#848C98'
+              },
+              scaleLabel: {
+                display: true,
+                labelString: this.tpAvgSelect
+              }
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'BALOR Segment'
+              }
+            }]
+          }
+        }
+        return options
       }
     },
     mounted () {

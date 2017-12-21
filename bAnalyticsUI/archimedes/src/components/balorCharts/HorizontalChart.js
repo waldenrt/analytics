@@ -6,23 +6,13 @@ import { HorizontalBar, mixins } from 'vue-chartjs'
 const { reactiveProp } = mixins
 
 export default HorizontalBar.extend({
+  props: ['options'],
   mixins: [reactiveProp],
-  data () {
-    return {
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        legend: {
-          display: false
-        },
-        scales: {
-          xAxes: [{
-            gridLines: {
-              display: true,
-              color: '#848C98'
-            }
-          }]
-        }
+  watch: {
+    'options': {
+      handler (newOption, oldOption) {
+        this._chart.destroy()
+        this.renderChart(this.chartData, this.options)
       }
     }
   },
