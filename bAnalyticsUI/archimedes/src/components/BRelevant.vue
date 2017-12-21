@@ -25,6 +25,9 @@
     name: 'BRelevant',
     components: {
       BRelevantTabs
+    },
+    mounted () {
+      this.$store.commit('switchApp', {module: 'bRelevant'})
     }
   }
 

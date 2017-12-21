@@ -26,7 +26,7 @@
       QuantileTabs
     },
     mounted () {
-      this.$store.commit('switchPareto')
+      this.$store.commit('switchApp', {module: 'Pareto'})
     }
   }
 

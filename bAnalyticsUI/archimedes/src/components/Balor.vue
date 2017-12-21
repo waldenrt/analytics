@@ -27,7 +27,7 @@
       balorTabs
     },
     mounted () {
-      this.$store.commit('switchBalor')
+      this.$store.commit('switchApp', {module: 'Balor'})
     }
   }
 

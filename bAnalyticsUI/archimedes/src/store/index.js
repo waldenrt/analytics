@@ -10,14 +10,8 @@ const store = new Vuex.Store({
     jobKey: 'test'
   },
   mutations: {
-    switchPareto (state) {
-      state.appmodule = 'Pareto'
-    },
-    switchBalor (state) {
-      state.appmodule = 'Balor'
-    },
-    switchLifecycle (state) {
-      state.appmodule = 'Lifecycle'
+    switchApp (state, app) {
+      state.appmodule = app.module
     },
     setJobKey (state, job) {
       state.jobKey = job.key

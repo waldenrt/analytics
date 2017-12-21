@@ -27,7 +27,7 @@
       LifecycleTabs
     },
     mounted () {
-      this.$store.commit('switchLifecycle')
+      this.$store.commit('switchApp', {module: 'Lifecycle'})
     }
   }
 

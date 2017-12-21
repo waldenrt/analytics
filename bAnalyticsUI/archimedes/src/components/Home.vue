@@ -174,6 +174,9 @@ export default {
         }
       ]
     }
+  },
+  mounted () {
+    this.$store.commit('switchApp', {module: 'Dashboard'})
   }
 }
 </script>
