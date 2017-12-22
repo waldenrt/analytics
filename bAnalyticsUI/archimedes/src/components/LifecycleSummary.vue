@@ -36,20 +36,38 @@
             <!--//Dropdown1-->
             <!-- LEGEND -->
             <v-flex xs12 sm6>
-              <div class="primary--text text-xs-left pl-0 pr-0 pb-1 pt-2">
-                Legend:
-              </div>
-              <v-card class="legend_card white">
-                <div class="legend accent"></div>
-                <div class="caption inliner padR5">Best in Class</div>
-                <div class="legend success"></div>
-                <div class="caption inliner padR5">Rising Stars</div>
-                <div class="legend info"></div>
-                <div class="caption inliner padR5">Middle of the road</div>
-                <div class="legend warning"></div>
-                <div class="caption inliner padR5">Lapsing</div>
-                <div class="legend error"></div>
-                <div class="caption inliner padR5">Deeply Lapsed</div>
+              <v-card flat class="pl-2 pr-2 grey lighten-2">
+                <v-layout row wrap>
+                  <!-- LEGEND -->
+                  <v-flex xs12>
+                    <div class="primary--text text-xs-left pl-0 pr-0 pb-1 pt-2">
+                      Legend:
+                    </div>
+                    <div class="legend_contain white elevation-1">
+                      <div class="inliner">
+                        <div class="legend accent"></div>
+                        <div class="caption inliner padR5">Best in Class</div>
+                      </div>
+                      <div class="inliner">
+                        <div class="legend success"></div>
+                        <div class="caption inliner padR5">Rising Stars</div>
+                      </div>
+                      <div class="inliner">
+                        <div class="legend info"></div>
+                        <div class="caption inliner padR5">Middle of the road</div>
+                      </div>
+                      <div class="inliner">
+                        <div class="legend warning"></div>
+                        <div class="caption inliner padR5">Lapsing</div>
+                      </div>
+                      <div class="inliner">
+                        <div class="legend error"></div>
+                        <div class="caption inliner padR5">Deeply Lapsed</div>
+                      </div>
+                    </div>
+                  </v-flex>
+                  <!-- //LEGEND -->
+                </v-layout>
               </v-card>
             </v-flex>
             <!-- //LEGEND -->
@@ -505,13 +523,23 @@
 </script>
 
 <style scoped>
-.inliner { display: inline-block; }
-.legend_card {padding:5px 8px;margin-right:8px;}
+.inliner {
+  display: inline-block;
+}
+
 .legend {
   display: inline-block;
   width: 12px;
   height: 12px;
   margin-right: 5px;
+}
+
+.legend_contain {
+  display: inline-block;
+  line-height: 26px;
+  min-height: 34px;
+  padding: 4px 8px 4px 8px;
+  margin:0 0 8px 0;
 }
 
 .doughnuts {width:20%;}

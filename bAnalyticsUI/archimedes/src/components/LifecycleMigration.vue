@@ -9,7 +9,7 @@
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
-            <v-flex xs12 sm2>
+            <v-flex xs12 sm3 md2>
               <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
@@ -18,7 +18,6 @@
                     </div>
                   </v-flex>
                   <v-flex xs12>
-                      <!--SWAP OUT DROPDOWN-->
                       <v-select v-bind:items="tpArray"
                                 v-model="tpSelect"
                                 label="Select Time Period"
@@ -28,7 +27,6 @@
                                 v-on:input="selectTP()"
                                 class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                       </v-select>
-                      <!--//SWAP OUT DROPDOWN-->
                   </v-flex>
                 </v-layout>
               </v-card>
@@ -93,7 +91,7 @@
             //Dropdown3
             maybe readd the drop downs if its a deal breaker later -->
             <!--Legend-->
-            <v-flex xs12 sm6>
+            <v-flex xs12 sm9 md7>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
                   <!-- LEGEND -->
@@ -101,18 +99,28 @@
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-1 pt-2">
                       Legend:<br/><br/>
                     </div>
-                    <v-card class="white pt-1 pb-1 pl-2 pr-2 mr-2 mb-2">
-                      <div class="legend accent"></div>
-                      <div class="caption inliner padR5">Best in Class</div>
-                      <div class="legend success"></div>
-                      <div class="caption inliner padR5">Rising Stars</div>
-                      <div class="legend info"></div>
-                      <div class="caption inliner padR5">Middle of the road</div>
-                      <div class="legend warning"></div>
-                      <div class="caption inliner padR5">Lapsing</div>
-                      <div class="legend error"></div>
-                      <div class="caption inliner padR5">Deeply Lapsed</div>
-                    </v-card>
+                    <div class="legend_contain white elevation-1">
+                      <div class="inliner">
+                        <div class="legend accent"></div>
+                        <div class="caption inliner padR5">Best in Class</div>
+                      </div>
+                      <div class="inliner">
+                        <div class="legend success"></div>
+                        <div class="caption inliner padR5">Rising Stars</div>
+                      </div>
+                      <div class="inliner">
+                        <div class="legend info"></div>
+                        <div class="caption inliner padR5">Middle of the road</div>
+                      </div>
+                      <div class="inliner">
+                        <div class="legend warning"></div>
+                        <div class="caption inliner padR5">Lapsing</div>
+                      </div>
+                      <div class="inliner">
+                        <div class="legend error"></div>
+                        <div class="caption inliner padR5">Deeply Lapsed</div>
+                      </div>
+                    </div>
                   </v-flex>
                   <!-- //LEGEND -->
                 </v-layout>
@@ -143,14 +151,29 @@
 
             <!--+++++col1+++++-->
             <v-flex xs12 sm12 md8>
-              <!-- CHART GOES HERE -->
-              <div v-show="showSankey" class="scaling-svg-container"
-                   style="padding-bottom: 92% /* 100% * 55/60 */">
-                <svg width="1050" height="1000" id="sankeySvg" class="scaling-svg" viewBox="0 10 1050 1000"></svg>
+              <!-- SANKEY CHART -->
+              <!--<div v-show="showSankey" class="y_axis1 text-xs-center caption">
+                y-axis1
+              </div>-->
+              <div
+                v-show="showSankey"
+                class="scaling-svg-container"
+                style="padding-bottom: 92% /* 100% * 55/60 */">
+                  <svg
+                    width="1060"
+                    height="1000"
+                    id="sankeySvg"
+                    class="scaling-svg"
+                    viewBox="0 10 1050 1000">
+                    <text class="y_axis1 subheading" x="-56%" y="-7" fill="rgba(53,64,82,0.87)">Prior Period Segment</text>
+                    <text class="y_axis2 subheading" x="45%" y="-1057" fill="rgba(53,64,82,0.87)">Post Period Segment</text>
+                    <text class="x_axis subheading" x="33%" y="1000" fill="rgba(53,64,82,0.87)">Period-over-Period Customer Migration across Segments</text>
+                  </svg>
               </div>
-             <div v-show="showError"> I need something to go here that explains that the last timePeriod does not have migration
-                data due to it being the baseline for all migrations.
+              <div v-show="showError">
+                I need something to go here that explains that the last timePeriod does not have migration data due to it being the baseline for all migrations.
               </div>
+              <!-- //SANKEY CHART -->
             </v-flex>
             <!--//+++++col1+++++-->
 
@@ -158,7 +181,7 @@
             <v-flex xs12 sm12 md4 class="pr-4">
               <!--table-row-->
               <v-layout wrap row>
-                <v-card class="white" style="width:100%;">
+                <v-card class="white w_100">
                   <v-card-title primary-title class="white">
                     <h6 class="primary--text text-xs-center mb-0">Prior Period Segment Retention Rate</h6>
                   </v-card-title>
@@ -203,7 +226,7 @@
               <!--//table-row-->
               <!--chart-row-->
               <v-layout wrap row>
-                <v-card class="white mt-3 pa-0" style="width:100%;">
+                <v-card class="white mt-3 pa-0 w_100">
                   <v-flex xs12 fill-height>
                     <!-- =====ROW1===== -->
                     <v-layout row wrap class="pt-0 mt-0">
@@ -222,7 +245,7 @@
                                       Select Post Period Segment:
                                     </div>
                                   </v-flex>
-                                  <v-flex xs12 sm9>
+                                  <v-flex xs12 sm7>
                                       <v-select v-bind:items="segments"
                                                 v-model="postSegComp"
                                                 label="Select Segments"
@@ -233,9 +256,13 @@
                                                 class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                                       </v-select>
                                   </v-flex>
-                                  <v-flex xs12 sm3>
-                                    <v-checkbox label="Show new" v-model="showNew" class="pl-1 pr-1 mt-1 mb-2"
-                                    @change="selPostPeriodComp()"></v-checkbox>
+                                  <v-flex xs12 sm5>
+                                    <v-checkbox
+                                      label="Show new"
+                                      v-model="showNew"
+                                      class="primary--text pt-2 pb-1 pl-0 pr-0 ma-0"
+                                      hide-details
+                                      @change="selPostPeriodComp()"></v-checkbox>
                                   </v-flex>
                                 </v-layout>
                               </v-card>
@@ -249,7 +276,7 @@
                     <!-- =====ROW2===== -->
                     <v-layout row wrap class="pt-0 mt-0">
                       <v-flex xs12 class="pa-0 ma-0">
-                        <div style="width:100%;" class="mt-3">
+                        <div class="mt-3 w_100">
                           <bar-chart :chart-data="barData"></bar-chart>
                         </div>
                       </v-flex>
@@ -438,8 +465,8 @@
         var svg = d3.select('#sankeySvg')
           .append('svg')
           .attr('id', 'stankey')
-        var width = 1050
-        var height = 1000
+        var width = 1055
+        var height = 990
 
         var formatNumber = d3.format(',.0f')    // decimal places
         var format = function (d) {
@@ -907,5 +934,29 @@
     margin-right: 5px;
   }
 
+  .legend_contain {
+    display: inline-block;
+    line-height: 26px;
+    min-height: 34px;
+    padding: 4px 8px 4px 8px;
+    margin:0 0 8px 0;
+  }
+
   .height_bars2 span { float: right; }
+
+  .w_100 { width: 100%; }
+
+  .y_axis1 {
+    /* Rotate div */
+    -ms-transform: rotate(270deg); /* IE 9 */
+    -webkit-transform: rotate(270deg); /* Safari 3-8 */
+    transform: rotate(270deg);
+    }
+
+  .y_axis2 {
+    /* Rotate div */
+    -ms-transform: rotate(90deg); /* IE 9 */
+    -webkit-transform: rotate(90deg); /* Safari 3-8 */
+    transform: rotate(90deg);
+  }
 </style>

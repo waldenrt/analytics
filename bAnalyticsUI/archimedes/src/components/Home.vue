@@ -5,10 +5,10 @@
       <v-flex xs12 >
         <div class="marT_img">
           <!-- Image Row -->
-          <v-layout wrap row class="accent elevation-1 pa-3">
+          <v-layout wrap row class="accent elevation-1 pa-3 ma-0 bg_hero">
               <v-flex xs10>
                 <div>
-                  <h3 class="primary--text text-xs-left pb-0 mb-0">Welcome to [Application Name]</h3>
+                  <h3 class="white--text text-xs-left pb-0 mb-0">Welcome to [Application Name]</h3>
                   <h5 class="white--text text-xs-left pb-0 mb-0">UserName</h5>
                 </div>
                 <div style="margin-top:50px;">
@@ -16,15 +16,25 @@
                 </div>
               </v-flex>
               <v-flex xs2>
-                <v-layout wrap row>
+                <v-layout wrap row fill-height>
                   <!--date-->
-                  <v-flex xs6>
-                    <div class="white--text">Date</div>
+                  <v-flex xs6 class="primary card_crnr">
+                    <div class="wrap1 text-xs-center">
+                      <div class="wrap2 text-xs-center">
+                        <v-icon x-large class="white--text">date_range</v-icon>
+                        <div class="white--text">Date</div>
+                      </div>
+                    </div>
                   </v-flex>
                   <!--//date-->
                   <!--time-->
-                  <v-flex xs6>
-                    <div class="white--text">Time</div>
+                  <v-flex xs6 class="success card_crnr">
+                    <div class="wrap1 text-xs-center">
+                      <div class="wrap2">
+                        <v-icon x-large class="white--text">timer</v-icon>
+                        <div class="white--text">Time</div>
+                      </div>
+                    </div>
                   </v-flex>
                   <!--//time-->
                 </v-layout>
@@ -32,12 +42,12 @@
           </v-layout>
           <!-- //Image Row -->
           <!-- Input Pages Row -->
-          <v-layout wrap row class="pl-3 pr-3 pt-3 pb-0">
+          <v-layout wrap row class="pl-4 pr-4 pt-3 pb-0">
               <v-flex xs12 class="pl-1 pr-1">
-                <h4 class="grey--text">Input <span class="primary--text"><b>Pages</b></span></h4>
+                <h5 class="grey--text">Input <span class="primary--text">Pages</span></h5>
               </v-flex>
               <v-flex xs12 sm6 md3 class="pl-1 pr-1 pb-3" v-for="item in cardItems">
-                <v-card class="white input_card">
+                <v-card class="white card_crnr">
                   <v-card-row :class="item.titleColor">
                     <v-card-title class="pa-0 ma-0">
                       <div class="subheading pa-3 white--text">
@@ -55,10 +65,10 @@
               </v-flex>
           </v-layout>
           <!-- //Input Pages Row -->
-          <!-- Input Pages Row -->
-          <v-layout wrap row class="pa-3">
+          <!-- Misc Info Row -->
+          <v-layout wrap row class="pl-4 pr-4 pt-3 pb-0">
               <v-flex xs12 class="pl-1 pr-1">
-                <h4 class="grey--text">Misc <span class="primary--text"><b>Info</b></span></h4>
+                <h5 class="grey--text">Misc <span class="primary--text">Info</span></h5>
               </v-flex>
               <v-flex xs4 class="pl-1 pr-1">
                 <v-card class="white">
@@ -87,13 +97,13 @@
                   <v-card-text class="error">
                     <div class="body-2" v-for="item in historyItems">
                       <v-icon class="accent--text pr-2">label</v-icon>
-                      <a router :to="item.histLink" target="_blank" class="white--text">{{item.name}}</a>
+                      <a :href="item.histLink" class="white--text">{{item.name}}</a>
                     </div>
                   </v-card-text>
                 </v-card>
               </v-flex>
           </v-layout>
-          <!-- //Input Pages Row -->
+          <!-- //Misc Info Row -->
 
       </div>
       </v-flex>
@@ -158,19 +168,19 @@ export default {
       historyItems: [
         {
           name: 'Balor Job History',
-          histLink: '/bRelevant/NewBRelevant'
+          histLink: '#/Balor/NewBalor'
         },
         {
           name: 'Pareto Job History',
-          histLink: '/bRelevant/NewBRelevant'
+          histLink: '#/Pareto/NewPareto'
         },
         {
           name: 'Core Lifecycle Job History',
-          histLink: '/bRelevant/NewBRelevant'
+          histLink: '#/Lifecycle/NewLifecycle'
         },
         {
           name: 'bRelevant Job History',
-          histLink: '/bRelevant/NewBRelevant'
+          histLink: '#/bRelevant/NewBRelevant'
         }
       ]
     }
@@ -184,7 +194,20 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .marT_img {margin-top:59px;width:100%;}
-.input_card {border-top-right-radius: 20px;border-bottom-left-radius: 20px;}
+.card_crnr {border-top-right-radius: 20px;border-bottom-left-radius: 20px;}
+.wrap1 { display: table; width: 100%; height: 100%; }
+.wrap2 { display: table-cell; vertical-align: middle; margin:0 auto; }
+/*.bg_hero {
+  background-image: url("/static/bp_site_contact_us_hero1.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-position: center 60%;
+  width: 100%;
+  height: 100%;
+}*/
 /*.bg{
   background-image: url("/static/bp_logo_reverse_color2.png");
   background-color: #eff3f6;
