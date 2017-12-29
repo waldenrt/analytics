@@ -261,7 +261,6 @@
     data () {
       return {
         msg: 'Balor Segment Trend Charts will go here!',
-        jobId: 'aeoInstoreMayank',
         dimensions: [
           'Customer', 'Visits', 'Spend', 'Discount'
         ],
@@ -362,6 +361,9 @@
     computed: {
       jsonMsg: function () {
         return this.incomingJson.data
+      },
+      jobId: function () {
+        return this.$store.state.jobKey
       },
       paretoOptions: function () {
         let opts = {

@@ -311,7 +311,6 @@
         txnBalorArray: [],
         spendBalorArray: [],
         tpArray: [],
-        jobId: 'aeoInstoreMayank',
         custTrendData: {
           labels: this.tpArray,
           datasets: [
@@ -364,6 +363,9 @@
     computed: {
       jsonMsg: function () {
         return this.incomingJson.data
+      },
+      jobId: function () {
+        return this.$store.state.jobKey
       },
       items1: function () {
         var formatArray = []

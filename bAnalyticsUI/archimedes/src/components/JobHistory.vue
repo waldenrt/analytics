@@ -14,11 +14,8 @@
         <v-card flat class="white">
           <v-data-table
             v-bind:headers="headers"
-            v-bind:items="items"
+            v-bind:items="jsonMsg"
             v-bind:search="search"
-            v-model="selected"
-            selected-key="id"
-            select-all
             class="elevation-1"
           >
             <template slot="headers" scope="props">
@@ -28,18 +25,16 @@
             </template>
             <template slot="items" scope="props">
               <td>
-                <v-checkbox
-                  primary
-                  hide-details
-                  v-model="props.selected"
-                ></v-checkbox>
+                <v-btn
+                  v-on:click.native="updateStore(props.item.jobId, props.item.routeLink)"
+                >View</v-btn>
               </td>
-              <td>{{ props.item.id }}</td>
-              <td class="text-xs-right">{{ props.item.name }}</td>
-              <td class="text-xs-right">{{ props.item.job }}</td>
-              <td class="text-xs-right">{{ props.item.status }}</td>
-              <td class="text-xs-right">{{ props.item.date_mod }}</td>
-              <td class="text-xs-right">{{ props.item.record }}</td>
+              <td>{{ props.item.jobId }}</td>
+              <td class="text-xs-right">{{ props.item.jobName }}</td>
+              <td class="text-xs-right">{{ props.item.app }}</td>
+              <td class="text-xs-right">{{ props.item.jobStatus }}</td>
+              <td class="text-xs-right">{{ props.item.lastDate }}</td>
+              <td class="text-xs-right">{{ props.item.recordCount }}</td>
               <td class="text-xs-right pl-1" style="width:10px !important;">
                 <v-menu bottom left offset-y>
                   <v-btn icon="icon" slot="activator" light>
@@ -63,6 +58,8 @@
 </template>
 
 <script>
+  import {userJobs, addHistory} from './javascript/job.service'
+
   export default {
     name: 'jobHistory',
     data () {
@@ -71,128 +68,96 @@
         selected: [],
         headers: [ // Data that populates the Data Table Header Row
           {
+            text: '',
+            value: 'routeLink'
+          },
+          {
             text: 'ID',
             left: true,
             sortable: true,
-            value: 'id'
+            value: 'jobId'
           },
-          { text: 'Name', value: 'name' },
-          { text: 'Job Type', value: 'job' },
-          { text: 'Status', value: 'status' },
-          { text: 'Last Modified Date', value: 'date_mod' },
-          { text: 'Record Count', value: 'record' },
+          { text: 'Name', value: 'jobName' },
+          { text: 'Job Type', value: 'app' },
+          { text: 'Status', value: 'jobStatus' },
+          { text: 'Last Modified Date', value: 'lastDate' },
+          { text: 'Record Count', value: 'recordCount' },
           { text: 'Actions', value: 'action' }
-        ],
-        items: [ // Data that populates the Data Table
-          {
-            value: false,
-            id: '0000-0001',
-            name: 'Name01',
-            job: 'Balor',
-            status: 'File Uploaded',
-            date_mod: '2017-01-01',
-            record: 100,
-            action: ''
-          },
-          {
-            value: false,
-            id: '0000-0002',
-            name: 'Name02',
-            job: 'Balor',
-            status: 'Cadence Complete',
-            date_mod: '2017-05-01',
-            record: 90,
-            action: ''
-          },
-          {
-            value: false,
-            id: '0000-0003',
-            name: 'Name03',
-            job: 'Core Lifecycle',
-            status: 'Running',
-            date_mod: '2017-08-01',
-            record: 80,
-            action: ''
-          },
-          {
-            value: false,
-            id: '0000-0004',
-            name: 'Name04',
-            job: 'bRelevant',
-            status: 'Running',
-            date_mod: '2017-10-01',
-            record: 70,
-            action: ''
-          },
-          {
-            value: false,
-            id: '0000-0005',
-            name: 'Name05',
-            job: 'Balor',
-            status: 'Balor Complete',
-            date_mod: '2017-06-01',
-            record: 40,
-            action: ''
-          },
-          {
-            value: false,
-            id: '0000-0006',
-            name: 'Name06',
-            job: 'Balor',
-            status: 'Cadence Complete',
-            date_mod: '2017-02-01',
-            record: 17,
-            action: ''
-          },
-          {
-            value: false,
-            id: '0000-0007',
-            name: 'Name07',
-            job: 'Balor',
-            status: 'Balor Complete',
-            date_mod: '2017-09-01',
-            record: 1,
-            action: ''
-          },
-          {
-            value: false,
-            id: '0000-0008',
-            name: 'Name08',
-            job: 'Balor',
-            status: 'Balor Complete',
-            date_mod: '2017-07-01',
-            record: 6,
-            action: ''
-          },
-          {
-            value: false,
-            id: '0000-0009',
-            name: 'Name09',
-            job: 'Balor',
-            status: 'Balor Complete',
-            date_mod: '2017-04-01',
-            record: 5,
-            action: ''
-          },
-          {
-            value: false,
-            id: '0000-0010',
-            name: 'Name10',
-            job: 'Balor',
-            status: 'Balor Complete',
-            date_mod: '2017-03-01',
-            record: 7,
-            action: ''
-          }
         ],
         drops: [ // Dropdown for each job
           { title: 'View', slot: 1 },
           { title: 'Delete', slot: 2 },
           { title: 'Export', slot: 3 }
-        ]
+        ],
+        clientName: 'BPDemo',
+        incomingJson: {},
+        user: 'Admin'
       }
     },
+    computed: {
+      jsonMsg: function () {
+        return this.incomingJson.data
+      }
+    },
+    mounted () {
+      this.$store.commit('switchApp', {module: 'Global Job History'})
+      this.getResults()
+     // this.statusColor()
+    },
     methods: {
+      getResults () {
+        userJobs(this.user)
+          .catch(err => {
+            alert('Could not get Client Job History results. ' + err.message.toString())
+          })
+          .then((response) => {
+            this.incomingJson = response.data
+            console.log('this is the incoming response.data')
+            console.log(this.incomingJson)
+            this.addRouteLinks()
+          })
+      },
+      addRouteLinks () {
+        let links = []
+        for (let i = 0; i < this.jsonMsg.length; i++) {
+          if (this.jsonMsg[i].app === 'Balor' || this.jsonMsg[i].app === 'balor') {
+            links.push(this.jsonMsg[i])
+            links[i].routeLink = '/Balor/Cadence'
+          } else if (this.jsonMsg[i].app === 'Pareto' || this.jsonMsg[i].app === 'pareto') {
+            links.push(this.jsonMsg[i])
+            links[i].routeLink = '/Pareto/Summary'
+          } else if (this.jsonMsg[i].app === 'Lifecycle' || this.jsonMsg[i].app === 'lifecycle') {
+            links.push(this.jsonMsg[i])
+            links[i].routeLink = '/Lifecycle/Summary'
+          }
+        }
+      },
+      addHistoryItem () {
+        let histObj = {
+          'client': 'BPDemo',
+          'user': 'Admin',
+          'jobId': 'aeoOnlineMayank',
+          'jobName': 'aeoOnlineMayank',
+          'app': 'Balor',
+          'powerUser': false,
+          'fileName': 'hdfs:///test/test.csv',
+          'jobStatus': 'Complete',
+          'lastDate': '12/21/2017',
+          'recordCount': 300000
+        }
+        addHistory(histObj)
+          .catch(err => {
+            alert('Could not add History Item. ' + err.message.toString())
+          })
+          .then((response) => {
+            console.log(this.response)
+          })
+      },
+      updateStore (jobId, routeLink) {
+        this.$store.dispatch('setJobKey', {'jobid': jobId}).then(() => {
+          this.$router.push(routeLink)
+        })
+      },
       statusColor () { // leaving this method. removing it from the data table until I can figure out how to activate method when the pagination activates.
         var x = document.getElementsByClassName('status_block')
         for (var i = 0; i < this.items.length; i++) {
@@ -207,9 +172,6 @@
           }
         }
       }
-    },
-    mounted () {
-      this.statusColor()
     }
   }
 </script>

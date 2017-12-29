@@ -96,7 +96,6 @@
         cadArray: [],
         countArray: [],
         perArray: [],
-        jobId: 'aeoInstoreMayank',
         incomingJson: {},
         tableHeaders: [
           {text: 'Cadence', value: 'cadence'},
@@ -112,6 +111,9 @@
     computed: {
       jsonMsg: function () {
         return this.incomingJson.data
+      },
+      jobId: function () {
+        return this.$store.state.jobKey
       }
     },
     mounted () {
@@ -133,6 +135,8 @@
       parseJson () {
         console.log('incomingJson: ')
         console.log(this.jsonMsg)
+        console.log('jobId from store')
+        console.log(this.jobId)
         var tempCad = []
         var tempCount = []
         var tempPer = []
