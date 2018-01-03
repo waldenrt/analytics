@@ -214,7 +214,6 @@
           {text: 'Deeply Lapsed', value: 'deeplyAvg'}],
         tableData: [],
         tpDataArray: [],
-        jobId: 'invertedLifecycle',
         bestCust: {},
         bestVisits: {},
         bestSpend: {},
@@ -240,6 +239,9 @@
     computed: {
       jsonMsg: function () {
         return this.incomingJson.data
+      },
+      jobId: function () {
+        return this.$store.state.jobKey
       },
       metricsItems: function () {
         let compItems = {

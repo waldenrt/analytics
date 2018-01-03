@@ -1,10 +1,14 @@
 // first stab at creating a store...
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedStore from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
+  plugins: [createPersistedStore({
+    paths: ['jobKey', 'loggedIn']
+  })],
   state: {
     appmodule: 'Balor',
     jobKey: 'test',

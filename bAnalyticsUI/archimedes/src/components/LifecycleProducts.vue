@@ -226,7 +226,6 @@
         prodArray: [],
         prodSelect: ['All'],
         topN: null,
-        jobId: 'invertedLifecycle',
         labels: [],
         spendPer: [],
         bestIndex: [],
@@ -275,6 +274,9 @@
     computed: {
       jsonMsg: function () {
         return this.incomingJson.data
+      },
+      jobId: function () {
+        return this.$store.state.jobKey
       },
       segCount: function () {
         if (this.segSelect.includes('All') || this.segSelect.length === 5) {

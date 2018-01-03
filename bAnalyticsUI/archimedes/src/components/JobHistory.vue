@@ -101,6 +101,7 @@
     },
     mounted () {
       this.$store.commit('switchApp', {module: 'Global Job History'})
+      // this.addHistoryItem()
       this.getResults()
      // this.statusColor()
     },
@@ -136,14 +137,14 @@
         let histObj = {
           'client': 'BPDemo',
           'user': 'Admin',
-          'jobId': 'aeoOnlineMayank',
-          'jobName': 'aeoOnlineMayank',
-          'app': 'Balor',
+          'jobId': 'QATestRun',
+          'jobName': 'QATestRun',
+          'app': 'Pareto',
           'powerUser': false,
           'fileName': 'hdfs:///test/test.csv',
           'jobStatus': 'Complete',
-          'lastDate': '12/21/2017',
-          'recordCount': 300000
+          'lastDate': '10/21/2017',
+          'recordCount': 30040
         }
         addHistory(histObj)
           .catch(err => {
