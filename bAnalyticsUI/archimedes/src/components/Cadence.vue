@@ -63,23 +63,23 @@
                     cellpadding="0"
                     cellspacing="0"
                     width="100%"
-                    style="width:95%;"
+                    style="width:90%; margin:0 auto;"
                     class="tbl_header">
                     <thead>
                       <tr>
-                        <th class="tbl_cells text-xs-left">Cadence</th>
-                        <th class="tbl_cells text-xs-left">Frequency</th>
-                        <th class="tbl_cells text-xs-left">Cumlative<br />Frequency</th>
+                        <th class="tbl_cells text-xs-center">Cadence</th>
+                        <th class="tbl_cells text-xs-center">Frequency</th>
+                        <th class="tbl_cells text-xs-center">Cumlative<br />Frequency</th>
                       </tr>
                     </thead>
                 </table>
                 <div class="tbl_body">
-                <table style="width:100%;">
+                <table style="width:90%; margin:0 auto;">
                   <tbody>
                     <tr v-for="item in tableData" v-bind:key="item.text" style="width:100%;">
-                      <td class="tbl_cells text-xs-left" v-text="item.cadence"></td>
-                      <td class="tbl_cells text-xs-left" v-text="item.frequency"></td>
-                      <td class="tbl_cells text-xs-left" v-text="item.cumFreq"></td>
+                      <td class="tbl_cells text-xs-center" v-text="item.cadence"></td>
+                      <td class="tbl_cells text-xs-center" v-text="item.frequency"></td>
+                      <td class="tbl_cells text-xs-center" v-text="item.cumFreq"></td>
                     </tr>
                   </tbody>
                 </table>
