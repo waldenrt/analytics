@@ -77,7 +77,7 @@
                           bottom
                           hide-details
                           v-on:input="selectSegment()"
-                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
+                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1 ellipsis2 input-group__input">
                       </v-select>
                   </v-flex>
                 </v-layout>
@@ -608,6 +608,26 @@
     min-height: 34px;
     padding: 4px 8px 4px 8px;
     margin:0 0 8px 0;
+  }
+
+  .ellipsis1 {
+    height: 36px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+  }
+
+  .input-group--text-field.input-group--dirty:not(.input-group--textarea) label,
+  .input-group--text-field:not(.input-group--single-line).input-group--focused:not(.input-group--textarea) label,
+  .input-group--text-field:not(.input-group--single-line):focus:not(.input-group--textarea) label {
+    min-width: 133%; /* This makes label same width as input when transformed above the input */
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .input-group__input {
+
   }
 
 </style>
