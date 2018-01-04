@@ -130,7 +130,7 @@
                       </div>
                       <div class="inliner">
                         <div class="legend info"></div>
-                        <div class="caption inliner padR5">Middle of the road</div>
+                        <div class="caption inliner padR5">Middle of the Road</div>
                       </div>
                       <div class="inliner">
                         <div class="legend warning"></div>
@@ -610,26 +610,6 @@
     min-height: 34px;
     padding: 4px 8px 4px 8px;
     margin:0 0 8px 0;
-  }
-
-  .ellipsis1 {
-    height: 36px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-  }
-
-  .input-group--text-field.input-group--dirty:not(.input-group--textarea) label,
-  .input-group--text-field:not(.input-group--single-line).input-group--focused:not(.input-group--textarea) label,
-  .input-group--text-field:not(.input-group--single-line):focus:not(.input-group--textarea) label {
-    min-width: 133%; /* This makes label same width as input when transformed above the input */
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-  .input-group__input {
-
   }
 
 </style>
