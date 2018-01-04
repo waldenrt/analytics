@@ -267,7 +267,7 @@
             console.log(this.incomingJson)
             this.parseJson()
             this.createDoughnuts()
-            this.createAggMetrics()
+           // this.createAggMetrics()
           })
       },
 
@@ -346,172 +346,252 @@
       createDoughnuts () {
         this.bestCust = {
           datasets: [{
-            data: [this.jsonMsg.timePeriods[this.tpSelect - 1].bestPercentCustBase * 100,
-              100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].bestPercentCustBase * 100)],
+            data: [+(this.jsonMsg.timePeriods[this.tpSelect - 1].bestPercentCustBase * 100).toFixed(2),
+              (100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].bestPercentCustBase * 100)).toFixed(2)],
             backgroundColor: ['#003947', '#848C98']
-          }]
+          }],
+          labels: [
+            'Best Customers',
+            'Other Customers'
+          ]
         }
 
         this.bestVisits = {
           datasets: [{
-            data: [this.jsonMsg.timePeriods[this.tpSelect - 1].bestPercentTxnBase * 100,
-              100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].bestPercentTxnBase * 100)],
+            data: [+(this.jsonMsg.timePeriods[this.tpSelect - 1].bestPercentTxnBase * 100).toFixed(2),
+              (100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].bestPercentTxnBase * 100)).toFixed(2)],
             backgroundColor: ['#003947', '#848C98']
-          }]
+          }],
+          labels: [
+            'Best Visits',
+            'Other Visits'
+          ]
         }
 
         this.bestSpend = {
           datasets: [{
-            data: [this.jsonMsg.timePeriods[this.tpSelect - 1].bestPercentSalesBase * 100,
-              100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].bestPercentSalesBase * 100)],
+            data: [+(this.jsonMsg.timePeriods[this.tpSelect - 1].bestPercentSalesBase * 100).toFixed(2),
+              (100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].bestPercentSalesBase * 100)).toFixed(2)],
             backgroundColor: ['#003947', '#848C98']
-          }]
+          }],
+          labels: [
+            'Best Spend',
+            'Other Spend'
+          ]
         }
 
         var tempBestUnits = (this.jsonMsg.timePeriods[this.tpSelect - 1].bestItemTotal / this.jsonMsg.timePeriods[this.tpSelect - 1].totalItems) * 100
 
         this.bestUnits = {
           datasets: [{
-            data: [tempBestUnits,
-              100 - tempBestUnits],
+            data: [+(tempBestUnits).toFixed(2),
+              +(100 - tempBestUnits).toFixed(2)],
             backgroundColor: ['#003947', '#848C98']
-          }]
+          }],
+          labels: [
+            'Best Units',
+            'Other Units'
+          ]
         }
 
         this.risingCust = {
           datasets: [{
-            data: [this.jsonMsg.timePeriods[this.tpSelect - 1].risingPercentCustBase * 100,
-              100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].risingPercentCustBase * 100)],
+            data: [+(this.jsonMsg.timePeriods[this.tpSelect - 1].risingPercentCustBase * 100).toFixed(2),
+              (100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].risingPercentCustBase * 100)).toFixed(2)],
             backgroundColor: ['#8EAC1D', '#848C98']
-          }]
+          }],
+          labels: [
+            'Rising Customers',
+            'Other Customers'
+          ]
         }
 
         this.risingVisits = {
           datasets: [{
-            data: [this.jsonMsg.timePeriods[this.tpSelect - 1].risingPercentTxnBase * 100,
-              100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].risingPercentTxnBase * 100)],
+            data: [+(this.jsonMsg.timePeriods[this.tpSelect - 1].risingPercentTxnBase * 100).toFixed(2),
+              (100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].risingPercentTxnBase * 100)).toFixed(2)],
             backgroundColor: ['#8EAC1D', '#848C98']
-          }]
+          }],
+          labels: [
+            'Rising Visits',
+            'Other Visits'
+          ]
         }
 
         this.risingSpend = {
           datasets: [{
-            data: [this.jsonMsg.timePeriods[this.tpSelect - 1].risingPercentSalesBase * 100,
-              100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].risingPercentSalesBase * 100)],
+            data: [+(this.jsonMsg.timePeriods[this.tpSelect - 1].risingPercentSalesBase * 100).toFixed(2),
+              (100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].risingPercentSalesBase * 100)).toFixed(2)],
             backgroundColor: ['#8EAC1D', '#848C98']
-          }]
+          }],
+          labels: [
+            'Rising Spend',
+            'Other Spend'
+          ]
         }
 
         var temprisingUnits = (this.jsonMsg.timePeriods[this.tpSelect - 1].risingItemTotal / this.jsonMsg.timePeriods[this.tpSelect - 1].totalItems) * 100
 
         this.risingUnits = {
           datasets: [{
-            data: [temprisingUnits,
-              100 - temprisingUnits],
+            data: [+(temprisingUnits).toFixed(2),
+              +(100 - temprisingUnits).toFixed(2)],
             backgroundColor: ['#8EAC1D', '#848C98']
-          }]
+          }],
+          labels: [
+            'Rising Units',
+            'Other Units'
+          ]
         }
 
         this.middleCust = {
           datasets: [{
-            data: [this.jsonMsg.timePeriods[this.tpSelect - 1].middlePercentCustBase * 100,
-              100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].middlePercentCustBase * 100)],
+            data: [+(this.jsonMsg.timePeriods[this.tpSelect - 1].middlePercentCustBase * 100).toFixed(2),
+              (100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].middlePercentCustBase * 100)).toFixed(2)],
             backgroundColor: ['#0087AA', '#848C98']
-          }]
+          }],
+          labels: [
+            'Middle Customers',
+            'Other Customers'
+          ]
         }
 
         this.middleVisits = {
           datasets: [{
-            data: [this.jsonMsg.timePeriods[this.tpSelect - 1].middlePercentTxnBase * 100,
-              100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].middlePercentTxnBase * 100)],
+            data: [+(this.jsonMsg.timePeriods[this.tpSelect - 1].middlePercentTxnBase * 100).toFixed(2),
+              (100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].middlePercentTxnBase * 100)).toFixed(2)],
             backgroundColor: ['#0087AA', '#848C98']
-          }]
+          }],
+          labels: [
+            'Middle Visits',
+            'Other Visits'
+          ]
         }
 
         this.middleSpend = {
           datasets: [{
-            data: [this.jsonMsg.timePeriods[this.tpSelect - 1].middlePercentSalesBase * 100,
-              100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].middlePercentSalesBase * 100)],
+            data: [+(this.jsonMsg.timePeriods[this.tpSelect - 1].middlePercentSalesBase * 100).toFixed(2),
+              (100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].middlePercentSalesBase * 100)).toFixed(2)],
             backgroundColor: ['#0087AA', '#848C98']
-          }]
+          }],
+          labels: [
+            'Middle Spend',
+            'Other Spend'
+          ]
         }
 
         var tempmiddleUnits = (this.jsonMsg.timePeriods[this.tpSelect - 1].middleItemTotal / this.jsonMsg.timePeriods[this.tpSelect - 1].totalItems) * 100
 
         this.middleUnits = {
           datasets: [{
-            data: [tempmiddleUnits,
-              100 - tempmiddleUnits],
+            data: [+(tempmiddleUnits).toFixed(2),
+              +(100 - tempmiddleUnits).toFixed(2)],
             backgroundColor: ['#0087AA', '#848C98']
-          }]
+          }],
+          labels: [
+            'Middle Units',
+            'Other Units'
+          ]
         }
 
         this.lapsingCust = {
           datasets: [{
-            data: [this.jsonMsg.timePeriods[this.tpSelect - 1].lapsingPercentCustBase * 100,
-              100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].lapsingPercentCustBase * 100)],
+            data: [+(this.jsonMsg.timePeriods[this.tpSelect - 1].lapsingPercentCustBase * 100).toFixed(2),
+              (100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].lapsingPercentCustBase * 100)).toFixed(2)],
             backgroundColor: ['#F7970E', '#848C98']
-          }]
+          }],
+          labels: [
+            'Lapsing Customers',
+            'Other Customers'
+          ]
         }
 
         this.lapsingVisits = {
           datasets: [{
-            data: [this.jsonMsg.timePeriods[this.tpSelect - 1].lapsingPercentTxnBase * 100,
-              100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].lapsingPercentTxnBase * 100)],
+            data: [+(this.jsonMsg.timePeriods[this.tpSelect - 1].lapsingPercentTxnBase * 100).toFixed(2),
+              (100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].lapsingPercentTxnBase * 100)).toFixed(2)],
             backgroundColor: ['#F7970E', '#848C98']
-          }]
+          }],
+          labels: [
+            'Lapsing Visits',
+            'Other Visits'
+          ]
         }
 
         this.lapsingSpend = {
           datasets: [{
-            data: [this.jsonMsg.timePeriods[this.tpSelect - 1].lapsingPercentSalesBase * 100,
-              100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].lapsingPercentSalesBase * 100)],
+            data: [+(this.jsonMsg.timePeriods[this.tpSelect - 1].lapsingPercentSalesBase * 100).toFixed(2),
+              (100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].lapsingPercentSalesBase * 100)).toFixed(2)],
             backgroundColor: ['#F7970E', '#848C98']
-          }]
+          }],
+          labels: [
+            'Lapsing Spend',
+            'Other Spend'
+          ]
         }
 
         var templapsingUnits = (this.jsonMsg.timePeriods[this.tpSelect - 1].lapsingItemTotal / this.jsonMsg.timePeriods[this.tpSelect - 1].totalItems) * 100
 
         this.lapsingUnits = {
           datasets: [{
-            data: [templapsingUnits,
-              100 - templapsingUnits],
+            data: [+(templapsingUnits).toFixed(2),
+              +(100 - templapsingUnits).toFixed(2)],
             backgroundColor: ['#F7970E', '#848C98']
-          }]
+          }],
+          labels: [
+            'Lapsing Units',
+            'Other Units'
+          ]
         }
 
         this.deeplyCust = {
           datasets: [{
-            data: [this.jsonMsg.timePeriods[this.tpSelect - 1].deeplyPercentCustBase * 100,
-              100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].deeplyPercentCustBase * 100)],
+            data: [+(this.jsonMsg.timePeriods[this.tpSelect - 1].deeplyPercentCustBase * 100).toFixed(2),
+              (100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].deeplyPercentCustBase * 100)).toFixed(2)],
             backgroundColor: ['#D63809', '#848C98']
-          }]
+          }],
+          labels: [
+            'Deeply Customers',
+            'Other Customers'
+          ]
         }
 
         this.deeplyVisits = {
           datasets: [{
-            data: [this.jsonMsg.timePeriods[this.tpSelect - 1].deeplyPercentTxnBase * 100,
-              100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].deeplyPercentTxnBase * 100)],
+            data: [+(this.jsonMsg.timePeriods[this.tpSelect - 1].deeplyPercentTxnBase * 100).toFixed(2),
+              (100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].deeplyPercentTxnBase * 100)).toFixed(2)],
             backgroundColor: ['#D63809', '#848C98']
-          }]
+          }],
+          labels: [
+            'Deeply Visits',
+            'Other Visits'
+          ]
         }
 
         this.deeplySpend = {
           datasets: [{
-            data: [this.jsonMsg.timePeriods[this.tpSelect - 1].deeplyPercentSalesBase * 100,
-              100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].deeplyPercentSalesBase * 100)],
+            data: [+(this.jsonMsg.timePeriods[this.tpSelect - 1].deeplyPercentSalesBase * 100).toFixed(2),
+              (100 - (this.jsonMsg.timePeriods[this.tpSelect - 1].deeplyPercentSalesBase * 100)).toFixed(2)],
             backgroundColor: ['#D63809', '#848C98']
-          }]
+          }],
+          labels: [
+            'Deeply Spend',
+            'Other Spend'
+          ]
         }
 
         var tempdeeplyUnits = (this.jsonMsg.timePeriods[this.tpSelect - 1].deeplyItemTotal / this.jsonMsg.timePeriods[this.tpSelect - 1].totalItems) * 100
 
         this.deeplyUnits = {
           datasets: [{
-            data: [tempdeeplyUnits,
-              100 - tempdeeplyUnits],
+            data: [+(tempdeeplyUnits).toFixed(2),
+              +(100 - tempdeeplyUnits).toFixed(2)],
             backgroundColor: ['#D63809', '#848C98']
-          }]
+          }],
+          labels: [
+            'Deeply Units',
+            'Other Units'
+          ]
         }
       },
 
