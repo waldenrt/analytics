@@ -4,6 +4,7 @@
 
  import {HorizontalBar, mixins} from 'vue-chartjs'
  const {reactiveProp} = mixins
+// import 'chartjs-plugin-datalabels'
 
  export default HorizontalBar.extend({
    props: ['options'],

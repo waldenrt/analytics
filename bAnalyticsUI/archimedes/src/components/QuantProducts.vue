@@ -742,6 +742,13 @@
           legend: {
             display: false
           },
+        /*  plugins: {
+            datalabels: {
+              display: true,
+              color: 'white',
+              formatter: Math.floor
+            }
+          }, */
           animation: {
             onComplete: function () {
               // TODO fill out to populate inner text
@@ -758,7 +765,8 @@
           let blue = 170 + 1 * 15
           barDataset.push({
             data: this.topSpendLvl1[this.tpSelect - 1][i],
-            backgroundColor: 'rgb(0, ' + green + ', ' + blue + ')'
+            backgroundColor: 'rgb(0, ' + green + ', ' + blue + ')',
+            label: this.topProdLvl1[this.tpSelect - 1][i]
           })
         }
 
