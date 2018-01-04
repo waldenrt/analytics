@@ -249,14 +249,16 @@
         topTtlSpend3: [],
         topTtlCount3: [],
         botTtlSpend3: [],
-        botTtlCount3: [],
-        jobId: 'QATestRun'
+        botTtlCount3: []
       }
     },
 
     computed: {
       jsonMsg: function () {
         return this.incomingJson.data
+      },
+      jobId: function () {
+        return this.$store.state.jobKey
       }
     },
 

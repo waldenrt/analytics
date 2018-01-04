@@ -320,7 +320,6 @@
         postSegComp: 'Best in Class',
         segments: ['All', 'Best in Class', 'Rising Stars', 'Middle of the Road', 'Lapsing', 'Deeply Lapsed'],
         quantArray: [],
-        jobId: 'largeLifecycle',
         nodes: [],
         tpLinks: [],
         links: [],
@@ -357,6 +356,9 @@
     computed: {
       jsonMsg: function () {
         return this.incomingJson.data
+      },
+      jobId: function () {
+        return this.$store.state.jobKey
       }
     },
     mounted () {

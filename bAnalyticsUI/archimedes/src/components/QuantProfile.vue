@@ -183,13 +183,15 @@
           {text: 'avgVisitMember', value: 'avgCustVisits'}
         ],
         custItems: [],
-        jobId: 'QATestRun',
         groupName: 'Quantile'
       }
     },
     computed: {
       jsonMsg: function () {
         return this.incomingJson.data
+      },
+      jobId: function () {
+        return this.$store.state.jobKey
       },
       paretoOptions: function () {
         let opts = {

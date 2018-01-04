@@ -268,7 +268,6 @@
     },
     data () {
       return {
-        jobId: 'QATestRun',
         tpSelect: 1,
         priorPeriod: ['All'],
         postPeriod: ['All'],
@@ -302,6 +301,9 @@
     computed: {
       jsonMsg: function () {
         return this.incomingJson.data
+      },
+      jobId: function () {
+        return this.$store.state.jobKey
       }
     },
     mounted () {
