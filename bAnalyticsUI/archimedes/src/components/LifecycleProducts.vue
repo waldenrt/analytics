@@ -278,6 +278,9 @@
       jobId: function () {
         return this.$store.state.jobKey
       },
+      jobApp: function () {
+        return this.$store.state.jobApp
+      },
       segCount: function () {
         if (this.segSelect.includes('All') || this.segSelect.length === 5) {
           this.styleObject.width = '20%'
@@ -294,7 +297,13 @@
       }
     },
     mounted () {
-      this.getResults()
+      if (this.jobApp === 'Lifecycle' || this.jobApp === 'lifecycle') {
+        this.$store.commit('switchApp', {module: 'Lifecycle'})
+        this.getResults()
+      } else {
+        alert('Please select a Core Lifecycle job from Job History')
+        this.$router.push('/Lifecycle/')
+      }
     },
     methods: {
       getResults () {

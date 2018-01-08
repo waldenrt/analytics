@@ -243,6 +243,9 @@
       jobId: function () {
         return this.$store.state.jobKey
       },
+      jobApp: function () {
+        return this.$store.state.jobApp
+      },
       metricsItems: function () {
         let compItems = {
           'totalCusts': numeral(this.jsonMsg.timePeriods[this.tpSelect - 1].totalCustCount).format('0,0'),
@@ -254,7 +257,13 @@
       }
     },
     mounted () {
-      this.getResults()
+      if (this.jobApp === 'Lifecycle' || this.jobApp === 'lifecycle') {
+        this.$store.commit('switchApp', {module: 'Lifecycle'})
+        this.getResults()
+      } else {
+        alert('Please select a Core Lifecycle job from Job History')
+        this.$router.push('/Lifecycle/')
+      }
     },
     methods: {
       getResults () {

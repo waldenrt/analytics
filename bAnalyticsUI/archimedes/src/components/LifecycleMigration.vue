@@ -359,10 +359,19 @@
       },
       jobId: function () {
         return this.$store.state.jobKey
+      },
+      jobApp: function () {
+        return this.$store.state.jobApp
       }
     },
     mounted () {
-      this.getResults()
+      if (this.jobApp === 'Lifecycle' || this.jobApp === 'lifecycle') {
+        this.$store.commit('switchApp', {module: 'Lifecycle'})
+        this.getResults()
+      } else {
+        alert('Please select a Core Lifecycle job from Job History')
+        this.$router.push('/Lifecycle/')
+      }
     },
     methods: {
       getResults () {
