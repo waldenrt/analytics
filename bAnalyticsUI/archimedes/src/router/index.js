@@ -11,18 +11,21 @@ import NewBalor from '@/components/NewBalor'
 import Cadence from '@/components/Cadence'
 import BalorTrend from '@/components/BalorTrend'
 import BalorSegmentTrend from '@/components/BalorSegmentTrend'
+import BalorHistory from '@/components/BalorHistory'
 
 import Quantile from '@/components/Quantile'
 import NewQuantile from '@/components/NewQuantile'
 import QuantProfile from '@/components/QuantProfile'
 import QuantMigration from '@/components/QuantMigration'
 import QuantProducts from '@/components/QuantProducts'
+import QuantHistory from '@/components/QuantHistory'
 
 import Lifecycle from '@/components/Lifecycle'
 import NewLifecycle from '@/components/NewLifecycle'
 import LifecycleSummary from '@/components/LifecycleSummary'
 import LifecycleMigration from '@/components/LifecycleMigration'
 import LifecycleProducts from '@/components/LifecycleProducts'
+import LifecycleHistory from '@/components/LifecycleHistory'
 
 import BRelevant from '@/components/BRelevant'
 import NewBRelevant from '@/components/NewBRelevant'
@@ -75,7 +78,7 @@ export default new Router({
             {
               path: '/',
               name: 'BalorHistory',
-              component: JobHistory
+              component: BalorHistory
             },
             {
               path: 'NewBalor',
@@ -106,7 +109,7 @@ export default new Router({
             {
               path: '/',
               name: 'QuantHistory',
-              component: JobHistory
+              component: QuantHistory
             },
             {
               path: 'NewPareto',
@@ -137,7 +140,7 @@ export default new Router({
             {
               path: '/',
               name: 'LifecycleHistory',
-              component: JobHistory
+              component: LifecycleHistory
             },
             {
               path: 'NewLifecycle',

@@ -1,5 +1,9 @@
+/**
+* Created by amerrill on 1/5/18.
+*/
+
 <template>
-  <v-container fluid class="JobHistory">
+  <v-container fluid class="LifecycleJobHistory">
     <v-layout row wrap class="mt-5 pa-0">
       <v-flex xs12>
         <v-card class="white">
@@ -13,10 +17,10 @@
       <v-flex xs12>
         <v-card flat class="white">
           <v-data-table
-            v-bind:headers="headers"
-            v-bind:items="jsonMsg"
-            v-bind:search="search"
-            class="elevation-1"
+              v-bind:headers="headers"
+              v-bind:items="jsonMsg"
+              v-bind:search="search"
+              class="elevation-1"
           >
             <template slot="headers" scope="props">
               <span v-tooltip:bottom="{ 'html': props.item.text }">
@@ -26,7 +30,7 @@
             <template slot="items" scope="props">
               <td>
                 <v-btn
-                  v-on:click.native="updateStore(props.item.jobId, props.item.app, props.item.routeLink)"
+                    v-on:click.native="updateStore(props.item.jobId, props.item.app, props.item.routeLink)"
                 >View</v-btn>
               </td>
               <td>{{ props.item.jobId }}</td>
@@ -58,10 +62,10 @@
 </template>
 
 <script>
-  import {userJobs, addHistory} from './javascript/job.service'
+  import {userAppJobs} from './javascript/job.service'
 
   export default {
-    name: 'jobHistory',
+    name: 'LifecycleHistory',
     data () {
       return {
         search: '',
@@ -102,78 +106,31 @@
       }
     },
     mounted () {
-      this.$store.commit('switchApp', {module: 'Global Job History'})
-      // this.addHistoryItem()
+      this.$store.commit('switchApp', {module: 'Lifecycle Job History'})
       this.getResults()
-     // this.statusColor()
     },
     methods: {
       getResults () {
-        userJobs(this.user)
+        userAppJobs(this.user, 'Lifecycle')
           .catch(err => {
-            alert('Could not get Client Job History results. ' + err.message.toString())
+            alert('Could not get User Lifecycle Job History results. ' + err.message.toString())
           })
           .then((response) => {
             this.incomingJson = response.data
-            console.log('this is the incoming response.data')
-            console.log(this.incomingJson)
             this.addRouteLinks()
           })
       },
       addRouteLinks () {
         let links = []
         for (let i = 0; i < this.jsonMsg.length; i++) {
-          if (this.jsonMsg[i].app === 'Balor' || this.jsonMsg[i].app === 'balor') {
-            links.push(this.jsonMsg[i])
-            links[i].routeLink = '/Balor/Cadence'
-          } else if (this.jsonMsg[i].app === 'Pareto' || this.jsonMsg[i].app === 'pareto') {
-            links.push(this.jsonMsg[i])
-            links[i].routeLink = '/Pareto/Summary'
-          } else if (this.jsonMsg[i].app === 'Lifecycle' || this.jsonMsg[i].app === 'lifecycle') {
-            links.push(this.jsonMsg[i])
-            links[i].routeLink = '/Lifecycle/Summary'
-          }
+          links.push(this.jsonMsg[i])
+          links[i].routeLink = '/Lifecycle/Summary'
         }
-      },
-      addHistoryItem () {
-        let histObj = {
-          'client': 'BPDemo',
-          'user': 'Admin',
-          'jobId': 'QATestRun',
-          'jobName': 'QATestRun',
-          'app': 'Pareto',
-          'powerUser': false,
-          'fileName': 'hdfs:///test/test.csv',
-          'jobStatus': 'Complete',
-          'lastDate': '10/21/2017',
-          'recordCount': 30040
-        }
-        addHistory(histObj)
-          .catch(err => {
-            alert('Could not add History Item. ' + err.message.toString())
-          })
-          .then((response) => {
-            console.log(this.response)
-          })
       },
       updateStore (jobId, app, routeLink) {
         this.$store.dispatch('setJobKey', {'jobid': jobId, 'app': app}).then(() => {
           this.$router.push(routeLink)
         })
-      },
-      statusColor () { // leaving this method. removing it from the data table until I can figure out how to activate method when the pagination activates.
-        var x = document.getElementsByClassName('status_block')
-        for (var i = 0; i < this.items.length; i++) {
-          if (this.items[i].status === 'File Uploaded') {
-            x[i].style.backgroundColor = '#005E76'
-          } else if (this.items[i].status === 'Cadence Complete') {
-            x[i].style.backgroundColor = '#8EAC1D'
-          } else if (this.items[i].status === 'Balor Complete') {
-            x[i].style.backgroundColor = '#8EAC1D'
-          } else if (this.items[i].status === 'Running') {
-            x[i].style.backgroundColor = '#F7970E'
-          }
-        }
       }
     }
   }
@@ -181,16 +138,16 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.status_block {
+  .status_block {
     display:inline-block;
     width:100%;
     border-radius:2px;
     padding:5px;
     color:##eff3f6;
   }
-.menu .menu__content .card .list {
-  padding-top:0;
-  padding-bottom:0;
-}
-.list__tile{height:38px !important;}
+  .menu .menu__content .card .list {
+    padding-top:0;
+    padding-bottom:0;
+  }
+  .list__tile{height:38px !important;}
 </style>

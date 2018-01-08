@@ -7,12 +7,14 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   plugins: [createPersistedStore({
-    paths: ['jobKey', 'loggedIn']
+    paths: ['jobKey', 'loggedIn', 'user']
   })],
   state: {
     appmodule: 'Balor',
     jobKey: 'test',
-    loggedIn: 'true'
+    loggedIn: 'true',
+    user: 'Admin',
+    jobApp: 'None'
   },
   mutations: {
     switchApp (state, app) {
@@ -20,6 +22,7 @@ const store = new Vuex.Store({
     },
     setJobKey (state, job) {
       state.jobKey = job.jobid
+      state.jobApp = job.app
     }
   },
   actions: {

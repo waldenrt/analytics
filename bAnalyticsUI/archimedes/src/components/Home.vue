@@ -168,15 +168,15 @@ export default {
       historyItems: [
         {
           name: 'Balor Job History',
-          histLink: '#/Balor/NewBalor'
+          histLink: '#/Balor'
         },
         {
           name: 'Pareto Job History',
-          histLink: '#/Pareto/NewPareto'
+          histLink: '#/Pareto'
         },
         {
           name: 'Core Lifecycle Job History',
-          histLink: '#/Lifecycle/NewLifecycle'
+          histLink: '#/Lifecycle'
         },
         {
           name: 'bRelevant Job History',
