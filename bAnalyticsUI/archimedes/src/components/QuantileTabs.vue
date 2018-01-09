@@ -2,14 +2,13 @@
 <v-container fluid class="ma-0 pa-0">
 <v-card class="white pa-3">
     <v-layout row wrap>
-      <v-flex xs12 s12 md3 class="text-xs-center">
+      <v-flex xs12 md3 class="text-xs-center">
           <v-btn primary large router to="/Pareto/NewPareto" class="white--text text-xs-left marTB8">+ NEW PARETO INPUT</v-btn>
       </v-flex>
-      <v-flex xs12 s12 md9>
+      <v-flex xs12 md9>
         <v-tabs id="mobile-tabs-3" grow light class="elevation-1">
           <v-tabs-bar slot="activators">
             <v-tabs-slider></v-tabs-slider>
-            <v-tabs-item router to="/Pareto/NewPareto">Input</v-tabs-item>
             <v-tabs-item router to="/Pareto/Summary">Pareto Profiles</v-tabs-item>
             <v-tabs-item router to="/Pareto/Migration">Migration</v-tabs-item>
             <v-tabs-item router to="/Pareto/Products">Top/Bottom Products</v-tabs-item>

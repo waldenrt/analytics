@@ -1,23 +1,5 @@
 <template>
   <v-container fluid class="balorTrend pl-3 pr-3">
-    <!-- =====TABS-ROW===== -->
-    <v-layout row wrap class="mt-0 mb-3 pa-0">
-      <v-flex xs12>
-        <v-card flat height="50px">
-          <v-bottom-nav absolute value="true" class="blue-grey lighten-1 elevation-2">
-            <v-btn flat class="white--text" router to="/Balor/Trend">
-              <span>Balor Trends</span>
-              <v-icon>timeline</v-icon>
-            </v-btn>
-            <v-btn flat class="white--text" router to="/Balor/SegmentTrend">
-              <span>Segment Trends</span>
-              <v-icon>bar_chart</v-icon>
-            </v-btn>
-          </v-bottom-nav>
-        </v-card>
-      </v-flex>
-    </v-layout>
-    <!-- //=====TABS-ROW===== -->
     <!-- =====ROW1===== -->
     <v-layout row wrap class="pa-0 mb-0">
       <!--+++++col1+++++-->

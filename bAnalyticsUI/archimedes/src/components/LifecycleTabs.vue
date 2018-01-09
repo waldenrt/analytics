@@ -2,14 +2,13 @@
 <v-container fluid class="ma-0 pa-0">
 <v-card class="white pa-3">
     <v-layout row wrap>
-      <v-flex xs12 s12 md3 class="text-xs-center">
+      <v-flex xs12 md3 class="text-xs-center">
           <v-btn primary large router to="/Lifecycle/NewLifecycle" class="white--text text-xs-left marTB8">+ NEW LIFECYCLE INPUT</v-btn>
       </v-flex>
-      <v-flex xs12 s12 md9>
+      <v-flex xs12 md9>
         <v-tabs id="mobile-tabs-3" grow light class="elevation-1">
           <v-tabs-bar slot="activators">
             <v-tabs-slider></v-tabs-slider>
-            <v-tabs-item router to="/Lifecycle/NewLifecycle">Input</v-tabs-item>
             <v-tabs-item router to="/Lifecycle/Summary">Segment Summary</v-tabs-item>
             <v-tabs-item router to="/Lifecycle/Migration">Segment Migration</v-tabs-item>
             <v-tabs-item router to="/Lifecycle/Products">Product Index</v-tabs-item>
