@@ -33,6 +33,7 @@
                     <v-layout class="xs12 ma-0">
                       <v-text-field
                           label="Username"
+                          v-model="username"
                           class="white mt-0 mb-0 ml-0"
                           single-line
                           hide-details
@@ -53,6 +54,7 @@
                     <v-layout class="xs12 ma-0">
                       <v-text-field
                           label="Password"
+                          v-model="password"
                           class="white mt-0 mb-0 ml-0"
                           single-line
                           hide-details
@@ -85,8 +87,8 @@
                           v-bind:label="`Remember Me`"
                           v-model="checkbox1"
                           hide-details
-                          data-vv-name="checkbox1"
-                          v-validate=""></v-checkbox>
+                          class="info--text"
+                          data-vv-name="checkbox1"></v-checkbox>
                       </v-card-text>
                     </v-flex>
                   </v-card-row>

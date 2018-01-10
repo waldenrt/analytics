@@ -8,7 +8,7 @@
           <v-layout wrap row class="accent elevation-1 pa-3 ma-0 bg_hero">
               <v-flex xs10>
                 <div>
-                  <h3 class="white--text text-xs-left pb-0 mb-0">Welcome to [Application Name]</h3>
+                  <h3 class="white--text text-xs-left pb-0 mb-0">Welcome to Archimedes</h3>
                   <h5 class="white--text text-xs-left pb-0 mb-0">UserName</h5>
                 </div>
                 <div style="margin-top:50px;">

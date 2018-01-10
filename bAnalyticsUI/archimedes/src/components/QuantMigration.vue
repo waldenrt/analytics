@@ -147,8 +147,8 @@
         <v-data-table
             :headers="quantHeaders"
             :items="tableMigItems"
-            class="pl-5 pr-3"
-            :style=""
+            class="pl-5 pr-3 text-xs-center"
+            :style="{ backgroundColor: createTblColor() }"
             hide-actions>
             <template slot="items" scope="props">
               <td>{{ props.item.from }}</td>
@@ -313,7 +313,8 @@
         tablePercents: [],
         sumItems: [],
         sumItemsArray: [],
-        quantbars: {}
+        quantbars: {},
+        tableBGcolor: {}
       }
     },
     computed: {
@@ -551,10 +552,10 @@
               tempColorChart.push('hsl(120, 15% 75%)')
             } else if (j < count) {
               green = green - decrement * (j + 1)
-              tempColorChart.push('hsl(130,' + green + '%, 50%)')
+              tempColorChart.push('hsl(130, ' + green + '%, 50%)')
             } else if (j > count) {
               red = red + decrement
-              tempColorChart.push('hsl(0,' + red + '%, 50%)')
+              tempColorChart.push('hsl(0, ' + red + '%, 50%)')
             }
           }
         }
