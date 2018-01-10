@@ -345,6 +345,9 @@
       jobId: function () {
         return this.$store.state.jobKey
       },
+      jobApp: function () {
+        return this.$store.state.jobApp
+      },
       paretoOptions: function () {
         let opts = {
           responsive: true,
@@ -411,8 +414,13 @@
       }
     },
     mounted () {
-      this.getResults()
-      // put initial chart creation methods here
+      if (this.jobApp === 'Balor' || this.jobApp === 'balor') {
+        this.$store.commit('switchApp', {module: 'Balor'})
+        this.getResults()
+      } else {
+        alert('Please select a Balor job from Job History')
+        this.$router.push('/Balor/')
+      }
     },
     methods: {
       getResults () {

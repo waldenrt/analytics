@@ -349,6 +349,9 @@
       jobId: function () {
         return this.$store.state.jobKey
       },
+      jobApp: function () {
+        return this.$store.state.jobApp
+      },
       items1: function () {
         var formatArray = []
         for (let i = 0; i < this.incomingJson.data.timePeriods.length; i++) {
@@ -380,7 +383,13 @@
       }
     },
     mounted () {
-      this.getResults()
+      if (this.jobApp === 'Balor' || this.jobApp === 'balor') {
+        this.$store.commit('switchApp', {module: 'Balor'})
+        this.getResults()
+      } else {
+        alert('Please select a Balor job from Job History')
+        this.$router.push('/Balor/')
+      }
     },
     methods: {
       getResults () {
