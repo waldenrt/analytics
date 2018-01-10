@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   plugins: [createPersistedStore({
-    paths: ['jobKey', 'loggedIn', 'user']
+    paths: ['jobKey', 'loggedIn', 'user', 'jobApp']
   })],
   state: {
     appmodule: 'Balor',
