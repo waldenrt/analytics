@@ -127,24 +127,24 @@
         <div class="y_axis caption text-xs-center">Customer Prior Period Quantile</div>
         <v-card class="white w_100 pt-3 pb-3">
           <div class="x_axis caption text-xs-center">Customer Post Period Quantile</div>
-          <!--<table style="width:100%; margin:0 auto;">
+          <table style="width:100%; margin:0 auto;">
             <tbody>
-              <tr v-for="item in tableMigItems" v-bind:key="item.text" style="width:100%;">
-                <td class="tbl_cells text-xs-center" :style="" v-text="item.from"></td>
-                <td class="tbl_cells text-xs-center" v-text="item.key1"></td>
-                <td class="tbl_cells text-xs-center" v-text="item.key2"></td>
-                <td class="tbl_cells text-xs-center" v-text="item.key3"></td>
-                <td class="tbl_cells text-xs-center" v-text="item.key4"></td>
-                <td class="tbl_cells text-xs-center" v-text="item.key5"></td>
-                <td class="tbl_cells text-xs-center" v-text="item.key6"></td>
-                <td class="tbl_cells text-xs-center" v-text="item.key7"></td>
-                <td class="tbl_cells text-xs-center" v-text="item.key8"></td>
-                <td class="tbl_cells text-xs-center" v-text="item.key9"></td>
-                <td class="tbl_cells text-xs-center" v-text="item.key10"></td>
+              <tr v-for="(item, index) in tableMigItems" v-bind:key="item.text" style="width:100%;">
+                <td class="tbl_cells text-xs-center" v-text="item.from"></td>
+                <td class="tbl_cells text-xs-center" :style="createTblColor[index][0]" v-text="item.key1"></td>
+                <td class="tbl_cells text-xs-center" :style="createTblColor[index][1]" v-text="item.key2"></td>
+                <td class="tbl_cells text-xs-center" :style="createTblColor[index][2]" v-text="item.key3"></td>
+                <td class="tbl_cells text-xs-center" :style="createTblColor[index][3]" v-text="item.key4"></td>
+                <td class="tbl_cells text-xs-center" :style="createTblColor[index][4]" v-text="item.key5"></td>
+                <td class="tbl_cells text-xs-center" :style="createTblColor[index][5]" v-text="item.key6"></td>
+                <td class="tbl_cells text-xs-center" :style="createTblColor[index][6]" v-text="item.key7"></td>
+                <td class="tbl_cells text-xs-center" :style="createTblColor[index][7]" v-text="item.key8"></td>
+                <td class="tbl_cells text-xs-center" :style="createTblColor[index][8]" v-text="item.key9"></td>
+                <td class="tbl_cells text-xs-center" :style="createTblColor[index][9]" v-text="item.key10"></td>
               </tr>
             </tbody>
-          </table>-->
-        <v-data-table
+          </table>
+<!--        <v-data-table
             :headers="quantHeaders"
             :items="tableMigItems"
             class="pl-5 pr-3 text-xs-center"
@@ -163,7 +163,7 @@
               <td>{{ props.item.key9 }}</td>
               <td>{{ props.item.key10 }}</td>
             </template>
-        </v-data-table>
+        </v-data-table>-->
         </v-card>
       </v-flex>
     </v-layout>
@@ -326,6 +326,35 @@
       },
       jobApp: function () {
         return this.$store.state.jobApp
+      },
+      createTblColor: function () {
+        var count = 0
+        // dividing 60 since we are only using values between 40 and 100
+        var decrement = 60 / (this.tableMigItems.length - 1)
+
+        var colorChart = []
+
+        for (var i = 0; i < this.tableMigItems.length; i++) {
+          // reset variables for eah new row of colors
+          var tempColorChart = []
+          var red = 30
+          var green = 40 + (decrement * i)
+          for (var j = 0; j < this.tableMigItems.length; j++) {
+            if (j === count) {
+              tempColorChart.push('background-color: hsl(120, 15%, 75%)')
+            } else if (j < count) {
+              var newGreen = green - decrement * (j + 1)
+              tempColorChart.push('background-color: hsl(130, ' + newGreen + '%, 50%)')
+            } else if (j > count) {
+              red = red + decrement
+              tempColorChart.push('background-color: hsl(0, ' + red + '%, 50%)')
+            }
+          }
+          // add row of color to master colorChart
+          colorChart.push(tempColorChart)
+          count++
+        }
+        return colorChart
       }
     },
     mounted () {
@@ -336,7 +365,7 @@
         alert('Please select a Pareto job from Job History')
         this.$router.push('/Pareto/')
       }
-      this.createTblColor()
+    //  this.createTblColor()
     },
     methods: {
       getResults () {
@@ -482,6 +511,8 @@
 
         this.sumItems = tempRetObj[this.tpSelect - 1]
         this.sumItemsArray = tempRetObj
+
+        console.log(this.tableMigItems)
       },
 
       selectTP () {
@@ -534,34 +565,6 @@
             backgroundColor: '#F7970E'
           }]
         }
-      },
-      createTblColor () {
-        var count = 0
-        // dividing 60 since we are only using values between 40 and 100
-        var decrement = 60 / (this.tableMigItems.length - 1)
-
-        var colorChart = []
-
-        for (var i = 0; i < this.tableMigItems.length; i++) {
-          // reset variables for eah new row of colors
-          var tempColorChart = []
-          var red = 30
-          var green = 40 + (decrement * 1)
-          for (var j = 0; j < this.tableMigItems.length; j++) {
-            if (j === count) {
-              tempColorChart.push('hsl(120, 15% 75%)')
-            } else if (j < count) {
-              green = green - decrement * (j + 1)
-              tempColorChart.push('hsl(130, ' + green + '%, 50%)')
-            } else if (j > count) {
-              red = red + decrement
-              tempColorChart.push('hsl(0, ' + red + '%, 50%)')
-            }
-          }
-        }
-        // add row of color to master colorChart
-        colorChart.push(tempColorChart)
-        count++
       }
     }
   }
