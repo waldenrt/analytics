@@ -294,6 +294,9 @@
           this.styleObject.width = '100%'
         }
         return this.styleObject
+      },
+      prodCount: function () {
+        console.log('this.prodArray.length')
       }
     },
     mounted () {
@@ -304,6 +307,7 @@
         alert('Please select a Core Lifecycle job from Job History')
         this.$router.push('/Lifecycle/')
       }
+      this.prodCount
     },
     methods: {
       getResults () {

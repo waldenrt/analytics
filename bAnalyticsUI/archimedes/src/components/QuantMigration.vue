@@ -127,20 +127,33 @@
         <div class="y_axis caption text-xs-center">Customer Prior Period Quantile</div>
         <v-card class="white w_100 pt-3 pb-3">
           <div class="x_axis caption text-xs-center">Customer Post Period Quantile</div>
-          <table style="width:100%; margin:0 auto;">
+          <table cellpadding="0" cellspacing="0" class="quantTbl subheading pt-2 pl-5 pr-3">
+            <thead>
+              <td class="text-xs-center"></td>
+              <td class="text-xs-center">1</td>
+              <td class="text-xs-center">2</td>
+              <td class="text-xs-center">3</td>
+              <td class="text-xs-center">4</td>
+              <td class="text-xs-center">5</td>
+              <td class="text-xs-center">6</td>
+              <td class=" text-xs-center">7</td>
+              <td class="text-xs-center">8</td>
+              <td class="text-xs-center">9</td>
+              <td class="text-xs-center">10</td>
+            </thead>
             <tbody>
-              <tr v-for="(item, index) in tableMigItems" v-bind:key="item.text" style="width:100%;">
-                <td class="tbl_cells text-xs-center" v-text="item.from"></td>
-                <td class="tbl_cells text-xs-center" :style="createTblColor[index][0]" v-text="item.key1"></td>
-                <td class="tbl_cells text-xs-center" :style="createTblColor[index][1]" v-text="item.key2"></td>
-                <td class="tbl_cells text-xs-center" :style="createTblColor[index][2]" v-text="item.key3"></td>
-                <td class="tbl_cells text-xs-center" :style="createTblColor[index][3]" v-text="item.key4"></td>
-                <td class="tbl_cells text-xs-center" :style="createTblColor[index][4]" v-text="item.key5"></td>
-                <td class="tbl_cells text-xs-center" :style="createTblColor[index][5]" v-text="item.key6"></td>
-                <td class="tbl_cells text-xs-center" :style="createTblColor[index][6]" v-text="item.key7"></td>
-                <td class="tbl_cells text-xs-center" :style="createTblColor[index][7]" v-text="item.key8"></td>
-                <td class="tbl_cells text-xs-center" :style="createTblColor[index][8]" v-text="item.key9"></td>
-                <td class="tbl_cells text-xs-center" :style="createTblColor[index][9]" v-text="item.key10"></td>
+              <tr v-for="(item, index) in tableMigItems" v-bind:key="item.text" class="tRow">
+                <td class="text-xs-center" v-text="item.from"></td>
+                <td class="text-xs-center" :style="createTblColor[index][0]" v-text="item.key1"></td>
+                <td class="text-xs-center" :style="createTblColor[index][1]" v-text="item.key2"></td>
+                <td class="text-xs-center" :style="createTblColor[index][2]" v-text="item.key3"></td>
+                <td class="text-xs-center" :style="createTblColor[index][3]" v-text="item.key4"></td>
+                <td class="text-xs-center" :style="createTblColor[index][4]" v-text="item.key5"></td>
+                <td class="text-xs-center" :style="createTblColor[index][5]" v-text="item.key6"></td>
+                <td class="text-xs-center" :style="createTblColor[index][6]" v-text="item.key7"></td>
+                <td class="text-xs-center" :style="createTblColor[index][7]" v-text="item.key8"></td>
+                <td class="text-xs-center" :style="createTblColor[index][8]" v-text="item.key9"></td>
+                <td class="text-xs-center" :style="createTblColor[index][9]" v-text="item.key10"></td>
               </tr>
             </tbody>
           </table>
@@ -148,7 +161,7 @@
             :headers="quantHeaders"
             :items="tableMigItems"
             class="pl-5 pr-3 text-xs-center"
-            :style="{ backgroundColor: createTblColor() }"
+            :style="createTblColor"
             hide-actions>
             <template slot="items" scope="props">
               <td>{{ props.item.from }}</td>
@@ -171,7 +184,7 @@
     <!-- =====ROW4===== -->
     <v-layout wrap row class="pt-0 mt-3 mb-3">
       <!--+++++col1+++++-->
-      <v-flex xs12 md8 class="mb-3">
+      <v-flex xs12 md6 class="mb-3">
       <!--table-->
         <v-card class="white w_100">
           <v-card-title primary-title class="white">
@@ -215,7 +228,7 @@
       </v-flex>
       <!--//+++++col1+++++-->
       <!--+++++col2+++++-->
-      <v-flex xs12 md4 class="mb-3">
+      <v-flex xs12 md6 class="mb-3">
       <!--chart-row-->
         <v-card class="white pa-0 w_100">
           <v-flex xs12 fill-height>
@@ -330,24 +343,25 @@
       createTblColor: function () {
         var count = 0
         // dividing 60 since we are only using values between 40 and 100
-        var decrement = 60 / (this.tableMigItems.length - 1)
+        var decrementRed = 50 / (this.tableMigItems.length - 1)
+        var decrementGreen = 40 / (this.tableMigItems.length - 1)
 
         var colorChart = []
 
         for (var i = 0; i < this.tableMigItems.length; i++) {
           // reset variables for eah new row of colors
           var tempColorChart = []
-          var red = 30
-          var green = 40 + (decrement * i)
+          var red = 85
+          var green = 70 - (decrementGreen * i)
           for (var j = 0; j < this.tableMigItems.length; j++) {
             if (j === count) {
               tempColorChart.push('background-color: hsl(120, 15%, 75%)')
             } else if (j < count) {
-              var newGreen = green - decrement * (j + 1)
-              tempColorChart.push('background-color: hsl(130, ' + newGreen + '%, 50%)')
+              var newGreen = green + decrementGreen * (j + 1)
+              tempColorChart.push('background-color: hsl(110, ' + '65%, ' + newGreen + '%')
             } else if (j > count) {
-              red = red + decrement
-              tempColorChart.push('background-color: hsl(0, ' + red + '%, 50%)')
+              red = red - decrementRed
+              tempColorChart.push('background-color: hsl(0, ' + '100%, ' + red + '%')
             }
           }
           // add row of color to master colorChart
@@ -590,5 +604,22 @@
     -webkit-transform: rotate(270deg); /* Safari 3-8 */
     transform: rotate(270deg);
     z-index: 1;
+  }
+  .quantTbl {
+    width:100%;
+    margin:0 auto;
+  }
+  .quantTbl td {
+    padding:20px;
+    font-weight: bold;
+  }
+  .quantTbl thead td {
+    background-color:#ffeaeb;
+  }
+  .quantTbl thead td:first-child {
+    background-color:inherit;
+  }
+  .quantTbl .tRow td:first-child {
+    background-color:#e7eeda;
   }
 </style>
