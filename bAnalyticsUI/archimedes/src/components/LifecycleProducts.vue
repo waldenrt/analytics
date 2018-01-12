@@ -1,5 +1,6 @@
 <template>
   <v-container fluid class="quantileProducts pl-3 pr-3 mb-3">
+    {{prodCount}}
     <!-- =====ROW1===== -->
     <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
@@ -169,8 +170,8 @@
       <v-flex xs12 sm4>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <h6 class="primary--text text-xs-center pa-1 mb-0 subhead">Overall Product Share</h6>
-          <div class="prod_share_container">
-            <horizontal-chart :chart-data="overallBars" :options="overallOpts" class="chart_height1"></horizontal-chart>
+          <div class="prod_share_container scroller">
+            <horizontal-chart :chart-data="overallBars" :options="overallOpts" :style="prodCount"></horizontal-chart>
           </div>
         </v-card>
       </v-flex>
@@ -179,21 +180,21 @@
       <v-flex xs12 sm8>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <h6 class="primary--text text-xs-center pa-1 mb-0">Product Index by Segment</h6>
-          <v-layout wrap row class="pt-1">
+          <v-layout wrap row class="padT">
             <div v-show="showBest" class="seg_sect" :style="segCount">
-              <prod-index-chart :width="segChart" :chart-data="bestBars" class="chart_height1"></prod-index-chart>
+              <prod-index-chart :width="segChart" :chart-data="bestBars" :style="prodCount"></prod-index-chart>
             </div>
             <div v-show="showRising" class="seg_sect" :style="segCount">
-              <prod-index-chart :width="segChart" :chart-data="risingBars" class="chart_height1"></prod-index-chart>
+              <prod-index-chart :width="segChart" :chart-data="risingBars" :style="prodCount"></prod-index-chart>
             </div>
             <div v-show="showMiddle" class="seg_sect" :style="segCount">
-              <prod-index-chart :width="segChart" :chart-data="middleBars" class="chart_height1"></prod-index-chart>
+              <prod-index-chart :width="segChart" :chart-data="middleBars" :style="prodCount"></prod-index-chart>
             </div>
             <div v-show="showLapsing" class="seg_sect" :style="segCount">
-              <prod-index-chart :width="segChart" :chart-data="lapsingBars" class="chart_height1"></prod-index-chart>
+              <prod-index-chart :width="segChart" :chart-data="lapsingBars" :style="prodCount"></prod-index-chart>
             </div>
             <div v-show="showDeeply" class="seg_sect" :style="segCount">
-              <prod-index-chart :width="segChart" :chart-data="deeplyBars" class="chart_height1"></prod-index-chart>
+              <prod-index-chart :width="segChart" :chart-data="deeplyBars" :style="prodCount"></prod-index-chart>
             </div>
           </v-layout>
         </v-card>
@@ -253,6 +254,7 @@
         showLapsing: true,
         showDeeply: true,
         styleObject: { width: '20%' },
+        styleHeight: { height: '750px' },
         segChart: '100%',
         overallOpts: {
           responsive: true,
@@ -296,7 +298,14 @@
         return this.styleObject
       },
       prodCount: function () {
-        console.log('this.prodArray.length')
+        if (this.prodArray.length < 50 && this.prodArray.length > 0) {
+          this.styleHeight.height = '500px'
+        } else if (this.prodArray.length >= 50 && this.prodArray.length < 100) {
+          this.styleHeight.height = '1000px'
+        } else if (this.prodArray.length > 100) {
+          this.styleHeight.height = '2000px'
+        }
+        return this.styleHeight
       }
     },
     mounted () {
@@ -606,6 +615,10 @@
 
   canvas, .prod_share_container { width:100% !important; }
 
+  .scroller {
+    overflow-y: scroll;
+  }
+
   .inliner {
     display: inline-block;
   }
@@ -624,5 +637,6 @@
     padding: 4px 8px 4px 8px;
     margin:0 0 8px 0;
   }
+  .padT { padding-top: 5px; }
 
 </style>
