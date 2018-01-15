@@ -118,6 +118,7 @@
 
 <script>
   import {upload} from './javascript/file-upload.service'
+  import {submitJob} from './javascript/job.service'
 
   export default {
     data () {
@@ -127,30 +128,41 @@
         input_balor: '',
         disabledBtn: '',
         items: [
-          {text: '.txt (tab separated)'},
-          {text: '.CSV ("," delimeter)'},
-          {text: '.DSV ("|" delimeter)'},
-          {text: '.DSV (";" delimeter)'}
+          {text: '.txt (tab separated)', value: '/t'},
+          {text: '.CSV ("," delimeter)', value: ','},
+          {text: '.DSV ("|" delimeter)', value: '|'},
+          {text: '.DSV (";" delimeter)', value: ';'}
         ],
         dialog: false,
         valid: true,
-        uploadedFiles: [],
+        uploadedFile: '',
         uploadError: null,
         currentStatus: null,
         uploadFieldName: ''
       }
     },
     computed: {
+      client: function () {
+        return this.$store.state.client
+      },
+      user: function () {
+        return this.$store.state.user
+      },
+      powerUser: function () {
+        return this.$store.state.powerUser
+      }
     },
     methods: {
       fileUpload (fieldName, fileNames) {
-        console.log('Entering fileUpload')
         const formData = new FormData()
         if (!fileNames.length) return
 
-        formData.append(fieldName, fileNames[0])
+        console.log(fieldName)
+        formData.append('file', fileNames[0])
 
         this.save(formData)
+
+        this.uploadedFile = fileNames[0].name
       },
       save (formData) {
         upload(formData)
@@ -159,12 +171,34 @@
           })
       },
       validateBeforeSubmit () {
+        // create json object for job submittal
+        var jobObj = {
+          'client': this.client,
+          'user': this.user,
+          'powerUser': this.powerUser,
+          'app': 'cadence',
+          'jobName': this.job_balor,
+          'jobId': '',
+          'fileName': '/user/admin/' + this.uploadedFile,
+          'delimiter': this.select_balor,
+          'args': [
+            {'name': 'percentile', 'value': '.8'}
+          ]
+        }
+
+        console.log(jobObj)
+
         var vm = this
         this.$validator.validateAll().then((result) => {
           if (result) {
-            alert('Form Submitted!')
-            vm.disabledBtn = false
-            return
+            submitJob(jobObj)
+              .catch(err => {
+                alert('Problem submitting job to server. /n ' + err.message.toString())
+              })
+              .then((response) => {
+                alert('Form Submitted!')
+                vm.disabledBtn = false
+              })
           } else {
             alert('Correct the errors!')
             vm.disabledBtn = true

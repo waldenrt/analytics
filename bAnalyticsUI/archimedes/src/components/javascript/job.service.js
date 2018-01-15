@@ -46,4 +46,9 @@ function addHistory (formData) {
   return axios.post(url, formData)
 }
 
-export { clientJobs, clientUserJobs, clientUserAppJobs, userJobs, appJobs, userAppJobs, clientAppJobs, addHistory }
+function submitJob (formData) {
+  const url = `http://10.4.3.18:9003/api/v1/jobs/job`
+  return axios.post(url, formData)
+}
+
+export { clientJobs, clientUserJobs, clientUserAppJobs, userJobs, appJobs, userAppJobs, clientAppJobs, addHistory, submitJob }

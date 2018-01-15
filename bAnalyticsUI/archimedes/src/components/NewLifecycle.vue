@@ -130,6 +130,8 @@
 </template>
 
 <script>
+  import {upload} from './javascript/file-upload.service'
+
   export default {
     data () {
       return {
@@ -137,51 +139,68 @@
         select_lifecycle1: '',
         select_lifecycle2: '',
         items1: [
-          {text: '.txt (tab separated)'},
-          {text: '.CSV ("," delimeter)'},
-          {text: '.DSV ("|" delimeter)'},
-          {text: '.DSV (";" delimeter)'}
+          {text: '.txt (tab separated)', value: '/t'},
+          {text: '.CSV ("," delimeter)', value: ','},
+          {text: '.DSV ("|" delimeter)', value: '|'},
+          {text: '.DSV (";" delimeter)', value: ';'}
         ],
         items2: [
-          {text: '3 months'},
-          {text: '6 months'},
-          {text: '9 months'},
-          {text: '12 months'}
+          {text: 'All Data', value: '0'},
+          {text: '3 months', value: '3'},
+          {text: '6 months', value: '6'},
+          {text: '12 months', value: '12'}
         ],
         dialog: false,
-        valid: true
+        valid: true,
+        uploadedFile: '',
+        uploadFieldName: ''
+      }
+    },
+    computed: {
+      client: function () {
+        return this.$store.state.client
+      },
+      user: function () {
+        return this.$store.state.user
+      },
+      powerUser: function () {
+        return this.$store.state.powerUser
       }
     },
     methods: {
-      fileUpload () {
-        var path = document.getElementById('fileUploader').value
-        console.log('path...' + path)
-        var WebHDFS = require('webhdfs')
+      fileUpload (fieldName, fileNames) {
+        const formData = new FormData()
+        if (!fileNames.length) return
 
-        var hdfs = WebHDFS.createClient({
-          user: 'admin',
-          host: '10.4.3.26',
-          port: 14000,
-          path: '/webhdfs/v1'
-        })
-        var fs = require('fs')
-        var localFileStream = fs.createReadStream(path)
-        // e.target.files || e.dataTransfer.files
-        var remoteFileStream = hdfs.createWriteStream('/user/archimedes/brierley/demo/test')
+        formData.append(fieldName, fileNames[0])
 
-        localFileStream.pipe(remoteFileStream)
-
-        remoteFileStream.on('error', function onError (err) {
-          console.log('ERROR occured: ' + err)
-          // Do something with the error
-        })
-
-        remoteFileStream.on('finish', function onFinish () {
-          console.log('Upload succesful')
-          // Upload is done
-        })
+        this.save(formData)
+        this.uploadedFile = fileNames[0].name
+      },
+      save (formData) {
+        upload(formData)
+          .catch(err => {
+            alert('There was an error uploading the file.  Please try again.' + err.message.toString())
+          })
       },
       validateBeforeSubmit () {
+        // create JSON object for submittal
+        var jobObj = {
+          'client': this.client,
+          'user': this.user,
+          'powerUser': this.powerUser,
+          'app': 'lifecycle',
+          'jobName': this.job_lifecycle,
+          'jobId': '',
+          'fileName': '/user/admin/' + this.uploadedFile,
+          'delimiter': this.select_lifecycle1,
+          'args': [
+            {'name': 'timePeriod', 'value': this.select_lifecycle2}
+          ]
+        }
+
+        console.log(jobObj)
+
         var vm = this
         this.$validator.validateAll().then((result) => {
           if (result) {
