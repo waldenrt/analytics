@@ -1,10 +1,6 @@
 <template>
   <v-container fluid class="quantileProducts pl-3 pr-3 mb-3">
-<<<<<<< HEAD
     {{prodCount}}
-=======
-    {{ prodCount }}
->>>>>>> b15d8065428b1ec8c0e97861045b8c04d798805f
     <!-- =====ROW1===== -->
     <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
