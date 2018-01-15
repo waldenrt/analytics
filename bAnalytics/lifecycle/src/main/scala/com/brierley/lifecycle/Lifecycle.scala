@@ -696,6 +696,7 @@ object Lifecycle {
     ex.setMethodName(methodName)
     ex.setExceptionMsg(msg)
     ex.setExceptionType(extype)
+    ex.setStackTrace("no stackTrace given at this time")
 
     val tempList = new util.ArrayList[exception]
     tempList.add(ex)
@@ -723,7 +724,8 @@ object Lifecycle {
       .mapValues(_ (1))
 
     if (args.length != 5) {
-      //sendError
+      println("Invalid number of args: " + args.length)
+      sendLifecycleError(args(2), "Lifecycle", "loadProps", "Invalid number of args: " + args.length, "User", propsOnly)
       System.exit(-1)
     }
 
@@ -737,7 +739,7 @@ object Lifecycle {
 
     if (!validTP.contains(timePeriod)) {
       println(s"Invalid timeperiod length submitted, must be: 0, 3, 6, or 12.  you entered $timePeriod")
-      //sendError
+      sendLifecycleError(jobKey, "Lifecycle", "loadProps", s"Invalid timeperiod length submitted, must be: 0, 3, 6, or 12.  you entered $timePeriod", "User", propsOnly)
       System.exit(-1)
     }
 
@@ -791,8 +793,8 @@ object Lifecycle {
         sc.stop()
       }
       case Failure(ex) => {
-        sendLifecycleError(jobKey, "Lifecycle", "unknown", ex.toString, "System", propsOnly)
         println(s"Lifecycle had an error: $ex")
+        sendLifecycleError(jobKey, "Lifecycle", "unknown", ex.toString, "System", propsOnly)
         sc.stop()
         System.exit(-1)
       }
