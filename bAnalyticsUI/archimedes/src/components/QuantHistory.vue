@@ -111,7 +111,7 @@
     },
     methods: {
       getResults () {
-        userAppJobs(this.user, 'Pareto')
+        userAppJobs(this.user, 'pareto')
           .catch(err => {
             alert('Could not get User Pareto Job History results. ' + err.message.toString())
           })

@@ -111,7 +111,7 @@
     },
     methods: {
       getResults () {
-        userAppJobs(this.user, 'Lifecycle')
+        userAppJobs(this.user, 'lifecycle')
           .catch(err => {
             alert('Could not get User Lifecycle Job History results. ' + err.message.toString())
           })

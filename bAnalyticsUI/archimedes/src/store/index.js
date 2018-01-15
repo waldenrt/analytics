@@ -7,13 +7,15 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   plugins: [createPersistedStore({
-    paths: ['jobKey', 'loggedIn', 'user', 'jobApp']
+    paths: ['jobKey', 'loggedIn', 'user', 'client', 'powerUser', 'jobApp']
   })],
   state: {
     appmodule: 'Balor',
     jobKey: 'test',
     loggedIn: 'true',
     user: 'Admin',
+    client: 'BPDemo',
+    powerUser: 'false',
     jobApp: 'None'
   },
   mutations: {
