@@ -72,18 +72,18 @@
                 <v-layout xs12 class="pad_LR12">
                   <v-select
                       v-bind:items="items1"
-                      v-model="select_balor"
+                      v-model="select_delimiter"
                       label="Select file type"
                       class="ma-0 input-group--focused"
                       single-line
                       hide-details
                       data-vv-name="select_pareto1"
                       v-validate="'required'"
-                      id="select_pareto1">
+                      id="select_delimiter">
                   </v-select>
                 </v-layout>
                 <v-layout class="xs12 ma-0">
-                  <small v-show="vErrors.has('select_pareto1')" class="error--text">* {{ vErrors.first('select_pareto1') }}</small>
+                  <small v-show="vErrors.has('select_delimiter')" class="error--text">* {{ vErrors.first('select_delimiter') }}</small>
                 </v-layout>
               </div>
               <!--//SELECT-->
@@ -100,18 +100,18 @@
                   <v-layout xs12 class="pad_LR12">
                     <v-select
                         v-bind:items="items2"
-                        v-model="select_pareto2"
+                        v-model="select_tp"
                         label="Select"
                         class="ma-0 input-group--focused"
                         single-line
                         hide-details
-                        data-vv-name="select_pareto2"
+                        data-vv-name="select_tp"
                         v-validate="'required'"
-                        id="select_pareto2">
+                        id="select_tp">
                     </v-select>
                   </v-layout>
                   <v-layout class="xs12 ma-0">
-                    <small v-show="vErrors.has('select_pareto2')" class="error--text">* {{ vErrors.first('select_pareto2') }}</small>
+                    <small v-show="vErrors.has('select_tp')" class="error--text">* {{ vErrors.first('select_tp') }}</small>
                   </v-layout>
                 </div>
                 <!--//SELECT-->
@@ -121,18 +121,12 @@
                   <v-layout xs12 class="pad_LR12">
                     <v-select
                       v-bind:items="items3"
-                      v-model="select_pareto3"
+                      v-model="select_paretoValue"
                       label="Select pareto value"
                       class="ma-0 input-group--focused"
                       single-line
-                      hide-details
-                      data-vv-name="select_pareto3"
-                      v-validate="'required'"
-                      id="select_pareto3">
+                      hide-details>
                     </v-select>
-                  </v-layout>
-                  <v-layout class="xs12 ma-0">
-                    <small v-show="vErrors.has('select_pareto3')" class="error--text">* {{ vErrors.first('select_pareto3') }}</small>
                   </v-layout>
                 </div>
                 <!--//SELECT-->
@@ -143,26 +137,26 @@
                     <v-layout xs12 class="pad_LR12">
                     <v-radio
                         label="Customer Level"
-                        v-model="radio_group1"
-                        value="radio1"
+                        v-model="dim_radio"
+                        value="customer"
                         hide-details
-                        data-vv-name="radio_group1"
-                        v-validate="'required|in:radio1,radio2'"
+                        data-vv-name="dim_radio"
+                        v-validate="'required|in:customer,store'"
                         dark></v-radio>
                     </v-layout>
                     <v-layout xs12 class="pad_LR12">
                     <v-radio
                         label="Store Level"
-                        v-model="radio_group1"
-                        value="radio2"
+                        v-model="dim_radio"
+                        value="store"
                         hide-details
-                        data-vv-name="radio_group1"
+                        data-vv-name="dim_radio"
                         v-validate="'required'"
                         dark></v-radio>
                       </v-layout>
                     </p>
                     <v-layout class="xs12 ma-0">
-                      <small v-show="vErrors.has('radio_group1')" class="error--text">* {{ vErrors.first('radio_group1') }}</small>
+                      <small v-show="vErrors.has('dim_radio')" class="error--text">* {{ vErrors.first('dim_radio') }}</small>
                     </v-layout>
                 </div>
                 <!--//SELECT-->
@@ -170,6 +164,26 @@
               <!--//+++++col1+++++-->
               <!--+++++col2+++++-->
               <v-flex xs6 class="pt-3 pb-0 pl-4 pr-4">
+                <!--FIELD-->
+                <div class="xs12 pb-3">
+                  <label class="body-2">Enter number of top/bottom products to display</label>
+                  <v-layout xs12 class="pad_LR12">
+                    <v-text-field
+                        label="Enter number of products"
+                        v-model="numProds"
+                        class="ma-0 input-group--focused"
+                        single-line
+                        hide-details
+                        data-vv-name="numProds"
+                        v-validate="'required'"
+                        id="numProds">
+                    </v-text-field>
+                  </v-layout>
+                  <v-layout class="xs12 ma-0">
+                    <small v-show="vErrors.has('numProds')" class="error--text">* {{ vErrors.first('numProds') }}</small>
+                  </v-layout>
+                </div>
+                <!--//FIELD-->
                 <!--FIELD-->
                 <div class="xs12 pb-3">
                   <label class="body-2">Enter product hierarchy level I</label>
@@ -192,7 +206,7 @@
                 <!--//FIELD-->
                 <!--FIELD-->
                 <div class="xs12 pb-3">
-                  <label class="body-2">Enter product hierarchy level II</label>
+                  <label class="body-2">Enter product hierarchy level II (Optional)</label>
                   <v-layout xs12 class="pad_LR12">
                   <v-text-field
                       label="Enter hierarchy"
@@ -200,19 +214,14 @@
                       class="ma-0 input-group--focused"
                       single-line
                       hide-details
-                      data-vv-name="product2"
-                      v-validate="'required'"
                       id="product2">
                   </v-text-field>
-                  </v-layout>
-                  <v-layout class="xs12 ma-0">
-                    <small v-show="vErrors.has('product2')" class="error--text">* {{ vErrors.first('product2') }}</small>
                   </v-layout>
                 </div>
                 <!--//FIELD-->
                 <!--FIELD-->
                 <div class="xs12 pb-3">
-                  <label class="body-2">Enter product hierarchy level III</label>
+                  <label class="body-2">Enter product hierarchy level III (Optional)</label>
                   <v-layout xs12 class="pad_LR12">
                   <v-text-field
                       label="Enter hierarchy"
@@ -220,13 +229,8 @@
                       class="ma-0 input-group--focused"
                       single-line
                       hide-details
-                      data-vv-name="product3"
-                      v-validate="'required'"
                       id="product3">
                   </v-text-field>
-                  </v-layout>
-                  <v-layout class="xs12 ma-0">
-                    <small v-show="vErrors.has('product3')" class="error--text">* {{ vErrors.first('product3') }}</small>
                   </v-layout>
                 </div>
                 <!--//FIELD-->
@@ -255,76 +259,112 @@
 </template>
 
 <script>
+  import {upload} from './javascript/file-upload.service'
+  import {submitJob} from './javascript/job.service'
+
   export default {
     data () {
       return {
         job_pareto: '',
-        select_balor: '',
-        select_pareto2: '',
-        select_pareto3: '',
+        select_delimiter: '',
+        select_tp: '',
+        select_paretoValue: {text: 'Decile (groups of 10%)', value: '.1'},
+        numProds: '',
         product1: '',
         product2: '',
         product3: '',
-        radio_group1: '',
+        dim_radio: '',
         disabledBtn: '',
         items1: [
-          {text: '.txt (tab separated)'},
-          {text: '.CSV ("," delimeter)'},
-          {text: '.DSV ("|" delimeter)'},
-          {text: '.DSV (";" delimeter)'}
+          {text: '.txt (tab separated)', value: '/t'},
+          {text: '.CSV ("," delimeter)', value: ','},
+          {text: '.DSV ("|" delimeter)', value: '|'},
+          {text: '.DSV (";" delimeter)', value: ';'}
         ],
         items2: [
-          {text: 'month'},
-          {text: 'quarter'},
-          {text: '6 months'},
-          {text: '12 months'}
+          {text: '1 month', value: '1'},
+          {text: 'quarter (3 months)', value: '3'},
+          {text: '6 months', value: '6'},
+          {text: '12 months', value: '12'}
         ],
         items3: [
-          {text: 'Ventile (groups of 5%)'},
-          {text: 'Decile (groups of 10%)'},
-          {text: 'Quintiles (groups of 20%)'},
-          {text: 'Quartiles (groups of 25%)'},
-          {text: 'Median (groups of 50%)'}
+          {text: 'Ventile (groups of 5%)', value: '.05'},
+          {text: 'Decile (groups of 10%)', value: '.1'},
+          {text: 'Quintiles (groups of 20%)', value: '.2'},
+          {text: 'Quartiles (groups of 25%)', value: '.25'},
+          {text: 'Median (groups of 50%)', value: '.5'}
         ],
         dialog: false,
-        valid: true
+        valid: true,
+        uploadFieldName: ''
+      }
+    },
+    computed: {
+      client: function () {
+        return this.$store.state.client
+      },
+      user: function () {
+        return this.$store.state.user
+      },
+      powerUser: function () {
+        return this.$store.state.powerUser
       }
     },
     methods: {
-      fileUpload () {
-        var path = document.getElementById('fileUploader').value
-        console.log('path...' + path)
-        var WebHDFS = require('webhdfs')
+      fileUpload (fieldName, fileNames) {
+        const formData = new FormData()
+        if (!fileNames.length) return
 
-        var hdfs = WebHDFS.createClient({
-          user: 'admin',
-          host: '10.4.3.26',
-          port: 14000,
-          path: '/webhdfs/v1'
-        })
-        var fs = require('fs')
-        var localFileStream = fs.createReadStream(path)
-        // e.target.files || e.dataTransfer.files
-        var remoteFileStream = hdfs.createWriteStream('/user/archimedes/brierley/demo/test')
+        console.log(fieldName)
+        formData.append('file', fileNames[0])
 
-        localFileStream.pipe(remoteFileStream)
+        this.save(formData)
 
-        remoteFileStream.on('error', function onError (err) {
-          console.log('ERROR occured: ' + err)
-          // Do something with the error
-        })
-
-        remoteFileStream.on('finish', function onFinish () {
-          console.log('Upload succesful')
-          // Upload is done
-        })
+        this.uploadedFile = fileNames[0].name
+      },
+      save (formData) {
+        upload(formData)
+          .catch(err => {
+            alert('There was an error uploading the file.  Please try again.' + err.message.toString())
+          })
       },
       validateBeforeSubmit () {
+        var prodColumns = this.product1
+        if (this.product2 !== '' && this.product3 !== '') {
+          prodColumns = this.product1 + ', ' + this.product2 + ', ' + this.product3
+        } else if (this.product2 !== '') {
+          prodColumns = this.product1 + ', ' + this.product2
+        }
+        var jobObj = {
+          'client': this.client,
+          'user': this.user,
+          'powerUser': false,
+          'app': 'pareto',
+          'jobName': this.job_pareto,
+          'jobId': '',
+          'fileName': 'hdfs:///user/admin/' + this.uploadedFile,
+          'delimiter': this.select_delimiter,
+          'args': [
+            {'name': 'timePeriod', 'value': this.select_tp},
+            {'name': 'quantValue', 'value': this.select_paretoValue.value},
+            {'name': 'numProds', 'value': this.numProds},
+            {'name': 'dimension', 'value': this.dim_radio},
+            {'name': 'productColumns', 'value': prodColumns}
+          ]
+        }
+        console.log(jobObj)
         var vm = this
         this.$validator.validateAll().then((result) => {
           if (result) {
-            alert('Form Submitted!')
-            vm.disabledBtn = false
+            submitJob(jobObj)
+              .catch(err => {
+                alert('Problem submitting job to server.  ' + err.message.toString())
+              })
+              .then((response) => {
+                alert('Form Submitted!')
+                console.log(response)
+                vm.disabledBtn = false
+              })
             return
           } else {
             alert('Correct the errors!')

@@ -106,6 +106,26 @@
                 </v-layout>
               </div>
               <!--//SELECT-->
+              <!--FIELD-->
+              <div class="xs12 pb-3">
+                <label class="body-2">Enter Product Column Name</label>
+                <v-layout class="xs12 ma-0">
+                  <v-text-field
+                      label="Enter Product Column Name"
+                      v-model="prodCol"
+                      class="ma-0 input-group--focused"
+                      single-line
+                      hide-details
+                      data-vv-name="prodCol"
+                      v-validate="'required'"
+                      id="prodCol">
+                  </v-text-field>
+                </v-layout>
+                <v-layout class="xs12 ma-0">
+                  <small v-show="vErrors.has('prodCol')" class="error--text">* {{ vErrors.first('prodCol') }}</small>
+                </v-layout>
+              </div>
+              <!--//FIELD-->
             </v-flex>
             <!--//+++++col1+++++-->
             </v-layout>
@@ -131,6 +151,7 @@
 
 <script>
   import {upload} from './javascript/file-upload.service'
+  import {submitJob} from './javascript/job.service'
 
   export default {
     data () {
@@ -153,7 +174,8 @@
         dialog: false,
         valid: true,
         uploadedFile: '',
-        uploadFieldName: ''
+        uploadFieldName: '',
+        prodCol: ''
       }
     },
     computed: {
@@ -188,14 +210,15 @@
         var jobObj = {
           'client': this.client,
           'user': this.user,
-          'powerUser': this.powerUser,
+          'powerUser': false,
           'app': 'lifecycle',
           'jobName': this.job_lifecycle,
           'jobId': '',
-          'fileName': '/user/admin/' + this.uploadedFile,
+          'fileName': 'hdfs:///user/admin/' + this.uploadedFile,
           'delimiter': this.select_lifecycle1,
           'args': [
-            {'name': 'timePeriod', 'value': this.select_lifecycle2}
+            {'name': 'timePeriod', 'value': this.select_lifecycle2},
+            {'name': 'productColumn', 'value': this.prodCol}
           ]
         }
 
@@ -204,11 +227,17 @@
         var vm = this
         this.$validator.validateAll().then((result) => {
           if (result) {
-            alert('Form Submitted!')
-            vm.disabledBtn = false
-            return
+            submitJob(jobObj)
+              .catch(err => {
+                alert('Problem submitting job to server.  ' + err.message.toString())
+              })
+              .then((response) => {
+                alert('Form Submitted!')
+                console.log(response)
+                vm.disabledBtn = false
+              })
           } else {
-            alert('Correct them vErrors!')
+            alert('Correct the errors!')
             vm.disabledBtn = true
           }
         })

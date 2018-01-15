@@ -15,7 +15,7 @@ const store = new Vuex.Store({
     loggedIn: 'true',
     user: 'Admin',
     client: 'BPDemo',
-    powerUser: 'false',
+    powerUser: false,
     jobApp: 'None'
   },
   mutations: {

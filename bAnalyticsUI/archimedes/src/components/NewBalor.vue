@@ -179,7 +179,7 @@
           'app': 'cadence',
           'jobName': this.job_balor,
           'jobId': '',
-          'fileName': '/user/admin/' + this.uploadedFile,
+          'fileName': 'hdfs:///user/admin/' + this.uploadedFile,
           'delimiter': this.select_balor,
           'args': [
             {'name': 'percentile', 'value': '.8'}
@@ -193,10 +193,11 @@
           if (result) {
             submitJob(jobObj)
               .catch(err => {
-                alert('Problem submitting job to server. /n ' + err.message.toString())
+                alert('Problem submitting job to server.  ' + err.message.toString())
               })
               .then((response) => {
                 alert('Form Submitted!')
+                console.log(response)
                 vm.disabledBtn = false
               })
           } else {
