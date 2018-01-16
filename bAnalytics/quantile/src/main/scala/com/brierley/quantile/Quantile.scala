@@ -687,6 +687,7 @@ object Quantile {
     ex.setMethodName(methodName)
     ex.setExceptionMsg(msg)
     ex.setExceptionType(extype)
+    ex.setStackTrace("")
 
     val tempList = new util.ArrayList[exception]
     tempList.add(ex)
@@ -715,8 +716,8 @@ object Quantile {
       .mapValues(_ (1))
 
     if (args.length < 7) {
+      println(s"There was an error: Incorrect Usage, not enough args, ${args.length}, instead of 7.")
       sendQuantileError("Unknown", "Quantile", "MainMethod", s"Incorrect Usage, not enough args, ${args.length}, instead of 7.", "User", propsOnly)
-      System.exit(-1)
       System.exit(-1)
     }
 
@@ -735,11 +736,13 @@ object Quantile {
     }
 
     if (dimension != "customer" && dimension != "store") {
+      println(s"There was an error: Invalid dimension selected: $dimension.")
       sendQuantileError(jobKey, "Quantile", "MainMethod", s"Invalid dimension selected: $dimension.", "User", propsOnly)
       System.exit(-1)
     }
 
     if (!validPeriods.contains(period)) {
+      println(s"There was an error: Invalid time period selected: $period.")
       sendQuantileError(jobKey, "Quantile", "MainMethod", s"Invalid time period selected: $period.", "User", propsOnly)
       System.exit(-1)
     }
@@ -788,12 +791,13 @@ object Quantile {
     avro match {
       case Success(avro) => {
         println(s"was a success: $avro")
-        //KafkaProducer.sendSucess("quantile", propsOnly, avro)
+        KafkaProducer.sendSucess("quantile", propsOnly, avro)
         sc.stop()
       }
       case Failure(ex) => {
-        //sendQuantileError(jobKey, "BalorApp", "unknown", ex.toString, "System", propsOnly)
-        println(s"there was an error: $ex")
+        println(s"There was an error: $ex")
+        sendQuantileError(jobKey, "BalorApp", "unknown", ex.toString, "System", propsOnly)
+
         sc.stop()
         System.exit(-1)
       }
