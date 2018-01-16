@@ -268,7 +268,7 @@
               'avgCustSales': numeral(this.jsonMsg.quantileResult[i].avgSpend).format('$0.00'),
               'avgVisitSpend': numeral(this.jsonMsg.quantileResult[i].avgVisitSpend).format('$0.00'),
               'avgItemSales': numeral(this.jsonMsg.quantileResult[i].avgItemSales).format('$0.00'),
-              'avgCustUnits': this.jsonMsg.quantileResult[i].avgCustUnits,
+              'avgCustUnits': numeral(this.jsonMsg.quantileResult[i].avgUnits).format('0.00'),
               'avgVisitUnits': numeral(this.jsonMsg.quantileResult[i].avgVisitUnits).format('0.00'),
               'avgCustVisits': numeral(this.jsonMsg.quantileResult[i].avgVisits).format('0.00')
             })

@@ -302,7 +302,7 @@
         tpSelect: 1,
         priorPeriod: ['All'],
         postPeriod: ['All'],
-        viewType: 'Counts',
+        viewType: 'Percentages',
         views: ['Counts', 'Percentages'],
         tpArray: [],
         quantArray: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -441,7 +441,6 @@
             'key10': numeral(this.quantMigItems[this.tpSelect - 1][i].key10).format('0,0')
           })
         }
-        this.tableMigItems = tempMig
         this.tableCounts = JSON.parse(JSON.stringify(tpConverted))
         this.tpArray = tempTP
 
@@ -525,6 +524,7 @@
 
         this.sumItems = tempRetObj[this.tpSelect - 1]
         this.sumItemsArray = tempRetObj
+        this.tableMigItems = this.tablePercents[this.tpSelect - 1]
 
         console.log(this.tableMigItems)
       },

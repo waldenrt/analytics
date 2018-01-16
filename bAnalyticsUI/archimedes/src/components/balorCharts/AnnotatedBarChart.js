@@ -3,7 +3,7 @@
  */
 
 import {Bar, mixins} from 'vue-chartjs'
-// import 'chartjs-plugin-annotation'
+import 'chartjs-plugin-annotation'
 const {reactiveProp} = mixins
 
 export default Bar.extend({
