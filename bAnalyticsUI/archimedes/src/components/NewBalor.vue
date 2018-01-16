@@ -99,7 +99,9 @@
             <v-flex xs12 class="pt-3 pl-4 pr-4 pb-3">
               <!--BUTTONS-->
               <v-card-row xs12 style="float:right;">
-                <v-btn
+                <div v-if="uploadInProgress">Uploading file
+                  <v-btn disabled class="success white--text ma-0">Submit</v-btn></div>
+                <v-btn v-else
                   @click.native="validateBeforeSubmit()"
                   class="success white--text ma-0">submit</v-btn>
               </v-card-row>
@@ -138,7 +140,8 @@
         uploadedFile: '',
         uploadError: null,
         currentStatus: null,
-        uploadFieldName: ''
+        uploadFieldName: '',
+        uploadInProgress: false
       }
     },
     computed: {
@@ -154,6 +157,7 @@
     },
     methods: {
       fileUpload (fieldName, fileNames) {
+        this.uploadInProgress = true
         const formData = new FormData()
         if (!fileNames.length) return
 
@@ -168,6 +172,11 @@
         upload(formData)
           .catch(err => {
             alert('There was an error uploading the file.  Please try again.' + err.message.toString())
+          })
+          .then((response) => {
+            console.log('successfully uploaded file to HDFS')
+            console.log(response)
+            this.uploadInProgress = false
           })
       },
       validateBeforeSubmit () {
