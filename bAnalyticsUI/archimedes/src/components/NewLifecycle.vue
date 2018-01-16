@@ -194,7 +194,7 @@
         const formData = new FormData()
         if (!fileNames.length) return
 
-        formData.append(fieldName, fileNames[0])
+        formData.append('file', fileNames[0])
 
         this.save(formData)
         this.uploadedFile = fileNames[0].name
