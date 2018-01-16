@@ -24,10 +24,12 @@
               </span>
             </template>
             <template slot="items" scope="props">
-              <td>
+              <td class="text-xs-center">
                 <v-btn
+                  icon="icon"
+                  slot="activator"
                   v-on:click.native="updateStore(props.item.jobId, props.item.app, props.item.routeLink)"
-                >View</v-btn>
+                ><v-icon class="warning--text text-xs-center">visibility</v-icon></v-btn>
               </td>
               <td>{{ props.item.jobId }}</td>
               <td class="text-xs-right">{{ props.item.jobName }}</td>
@@ -35,19 +37,17 @@
               <td class="text-xs-right">{{ props.item.jobStatus }}</td>
               <td class="text-xs-right">{{ props.item.lastDate }}</td>
               <td class="text-xs-right">{{ props.item.recordCount }}</td>
-              <td class="text-xs-right pl-1" style="width:10px !important;">
-                <v-menu bottom left offset-y>
-                  <v-btn icon="icon" slot="activator" light>
-                    <v-icon class="primary--text text-xs-right pl-4">more_vert</v-icon>
+              <td class="text-xs-right pl-1 pr-1">
+                <div class="inliner">
+                  <v-btn icon="icon" light class="pa-0 ma-0">
+                    <v-icon class="primary--text text-xs-right">more_vert</v-icon>
                   </v-btn>
-                  <v-list>
-                    <v-list-item v-for="drop in drops" :key="drop.slot">
-                      <v-list-tile>
-                        <v-list-tile-title>{{ drop.title }}</v-list-tile-title>
-                      </v-list-tile>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
+                </div>
+                <div class="inliner">
+                  <v-btn :click.native="deleteJob" icon="icon" light class="pa-0 ma-0">
+                    <v-icon class="error--text text-xs-right">delete</v-icon>
+                  </v-btn>
+                </div>
               </td>
             </template>
           </v-data-table>
@@ -85,9 +85,8 @@
           { text: 'Actions', value: 'action' }
         ],
         drops: [ // Dropdown for each job
-          { title: 'View', slot: 1 },
-          { title: 'Delete', slot: 2 },
-          { title: 'Export', slot: 3 }
+          { title: 'Delete', slot: 1 },
+          { title: 'Export', slot: 2 }
         ],
         clientName: 'BPDemo',
         incomingJson: {}
@@ -178,6 +177,10 @@
             x[i].style.backgroundColor = '#F7970E'
           }
         }
+      },
+      deleteJob () {
+        console.log('Job Delete Please')
+        return alert('Job Deleted!')
       }
     }
   }
@@ -197,4 +200,8 @@
   padding-bottom:0;
 }
 .list__tile{height:38px !important;}
+.menu__content {
+  z-index: 1;
+}
+.inliner { display: inline-block; }
 </style>
