@@ -17,7 +17,7 @@
                     <div class="inliner"><v-icon primary light slot="activator">image</v-icon></div>
                   </div>
                   <v-card>
-                    <img src="../assets/images/balor_file_img.png" width="100%" height="100%" class="file_sample">
+                    <img src="../assets/images/pareto_file_img.png" width="100%" height="100%" class="file_sample">
                   </v-card>
                 </v-dialog>
               </div>

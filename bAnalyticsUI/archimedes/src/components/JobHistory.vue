@@ -37,10 +37,10 @@
               <td class="text-xs-right">{{ props.item.jobStatus }}</td>
               <td class="text-xs-right">{{ props.item.lastDate }}</td>
               <td class="text-xs-right">{{ props.item.recordCount }}</td>
-              <td class="text-xs-right pl-1 pr-1">
+              <!--<td class="text-xs-right pl-1 pr-1">
                 <div class="inliner">
                   <v-btn icon="icon" light class="pa-0 ma-0">
-                    <v-icon class="primary--text text-xs-right">more_vert</v-icon>
+                    <v-icon class="success--text text-xs-right">get_app</v-icon>
                   </v-btn>
                 </div>
                 <div class="inliner">
@@ -48,7 +48,7 @@
                     <v-icon class="error--text text-xs-right">delete</v-icon>
                   </v-btn>
                 </div>
-              </td>
+              </td>-->
             </template>
           </v-data-table>
         </v-card>
@@ -81,12 +81,8 @@
           { text: 'Job Type', value: 'app' },
           { text: 'Status', value: 'jobStatus' },
           { text: 'Last Modified Date', value: 'lastDate' },
-          { text: 'Record Count', value: 'recordCount' },
-          { text: 'Actions', value: 'action' }
-        ],
-        drops: [ // Dropdown for each job
-          { title: 'Delete', slot: 1 },
-          { title: 'Export', slot: 2 }
+          { text: 'Record Count', value: 'recordCount' }
+          // { text: 'Actions', value: 'action' }
         ],
         clientName: 'BPDemo',
         incomingJson: {}
@@ -177,10 +173,6 @@
             x[i].style.backgroundColor = '#F7970E'
           }
         }
-      },
-      deleteJob () {
-        console.log('Job Delete Please')
-        return alert('Job Deleted!')
       }
     }
   }

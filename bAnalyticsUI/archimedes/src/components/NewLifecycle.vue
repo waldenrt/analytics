@@ -15,7 +15,7 @@
                     <div style="display:inline-block;"><v-icon primary light slot="activator">image</v-icon></div>
                   </div>
                   <v-card>
-                    <img src="../assets/images/balor_file_img.png" width="100%" height="100%" class="file_sample">
+                    <img src="../assets/images/lifecycle_file_img.png" width="100%" height="100%" class="file_sample">
                   </v-card>
                 </v-dialog>
               </div>
@@ -86,7 +86,7 @@
             </div>
               <!--//SELECT-->
               <!--SELECT-->
-              <div class="xs12">
+              <div class="xs12 pb-3">
               <label class="body-2">Select time period for segmentation</label>
               <v-layout xs12 class="pad_LR12">
                 <v-select
@@ -107,7 +107,7 @@
               </div>
               <!--//SELECT-->
               <!--FIELD-->
-              <div class="xs12 pb-3">
+              <div class="xs12">
                 <label class="body-2">Enter Product Column Name</label>
                 <v-layout class="xs12 ma-0">
                   <v-text-field

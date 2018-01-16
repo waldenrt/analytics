@@ -4,7 +4,7 @@
 
 <template>
   <v-container fluid class="LifecycleJobHistory">
-    <v-layout row wrap class="mt-5 pa-0">
+    <v-layout row wrap class="mt-0 pa-0">
       <v-flex xs12>
         <v-card class="white">
           <v-card-title primary-title class="primary">
@@ -28,10 +28,12 @@
               </span>
             </template>
             <template slot="items" scope="props">
-              <td>
+              <td class="text-xs-center">
                 <v-btn
-                    v-on:click.native="updateStore(props.item.jobId, props.item.app, props.item.routeLink)"
-                >View</v-btn>
+                  icon="icon"
+                  slot="activator"
+                  v-on:click.native="updateStore(props.item.jobId, props.item.app, props.item.routeLink)"
+                ><v-icon class="warning--text text-xs-center">visibility</v-icon></v-btn>
               </td>
               <td>{{ props.item.jobId }}</td>
               <td class="text-xs-right">{{ props.item.jobName }}</td>
@@ -39,20 +41,18 @@
               <td class="text-xs-right">{{ props.item.jobStatus }}</td>
               <td class="text-xs-right">{{ props.item.lastDate }}</td>
               <td class="text-xs-right">{{ props.item.recordCount }}</td>
-              <td class="text-xs-right pl-1" style="width:10px !important;">
-                <v-menu bottom left offset-y>
-                  <v-btn icon="icon" slot="activator" light>
-                    <v-icon class="primary--text text-xs-right pl-4">more_vert</v-icon>
+              <!--<td class="text-xs-right pl-1 pr-1">
+                <div class="inliner">
+                  <v-btn icon="icon" light class="pa-0 ma-0">
+                    <v-icon class="success--text text-xs-right">get_app</v-icon>
                   </v-btn>
-                  <v-list>
-                    <v-list-item v-for="drop in drops" :key="drop.slot">
-                      <v-list-tile>
-                        <v-list-tile-title>{{ drop.title }}</v-list-tile-title>
-                      </v-list-tile>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </td>
+                </div>
+                <div class="inliner">
+                  <v-btn :click.native="deleteJob" icon="icon" light class="pa-0 ma-0">
+                    <v-icon class="error--text text-xs-right">delete</v-icon>
+                  </v-btn>
+                </div>
+              </td>-->
             </template>
           </v-data-table>
         </v-card>
@@ -85,13 +85,8 @@
           { text: 'Job Type', value: 'app' },
           { text: 'Status', value: 'jobStatus' },
           { text: 'Last Modified Date', value: 'lastDate' },
-          { text: 'Record Count', value: 'recordCount' },
-          { text: 'Actions', value: 'action' }
-        ],
-        drops: [ // Dropdown for each job
-          { title: 'View', slot: 1 },
-          { title: 'Delete', slot: 2 },
-          { title: 'Export', slot: 3 }
+          { text: 'Record Count', value: 'recordCount' }
+          // { text: 'Actions', value: 'action' }
         ],
         clientName: 'BPDemo',
         incomingJson: {}
@@ -150,4 +145,5 @@
     padding-bottom:0;
   }
   .list__tile{height:38px !important;}
+  .inliner { display: inline-block; }
 </style>
