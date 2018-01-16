@@ -1,6 +1,5 @@
 <template>
   <v-container fluid class="quantileProducts pl-3 pr-3 mb-3">
-    {{prodCount}}
     <!-- =====ROW1===== -->
     <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
