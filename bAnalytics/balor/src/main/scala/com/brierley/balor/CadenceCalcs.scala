@@ -230,12 +230,14 @@ object CadenceCalcs {
     ex.setMethodName(methodName)
     ex.setExceptionMsg(msg)
     ex.setExceptionType(exType)
+    ex.setStackTrace("")
 
     val tempList = new util.ArrayList[exception]
     tempList.add(ex)
 
     error.setErrorInfo(tempList)
 
+    println(s"There was an error: $error")
     BalorProducer.sendError(error, propsList)
 
   }
@@ -260,6 +262,7 @@ object CadenceCalcs {
 
 
     if (args.length < 4) {
+      println("There was an error: incorrect number of args")
       sendCadError("Unknown", "CadenceCalcs", "MainMethod", "Incorrect Usage, not enough args.", "User", propsOnly)
       System.exit(-1)
     }
@@ -270,6 +273,7 @@ object CadenceCalcs {
 
     val percentile = args(3).toDouble
     if (percentile < .75 || percentile > .95) {
+      println("There was an error: Incorrect Usage, percentile is out of range .75 - .95")
       sendCadError(jobKey, "CadenceCalcs", "MainMethod", "Incorrect Usage, percentile is out of range .75 - .95", "User", propsOnly)
       System.exit(-1)
     }
@@ -304,8 +308,9 @@ object CadenceCalcs {
 
     results match {
       case Success(avro) => {
+        println(s"Balor was a success: $avro")
         BalorProducer.sendBalor("cadence", propsOnly, avro)
-        println(avro)
+
         sc.stop()
       }
       case Failure(ex) => {
