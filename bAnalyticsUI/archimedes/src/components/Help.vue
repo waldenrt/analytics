@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="settings pa-0" style="height:100%;">
+  <v-container fluid class="help pa-0" style="height:100%;">
     <v-layout row wrap class="mt-0 mb-3 pa-0" style="height:100%;">
 
       <v-flex xs12 >
@@ -8,29 +8,29 @@
           <v-layout wrap row class="accent elevation-1 pa-3 ma-0 bg_hero">
               <v-flex xs12>
                 <div>
-                  <h3 class="white--text text-xs-center pb-0 mb-0">Settings</h3>
-                  <!--<h5 class="white--text text-xs-center pb-0 mb-0">subhead</h5>-->
+                  <h3 class="white--text text-xs-center pb-0 mb-0">Help & Support</h3>
+                  <h5 class="white--text text-xs-center pb-0 mb-0">Have a Question?</h5>
                 </div>
               </v-flex>
           </v-layout>
           <!-- //Hero Row -->
-          <!-- Info Row 1 -->
-          <!--<v-layout wrap row class="pl-4 pr-4 pt-3 pb-0">
+          <!-- FAQs Row -->
+          <v-layout wrap row class="pl-4 pr-4 pt-3 pb-0">
               <v-flex xs12 class="pl-1 pr-1">
                 <h5 class="grey--text">Frequent Asked Questions</h5>
               </v-flex>
               <v-flex xs12 sm6 md3 class="pl-1 pr-1 pb-3">
 
               </v-flex>
-          </v-layout>-->
-          <!-- //Info Row 1 -->
-          <!-- Info Row 2 -->
-          <!--<v-layout wrap row class="pl-4 pr-4 pt-3 pb-0">
+          </v-layout>
+          <!-- //FAQs Row -->
+          <!-- Helpful Docs Row -->
+          <v-layout wrap row class="pl-4 pr-4 pt-3 pb-0">
               <v-flex xs12 class="pl-1 pr-1">
                 <h5 class="grey--text">Helpful Documents</h5>
               </v-flex>
-          </v-layout>-->
-          <!-- //Info Row 2 -->
+          </v-layout>
+          <!-- //Helpful Docs Row -->
 
       </div>
       </v-flex>
@@ -48,7 +48,7 @@ export default {
     }
   },
   mounted () {
-    this.$store.commit('switchApp', {module: 'Settings'})
+    this.$store.commit('switchApp', {module: 'Help'})
   }
 }
 </script>

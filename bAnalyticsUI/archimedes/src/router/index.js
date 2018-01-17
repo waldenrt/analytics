@@ -4,6 +4,8 @@ import Login from '@/components/Login'
 import Home from '@/components/Home'
 import JobHistory from '@/components/JobHistory'
 import Settings from '@/components/Settings'
+import Feedback from '@/components/Feedback'
+import Help from '@/components/Help'
 import Nav from '@/components/Navigation'
 
 import Balor from '@/components/Balor'
@@ -59,7 +61,7 @@ export default new Router({
         {
           path: 'Help',
           name: 'Help',
-          component: Home
+          component: Help
         },
         {
           path: 'Logout',
@@ -70,6 +72,11 @@ export default new Router({
           path: 'Settings',
           name: 'Settings',
           component: Settings
+        },
+        {
+          path: 'Feedback',
+          name: 'Feedback',
+          component: Feedback
         },
         {
           path: 'Balor',

@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="settings pa-0" style="height:100%;">
+  <v-container fluid class="feedback pa-0" style="height:100%;">
     <v-layout row wrap class="mt-0 mb-3 pa-0" style="height:100%;">
 
       <v-flex xs12 >
@@ -8,8 +8,8 @@
           <v-layout wrap row class="accent elevation-1 pa-3 ma-0 bg_hero">
               <v-flex xs12>
                 <div>
-                  <h3 class="white--text text-xs-center pb-0 mb-0">Settings</h3>
-                  <!--<h5 class="white--text text-xs-center pb-0 mb-0">subhead</h5>-->
+                  <h3 class="white--text text-xs-center pb-0 mb-0">Feedback</h3>
+                  <!--<h5 class="white--text text-xs-center pb-0 mb-0">Have a Question?</h5>-->
                 </div>
               </v-flex>
           </v-layout>
@@ -48,7 +48,7 @@ export default {
     }
   },
   mounted () {
-    this.$store.commit('switchApp', {module: 'Settings'})
+    this.$store.commit('switchApp', {module: 'Feedback'})
   }
 }
 </script>
