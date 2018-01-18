@@ -3,7 +3,7 @@
     <v-app id="navigation" left-fixed-sidebar top-toolbar sidebar-under-toolbar>
 
       <!-- =====slideout nav===== -->
-      <v-navigation-drawer temporary clipped class="accent" v-model="showmenu">
+      <v-navigation-drawer fill-height temporary clipped class="accent" v-model="showmenu">
         <v-list class="pa-0">
           <!--Dashboard-->
           <v-list-item>
@@ -140,6 +140,8 @@
     background-color:#eff3f6;
   }
   .padR6{padding-right:6px;}
+  .footer{border-top:2px solid #00313d;}
+  .application--footer-fixed.application--toolbar > aside.navigation-drawer.navigation-drawer--clipped {max-height:calc(100vh - 36px) !important;}
 
   @media (max-width: 550px) {
     body {font-size: 12px;}

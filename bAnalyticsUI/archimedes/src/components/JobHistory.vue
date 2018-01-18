@@ -16,6 +16,7 @@
             v-bind:headers="headers"
             v-bind:items="jsonMsg"
             v-bind:search="search"
+            v-bind:pagination.sync="pagination"
             class="elevation-1"
           >
             <template slot="headers" scope="props">
@@ -64,6 +65,7 @@
     name: 'jobHistory',
     data () {
       return {
+        pagination: { page: 1, rowsPerPage: 10, descending: false, totalItems: 0 },
         search: '',
         selected: [],
         headers: [ // Data that populates the Data Table Header Row
