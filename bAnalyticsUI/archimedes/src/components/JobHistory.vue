@@ -1,6 +1,8 @@
 <template>
   <v-container fluid class="JobHistory">
     <v-layout row wrap class="mt-5 pa-0">
+      {{this.jsonMsg[5]}}<br />
+      {{bgObject}}<br />
       <v-flex xs12>
         <v-card class="white">
           <v-card-title primary-title class="primary">
@@ -17,7 +19,7 @@
             v-bind:items="jsonMsg"
             v-bind:search="search"
             v-bind:pagination.sync="pagination"
-            class="elevation-1"
+            class="elevation-1 pa-0 ma-0"
           >
             <template slot="headers" scope="props">
               <span v-tooltip:bottom="{ 'html': props.item.text }">
@@ -25,20 +27,25 @@
               </span>
             </template>
             <template slot="items" scope="props">
-              <td class="text-xs-center">
+              <td class="text-xs-center pl-0 pr-0">
                 <v-btn
                   icon="icon"
                   slot="activator"
                   v-on:click.native="updateStore(props.item.jobId, props.item.app, props.item.routeLink)"
-                ><v-icon class="warning--text text-xs-center">visibility</v-icon></v-btn>
+                ><v-icon class="success--text text-xs-center">visibility</v-icon></v-btn>
               </td>
-              <td>{{ props.item.jobId }}</td>
-              <td class="text-xs-right">{{ props.item.jobName }}</td>
-              <td class="text-xs-right">{{ props.item.app }}</td>
-              <td class="text-xs-right">{{ props.item.jobStatus }}</td>
-              <td class="text-xs-right">{{ props.item.lastDate }}</td>
-              <td class="text-xs-right">{{ props.item.recordCount }}</td>
-              <!--<td class="text-xs-right pl-1 pr-1">
+              <td class="text-xs-left">{{ props.item.jobName }}</td>
+              <td class="text-xs-left">{{ props.item.jobId }}</td>
+              <td class="text-xs-left">{{ props.item.app }}</td>
+              <td class="text-xs-left">
+                <div class="inliner">
+                  <div class="inliner status_block" :style="bgColor"></div>
+                  <div class="inliner" v-model="statusText">{{ props.item.jobStatus }}</div>
+                </div>
+              </td>
+              <td class="text-xs-left">{{ props.item.lastDate }}</td>
+              <td class="text-xs-left">{{ props.item.recordCount }}</td>
+              <!--<td class="text-xs-left pl-1 pr-1">
                 <div class="inliner">
                   <v-btn icon="icon" light class="pa-0 ma-0">
                     <v-icon class="success--text text-xs-right">get_app</v-icon>
@@ -46,7 +53,7 @@
                 </div>
                 <div class="inliner">
                   <v-btn :click.native="deleteJob" icon="icon" light class="pa-0 ma-0">
-                    <v-icon class="error--text text-xs-right">delete</v-icon>
+                    <v-icon class="error--text text-xs-left">delete</v-icon>
                   </v-btn>
                 </div>
               </td>-->
@@ -65,26 +72,20 @@
     name: 'jobHistory',
     data () {
       return {
+        statusText: '',
         pagination: { page: 1, rowsPerPage: 10, descending: false, totalItems: 0 },
+        bgObject: { backgroundColor: '' },
         search: '',
         selected: [],
         headers: [ // Data that populates the Data Table Header Row
-          {
-            text: '',
-            value: 'routeLink'
-          },
-          {
-            text: 'ID',
-            left: true,
-            sortable: true,
-            value: 'jobId'
-          },
-          { text: 'Name', value: 'jobName' },
-          { text: 'Job Type', value: 'app' },
-          { text: 'Status', value: 'jobStatus' },
-          { text: 'Last Modified Date', value: 'lastDate' },
-          { text: 'Record Count', value: 'recordCount' }
-          // { text: 'Actions', value: 'action' }
+          { text: '', left: true, value: 'routeLink' },
+          { text: 'Name', left: true, value: 'jobName' },
+          { text: 'ID', left: true, sortable: true, value: 'jobId' },
+          { text: 'Job Type', left: true, value: 'app' },
+          { text: 'Status', left: true, value: 'jobStatus' },
+          { text: 'Last Modified Date', left: true, value: 'lastDate' },
+          { text: 'Record Count', left: true, value: 'recordCount' }
+          // { text: 'Actions', left: true, value: 'action' }
         ],
         clientName: 'BPDemo',
         incomingJson: {}
@@ -96,13 +97,28 @@
       },
       user: function () {
         return this.$store.state.user
+      },
+      bgColor: function () {
+        for (var i = 0; i < this.jsonMsg.length; i++) {
+          if (this.jsonMsg[i].jobStatus.includes('Finished') || this.jsonMsg[i].jobStatus.includes('finished')) {
+            this.bgObject.backgroundColor = '#8EAC1D'
+          } else if (this.jsonMsg[i].jobStatus.includes('Running') || this.jsonMsg[i].jobStatus.includes('running')) {
+            this.bgObject.backgroundColor = '#F7970E'
+          } else if (this.jsonMsg[i].jobStatus.includes('Awaiting') || this.jsonMsg[i].jobStatus.includes('awaiting')) {
+            this.bgObject.backgroundColor = '#006984'
+          } else if (this.jsonMsg[i].jobStatus.includes('Error') || this.jsonMsg[i].jobStatus.includes('error')) {
+            this.bgObject.backgroundColor = '#D63A09'
+          } else if (this.jsonMsg[i].jobStatus.includes('Complete') || this.jsonMsg[i].jobStatus.includes('complete')) {
+            this.bgObject.backgroundColor = 'red'
+          }
+        }
+        return this.bgObject
       }
     },
     mounted () {
       this.$store.commit('switchApp', {module: 'Global Job History'})
     //  this.addHistoryItem()
       this.getResults()
-     // this.statusColor()
     },
     methods: {
       getResults () {
@@ -161,20 +177,6 @@
         this.$store.dispatch('setJobKey', {'jobid': jobId, 'app': app}).then(() => {
           this.$router.push(routeLink)
         })
-      },
-      statusColor () { // leaving this method. removing it from the data table until I can figure out how to activate method when the pagination activates.
-        var x = document.getElementsByClassName('status_block')
-        for (var i = 0; i < this.items.length; i++) {
-          if (this.items[i].status === 'File Uploaded') {
-            x[i].style.backgroundColor = '#005E76'
-          } else if (this.items[i].status === 'Cadence Complete') {
-            x[i].style.backgroundColor = '#8EAC1D'
-          } else if (this.items[i].status === 'Balor Complete') {
-            x[i].style.backgroundColor = '#8EAC1D'
-          } else if (this.items[i].status === 'Running') {
-            x[i].style.backgroundColor = '#F7970E'
-          }
-        }
       }
     }
   }
@@ -184,18 +186,16 @@
 <style scoped>
 .status_block {
     display:inline-block;
-    width:100%;
+    width:10px;
+    height:10px;
     border-radius:2px;
     padding:5px;
-    color:##eff3f6;
+    background-color:blue;
   }
 .menu .menu__content .card .list {
   padding-top:0;
   padding-bottom:0;
 }
 .list__tile{height:38px !important;}
-.menu__content {
-  z-index: 1;
-}
-.inliner { display: inline-block; }
+.inliner {display:inline-block;}
 </style>

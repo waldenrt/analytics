@@ -47,8 +47,8 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-btn router  to="/JobHistory" icon slot="activator" v-tooltip:bottom="{ html: 'Global Job History' }">
-            <v-icon>history</v-icon>
+          <v-btn router to="/JobHistory" icon slot="activator" v-tooltip:bottom="{ html: 'Global Job History' }">
+            <v-icon x-large>history</v-icon>
           </v-btn>
           <v-menu bottom left offset-y>
             <v-btn icon slot="activator">

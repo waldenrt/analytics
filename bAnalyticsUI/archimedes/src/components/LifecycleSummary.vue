@@ -108,7 +108,7 @@
       <!--//+++++col1+++++-->
       <!--+++++col2+++++-->
       <v-flex xs12 md7 class="pt-0 mt-0">
-        <v-card class="white pl-3 pr-3 pt-1 pb-1">
+        <v-card class="white pl-3 pr-3 pt-1 pb-3">
           <div class="title primary--text text-xs-center pa-1 mb-2">Segment Percent of Total Aggregate Metrics for Time Period {{ this.tpSelect
             }}
           </div>
@@ -635,7 +635,7 @@
 
 .doughnuts {width:20%;}
 .card_height {height:100% !important;}
-.height_bars1 {height:20% !important;}
+.height_bars1 {height:21% !important;}
 .height_bars2 {height:100% !important; display:table;}
 .height_bars2 div {display:table-cell; vertical-align: middle !important;font-weight: bold;}
 .height_bars2 span {float:right;}

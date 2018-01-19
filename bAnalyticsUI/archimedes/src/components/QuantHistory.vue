@@ -34,7 +34,7 @@
                   icon="icon"
                   slot="activator"
                   v-on:click.native="updateStore(props.item.jobId, props.item.app, props.item.routeLink)"
-                ><v-icon class="warning--text text-xs-center">visibility</v-icon></v-btn>
+                ><v-icon class="success--text text-xs-center">visibility</v-icon></v-btn>
               </td>
               <td>{{ props.item.jobId }}</td>
               <td class="text-xs-right">{{ props.item.jobName }}</td>
