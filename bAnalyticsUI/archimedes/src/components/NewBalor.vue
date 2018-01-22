@@ -9,7 +9,7 @@
         <form name="balForm" @submit.prevent="validateBeforeSubmit()">
           <v-card class="white v_card">
             <v-card-title primary-title class="primary">
-              <div><h6 class="white--text text-xs-left mb-0">Balor Input</h6></div>
+              <div><h6 class="white--text text-xs-left mb-0">BALOR Input</h6></div>
               <v-spacer></v-spacer>
               <div class="file">
                 <v-dialog v-model="dialog" width="550px">

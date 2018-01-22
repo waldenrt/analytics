@@ -119,7 +119,7 @@ export default {
     return {
       cardItems: [
         {
-          title: 'Balor',
+          title: 'BALOR',
           titleColor: 'primary',
           description: 'Product Description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius nunc tempor tellus efficitur accumsan. Suspendisse accumsan neque.',
           inputLink: '/Balor/NewBalor'
@@ -137,7 +137,7 @@ export default {
           inputLink: '/Lifecycle/NewLifecycle'
         },
         {
-          title: 'bRelevant',
+          title: 'b-Relevant',
           titleColor: 'accent',
           description: 'Product Description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius nunc tempor tellus efficitur accumsan. Suspendisse accumsan neque.',
           inputLink: '/bRelevant/NewBRelevant'
@@ -167,7 +167,7 @@ export default {
       ],
       historyItems: [
         {
-          name: 'Balor Job History',
+          name: 'BALOR Job History',
           histLink: '#/Balor'
         },
         {
@@ -179,7 +179,7 @@ export default {
           histLink: '#/Lifecycle'
         },
         {
-          name: 'bRelevant Job History',
+          name: 'b-Relevant Job History',
           histLink: '#/bRelevant/NewBRelevant'
         }
       ]

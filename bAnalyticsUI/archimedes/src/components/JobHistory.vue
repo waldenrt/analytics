@@ -1,8 +1,6 @@
 <template>
   <v-container fluid class="JobHistory">
     <v-layout row wrap class="mt-5 pa-0">
-      {{this.jsonMsg[5]}}<br />
-      {{bgObject}}<br />
       <v-flex xs12>
         <v-card class="white">
           <v-card-title primary-title class="primary">
@@ -34,17 +32,17 @@
                   v-on:click.native="updateStore(props.item.jobId, props.item.app, props.item.routeLink)"
                 ><v-icon class="success--text text-xs-center">visibility</v-icon></v-btn>
               </td>
-              <td class="text-xs-left">{{ props.item.jobName }}</td>
-              <td class="text-xs-left">{{ props.item.jobId }}</td>
-              <td class="text-xs-left">{{ props.item.app }}</td>
-              <td class="text-xs-left">
-                <div class="inliner">
-                  <div class="inliner status_block" :style="bgColor"></div>
-                  <div class="inliner" v-model="statusText">{{ props.item.jobStatus }}</div>
+              <td class="text-xs-left pl-2 pr-2">{{ props.item.jobName }}</td>
+              <td class="text-xs-left pl-2 pr-2">{{ props.item.jobId }}</td>
+              <td class="text-xs-left pl-2 pr-2">{{ props.item.app }}</td>
+              <td class="text-xs-left pl-2 pr-2 status_cell">
+                <div>
+                  <div class="status_block" :style="props.item.bgColors"></div>
+                  <div>{{ props.item.jobStatus }}</div>
                 </div>
               </td>
-              <td class="text-xs-left">{{ props.item.lastDate }}</td>
-              <td class="text-xs-left">{{ props.item.recordCount }}</td>
+              <td class="text-xs-left pl-2 pr-2">{{ props.item.lastDate }}</td>
+              <td class="text-xs-left pl-2 pr-2">{{ props.item.recordCount }}</td>
               <!--<td class="text-xs-left pl-1 pr-1">
                 <div class="inliner">
                   <v-btn icon="icon" light class="pa-0 ma-0">
@@ -72,9 +70,7 @@
     name: 'jobHistory',
     data () {
       return {
-        statusText: '',
         pagination: { page: 1, rowsPerPage: 10, descending: false, totalItems: 0 },
-        bgObject: { backgroundColor: '' },
         search: '',
         selected: [],
         headers: [ // Data that populates the Data Table Header Row
@@ -97,22 +93,6 @@
       },
       user: function () {
         return this.$store.state.user
-      },
-      bgColor: function () {
-        for (var i = 0; i < this.jsonMsg.length; i++) {
-          if (this.jsonMsg[i].jobStatus.includes('Finished') || this.jsonMsg[i].jobStatus.includes('finished')) {
-            this.bgObject.backgroundColor = '#8EAC1D'
-          } else if (this.jsonMsg[i].jobStatus.includes('Running') || this.jsonMsg[i].jobStatus.includes('running')) {
-            this.bgObject.backgroundColor = '#F7970E'
-          } else if (this.jsonMsg[i].jobStatus.includes('Awaiting') || this.jsonMsg[i].jobStatus.includes('awaiting')) {
-            this.bgObject.backgroundColor = '#006984'
-          } else if (this.jsonMsg[i].jobStatus.includes('Error') || this.jsonMsg[i].jobStatus.includes('error')) {
-            this.bgObject.backgroundColor = '#D63A09'
-          } else if (this.jsonMsg[i].jobStatus.includes('Complete') || this.jsonMsg[i].jobStatus.includes('complete')) {
-            this.bgObject.backgroundColor = 'red'
-          }
-        }
-        return this.bgObject
       }
     },
     mounted () {
@@ -130,12 +110,13 @@
             this.incomingJson = response.data
             console.log('this is the incoming response.data')
             console.log(this.incomingJson)
-            this.addRouteLinks()
+            this.addToJson()
           })
       },
-      addRouteLinks () {
+      addToJson () {
         let links = []
         for (let i = 0; i < this.jsonMsg.length; i++) {
+          // Adding Router Links to the jsonMsg Array
           if (this.jsonMsg[i].app === 'Balor' || this.jsonMsg[i].app === 'balor') {
             links.push(this.jsonMsg[i])
             links[i].routeLink = '/Balor/Cadence'
@@ -145,6 +126,18 @@
           } else if (this.jsonMsg[i].app === 'Lifecycle' || this.jsonMsg[i].app === 'lifecycle') {
             links.push(this.jsonMsg[i])
             links[i].routeLink = '/Lifecycle/Summary'
+          }
+          // Adding status colors to the status column
+          if (this.jsonMsg[i].jobStatus.includes('Finished') || this.jsonMsg[i].jobStatus.includes('finished')) {
+            links[i].bgColors = 'backgroundColor: #8EAC1D'
+          } else if (this.jsonMsg[i].jobStatus.includes('Running') || this.jsonMsg[i].jobStatus.includes('running')) {
+            links[i].bgColors = 'backgroundColor: #F7970E'
+          } else if (this.jsonMsg[i].jobStatus.includes('Awaiting') || this.jsonMsg[i].jobStatus.includes('awaiting')) {
+            links[i].bgColors = 'backgroundColor: #006984'
+          } else if (this.jsonMsg[i].jobStatus.includes('Error') || this.jsonMsg[i].jobStatus.includes('error')) {
+            links[i].bgColors = 'backgroundColor: #D63A09'
+          } else if (this.jsonMsg[i].jobStatus.includes('Complete') || this.jsonMsg[i].jobStatus.includes('complete')) {
+            links[i].bgColors = 'backgroundColor: red'
           }
         }
       },
@@ -186,16 +179,13 @@
 <style scoped>
 .status_block {
     display:inline-block;
-    width:10px;
-    height:10px;
-    border-radius:2px;
-    padding:5px;
-    background-color:blue;
+    width:16px;
+    height:16px;
+    border-radius:3px;
+    margin-right:5px;
   }
-.menu .menu__content .card .list {
-  padding-top:0;
-  padding-bottom:0;
+.status_cell div {
+  display:inline-block;
+  vertical-align: middle;
 }
-.list__tile{height:38px !important;}
-.inliner {display:inline-block;}
 </style>

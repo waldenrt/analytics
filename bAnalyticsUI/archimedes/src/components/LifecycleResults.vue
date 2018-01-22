@@ -7,6 +7,7 @@
           <v-card flat>
             <!--<p>first line</p>
             <p>we can put notices here and they will be always visible from everywhere in the app..</p>-->
+            <LifecycleTabs></LifecycleTabs>
             <router-view></router-view>
           </v-card>
         </v-flex>
@@ -17,10 +18,16 @@
 </template>
 
 <script>
+  import LifecycleTabs from './LifecycleTabs.vue'
+  // TODO update to lifecycle tabs when they are completed....
+
   export default {
-    name: 'quantile',
+    name: 'lifecycle',
+    components: {
+      LifecycleTabs
+    },
     mounted () {
-      this.$store.commit('switchApp', {module: 'Pareto'})
+      this.$store.commit('switchApp', {module: 'Lifecycle'})
     }
   }
 

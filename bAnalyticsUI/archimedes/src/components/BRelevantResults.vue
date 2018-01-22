@@ -5,6 +5,7 @@
     <v-layout class="ml-0 mr-0" style="height:100% !important;">
       <v-flex xs12 class="pa-0" style="height:100%;">
         <v-card flat style="height:100%;">
+          <BRelevantTabs></BRelevantTabs>
             <!--<p>first line</p>
             <p>we can put notices here and they will be always visible from everywhere in the app..</p>-->
           <router-view></router-view>
@@ -18,10 +19,15 @@
 </template>
 
 <script>
+  import BRelevantTabs from './BRelevantTabs.vue'
+
   export default {
-    name: 'balor',
+    name: 'BRelevant',
+    components: {
+      BRelevantTabs
+    },
     mounted () {
-      this.$store.commit('switchApp', {module: 'BALOR'})
+      this.$store.commit('switchApp', {module: 'b-Relevant'})
     }
   }
 

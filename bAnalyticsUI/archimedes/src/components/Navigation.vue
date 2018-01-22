@@ -79,7 +79,8 @@
 
       <!-- =====footer===== -->
       <v-footer fixed class="pa-3 footer">
-        <div>&copy; {{ new Date().getFullYear() }}</div>
+        <a href="http://www.brierley.com/" target="_blank"><img src="/static/bp_logo_reverse_color2.png" class="logo" /></a>
+        <div>All Rights Reserved &copy; {{ new Date().getFullYear() }}</div>
       </v-footer>
       <!-- //=====footer===== -->
 
@@ -89,8 +90,6 @@
 
 <script>
   import home from './Home.vue'
-  import sidenav from './SideNav.vue'
-  import balorTabs from './balorTabs.vue'
   import { mapState } from 'vuex'
 
   export default {
@@ -104,10 +103,10 @@
           {id: 2, name: 'Hertz'}
         ],
         modules: [
-          {name: 'Balor', active: true, icon: 'label', link: '/Balor'},
+          {name: 'BALOR', active: true, icon: 'label', link: '/Balor'},
           {name: 'Pareto', active: false, icon: 'label', link: '/Pareto'},
           {name: 'Core Lifecycle', active: false, icon: 'label', link: '/Lifecycle'},
-          {name: 'bRelevant', active: false, icon: 'label', link: '/bRelevant'},
+          {name: 'b-Relevant', active: false, icon: 'label', link: '/bRelevant'},
           {name: 'History', active: false, icon: 'history', link: '/JobHistory'},
           {name: 'Settings', active: false, icon: 'settings', link: '/Settings'},
           {name: 'Help', active: false, icon: 'help', link: '/Help'},
@@ -120,16 +119,13 @@
       appmodule: 'appmodule'
     }),
     components: {
-      home,
-      sidenav,
-      balorTabs
+      home
     }
   }
 </script>
 
 <style lang="stylus">
-
-  #navigation{height: 100%;}
+  #navigation {height: 100%;}
   .content {
     flex: 1 0 auto;
     height:100%;
@@ -139,9 +135,10 @@
     flex-direction:column;
     background-color:#eff3f6;
   }
-  .padR6{padding-right:6px;}
-  .footer{border-top:2px solid #00313d;}
-  .application--footer-fixed.application--toolbar > aside.navigation-drawer.navigation-drawer--clipped {max-height:calc(100vh - 36px) !important;}
+  .padR6 {padding-right:6px;}
+  .footer {border-top:2px solid #00313d;height:55px;}
+  .footer .logo {height:45px;}
+  .application--footer-fixed.application--toolbar > aside.navigation-drawer.navigation-drawer--clipped  {max-height:calc(100vh - 55px) !important;}
 
   @media (max-width: 550px) {
     body {font-size: 12px;}

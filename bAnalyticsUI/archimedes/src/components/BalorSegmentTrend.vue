@@ -172,7 +172,7 @@
                       <v-select
                       v-bind:items="tpArray"
                       v-model="tpSelect"
-                      label="Select Balor Time Period"
+                      label="Select BALOR Time Period"
                       single-line
                       bottom
                       hide-details
@@ -197,7 +197,7 @@
                       <v-select
                       v-bind:items="avgList"
                       v-model="tpAvgSelect"
-                      label="Select Balor Metric"
+                      label="Select BALOR Metric"
                       single-line
                       bottom
                       hide-details
@@ -240,7 +240,7 @@
     },
     data () {
       return {
-        msg: 'Balor Segment Trend Charts will go here!',
+        msg: 'BALOR Segment Trend Charts will go here!',
         dimensions: [
           'Customer', 'Visits', 'Spend', 'Discount'
         ],
@@ -415,7 +415,7 @@
     },
     mounted () {
       if (this.jobApp === 'Balor' || this.jobApp === 'balor') {
-        this.$store.commit('switchApp', {module: 'Balor'})
+        this.$store.commit('switchApp', {module: 'BALOR'})
         this.getResults()
       } else {
         alert('Please select a Balor job from Job History')

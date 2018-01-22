@@ -134,7 +134,8 @@
         tableHeaders: [
           {text: 'Cadence', value: 'cadence'},
           {text: 'Frequency', value: 'frequency'},
-          {text: 'Cumlative Frequency', value: 'cumFreq'}],
+          {text: 'Cumlative Frequency', value: 'cumFreq'}
+        ],
         tableData: [],
         pagination: {},
         percentages: [],
@@ -155,10 +156,10 @@
     },
     mounted () {
       if (this.jobApp === 'Balor' || this.jobApp === 'balor') {
-        this.$store.commit('switchApp', {module: 'Balor'})
+        this.$store.commit('switchApp', {module: 'BALOR'})
         this.getResults()
       } else {
-        alert('Please select a Balor job from Job History')
+        alert('Please select a BALOR job from Job History')
         this.$router.push('/Balor/')
       }
     },

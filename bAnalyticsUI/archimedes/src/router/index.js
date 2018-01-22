@@ -10,6 +10,7 @@ import Nav from '@/components/Navigation'
 
 import Balor from '@/components/Balor'
 import NewBalor from '@/components/NewBalor'
+import BalorResults from '@/components/BalorResults'
 import Cadence from '@/components/Cadence'
 import BalorTrend from '@/components/BalorTrend'
 import BalorSegmentTrend from '@/components/BalorSegmentTrend'
@@ -17,6 +18,7 @@ import BalorHistory from '@/components/BalorHistory'
 
 import Quantile from '@/components/Quantile'
 import NewQuantile from '@/components/NewQuantile'
+import QuantResults from '@/components/QuantResults'
 import QuantProfile from '@/components/QuantProfile'
 import QuantMigration from '@/components/QuantMigration'
 import QuantProducts from '@/components/QuantProducts'
@@ -24,6 +26,7 @@ import QuantHistory from '@/components/QuantHistory'
 
 import Lifecycle from '@/components/Lifecycle'
 import NewLifecycle from '@/components/NewLifecycle'
+import LifecycleResults from '@/components/LifecycleResults'
 import LifecycleSummary from '@/components/LifecycleSummary'
 import LifecycleMigration from '@/components/LifecycleMigration'
 import LifecycleProducts from '@/components/LifecycleProducts'
@@ -93,19 +96,25 @@ export default new Router({
               component: NewBalor
             },
             {
-              path: 'Cadence',
-              name: 'Cadence',
-              component: Cadence
-            },
-            {
-              path: 'SegmentTrend',
-              name: 'BalorSegmentTrend',
-              component: BalorSegmentTrend
-            },
-            {
-              path: 'Trend',
-              name: 'BalorTrend',
-              component: BalorTrend
+              path: '/',
+              component: BalorResults,
+              children: [
+                {
+                  path: 'Cadence',
+                  name: 'Cadence',
+                  component: Cadence
+                },
+                {
+                  path: 'SegmentTrend',
+                  name: 'BalorSegmentTrend',
+                  component: BalorSegmentTrend
+                },
+                {
+                  path: 'Trend',
+                  name: 'BalorTrend',
+                  component: BalorTrend
+                }
+              ]
             }
           ]
         },
@@ -124,19 +133,25 @@ export default new Router({
               component: NewQuantile
             },
             {
-              path: 'Summary',
-              name: 'QuantSummary',
-              component: QuantProfile
-            },
-            {
-              path: 'Migration',
-              name: 'QuantMig',
-              component: QuantMigration
-            },
-            {
-              path: 'Products',
-              name: 'QuantProd',
-              component: QuantProducts
+              path: '/',
+              component: QuantResults,
+              children: [
+                {
+                  path: 'Summary',
+                  name: 'QuantSummary',
+                  component: QuantProfile
+                },
+                {
+                  path: 'Migration',
+                  name: 'QuantMig',
+                  component: QuantMigration
+                },
+                {
+                  path: 'Products',
+                  name: 'QuantProd',
+                  component: QuantProducts
+                }
+              ]
             }
           ]
         },
@@ -155,19 +170,25 @@ export default new Router({
               component: NewLifecycle
             },
             {
-              path: 'Summary',
-              name: 'LifecycleSummary',
-              component: LifecycleSummary
-            },
-            {
-              path: 'Migration',
-              name: 'LifecycleMigration',
-              component: LifecycleMigration
-            },
-            {
-              path: 'Products',
-              name: 'LifecycleProd',
-              component: LifecycleProducts
+              path: '/',
+              component: LifecycleResults,
+              children: [
+                {
+                  path: 'Summary',
+                  name: 'LifecycleSummary',
+                  component: LifecycleSummary
+                },
+                {
+                  path: 'Migration',
+                  name: 'LifecycleMigration',
+                  component: LifecycleMigration
+                },
+                {
+                  path: 'Products',
+                  name: 'LifecycleProd',
+                  component: LifecycleProducts
+                }
+              ]
             }
           ]
         },

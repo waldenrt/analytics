@@ -21,7 +21,7 @@
               v-bind:items="jsonMsg"
               v-bind:search="search"
               v-bind:pagination.sync="pagination"
-              class="elevation-1"
+              class="elevation-1 pa-0 ma-0"
           >
             <template slot="headers" scope="props">
               <span v-tooltip:bottom="{ 'html': props.item.text }">
@@ -29,20 +29,25 @@
               </span>
             </template>
             <template slot="items" scope="props">
-              <td class="text-xs-center">
+              <td class="text-xs-center pl-0 pr-0">
                 <v-btn
                   icon="icon"
                   slot="activator"
                   v-on:click.native="updateStore(props.item.jobId, props.item.app, props.item.routeLink)"
                 ><v-icon class="success--text text-xs-center">visibility</v-icon></v-btn>
               </td>
-              <td>{{ props.item.jobId }}</td>
-              <td class="text-xs-right">{{ props.item.jobName }}</td>
-              <td class="text-xs-right">{{ props.item.app }}</td>
-              <td class="text-xs-right">{{ props.item.jobStatus }}</td>
-              <td class="text-xs-right">{{ props.item.lastDate }}</td>
-              <td class="text-xs-right">{{ props.item.recordCount }}</td>
-              <!--<td class="text-xs-right pl-1 pr-1">
+              <td class="text-xs-left pl-2 pr-2">{{ props.item.jobName }}</td>
+              <td class="text-xs-left pl-2 pr-2">{{ props.item.jobId }}</td>
+              <td class="text-xs-left pl-2 pr-2">{{ props.item.app }}</td>
+              <td class="text-xs-left pl-2 pr-2 status_cell">
+                <div>
+                  <div class="status_block" :style="props.item.bgColors"></div>
+                  <div>{{ props.item.jobStatus }}</div>
+                </div>
+              </td>
+              <td class="text-xs-left pl-2 pr-2">{{ props.item.lastDate }}</td>
+              <td class="text-xs-left pl-2 pr-2">{{ props.item.recordCount }}</td>
+              <!--<td class="text-xs-left pl-1 pr-1">
                 <div class="inliner">
                   <v-btn icon="icon" light class="pa-0 ma-0">
                     <v-icon class="success--text text-xs-right">get_app</v-icon>
@@ -73,21 +78,13 @@
         search: '',
         selected: [],
         headers: [ // Data that populates the Data Table Header Row
-          {
-            text: '',
-            value: 'routeLink'
-          },
-          {
-            text: 'ID',
-            left: true,
-            sortable: true,
-            value: 'jobId'
-          },
-          { text: 'Name', value: 'jobName' },
-          { text: 'Job Type', value: 'app' },
-          { text: 'Status', value: 'jobStatus' },
-          { text: 'Last Modified Date', value: 'lastDate' },
-          { text: 'Record Count', value: 'recordCount' }
+          { text: '', left: true, value: 'routeLink' },
+          { text: 'Name', left: true, value: 'jobName' },
+          { text: 'ID', left: true, sortable: true, value: 'jobId' },
+          { text: 'Job Type', left: true, value: 'app' },
+          { text: 'Status', left: true, value: 'jobStatus' },
+          { text: 'Last Modified Date', left: true, value: 'lastDate' },
+          { text: 'Record Count', left: true, value: 'recordCount' }
           // { text: 'Actions', value: 'action' }
         ],
         clientName: 'BPDemo',
@@ -114,14 +111,26 @@
           })
           .then((response) => {
             this.incomingJson = response.data
-            this.addRouteLinks()
+            this.addToJson()
           })
       },
-      addRouteLinks () {
+      addToJson () {
         let links = []
         for (let i = 0; i < this.jsonMsg.length; i++) {
           links.push(this.jsonMsg[i])
           links[i].routeLink = '/Pareto/Summary'
+          // Adding status colors to the status column
+          if (this.jsonMsg[i].jobStatus.includes('Finished') || this.jsonMsg[i].jobStatus.includes('finished')) {
+            links[i].bgColors = 'backgroundColor: #8EAC1D'
+          } else if (this.jsonMsg[i].jobStatus.includes('Running') || this.jsonMsg[i].jobStatus.includes('running')) {
+            links[i].bgColors = 'backgroundColor: #F7970E'
+          } else if (this.jsonMsg[i].jobStatus.includes('Awaiting') || this.jsonMsg[i].jobStatus.includes('awaiting')) {
+            links[i].bgColors = 'backgroundColor: #006984'
+          } else if (this.jsonMsg[i].jobStatus.includes('Error') || this.jsonMsg[i].jobStatus.includes('error')) {
+            links[i].bgColors = 'backgroundColor: #D63A09'
+          } else if (this.jsonMsg[i].jobStatus.includes('Complete') || this.jsonMsg[i].jobStatus.includes('complete')) {
+            links[i].bgColors = 'backgroundColor: red'
+          }
         }
       },
       updateStore (jobId, app, routeLink) {
@@ -135,17 +144,15 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .status_block {
+.status_block {
     display:inline-block;
-    width:100%;
-    border-radius:2px;
-    padding:5px;
-    color:##eff3f6;
+    width:16px;
+    height:16px;
+    border-radius:3px;
+    margin-right:5px;
   }
-  .menu .menu__content .card .list {
-    padding-top:0;
-    padding-bottom:0;
-  }
-  .list__tile{height:38px !important;}
-  .inliner { display: inline-block; }
+.status_cell div {
+  display:inline-block;
+  vertical-align: middle;
+}
 </style>

@@ -265,9 +265,9 @@
             sortable: true,
             value: 'timePeriod'
           },
-          {text: 'Customer Balor Ratio', value: 'custBalor'},
-          {text: 'Spend Balor Ratio', value: 'spendBalor'},
-          {text: 'Txn Balor Ratio', value: 'txnBalor'},
+          {text: 'Customer BALOR Ratio', value: 'custBalor'},
+          {text: 'Spend BALOR Ratio', value: 'spendBalor'},
+          {text: 'Txn BALOR Ratio', value: 'txnBalor'},
           {text: 'New Cust Count', value: 'newCustCount'},
           {text: 'New Total Sales', value: 'newTxnAmt'},
           {text: 'New Txn Count', value: 'newTxnCount'},
@@ -283,7 +283,7 @@
         ],
         retentionItems: [],
         sumItems: {},
-        msg: 'Balor Trend Charts will go here!',
+        msg: 'BALOR Trend Charts will go here!',
         custData: null,
         txnData: null,
         spendData: null,
@@ -384,10 +384,10 @@
     },
     mounted () {
       if (this.jobApp === 'Balor' || this.jobApp === 'balor') {
-        this.$store.commit('switchApp', {module: 'Balor'})
+        this.$store.commit('switchApp', {module: 'BALOR'})
         this.getResults()
       } else {
-        alert('Please select a Balor job from Job History')
+        alert('Please select a BALOR job from Job History')
         this.$router.push('/Balor/')
       }
     },
@@ -442,7 +442,7 @@
           labels: ['Customer', 'Transaction', 'Sales'],
           datasets: [
             {
-              label: 'Balor Ratios',
+              label: 'BALOR Ratios',
               data: [
                 this.custBalorArray[this.tp],
                 this.txnBalorArray[this.tp],
@@ -672,7 +672,7 @@
           labels: ['Customer', 'Transaction', 'Sales'],
           datasets: [
             {
-              label: 'Balor Ratios',
+              label: 'BALOR Ratios',
               data: [
                 this.custBalorArray[this.tp - 1],
                 this.txnBalorArray[this.tp - 1],
