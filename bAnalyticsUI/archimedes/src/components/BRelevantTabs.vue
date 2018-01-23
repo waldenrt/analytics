@@ -12,6 +12,9 @@
             <v-tabs-item router to="/BRelevant/NewBRelevant">Input</v-tabs-item>
             <v-tabs-item router to="/BRelevant/Products">Products</v-tabs-item>
             <v-tabs-item router to="/BRelevant/Customer">Customer</v-tabs-item>
+            <v-tabs-item ripple router to="/BRelevant">
+              <v-icon class="white--text text-xs-center">history</v-icon>
+            </v-tabs-item>
           </v-tabs-bar>
         </v-tabs>
       </v-flex>

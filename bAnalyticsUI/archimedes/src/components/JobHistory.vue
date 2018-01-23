@@ -6,16 +6,16 @@
           <v-card-title primary-title class="primary pt-2 pb-2">
             <h6 class="white--text text-xs-left mb-0">Job History</h6>
             <v-spacer></v-spacer>
+            <!--NEW INPUT DROPDOWN-->
             <v-menu bottom left offset-y>
-              <v-btn success slot="activator" class="white--text">+ NEW INPUT<v-icon>arrow_drop_down</v-icon></v-btn>
+              <v-btn success slot="activator" class="white--text">+ NEW INPUT<v-icon class="white--text">arrow_drop_down</v-icon></v-btn>
               <v-list>
-                <v-list-item v-for="client in clients" :key="client.id">
-                  <v-list-tile>
-                    <v-list-tile-title>{{ client.name }}</v-list-tile-title>
-                  </v-list-tile>
+                <v-list-item v-for="module in modules" :key="module.name" class="pl-3 drop_item">
+                  <a :href="module.link" class="body-2">{{ module.name }}</a>
                 </v-list-item>
               </v-list>
             </v-menu>
+            <!--//NEW INPUT DROPDOWN-->
           </v-card-title>
         </v-card>
       </v-flex>
@@ -38,10 +38,12 @@
             <template slot="items" scope="props">
               <td class="text-xs-center pl-0 pr-0">
                 <v-btn
+                  round
+                  success
                   icon="icon"
                   slot="activator"
                   v-on:click.native="updateStore(props.item.jobId, props.item.app, props.item.routeLink)"
-                ><v-icon class="success--text text-xs-center">visibility</v-icon></v-btn>
+                ><v-icon class="white--text text-xs-center">visibility</v-icon></v-btn>
               </td>
               <td class="text-xs-left pl-2 pr-2">{{ props.item.jobName }}</td>
               <td class="text-xs-left pl-2 pr-2">{{ props.item.jobId }}</td>
@@ -93,6 +95,12 @@
           { text: 'Last Modified Date', left: true, value: 'lastDate' },
           { text: 'Record Count', left: true, value: 'recordCount' }
           // { text: 'Actions', left: true, value: 'action' }
+        ],
+        modules: [
+          {name: 'BALOR', icon: 'label', link: '#/Balor/NewBalor'},
+          {name: 'Pareto', icon: 'label', link: '#/Pareto/NewPareto'},
+          {name: 'Core Lifecycle', icon: 'label', link: '#/Lifecycle/NewLifecycle'},
+          {name: 'b-Relevant', icon: 'label', link: '#/bRelevant/NewBRelevant'}
         ],
         clientName: 'BPDemo',
         incomingJson: {}
@@ -198,5 +206,19 @@
 .status_cell div {
   display:inline-block;
   vertical-align: middle;
+}
+.drop_item a {
+  color: #354052;
+  text-decoration: none;
+  display: block;
+  padding: 10px 0;
+}
+.drop_item a:hover {
+  color: #FFFFFF;
+  font-weight: bold;
+}
+.drop_item:hover {
+  color: #FFFFFF;
+  background-color: #8EAC1D;
 }
 </style>

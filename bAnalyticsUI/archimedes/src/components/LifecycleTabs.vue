@@ -12,6 +12,9 @@
             <v-tabs-item router to="/Lifecycle/Summary">Segment Summary</v-tabs-item>
             <v-tabs-item router to="/Lifecycle/Migration">Segment Migration</v-tabs-item>
             <v-tabs-item router to="/Lifecycle/Products">Product Index</v-tabs-item>
+            <v-tabs-item ripple router to="/Lifecycle">
+              <v-icon class="white--text text-xs-center">history</v-icon>
+            </v-tabs-item>
           </v-tabs-bar>
         </v-tabs>
       </v-flex>

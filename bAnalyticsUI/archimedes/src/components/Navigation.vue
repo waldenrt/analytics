@@ -8,7 +8,7 @@
           <!--Dashboard-->
           <v-list-item>
             <v-list-tile ripple class="white">
-              <v-icon class="primary--text pr-3">home</v-icon>
+              <v-icon class="primary--text pr-3">dashboard</v-icon>
               <v-list-tile-title class="primary--text">
                 <router-link to="/Home" tag="span" style="cursor:pointer;">Dashboard</router-link>
               </v-list-tile-title>
@@ -38,7 +38,14 @@
         <v-toolbar-items>
 
           <v-menu bottom left offset-y>
-            <v-btn primary outline slot="activator" class="primary--text padR6">Client<v-icon>arrow_drop_down</v-icon></v-btn>
+            <v-btn
+                primary
+                outline
+                slot="activator"
+                v-tooltip:bottom="{ html: 'Select Client' }"
+                class="primary--text padR6">
+                  Client<v-icon>arrow_drop_down</v-icon>
+            </v-btn>
             <v-list>
               <v-list-item v-for="client in clients" :key="client.id">
                 <v-list-tile>
@@ -47,11 +54,18 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-btn router to="/JobHistory" icon slot="activator" v-tooltip:bottom="{ html: 'Global Job History' }">
-            <v-icon x-large>history</v-icon>
+          <v-btn
+              router
+              to="/JobHistory"
+              icon slot="activator"
+              v-tooltip:bottom="{ html: 'Global Job History' }">
+                <v-icon x-large>history</v-icon>
           </v-btn>
           <v-menu bottom left offset-y>
-            <v-btn icon slot="activator">
+            <v-btn
+                icon
+                slot="activator"
+                v-tooltip:bottom="{ html: 'Profile' }">
               <v-icon class="blue-grey--text text--darken-2">account_circle</v-icon>
             </v-btn>
             <v-list>

@@ -3,15 +3,22 @@
 <v-card class="white pa-3">
     <v-layout row wrap>
       <v-flex xs12 md3 class="text-xs-center">
-          <v-btn success large router to="/Balor/NewBalor" class="white--text text-xs-left marTB8">+ NEW BALOR INPUT</v-btn>
+            <v-btn
+                large
+                success
+                router to="/Balor/NewBalor"
+                class="white--text text-xs-left marTB8">+ NEW BALOR INPUT</v-btn>
       </v-flex>
       <v-flex xs12 md9>
         <v-tabs id="mobile-tabs-3" grow light>
           <v-tabs-bar slot="activators">
             <v-tabs-slider></v-tabs-slider>
-            <v-tabs-item router to="/Balor/Cadence">Cadence</v-tabs-item>
-            <v-tabs-item router to="/Balor/Trend">Balor Trends</v-tabs-item>
-            <v-tabs-item router to="/Balor/SegmentTrend">Segment Trends</v-tabs-item>
+            <v-tabs-item ripple router to="/Balor/Cadence">Cadence</v-tabs-item>
+            <v-tabs-item ripple router to="/Balor/Trend">Balor Trends</v-tabs-item>
+            <v-tabs-item ripple router to="/Balor/SegmentTrend">Segment Trends</v-tabs-item>
+            <v-tabs-item ripple router to="/Balor">
+              <v-icon class="white--text text-xs-center">history</v-icon>
+            </v-tabs-item>
           </v-tabs-bar>
         </v-tabs>
       </v-flex>

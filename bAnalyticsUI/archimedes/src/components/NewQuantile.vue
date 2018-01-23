@@ -77,7 +77,7 @@
                       class="ma-0 input-group--focused"
                       single-line
                       hide-details
-                      data-vv-name="select_pareto1"
+                      data-vv-name="select_delimiter"
                       v-validate="'required'"
                       id="select_delimiter">
                   </v-select>
@@ -285,7 +285,7 @@
         ],
         items2: [
           {text: '1 month', value: '1'},
-          {text: 'quarter (3 months)', value: '3'},
+          {text: '3 months (quarter)', value: '3'},
           {text: '6 months', value: '6'},
           {text: '12 months', value: '12'}
         ],

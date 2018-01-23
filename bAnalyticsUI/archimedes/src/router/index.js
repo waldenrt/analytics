@@ -34,6 +34,7 @@ import LifecycleHistory from '@/components/LifecycleHistory'
 
 import BRelevant from '@/components/BRelevant'
 import NewBRelevant from '@/components/NewBRelevant'
+import BRelevantResults from '@/components/BRelevantResults'
 import BRelevantProducts from '@/components/BRelevantProducts'
 import BRelevantCustomer from '@/components/BRelevantCustomer'
 
@@ -207,14 +208,20 @@ export default new Router({
               component: NewBRelevant
             },
             {
-              path: 'Products',
-              name: 'BRelevantProd',
-              component: BRelevantProducts
-            },
-            {
-              path: 'Customer',
-              name: 'BRelevantCustomer',
-              component: BRelevantCustomer
+              path: '/',
+              component: BRelevantResults,
+              children: [
+                {
+                  path: 'Products',
+                  name: 'BRelevantProd',
+                  component: BRelevantProducts
+                },
+                {
+                  path: 'Customer',
+                  name: 'BRelevantCustomer',
+                  component: BRelevantCustomer
+                }
+              ]
             }
           ]
         }]

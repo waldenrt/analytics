@@ -12,6 +12,9 @@
             <v-tabs-item router to="/Pareto/Summary">Pareto Profiles</v-tabs-item>
             <v-tabs-item router to="/Pareto/Migration">Migration</v-tabs-item>
             <v-tabs-item router to="/Pareto/Products">Top/Bottom Products</v-tabs-item>
+            <v-tabs-item ripple router to="/Pareto">
+              <v-icon class="white--text text-xs-center">history</v-icon>
+            </v-tabs-item>
           </v-tabs-bar>
         </v-tabs>
       </v-flex>

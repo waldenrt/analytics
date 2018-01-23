@@ -33,10 +33,12 @@
             <template slot="items" scope="props">
               <td class="text-xs-center pl-0 pr-0">
                 <v-btn
+                  round
+                  success
                   icon="icon"
                   slot="activator"
                   v-on:click.native="updateStore(props.item.jobId, props.item.app, props.item.routeLink)"
-                ><v-icon class="success--text text-xs-center">visibility</v-icon></v-btn>
+                ><v-icon class="white--text text-xs-center">visibility</v-icon></v-btn>
               </td>
               <td class="text-xs-left pl-2 pr-2">{{ props.item.jobName }}</td>
               <td class="text-xs-left pl-2 pr-2">{{ props.item.jobId }}</td>

@@ -44,7 +44,7 @@
           <!-- Input Pages Row -->
           <v-layout wrap row class="pl-4 pr-4 pt-3 pb-0">
               <v-flex xs12 class="pl-1 pr-1">
-                <h5 class="grey--text">Input <span class="primary--text">Pages</span></h5>
+                <h5 class="grey--text">App <span class="primary--text">Modules</span></h5>
               </v-flex>
               <v-flex xs12 sm6 md3 class="pl-1 pr-1 pb-3" v-for="item in cardItems">
                 <v-card class="white card_crnr">
