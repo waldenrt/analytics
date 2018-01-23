@@ -7,8 +7,10 @@
     <v-layout row wrap class="mt-0 pa-0">
       <v-flex xs12>
         <v-card class="white">
-          <v-card-title primary-title class="primary">
+          <v-card-title primary-title class="primary pt-2 pb-2">
             <h6 class="white--text text-xs-left mb-0">Job History</h6>
+            <v-spacer></v-spacer>
+            <v-btn success router to="/Lifecycle/NewLifecycle" class="white--text text-xs-left">+ NEW LIFECYCLE INPUT</v-btn>
           </v-card-title>
         </v-card>
       </v-flex>

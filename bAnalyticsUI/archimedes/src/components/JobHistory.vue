@@ -3,8 +3,19 @@
     <v-layout row wrap class="mt-5 pa-0">
       <v-flex xs12>
         <v-card class="white">
-          <v-card-title primary-title class="primary">
+          <v-card-title primary-title class="primary pt-2 pb-2">
             <h6 class="white--text text-xs-left mb-0">Job History</h6>
+            <v-spacer></v-spacer>
+            <v-menu bottom left offset-y>
+              <v-btn success slot="activator" class="white--text">+ NEW INPUT<v-icon>arrow_drop_down</v-icon></v-btn>
+              <v-list>
+                <v-list-item v-for="client in clients" :key="client.id">
+                  <v-list-tile>
+                    <v-list-tile-title>{{ client.name }}</v-list-tile-title>
+                  </v-list-tile>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-card-title>
         </v-card>
       </v-flex>

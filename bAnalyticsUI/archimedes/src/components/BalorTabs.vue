@@ -3,7 +3,7 @@
 <v-card class="white pa-3">
     <v-layout row wrap>
       <v-flex xs12 md3 class="text-xs-center">
-          <v-btn primary large router to="/Balor/NewBalor" class="white--text text-xs-left marTB8">+ NEW BALOR INPUT</v-btn>
+          <v-btn success large router to="/Balor/NewBalor" class="white--text text-xs-left marTB8">+ NEW BALOR INPUT</v-btn>
       </v-flex>
       <v-flex xs12 md9>
         <v-tabs id="mobile-tabs-3" grow light>
