@@ -8,12 +8,11 @@
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Purchase Cadence Distribution</h6>
           </v-card-title>
-          <div fill-height class="white pa-1 pt-2" style="height:100%">
+          <div class="white pa-1 pt-2 bar_chart">
             <!--Chart-->
               <annotated-bar-chart
                   :chart-data="cadenceBars"
                   :options="cadOptions"
-                  class="bar_chart"
                   id="cadChart"></annotated-bar-chart>
             <!--//Chart-->
           </div>
@@ -38,8 +37,8 @@
                       width="100%"
                       class="summary">
                       <tr v-for="item in sumItems" class="hov_row">
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.vals }}</td>
+                        <td class="pa-2">{{ item.name }}</td>
+                        <td class="pa-2">{{ item.vals }}</td>
                       </tr>
                   </table>
                 </v-card-text>
@@ -59,6 +58,7 @@
           <v-divider class="primary pb-0 pl-3 pr-3"></v-divider>
             <div class="constrainer">
               <div class="scrolltable">
+                <div class="grey lighten-2 pt-2 pb-2">
                 <table
                     cellpadding="0"
                     cellspacing="0"
@@ -73,11 +73,12 @@
                       </tr>
                     </thead>
                 </table>
-                <div class="tbl_body">
+                </div>
+                <div class="tbl_body mt-2 mb-2">
                 <table style="width:90%; margin:0 auto;">
                   <tbody>
                     <tr v-for="item in tableData" v-bind:key="item.text" style="width:100%;">
-                      <td class="tbl_cells text-xs-center" v-text="item.cadence"></td>
+                      <td class="tbl_cells text-xs-center pt-1 pb-1" v-text="item.cadence"></td>
                       <td class="tbl_cells text-xs-center" v-text="item.frequency"></td>
                       <td class="tbl_cells text-xs-center" v-text="item.cumFreq"></td>
                     </tr>
@@ -372,6 +373,8 @@
   }
 
   .bar_chart {
+    position: relative;
+    margin: 0 auto;
     height: 70vh !important;
   }
 
@@ -384,7 +387,7 @@
   }
 
   .constrainer {
-    height: 250px;
+    height: 260px;
     width: 100%;
   }
   .scrolltable {

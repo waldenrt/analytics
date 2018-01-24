@@ -633,7 +633,11 @@
   margin:0 0 8px 0;
 }
 
-.doughnuts {width:20%;}
+.doughnuts {
+  width:20%;
+  position:relative;
+  margin:0 auto;
+}
 .card_height {height:100% !important;}
 .height_bars1 {height:21% !important;}
 .height_bars2 {height:100% !important; display:table;}

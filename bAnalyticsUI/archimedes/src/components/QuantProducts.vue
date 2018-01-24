@@ -164,8 +164,8 @@
     <v-layout wrap row class="mt-3">
       <v-flex xs3 fill-height>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
-          <!--****THIS IS JUST A PLACEHOLDER TABLE****-->
-          <table cellpadding="0" cellspacing="0" width="100%" style="height:21vh !important;">
+          <!--Total Spend Table-->
+          <table cellpadding="0" cellspacing="0" width="100%" class="quant_prod_table1">
             <tr>
               <th class="pa-2 primary--text">Quantiles</th>
               <th class="pa-2 primary--text">Top Products<br/>Total Spend</th>
@@ -179,13 +179,15 @@
               </td>
             </tr>
           </table>
-          <!--//****THIS IS JUST A PLACEHOLDER TABLE****//-->
+          <!--//Total Spend Table-->
         </v-card>
       </v-flex>
       <v-flex xs9 fill-height>
         <v-card fill-height class="white pl-3 pr-3 pt-1 pb-1" style="height:100%">
           <div class="primary--text text-xs-center pa-1 subhead">Products</div>
-          <stacked-bar :chart-data="barData" :options="barOptions" class="prod_chart"></stacked-bar>
+          <div class="prod_chart">
+            <stacked-bar :chart-data="barData" :options="barOptions"></stacked-bar>
+          </div>
         </v-card>
       </v-flex>
     </v-layout>
@@ -1022,9 +1024,14 @@
     width:100% !important;
     height: 400px;
   }
+  .quant_prod_table1 {
+    position: relative;
+    margin: 0 auto;
+    height:430px !important;
+  }
   .prod_chart {
     position: relative;
     margin: 0 auto;
-    /* height: 385px !important; */
+    height: 400px !important;
   }
 </style>

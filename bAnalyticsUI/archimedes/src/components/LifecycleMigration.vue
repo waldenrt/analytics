@@ -276,7 +276,7 @@
                     <!-- =====ROW2===== -->
                     <v-layout row wrap class="pt-0 mt-0">
                       <v-flex xs12 class="pa-0 ma-0">
-                        <div class="mt-3 w_100">
+                        <div class="mt-3 lifecycle_chart1">
                           <bar-chart :chart-data="barData"></bar-chart>
                         </div>
                       </v-flex>
@@ -970,4 +970,11 @@
     -webkit-transform: rotate(90deg); /* Safari 3-8 */
     transform: rotate(90deg);
   }
+
+  .lifecycle_chart1 {
+    width: 100%;
+    position: relative;
+    height: 350px;
+  }
+
 </style>

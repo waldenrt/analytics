@@ -604,7 +604,7 @@
   .seg_sect {
     width: 20%;
     height: 100%;
-    display: table-cell;
+    display: inline-block;
     position: relative;
   }
 
@@ -613,7 +613,13 @@
     height: 74vh !important;
   }
 
-  canvas, .prod_share_container { width:100% !important; }
+  canvas{ width:100% !important; }
+
+  .prod_share_container {
+    width:100% !important;
+    position: relative;
+    height:100%;
+  }
 
   .scroller {
     overflow-y: scroll;

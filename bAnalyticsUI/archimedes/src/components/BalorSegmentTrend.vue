@@ -141,7 +141,9 @@
             </v-flex>
           </v-layout>
           <!-- //LEGEND -->
-          <pareto-chart :chart-data="totalBars" :options="paretoOptions" class="pa-2 chart_h"></pareto-chart>
+          <div class="bar_chart1">
+            <pareto-chart :chart-data="totalBars" :options="paretoOptions" class="pa-2"></pareto-chart>
+          </div>
         </v-card>
       </v-flex>
       <!--//chart-->
@@ -156,9 +158,6 @@
         </v-card-title>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-layout row wrap>
-
-
-
             <!--Dropdown1-->
             <v-flex xs12 sm3>
               <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
@@ -213,9 +212,11 @@
         </v-card>
       </v-flex>
       <!--chart-->
-      <v-flex xs12>
+      <v-flex xs12 class="pb-4">
         <v-card class="white">
-          <horizontal-chart :chart-data="avgBars" :options="avgOptions" class="pa-2 chart_h"></horizontal-chart>
+          <div class="bar_chart1">
+            <horizontal-chart :chart-data="avgBars" :options="avgOptions" class="pa-2"></horizontal-chart>
+          </div>
         </v-card>
       </v-flex>
       <!--//chart-->
@@ -2566,7 +2567,9 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-  .chart_h {
+  .bar_chart1 {
+    position: relative;
+    margin: 0 auto;
     height: 40vh !important;
   }
 

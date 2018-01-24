@@ -188,41 +188,41 @@
       <!--table-->
         <v-card class="white w_100">
           <v-card-title primary-title class="white">
-            <h6 class="primary--text text-xs-center mb-0">Period-over-Period Retention Rate</h6>
+            <h6 class="text-xs-center mb-0 primary--text">Period-over-Period Retention Rate</h6>
           </v-card-title>
           <v-divider class="primary pb-0"></v-divider>
-            <v-layout row wrap class="pa-3">
-              <table cellpadding="0" cellspacing="0" width="100%" class="ret_table">
-                <tr>
-                  <td>Quantile</td>
-                  <!--<td>Prior Customers</td>-->
-                  <td>Retained<br />Customers</td>
-                  <td>New<br />Customers</td>
-                  <td>Post<br />Customer<br />Total</td>
-                  <!--<td>Retention Rate</td>-->
-                </tr>
-                <tr v-for="item in sumItems" v-bind:key="item.name">
-                  <td class="pl-2 pr-2 pt-2 pb-0">
-                    <div class="primary--text" v-text="item.name"></div>
-                  </td>
-                  <!--<td class="pl-2 pr-2 pt-2 pb-0">
-                    <div v-text="item.priorCustCount"></div>
-                  </td>-->
-                  <td class="pl-2 pr-2 pt-2 pb-0">
-                    <div v-text="item.retained"></div>
-                  </td>
-                  <td class="pl-2 pr-2 pt-2 pb-0">
-                    <div v-text="item.new"></div>
-                  </td>
-                  <td class="pl-2 pr-2 pt-2 pb-0">
-                    <div v-text="item.postCustCount"></div>
-                  </td>
-                  <!--<td class="pl-2 pr-2 pt-2 pb-0">
-                    <div v-text="item.retRate"></div>
-                  </td>-->
-                </tr>
-              </table>
-            </v-layout>
+              <div style="width:100%;" class="pb-3">
+                <table cellpadding="0" cellspacing="0" width="100%" class="ret_table">
+                  <tr class="grey lighten-2">
+                    <td class="pt-1 pb-1 grey lighten-2 primary--text">Quantile</td>
+                    <!--<td class="pt-1 pb-1">Prior Customers</td>-->
+                    <td class="pt-1 pb-1 grey lighten-2 primary--text">Retained<br />Customers</td>
+                    <td class="pt-1 pb-1 grey lighten-2 primary--text">New<br />Customers</td>
+                    <td class="pt-1 pb-1 grey lighten-2 primary--text">Post<br />Customer<br />Total</td>
+                    <!--<td class="pt-1 pb-1">Retention Rate</td>-->
+                  </tr>
+                  <tr v-for="item in sumItems" v-bind:key="item.name">
+                    <td class="pl-2 pr-2 pt-2 pb-0">
+                      <div class="primary--text" v-text="item.name"></div>
+                    </td>
+                    <!--<td class="pl-2 pr-2 pt-2 pb-0">
+                      <div v-text="item.priorCustCount"></div>
+                    </td>-->
+                    <td class="pl-2 pr-2 pt-2 pb-0">
+                      <div v-text="item.retained"></div>
+                    </td>
+                    <td class="pl-2 pr-2 pt-2 pb-0">
+                      <div v-text="item.new"></div>
+                    </td>
+                    <td class="pl-2 pr-2 pt-2 pb-0">
+                      <div v-text="item.postCustCount"></div>
+                    </td>
+                    <!--<td class="pl-2 pr-2 pt-2 pb-0">
+                      <div v-text="item.retRate"></div>
+                    </td>-->
+                  </tr>
+                </table>
+              </div>
         </v-card>
       <!--//table-->
       </v-flex>
@@ -272,7 +272,9 @@
             <!--row2-->
             <v-layout row wrap class="pt-0 mt-0">
               <v-flex xs12>
-                <div class="pl-1 pr-1 pt-3 pb-2"><bar-chart :chart-data="quantbars" class="bar_height"></bar-chart></div>
+                <div class="pl-1 pr-1 pt-3 pb-2 pareto_chart2">
+                  <bar-chart :chart-data="quantbars"></bar-chart>
+                </div>
               </v-flex>
             </v-layout>
             <!-- //row2-->
@@ -588,16 +590,20 @@
 <style scoped>
   .card_width { width: 100% !important; }
   .ret_table {
-    height:21vh !important;
+    height: 360px !important;
     text-align: center;
   }
-  .bar_height { height: 23vh !important; }
+  .pareto_chart2 {
+    position: relative;
+    margin: 0 auto;
+    height: 302px !important;
+  }
   .w_100 { width: 100%; }
   .y_axis {
     display: inline-block;
     position: relative;
     left: -60px;
-    top: 300px;
+    top: 400px;
     /*background-color: red;*/
     /* Rotate div */
     -ms-transform: rotate(270deg); /* IE 9 */
