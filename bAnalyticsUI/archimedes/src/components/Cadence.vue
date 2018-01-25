@@ -375,11 +375,7 @@
   .bar_chart {
     position: relative;
     margin: 0 auto;
-    height: 70vh !important;
-  }
-
-  .card_height2 {
-    height: 77vh !important;
+    height: 625px !important;
   }
 
   .tbl_cells {
@@ -403,7 +399,6 @@
     overflow-y: scroll;
     width: 100%;
   }
-  .scrolltable > .tbl_header { }
   .scrolltable > .tbl_body {
     flex: 1;
     -webkit-flex: 1;

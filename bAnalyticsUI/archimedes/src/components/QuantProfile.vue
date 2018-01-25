@@ -103,7 +103,7 @@
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <div class="title primary--text text-xs-center pa-1">Quantile Pareto Analysis</div>
           <div class="pareto_chart1">
-            <pareto-chart :chart-data="paretoData" :options="paretoOptions" style=""></pareto-chart>
+            <pareto-chart :chart-data="paretoData" :options="paretoOptions"></pareto-chart>
           </div>
         </v-card>
       </v-flex>

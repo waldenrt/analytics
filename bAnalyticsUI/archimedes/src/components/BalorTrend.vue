@@ -1,9 +1,65 @@
 <template>
   <v-container fluid class="balorTrend pl-3 pr-3">
+
     <!-- =====ROW1===== -->
     <v-layout row wrap class="pa-0 mb-0">
-      <!--+++++col1+++++-->
-      <v-flex xs8 lg9>
+      <!--+++++col_1+++++-->
+        <!-- BALOR Summary -->
+      <v-flex xs3>
+        <v-layout row wrap>
+          <v-flex xs12 class="pb-3">
+            <div class="white elevation-1">
+            <v-card class="white elevation-0">
+              <v-card-title primary-title class="primary white--text">
+                <h6 class="text-xs-left mb-0 white--text">BALOR Summary</h6>
+              </v-card-title>
+              <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-3 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0">Min. Date</p>
+                    <h6 class="mb-0">{{ this.sumItems.minDateBalor }}</h6>
+                  </div>
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-3 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0">Max. Date</p>
+                    <h6 class="mb-0">{{ this.sumItems.maxDateBalor }}</h6>
+                  </div>
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-3 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0">Customer Base:</p>
+                    <h6 class="mb-0">{{ this.sumItems.totalCusts }}</h6>
+                  </div>
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-3 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0">% Customer - 1 Purchase:</p>
+                    <h6 class="mb-0">{{ this.sumItems.percentCust }}</h6>
+                  </div>
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-3 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0">Transactions:</p>
+                    <h6 class="mb-0">{{ this.sumItems.numRecords }}</h6>
+                  </div>
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-3 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0">Purchase Cadence - 80th Percentile:</p>
+                    <h6 class="mb-0">{{ this.sumItems.normalizedCadence }}</h6>
+                  </div>
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-3 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0">Time Periods:</p>
+                    <h6 class="mb-0">{{ this.sumItems.timePeriods }}</h6>
+                  </div>
+              </div>
+            </v-card>
+            </div>
+          </v-flex>
+        </v-layout>
+      </v-flex>
+      <!--// BALOR Summary -->
+      <!--//+++++col_1+++++-->
+      <!--+++++col_2+++++-->
+      <!-- BALOR Trendline -->
+      <v-flex xs6>
         <v-card class="white">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">BALOR Period Trendline</h6>
@@ -28,79 +84,32 @@
           <!--//trendlines-->
         </v-card>
       </v-flex>
-      <!--//+++++col1+++++-->
-      <!--+++++col2+++++-->
-      <v-flex xs4 lg3>
-        <!-- BALOR Summary -->
+      <!--// BALOR Trendline -->
+      <!--//+++++col_2+++++-->
+      <!--+++++col_3+++++-->
+      <!-- Retention Summary -->
+      <v-flex xs3>
         <v-layout row wrap>
           <v-flex xs12 class="pb-3">
-            <div class="sum_brd1">
-              <v-card horizontal class="white card_height">
-                <v-card-text class="white error--text card_pad">
-                  <v-card-title primary-title class="pa-0 pb-3">
-                    <h6 class="error--text text-xs-left mb-0 pt-0 pb-0">BALOR Summary</h6>
-                  </v-card-title>
-                  <v-divider class="error"></v-divider>
-                  <table width="100%" class="summary">
-                    <tr>
-                      <td class="grey lighten-4">Min. Date:</td>
-                      <td class="grey lighten-4">{{ this.sumItems.minDateBalor }}</td>
-                    </tr>
-                    <tr>
-                      <td class="grey lighten-4">Max. Date:</td>
-                      <td class="grey lighten-4">{{ this.sumItems.maxDateBalor }}</td>
-                    </tr>
-                    <tr>
-                      <td class="grey lighten-4">Customer Base:</td>
-                      <td class="grey lighten-4">{{ this.sumItems.totalCusts }}</td>
-                    </tr>
-                    <tr>
-                      <td class="grey lighten-4">% Customer - 1 Purchase:</td>
-                      <td class="grey lighten-4">{{ this.sumItems.percentCust }}</td>
-                    </tr>
-                    <tr>
-                      <td class="grey lighten-4">Transactions:</td>
-                      <td class="grey lighten-4">{{ this.sumItems.numRecords }}</td>
-                    </tr>
-                    <tr>
-                      <td class="grey lighten-4">Purchase Cadence - 80th Percentile:</td>
-                      <td class="grey lighten-4">{{ this.sumItems.normalizedCadence }}</td>
-                    </tr>
-                    <tr>
-                      <td class="grey lighten-4">Time Periods:</td>
-                      <td class="grey lighten-4">{{ this.sumItems.timePeriods }}</td>
-                    </tr>
-                  </table>
-                </v-card-text>
-              </v-card>
+            <div class="white elevation-1">
+            <v-card class="white elevation-0">
+              <v-card-title primary-title class="primary white--text">
+                <h6 class="text-xs-left mb-0 white--text">Rentention Summary</h6>
+              </v-card-title>
+              <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-3 pt-2 pb-2" v-for="item in retentionItems" v-bind:key="item.name">
+                    <p class="body-1 pa-0 mb-0">{{ item.name }}:</p>
+                    <h6 class="mb-0">{{ item.vals }}</h6>
+                  </div>
+              </div>
+            </v-card>
             </div>
           </v-flex>
         </v-layout>
-        <!--// BALOR Summary -->
-        <!-- Retention Summary -->
-        <v-layout row wrap class="ret_sum">
-          <v-flex xs12 class="pb-3">
-            <div class="sum_brd2">
-              <v-card horizontal class="white card_height">
-                <v-card-text class="white warning--text card_pad">
-                  <v-card-title primary-title class="pa-0 pb-3">
-                    <h6 class="warning--text text-xs-left mb-0 pt-0 pb-0">Retention Summary</h6>
-                  </v-card-title>
-                  <v-divider class="warning"></v-divider>
-                  <table width="100%" class="summary">
-                    <tr v-for="item in retentionItems" v-bind:key="item.name">
-                      <td class="grey lighten-4">{{ item.name }}:</td>
-                      <td class="grey lighten-4">{{ item.vals }}</td>
-                    </tr>
-                  </table>
-                </v-card-text>
-              </v-card>
-            </div>
-          </v-flex>
-        </v-layout>
-        <!--// Retention Summary -->
       </v-flex>
-      <!--//+++++col2+++++-->
+      <!--// Retention Summary -->
+      <!--//+++++col_3+++++-->
     </v-layout>
     <!-- //=====ROW1===== -->
 
@@ -784,4 +793,21 @@
     }
   }
 
+  .panel {
+    height: 463px;
+    overflow: auto;
+  }
+
+  .panel .panel_body {
+    border: 1px solid #E6EAEE;
+    background-color: #FFFFFF;
+    border-left: 3px solid #8EAC1D;
+    /*border-left: 3px solid #0087aa;*/
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+  }
+
+  .panel .panel_body p, .panel .panel_body h6 {
+    color:#354052;
+  }
 </style>
