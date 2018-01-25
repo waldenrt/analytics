@@ -268,12 +268,13 @@ object BalorApp {
         countRetDF("lapsedTxnAmt")))
       .withColumn("retention", retention(countRetDF("returnCustCount"), lead("reactCustCount", 1).over(segWindow),
         lead("newCustCount", 1).over(segWindow), lead("returnCustCount", 1).over(segWindow)))
-      .withColumn("ttlSalesLift", countRetDF("returnTxnAmt") / (countRetDF("returnNewSales") + countRetDF("returnReactSales") + countRetDF("returnReturnSales")))
-      .withColumn("avgSalesLift", (countRetDF("returnTxnAmt") / countRetDF("returnCustCount")) / ((countRetDF("returnNewSales") + countRetDF("returnReactSales") + countRetDF("returnReturnSales")) /
-        (countRetDF("returnNewCust") + countRetDF("returnReactCust") + countRetDF("returnReturnCust"))))
-      .withColumn("ttlTxnLift", countRetDF("returnTxnCount") / (countRetDF("returnNewTxn") + countRetDF("returnReactTxn") + countRetDF("returnReturnTxn")))
-      .withColumn("avgTxnLift", (countRetDF("returnTxnCount") / countRetDF("returnCustCount")) / ((countRetDF("returnNewTxn") + countRetDF("returnReactTxn") + countRetDF("returnReturnTxn")) /
-        (countRetDF("returnNewCust") + countRetDF("returnReactCust") + countRetDF("returnReturnCust"))))
+      .withColumn("ttlSalesLift", (countRetDF("returnTxnAmt") / (countRetDF("returnNewSales") + countRetDF("returnReactSales") + countRetDF("returnReturnSales"))) * 100)
+      .withColumn("avgSalesLift", ((countRetDF("returnTxnAmt") / countRetDF("returnCustCount")) / ((countRetDF("returnNewSales") + countRetDF("returnReactSales") + countRetDF("returnReturnSales")) /
+        (countRetDF("returnNewCust") + countRetDF("returnReactCust") + countRetDF("returnReturnCust")))) * 100)
+      .withColumn("ttlTxnLift", (countRetDF("returnTxnCount") / (countRetDF("returnNewTxn") + countRetDF("returnReactTxn") + countRetDF("returnReturnTxn"))) * 100)
+      .withColumn("avgTxnLift", ((countRetDF("returnTxnCount") / countRetDF("returnCustCount")) / ((countRetDF("returnNewTxn") + countRetDF("returnReactTxn") + countRetDF("returnReturnTxn")) /
+        (countRetDF("returnNewCust") + countRetDF("returnReactCust") + countRetDF("returnReturnCust")))) * 100)
+      .withColumn("retentionGrowth", ((col("retention") - lead(col("retention"), 1).over(segWindow)) / col("retention")) * 100)
       .na.fill(0)
 
     balorDF
@@ -383,6 +384,8 @@ object BalorApp {
       tpd.setTtlTxnLift(tpdRow.getDouble(65))
       tpd.setAvgTxnLift(tpdRow.getDouble(66))
 
+      tpd.setRetentionGrowth(tpdRow.getDouble(67))
+
       tempList.add(tpd)
     }
 
@@ -403,7 +406,7 @@ object BalorApp {
         "lapsedCustSpendAvg", "lapsedCustVisitAvg", "lapsedCustItemAvg", "lapsedCustDiscAvg", "lapsedVisitSpendAvg", "lapsedVisitItemAvg", "lapsedVisitDiscAvg",
         "custBalor", "txnBalor", "spendBalor", "retention", "formatDate", "returnNewSales", "returnNewTxn", "returnNewCust",
         "returnReactSales", "returnReactTxn", "returnReactCust", "returnReturnSales", "returnReturnTxn", "returnReturnCust",
-        "ttlSalesLift", "avgSalesLift", "ttlTxnLift", "avgTxnLift")
+        "ttlSalesLift", "avgSalesLift", "ttlTxnLift", "avgTxnLift", "retentionGrowth")
 
 
     orderedDF.collect().foreach(e => mapTimePeriodData(e))
