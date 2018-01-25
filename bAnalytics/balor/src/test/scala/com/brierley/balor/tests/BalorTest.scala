@@ -357,6 +357,18 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       "lapsedCustCount", "lapsedTxnCount", "lapsedTxnAmt", "lapsedDiscAmt", "lapsedItemCount")
       .withColumn("StartDate", lit("01/01/2001"))
 
+    val retention = sc.parallelize(List(
+      (1, 1.toLong, 1.toLong, 234.12, 0.toLong, 0.toLong, 0.0, 2.toLong, 2.toLong, 403.37),
+      (2, 0.toLong, 0.toLong, 0.0, 3.toLong, 4.toLong, 213.57, 3.toLong, 3.toLong, 101.99)
+    )).toDF("TimePeriod", "returnNewCust", "returnNewTxn", "returnNewSales", "returnReactCust", "returnReactTxn",
+      "returnReactSales", "returnReturnCust", "returnReturnTxn", "returnReturnSales")
+
+    val avroRetention = sc.parallelize(List(
+      (1, 1.toLong, 1.toLong, 234.12, 0.toLong, 0.toLong, 0.0, 2.toLong, 2.toLong, 403.37),
+      (2, 0.toLong, 0.toLong, 0.0, 3.toLong, 4.toLong, 213.57, 3.toLong, 3.toLong, 101.99)
+    )).toDF("TimePeriod", "returnNewCust", "returnNewTxn", "returnNewSales", "returnReactCust", "returnReactTxn",
+      "returnReactSales", "returnReturnCust", "returnReturnTxn", "returnReturnSales")
+
 
     val avroSchemaResults = sc.parallelize(List(
       (1, 2.toLong, 3.toLong, 40.00, 5.00, 6.toLong, 7.toLong, 8.toLong, 90.00, 10.00, 11.toLong, 12.toLong, 13.toLong, 140.00, 15.0, 16.toLong, 17.toLong, 18.toLong, 190.00, 20.00, 21.toLong, "01/01/2015"),
@@ -468,6 +480,8 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
         .getInt(0)
 
       assert(marPeriod2 === 1)
+
+      periodDF.show
     }
   }
 
@@ -586,6 +600,15 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       assert(labelCol === labels)
 
       assert(labelDF.count === 13)
+    }
+  }
+
+  //RETENTION METRICS
+  test("Retention pivot columns added to DF") {
+    new CountData {
+      val retDF = BalorApp.retentionData(fourMonthsPlusOldest) getOrElse singleSimpleBalorSet
+
+      retDF.show()
     }
   }
 
@@ -808,202 +831,204 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
   test("return new DF (time period and 3 ratios) with calcs for single period") {
     new BalorData {
 
-      val balorDF = BalorApp.calcBalorRatios(threeOverTwo) getOrElse threeOverTwo
+      val balorDF = BalorApp.calcBalorRatios(threeOverTwo, retention) getOrElse threeOverTwo
       val balors = balorDF.select("custBalor", "txnBalor", "spendBalor", "retention").head()
 
       val realBalor = Row(1.5, 2, 1.8, 0)
+
+      balorDF.show()
 
       assert(realBalor === balors)
     }
   }
 
-  test("Data for 2 balor calculations (aka 4 periods worth of data") {
-    new BalorData {
+    test("Data for 2 balor calculations (aka 4 periods worth of data") {
+      new BalorData {
 
-      val balorDF = BalorApp.calcBalorRatios(twoBalorSets) getOrElse twoBalorSets
-      val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("custBalor", "txnBalor", "spendBalor").head()
-      val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("custBalor", "txnBalor", "spendBalor").head()
+        val balorDF = BalorApp.calcBalorRatios(twoBalorSets, retention) getOrElse twoBalorSets
+        val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("custBalor", "txnBalor", "spendBalor").head()
+        val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("custBalor", "txnBalor", "spendBalor").head()
 
-      val retention1 = balorDF.where(balorDF("TimePeriod") === 1).select("retention").first().getDouble(0)
-      val retention2 = balorDF.where(balorDF("TimePeriod") === 2).select("retention").first().getDouble(0)
+        val retention1 = balorDF.where(balorDF("TimePeriod") === 1).select("retention").first().getDouble(0)
+        val retention2 = balorDF.where(balorDF("TimePeriod") === 2).select("retention").first().getDouble(0)
 
-      val realBalor1 = Row(1.5, 2, 1.8)
-      val realBalor2 = Row(2.0, 2.0, 2.0)
+        val realBalor1 = Row(1.5, 2, 1.8)
+        val realBalor2 = Row(2.0, 2.0, 2.0)
 
-      assert(realBalor1 === balor1)
-      assert(realBalor2 === balor2)
+        assert(realBalor1 === balor1)
+        assert(realBalor2 === balor2)
 
-      assert(retention1 ===.33 +- .01)
-      assert(retention2 === 0)
+        assert(retention1 ===.33 +- .01)
+        assert(retention2 === 0)
+      }
     }
-  }
 
-  test("0 Returning customers (4 periods worth of data") {
-    new BalorData {
+    test("0 Returning customers (4 periods worth of data") {
+      new BalorData {
 
-      val balorDF = BalorApp.calcBalorRatios(zeroReturning) getOrElse twoBalorSets
-      val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("custBalor", "txnBalor", "spendBalor").head()
-      val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("custBalor", "txnBalor", "spendBalor").head()
+        val balorDF = BalorApp.calcBalorRatios(zeroReturning, retention) getOrElse twoBalorSets
+        val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("custBalor", "txnBalor", "spendBalor").head()
+        val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("custBalor", "txnBalor", "spendBalor").head()
 
-      val retention1 = balorDF.where(balorDF("TimePeriod") === 1).select("retention").first().getDouble(0)
-      val retention2 = balorDF.where(balorDF("TimePeriod") === 2).select("retention").first().getDouble(0)
+        val retention1 = balorDF.where(balorDF("TimePeriod") === 1).select("retention").first().getDouble(0)
+        val retention2 = balorDF.where(balorDF("TimePeriod") === 2).select("retention").first().getDouble(0)
 
-      val realBalor1 = Row(1.5, 2, 1.8)
-      val realBalor2 = Row(2.0, 2.0, 2.0)
+        val realBalor1 = Row(1.5, 2, 1.8)
+        val realBalor2 = Row(2.0, 2.0, 2.0)
 
-      assert(realBalor1 === balor1)
-      assert(realBalor2 === balor2)
+        assert(realBalor1 === balor1)
+        assert(realBalor2 === balor2)
 
-      assert(retention1 === 0)
-      assert(retention2 === 0)
+        assert(retention1 === 0)
+        assert(retention2 === 0)
+      }
     }
-  }
 
-  test("Data for 3 balor calculations (aka 5 periods)") {
-    new BalorData {
+    test("Data for 3 balor calculations (aka 5 periods)") {
+      new BalorData {
 
-      val balorDF = BalorApp.calcBalorRatios(threeBalorSetsOneOverZero) getOrElse threeBalorSetsOneOverZero
-      assert(balorDF != threeBalorSetsOneOverZero)
-      val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("custBalor", "txnBalor", "spendBalor").head()
-      val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("custBalor", "txnBalor", "spendBalor").head()
-      val balor3 = balorDF.where(balorDF("TimePeriod") === 3).select("custBalor", "txnBalor", "spendBalor").head()
+        val balorDF = BalorApp.calcBalorRatios(threeBalorSetsOneOverZero, retention) getOrElse threeBalorSetsOneOverZero
+        assert(balorDF != threeBalorSetsOneOverZero)
+        val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("custBalor", "txnBalor", "spendBalor").head()
+        val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("custBalor", "txnBalor", "spendBalor").head()
+        val balor3 = balorDF.where(balorDF("TimePeriod") === 3).select("custBalor", "txnBalor", "spendBalor").head()
 
-      val retention1 = balorDF.where(balorDF("TimePeriod") === 1).select("retention").first().getDouble(0)
-      val retention2 = balorDF.where(balorDF("TimePeriod") === 2).select("retention").first().getDouble(0)
-      val retention3 = balorDF.where(balorDF("TimePeriod") === 3).select("retention").first().getDouble(0)
+        val retention1 = balorDF.where(balorDF("TimePeriod") === 1).select("retention").first().getDouble(0)
+        val retention2 = balorDF.where(balorDF("TimePeriod") === 2).select("retention").first().getDouble(0)
+        val retention3 = balorDF.where(balorDF("TimePeriod") === 3).select("retention").first().getDouble(0)
 
-      val realBalor1 = Row(1.5, 2.0, 1.8)
-      val realBalor2 = Row(2.0, 2.0, 2)
-      val realBalor3 = Row(2.0, 2.0, 2.0)
+        val realBalor1 = Row(1.5, 2.0, 1.8)
+        val realBalor2 = Row(2.0, 2.0, 2)
+        val realBalor3 = Row(2.0, 2.0, 2.0)
 
-      assert(realBalor1 === balor1)
-      assert(realBalor2 === balor2)
-      assert(realBalor3 === balor3)
+        assert(realBalor1 === balor1)
+        assert(realBalor2 === balor2)
+        assert(realBalor3 === balor3)
 
-      assert(retention1 ===.33 +- .01)
-      assert(retention2 ===.25 +- .01)
-      assert(retention3 === 0)
+        assert(retention1 ===.33 +- .01)
+        assert(retention2 ===.25 +- .01)
+        assert(retention3 === 0)
+      }
     }
-  }
 
-  test("BalorRatios for avroschema test") {
-    new BalorData {
+    test("BalorRatios for avroschema test") {
+      new BalorData {
 
-      val balorDF = BalorApp.calcBalorRatios(avroSchemaResults) getOrElse threeBalorSetsOneOverZero
-      assert(balorDF != threeBalorSetsOneOverZero)
-      val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("custBalor", "txnBalor", "spendBalor").head()
-      val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("custBalor", "txnBalor", "spendBalor").head()
-      val balor3 = balorDF.where(balorDF("TimePeriod") === 3).select("custBalor", "txnBalor", "spendBalor").head()
+        val balorDF = BalorApp.calcBalorRatios(avroSchemaResults, retention) getOrElse threeBalorSetsOneOverZero
+        assert(balorDF != threeBalorSetsOneOverZero)
+        val balor1 = balorDF.where(balorDF("TimePeriod") === 1).select("custBalor", "txnBalor", "spendBalor").head()
+        val balor2 = balorDF.where(balorDF("TimePeriod") === 2).select("custBalor", "txnBalor", "spendBalor").head()
+        val balor3 = balorDF.where(balorDF("TimePeriod") === 3).select("custBalor", "txnBalor", "spendBalor").head()
 
-      val retention1 = balorDF.where(balorDF("TimePeriod") === 1).select("retention").first().getDouble(0)
-      val retention2 = balorDF.where(balorDF("TimePeriod") === 2).select("retention").first().getDouble(0)
-      val retention3 = balorDF.where(balorDF("TimePeriod") === 3).select("retention").first().getDouble(0)
+        val retention1 = balorDF.where(balorDF("TimePeriod") === 1).select("retention").first().getDouble(0)
+        val retention2 = balorDF.where(balorDF("TimePeriod") === 2).select("retention").first().getDouble(0)
+        val retention3 = balorDF.where(balorDF("TimePeriod") === 3).select("retention").first().getDouble(0)
 
-      val realBalor1 = Row(0.5294117647058824, 0.6111111111111112, 0.6842105263157895)
-      val realBalor2 = Row(1.3421052631578947, 1.358974358974359, 1.375)
-      val realBalor3 = Row(93.0, 1.5833333333333333, 0.991869918699187)
+        val realBalor1 = Row(0.5294117647058824, 0.6111111111111112, 0.6842105263157895)
+        val realBalor2 = Row(1.3421052631578947, 1.358974358974359, 1.375)
+        val realBalor3 = Row(93.0, 1.5833333333333333, 0.991869918699187)
 
-      assert(realBalor1 === balor1)
-      assert(realBalor2 === balor2)
-      assert(realBalor3 === balor3)
+        assert(realBalor1 === balor1)
+        assert(realBalor2 === balor2)
+        assert(realBalor3 === balor3)
 
-      assert(retention1 ===.22 +- .01)
-      assert(retention2 ===.02 +- .01)
-      assert(retention3 === 0)
+        assert(retention1 ===.22 +- .01)
+        assert(retention2 ===.02 +- .01)
+        assert(retention3 === 0)
 
+      }
     }
-  }
 
-  //AVRO SCHEMA CREATION
-  //too  many rows to create complete dataframe, will submit DF to calcBalorRatios, calcSegmentAvg, and then to createBalorAvro
-  //this test should always be run last, that way if it fails it will be because of the avro and not a previous method
-  test("createBalorAvro with 3 time periods of data") {
-    new BalorData {
-      val avgDF = BalorApp.calcSegAvg(avroSchemaResults) getOrElse avroSchemaResults
-      val balorDF = BalorApp.calcBalorRatios(avgDF) getOrElse avroSchemaResults
-      balorDF.show()
-      val balorAvro = BalorApp.createBalorAvro("jobKey", 25, minMaxDateDF, balorDF, OneMonth).get
-
+    //AVRO SCHEMA CREATION
+    //too  many rows to create complete dataframe, will submit DF to calcBalorRatios, calcSegmentAvg, and then to createBalorAvro
+    //this test should always be run last, that way if it fails it will be because of the avro and not a previous method
+    test("createBalorAvro with 3 time periods of data") {
+      new BalorData {
+        val avgDF = BalorApp.calcSegAvg(avroSchemaResults) getOrElse avroSchemaResults
+        val balorDF = BalorApp.calcBalorRatios(avgDF, retention) getOrElse avroSchemaResults
+        balorDF.show()
+        val balorAvro = BalorApp.createBalorAvro("jobKey", 25, minMaxDateDF, balorDF, OneMonth).get
 
 
-      val balorSets = balorAvro.getBalorSets
 
-      val balor1 = balorSets.get(2)
-      val balor2 = balorSets.get(1)
-      val balor3 = balorSets.get(0)
+        val balorSets = balorAvro.getBalorSets
 
-      //check every field in first timeperiod
-      assert(balor1.getTimePeriod === 3)
-      assert(balor1.getNewCustCount === 2)
-      assert(balor1.getNewTxnCount === 3)
-      assert(balor1.getNewTxnAmt === 40.0)
-      assert(balor1.getNewDiscAmt === 5.0)
-      assert(balor1.getNewItemQty === 6)
+        val balor1 = balorSets.get(2)
+        val balor2 = balorSets.get(1)
+        val balor3 = balorSets.get(0)
 
-      assert(balor1.getReactCustCount === 7)
-      assert(balor1.getReactTxnCount ===  8)
-      assert(balor1.getReactTxnAmt === 90.0)
-      assert(balor1.getReactDiscAmt === 10.0)
-      assert(balor1.getReactItemQty === 11)
+        //check every field in first timeperiod
+        assert(balor1.getTimePeriod === 3)
+        assert(balor1.getNewCustCount === 2)
+        assert(balor1.getNewTxnCount === 3)
+        assert(balor1.getNewTxnAmt === 40.0)
+        assert(balor1.getNewDiscAmt === 5.0)
+        assert(balor1.getNewItemQty === 6)
 
-      assert(balor1.getReturnCustCount === 12)
-      assert(balor1.getReturnTxnCount === 13)
-      assert(balor1.getReturnTxnAmt === 140.0)
-      assert(balor1.getReturnDiscAmt === 15.0)
-      assert(balor1.getReturnItemQty === 16)
+        assert(balor1.getReactCustCount === 7)
+        assert(balor1.getReactTxnCount ===  8)
+        assert(balor1.getReactTxnAmt === 90.0)
+        assert(balor1.getReactDiscAmt === 10.0)
+        assert(balor1.getReactItemQty === 11)
 
-      assert(balor1.getLapsedCustCount === 17)
-      assert(balor1.getLapsedTxnCount === 18)
-      assert(balor1.getLapsedTxnAmt === 190.0)
-      assert(balor1.getLapsedDiscAmt === 20.0)
-      assert(balor1.getLapsedItemQty === 21)
+        assert(balor1.getReturnCustCount === 12)
+        assert(balor1.getReturnTxnCount === 13)
+        assert(balor1.getReturnTxnAmt === 140.0)
+        assert(balor1.getReturnDiscAmt === 15.0)
+        assert(balor1.getReturnItemQty === 16)
 
-      assert(balor1.getNewCustSpendAvg === 20.0)
-      assert(balor1.getNewCustVisitAvg === 1.5)
-      assert(balor1.getNewCustItemAvg === 3.0)
-      assert(balor1.getNewCustDiscAvg === 2.5)
-      assert(balor1.getNewVisitSpendAvg === 13.333333333333334)
-      assert(balor1.getNewVisitItemAvg === 2.0)
-      assert(balor1.getNewVisitDiscAvg === 1.6666666666666667)
+        assert(balor1.getLapsedCustCount === 17)
+        assert(balor1.getLapsedTxnCount === 18)
+        assert(balor1.getLapsedTxnAmt === 190.0)
+        assert(balor1.getLapsedDiscAmt === 20.0)
+        assert(balor1.getLapsedItemQty === 21)
 
-      assert(balor1.getReactCustSpendAvg === 12.857142857142858)
-      assert(balor1.getReactCustVisitAvg === 1.1428571428571428)
-      assert(balor1.getReactCustItemAvg === 1.5714285714285714)
-      assert(balor1.getReactCustDiscAvg === 1.4285714285714286)
-      assert(balor1.getReactVisitSpendAvg === 11.25)
-      assert(balor1.getReactVisitItemAvg === 1.375)
-      assert(balor1.getReactVisitDiscAvg === 1.25)
+        assert(balor1.getNewCustSpendAvg === 20.0)
+        assert(balor1.getNewCustVisitAvg === 1.5)
+        assert(balor1.getNewCustItemAvg === 3.0)
+        assert(balor1.getNewCustDiscAvg === 2.5)
+        assert(balor1.getNewVisitSpendAvg === 13.333333333333334)
+        assert(balor1.getNewVisitItemAvg === 2.0)
+        assert(balor1.getNewVisitDiscAvg === 1.6666666666666667)
 
-      assert(balor1.getReturnCustSpendAvg === 11.666666666666666)
-      assert(balor1.getReturnCustVisitAvg === 1.0833333333333333)
-      assert(balor1.getReturnCustItemAvg === 1.3333333333333333)
-      assert(balor1.getReturnCustDiscAvg === 1.25)
-      assert(balor1.getReturnVisitSpendAvg === 10.76923076923077)
-      assert(balor1.getReturnVisitItemAvg === 1.2307692307692308)
-      assert(balor1.getReturnVisitDiscAvg === 1.1538461538461537)
+        assert(balor1.getReactCustSpendAvg === 12.857142857142858)
+        assert(balor1.getReactCustVisitAvg === 1.1428571428571428)
+        assert(balor1.getReactCustItemAvg === 1.5714285714285714)
+        assert(balor1.getReactCustDiscAvg === 1.4285714285714286)
+        assert(balor1.getReactVisitSpendAvg === 11.25)
+        assert(balor1.getReactVisitItemAvg === 1.375)
+        assert(balor1.getReactVisitDiscAvg === 1.25)
 
-      assert(balor1.getLapsedCustSpendAvg === 11.176470588235293)
-      assert(balor1.getLapsedCustVisitAvg === 1.0588235294117647)
-      assert(balor1.getLapsedCustItemAvg === 1.2352941176470589)
-      assert(balor1.getLapsedCustDiscAvg === 1.1764705882352942)
-      assert(balor1.getLapsedVisitSpendAvg === 10.555555555555555)
-      assert(balor1.getLapsedVisitItemAvg === 1.1666666666666667)
-      assert(balor1.getLapsedVisitDiscAvg == 1.1111111111111112)
+        assert(balor1.getReturnCustSpendAvg === 11.666666666666666)
+        assert(balor1.getReturnCustVisitAvg === 1.0833333333333333)
+        assert(balor1.getReturnCustItemAvg === 1.3333333333333333)
+        assert(balor1.getReturnCustDiscAvg === 1.25)
+        assert(balor1.getReturnVisitSpendAvg === 10.76923076923077)
+        assert(balor1.getReturnVisitItemAvg === 1.2307692307692308)
+        assert(balor1.getReturnVisitDiscAvg === 1.1538461538461537)
 
-      assert(balor1.getCustBalor === 0.5294117647058824)
-      assert(balor1.getTxnBalor === .6111111111111112)
-      assert(balor1.getSpendBalor === 0.6842105263157895)
-      assert(balor1.getRetention === .2222222222222222)
+        assert(balor1.getLapsedCustSpendAvg === 11.176470588235293)
+        assert(balor1.getLapsedCustVisitAvg === 1.0588235294117647)
+        assert(balor1.getLapsedCustItemAvg === 1.2352941176470589)
+        assert(balor1.getLapsedCustDiscAvg === 1.1764705882352942)
+        assert(balor1.getLapsedVisitSpendAvg === 10.555555555555555)
+        assert(balor1.getLapsedVisitItemAvg === 1.1666666666666667)
+        assert(balor1.getLapsedVisitDiscAvg == 1.1111111111111112)
 
-      assert(balor2.getTimePeriod === 2)
-      assert(balor2.getNewCustCount === 23)
+        assert(balor1.getCustBalor === 0.5294117647058824)
+        assert(balor1.getTxnBalor === .6111111111111112)
+        assert(balor1.getSpendBalor === 0.6842105263157895)
+        assert(balor1.getRetention === .2222222222222222)
 
-      assert(balor3.getTimePeriod === 1)
-      assert(balor3.getNewTxnAmt === 46.0)
+        assert(balor2.getTimePeriod === 2)
+        assert(balor2.getNewCustCount === 23)
 
-      balorDF.show()
-      println(s"This is the avro output: $balorAvro")
+        assert(balor3.getTimePeriod === 1)
+        assert(balor3.getNewTxnAmt === 46.0)
 
+        balorDF.show()
+        println(s"This is the avro output: $balorAvro")
+
+      }
     }
-  }
 }

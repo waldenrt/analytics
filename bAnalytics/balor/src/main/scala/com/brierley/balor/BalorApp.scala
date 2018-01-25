@@ -160,6 +160,31 @@ object BalorApp {
     joinedDF
   }
 
+  def retentionData(labelDF: DataFrame): Try [DataFrame] = Try {
+    val prevWindow = Window
+      .partitionBy("CUST_ID")
+      .orderBy("TimePeriod")
+
+    val retDF = labelDF
+      .withColumn("PrevLabel", lead(("Label"), 1).over(prevWindow))
+      .filter(col("Label") === "Returning" && col("PrevLabel") != "Lapsed")
+      .groupBy("TimePeriod")
+      .pivot("PrevLabel", Seq("New", "Reactivated", "Returning"))
+      .agg(count("CUST_ID"), sum("TXN_COUNT"), sum("TXN_AMT"))
+      .na.fill(0)
+      .withColumnRenamed("New_count(CUST_ID)", "returnNewCust")
+      .withColumnRenamed("New_sum(TXN_COUNT)", "returnNewTxn")
+      .withColumnRenamed("New_sum(TXN_AMT)", "returnNewSales")
+      .withColumnRenamed("Reactivated_count(CUST_ID)", "returnReactCust")
+      .withColumnRenamed("Reactivated_sum(TXN_COUNT)", "returnReactTxn")
+      .withColumnRenamed("Reactivated_sum(TXN_AMT)", "returnReactSales")
+      .withColumnRenamed("Returning_count(CUST_ID)", "returnReturnCust")
+      .withColumnRenamed("Returning_sum(TXN_COUNT)", "returnReturnTxn")
+      .withColumnRenamed("Returning_sum(TXN_AMT)", "returnReturnSales")
+
+    retDF
+  }
+
   def counts(labelDF: DataFrame): Try[DataFrame] = Try {
 
     val maxTP = labelDF
@@ -228,19 +253,27 @@ object BalorApp {
 
   }
 
-  def calcBalorRatios(countsDF: DataFrame): Try[DataFrame] = Try {
+  def calcBalorRatios(avgDF: DataFrame, retDF: DataFrame): Try[DataFrame] = Try {
+    val countRetDF = avgDF.join(retDF, Seq("TimePeriod"), "left_outer")
+      .na.fill(0)
 
     val segWindow = Window.orderBy("TimePeriod")
 
-    val balorDF = countsDF
-      .withColumn("custBalor", balorCount(countsDF("newCustCount"), countsDF("reactCustCount"),
-        countsDF("lapsedCustCount")))
-      .withColumn("txnBalor", balorCount(countsDF("newTxnCount"), countsDF("reactTxnCount"),
-        countsDF("lapsedTxnCount")))
-      .withColumn("spendBalor", balorMoney(countsDF("newTxnAmt"), countsDF("reactTxnAmt"),
-        countsDF("lapsedTxnAmt")))
-      .withColumn("retention", retention(countsDF("returnCustCount"), lead("reactCustCount", 1).over(segWindow),
+    val balorDF = countRetDF
+      .withColumn("custBalor", balorCount(countRetDF("newCustCount"), countRetDF("reactCustCount"),
+        countRetDF("lapsedCustCount")))
+      .withColumn("txnBalor", balorCount(countRetDF("newTxnCount"), countRetDF("reactTxnCount"),
+        countRetDF("lapsedTxnCount")))
+      .withColumn("spendBalor", balorMoney(countRetDF("newTxnAmt"), countRetDF("reactTxnAmt"),
+        countRetDF("lapsedTxnAmt")))
+      .withColumn("retention", retention(countRetDF("returnCustCount"), lead("reactCustCount", 1).over(segWindow),
         lead("newCustCount", 1).over(segWindow), lead("returnCustCount", 1).over(segWindow)))
+      .withColumn("ttlSalesLift", countRetDF("returnTxnAmt") / (countRetDF("returnNewSales") + countRetDF("returnReactSales") + countRetDF("returnReturnSales")))
+      .withColumn("avgSalesLift", (countRetDF("returnTxnAmt") / countRetDF("returnCustCount")) / ((countRetDF("returnNewSales") + countRetDF("returnReactSales") + countRetDF("returnReturnSales")) /
+        (countRetDF("returnNewCust") + countRetDF("returnReactCust") + countRetDF("returnReturnCust"))))
+      .withColumn("ttlTxnLift", countRetDF("returnTxnCount") / (countRetDF("returnNewTxn") + countRetDF("returnReactTxn") + countRetDF("returnReturnTxn")))
+      .withColumn("avgTxnLift", (countRetDF("returnTxnCount") / countRetDF("returnCustCount")) / ((countRetDF("returnNewTxn") + countRetDF("returnReactTxn") + countRetDF("returnReturnTxn")) /
+        (countRetDF("returnNewCust") + countRetDF("returnReactCust") + countRetDF("returnReturnCust"))))
       .na.fill(0)
 
     balorDF
@@ -335,6 +368,21 @@ object BalorApp {
       tpd.setRetention(tpdRow.getDouble(52))
       tpd.setAnchorDate(tpdRow.getString(53))
 
+      tpd.setReturnNewSales(tpdRow.getDouble(54))
+      tpd.setReturnNewTxn(tpdRow.getLong(55))
+      tpd.setReturnNewCust(tpdRow.getLong(56))
+      tpd.setReturnReactSales(tpdRow.getDouble(57))
+      tpd.setReturnReactTxn(tpdRow.getLong(58))
+      tpd.setReturnReactCust(tpdRow.getLong(59))
+      tpd.setReturnReturnSales(tpdRow.getDouble(60))
+      tpd.setReturnReturnTxn(tpdRow.getLong(61))
+      tpd.setReturnReturnCust(tpdRow.getLong(62))
+
+      tpd.setTtlSalesLift(tpdRow.getDouble(63))
+      tpd.setAvgSalesLift(tpdRow.getDouble(64))
+      tpd.setTtlTxnLift(tpdRow.getDouble(65))
+      tpd.setAvgTxnLift(tpdRow.getDouble(66))
+
       tempList.add(tpd)
     }
 
@@ -353,7 +401,9 @@ object BalorApp {
         "reactCustSpendAvg", "reactCustVisitAvg", "reactCustItemAvg", "reactCustDiscAvg", "reactVisitSpendAvg", "reactVisitItemAvg", "reactVisitDiscAvg",
         "returnCustSpendAvg", "returnCustVisitAvg", "returnCustItemAvg", "returnCustDiscAvg", "returnVisitSpendAvg", "returnVisitItemAvg", "returnVisitDiscAvg",
         "lapsedCustSpendAvg", "lapsedCustVisitAvg", "lapsedCustItemAvg", "lapsedCustDiscAvg", "lapsedVisitSpendAvg", "lapsedVisitItemAvg", "lapsedVisitDiscAvg",
-        "custBalor", "txnBalor", "spendBalor", "retention", "formatDate")
+        "custBalor", "txnBalor", "spendBalor", "retention", "formatDate", "returnNewSales", "returnNewTxn", "returnNewCust",
+        "returnReactSales", "returnReactTxn", "returnReactCust", "returnReturnSales", "returnReturnTxn", "returnReturnCust",
+        "ttlSalesLift", "avgSalesLift", "ttlTxnLift", "avgTxnLift")
 
 
     orderedDF.collect().foreach(e => mapTimePeriodData(e))
@@ -433,11 +483,13 @@ object BalorApp {
 
       labelDF <- assignSegmentLabel(timePeriodDF)
 
+      retentionDF <- retentionData(labelDF)
+
       countsDF <- counts(labelDF)
 
       avgDF <- calcSegAvg(countsDF)
 
-      balorDF <- calcBalorRatios(avgDF)
+      balorDF <- calcBalorRatios(avgDF, retentionDF)
 
       avro <- createBalorAvro(jobKey, txnCount, minMaxDF, balorDF, cadence)
     } yield avro

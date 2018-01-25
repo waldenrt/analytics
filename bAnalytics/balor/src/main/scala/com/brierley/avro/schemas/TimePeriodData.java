@@ -10,8 +10,8 @@ import org.apache.avro.specific.SpecificData;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 3249079624059392428L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"TimePeriodData\",\"namespace\":\"com.brierley.avro.schemas\",\"fields\":[{\"name\":\"timePeriod\",\"type\":\"int\",\"doc\":\"The Balor time period, calculated ascending\"},{\"name\":\"anchorDate\",\"type\":[\"null\",\"string\"],\"doc\":\"the earliest date for each time period, month will be formatted 'MMM yyyy' and weeks will be formatted 'MM/dd/yyyy', nullable to allow previous schema to appear in topic.\"},{\"name\":\"newCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered new in the given Balor time period.  To be considered new the cust_id must not appear in the previous 2 cadence periods\"},{\"name\":\"newTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all NEW customers in the given Balor time period.\"},{\"name\":\"newCustSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per NEW customer in the given time period.\"},{\"name\":\"newCustVisitAvg\",\"type\":\"double\",\"doc\":\"The average number of visits per NEW customer in the given time period.\"},{\"name\":\"newCustItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per NEW customer in the given time period.\"},{\"name\":\"newCustDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per NEW customer in the given time period.\"},{\"name\":\"newVisitSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per visit for NEW customers in the given time period.\"},{\"name\":\"newVisitDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per visit for NEW customers in the given time period.\"},{\"name\":\"newVisitItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per visit for NEW customers in the given time period.\"},{\"name\":\"reactCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered REACTIVATED in the given Balor time period.  To be considered reactivated the cust_id must appear in the current and t-2 time period\"},{\"name\":\"reactTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactCustSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per REACTIVATED customer in the given time period.\"},{\"name\":\"reactCustVisitAvg\",\"type\":\"double\",\"doc\":\"The average number of visits per REACTIVATED customer in the given time period.\"},{\"name\":\"reactCustItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per REACTIVATED customer in the given time period.\"},{\"name\":\"reactCustDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per REACTIVATED customer in the given time period.\"},{\"name\":\"reactVisitSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per visit for REACTIVATED customers in the given time period.\"},{\"name\":\"reactVisitDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per visit for REACTIVATED customers in the given time period.\"},{\"name\":\"reactVisitItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per visit for REACTIVATED customers in the given time period.\"},{\"name\":\"returnCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered RETURNING in the given Balor time period.  To be considered returning the cust_id must appear in the 2 most recent time periods, or all 3\"},{\"name\":\"returnTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all RETURNING customers in the given Balor time period.\"},{\"name\":\"returnCustSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per RETURNING customer in the given time period.\"},{\"name\":\"returnCustVisitAvg\",\"type\":\"double\",\"doc\":\"The average number of visits per RETURNING customer in the given time period.\"},{\"name\":\"returnCustItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per RETURNING customer in the given time period.\"},{\"name\":\"returnCustDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per RETURNING customer in the given time period.\"},{\"name\":\"returnVisitSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per visit for RETURNING customers in the given time period.\"},{\"name\":\"returnVisitDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per visit for RETURNING customers in the given time period.\"},{\"name\":\"returnVisitItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per visit for RETURNING customers in the given time period.\"},{\"name\":\"lapsedCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered LAPSED in the given Balor time period.  To be considered lapsed the cust_id cannot appear in the current time period\"},{\"name\":\"lapsedTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedCustSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per LAPSED customer in the given time period.\"},{\"name\":\"lapsedCustVisitAvg\",\"type\":\"double\",\"doc\":\"The average number of visits per LAPSED customer in the given time period.\"},{\"name\":\"lapsedCustItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per LAPSED customer in the given time period.\"},{\"name\":\"lapsedCustDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per LAPSED customer in the given time period.\"},{\"name\":\"lapsedVisitSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per visit for LAPSED customers in the given time period.\"},{\"name\":\"lapsedVisitDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per visit for LAPSED customers in the given time period.\"},{\"name\":\"lapsedVisitItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per visit for LAPSED customers in the given time period.\"},{\"name\":\"custBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for customer counts. ratio calculated: (new + reactivated) / lapsed\"},{\"name\":\"txnBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for transaction counts per customer segment. ratio calculated: (new + reactivated) / lapsed\"},{\"name\":\"spendBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for the total spend for each customer segment. ratio calculated: (new + reactivated) / lapsed\"},{\"name\":\"retention\",\"type\":\"double\",\"doc\":\"The retention rate: (Returning in (t))/(new + react + return in (t-1))\"}]}");
+  private static final long serialVersionUID = 430613573011844729L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"TimePeriodData\",\"namespace\":\"com.brierley.avro.schemas\",\"fields\":[{\"name\":\"timePeriod\",\"type\":\"int\",\"doc\":\"The Balor time period, calculated ascending\"},{\"name\":\"anchorDate\",\"type\":[\"null\",\"string\"],\"doc\":\"the earliest date for each time period, month will be formatted 'MMM yyyy' and weeks will be formatted 'MM/dd/yyyy', nullable to allow previous schema to appear in topic.\"},{\"name\":\"newCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered new in the given Balor time period.  To be considered new the cust_id must not appear in the previous 2 cadence periods\"},{\"name\":\"newTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all NEW customers in the given Balor time period.\"},{\"name\":\"newCustSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per NEW customer in the given time period.\"},{\"name\":\"newCustVisitAvg\",\"type\":\"double\",\"doc\":\"The average number of visits per NEW customer in the given time period.\"},{\"name\":\"newCustItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per NEW customer in the given time period.\"},{\"name\":\"newCustDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per NEW customer in the given time period.\"},{\"name\":\"newVisitSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per visit for NEW customers in the given time period.\"},{\"name\":\"newVisitDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per visit for NEW customers in the given time period.\"},{\"name\":\"newVisitItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per visit for NEW customers in the given time period.\"},{\"name\":\"reactCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered REACTIVATED in the given Balor time period.  To be considered reactivated the cust_id must appear in the current and t-2 time period\"},{\"name\":\"reactTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactCustSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per REACTIVATED customer in the given time period.\"},{\"name\":\"reactCustVisitAvg\",\"type\":\"double\",\"doc\":\"The average number of visits per REACTIVATED customer in the given time period.\"},{\"name\":\"reactCustItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per REACTIVATED customer in the given time period.\"},{\"name\":\"reactCustDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per REACTIVATED customer in the given time period.\"},{\"name\":\"reactVisitSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per visit for REACTIVATED customers in the given time period.\"},{\"name\":\"reactVisitDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per visit for REACTIVATED customers in the given time period.\"},{\"name\":\"reactVisitItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per visit for REACTIVATED customers in the given time period.\"},{\"name\":\"returnCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered RETURNING in the given Balor time period.  To be considered returning the cust_id must appear in the 2 most recent time periods, or all 3\"},{\"name\":\"returnTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all RETURNING customers in the given Balor time period.\"},{\"name\":\"returnCustSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per RETURNING customer in the given time period.\"},{\"name\":\"returnCustVisitAvg\",\"type\":\"double\",\"doc\":\"The average number of visits per RETURNING customer in the given time period.\"},{\"name\":\"returnCustItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per RETURNING customer in the given time period.\"},{\"name\":\"returnCustDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per RETURNING customer in the given time period.\"},{\"name\":\"returnVisitSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per visit for RETURNING customers in the given time period.\"},{\"name\":\"returnVisitDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per visit for RETURNING customers in the given time period.\"},{\"name\":\"returnVisitItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per visit for RETURNING customers in the given time period.\"},{\"name\":\"lapsedCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered LAPSED in the given Balor time period.  To be considered lapsed the cust_id cannot appear in the current time period\"},{\"name\":\"lapsedTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedCustSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per LAPSED customer in the given time period.\"},{\"name\":\"lapsedCustVisitAvg\",\"type\":\"double\",\"doc\":\"The average number of visits per LAPSED customer in the given time period.\"},{\"name\":\"lapsedCustItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per LAPSED customer in the given time period.\"},{\"name\":\"lapsedCustDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per LAPSED customer in the given time period.\"},{\"name\":\"lapsedVisitSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per visit for LAPSED customers in the given time period.\"},{\"name\":\"lapsedVisitDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per visit for LAPSED customers in the given time period.\"},{\"name\":\"lapsedVisitItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per visit for LAPSED customers in the given time period.\"},{\"name\":\"custBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for customer counts. ratio calculated: (new + reactivated) / lapsed\"},{\"name\":\"txnBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for transaction counts per customer segment. ratio calculated: (new + reactivated) / lapsed\"},{\"name\":\"spendBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for the total spend for each customer segment. ratio calculated: (new + reactivated) / lapsed\"},{\"name\":\"retention\",\"type\":\"double\",\"doc\":\"The retention rate: (Returning in (t))/(new + react + return in (t-1))\"},{\"name\":\"retentionGrowth\",\"type\":[\"null\",\"double\"],\"doc\":\"The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100\"},{\"name\":\"returnNewSales\",\"type\":[\"null\",\"double\"],\"doc\":\"Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)\"},{\"name\":\"returnNewTxn\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of transactions in (t) for customers that were NEW in (","t-1) and RETURNING in (t)\"},{\"name\":\"returnNewCust\",\"type\":[\"null\",\"long\"],\"doc\":\"Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)\"},{\"name\":\"returnReactSales\",\"type\":[\"null\",\"double\"],\"doc\":\"Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)\"},{\"name\":\"returnReactTxn\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)\"},{\"name\":\"returnReactCust\",\"type\":[\"null\",\"long\"],\"doc\":\"Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)\"},{\"name\":\"returnReturnSales\",\"type\":[\"null\",\"double\"],\"doc\":\"Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)\"},{\"name\":\"returnReturnTxn\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)\"},{\"name\":\"returnReturnCust\",\"type\":[\"null\",\"long\"],\"doc\":\"Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)\"},{\"name\":\"ttlSalesLift\",\"type\":[\"null\",\"double\"],\"doc\":\"Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)\"},{\"name\":\"avgSalesLift\",\"type\":[\"null\",\"double\"],\"doc\":\"Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]\"},{\"name\":\"ttlTxnLift\",\"type\":[\"null\",\"double\"],\"doc\":\"Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)\"},{\"name\":\"avgTxnLift\",\"type\":[\"null\",\"double\"],\"doc\":\"Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** The Balor time period, calculated ascending */
   @Deprecated public int timePeriod;
@@ -121,6 +121,34 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
   @Deprecated public double spendBalor;
   /** The retention rate: (Returning in (t))/(new + react + return in (t-1)) */
   @Deprecated public double retention;
+  /** The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100 */
+  @Deprecated public java.lang.Double retentionGrowth;
+  /** Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Double returnNewSales;
+  /** Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Long returnNewTxn;
+  /** Total customer count in (t) that were NEW in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Long returnNewCust;
+  /** Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Double returnReactSales;
+  /** Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Long returnReactTxn;
+  /** Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Long returnReactCust;
+  /** Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Double returnReturnSales;
+  /** Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Long returnReturnTxn;
+  /** Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Long returnReturnCust;
+  /** Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales) */
+  @Deprecated public java.lang.Double ttlSalesLift;
+  /** Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)] */
+  @Deprecated public java.lang.Double avgSalesLift;
+  /** Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn) */
+  @Deprecated public java.lang.Double ttlTxnLift;
+  /** Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)] */
+  @Deprecated public java.lang.Double avgTxnLift;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -185,8 +213,22 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
    * @param txnBalor The balor ratio for transaction counts per customer segment. ratio calculated: (new + reactivated) / lapsed
    * @param spendBalor The balor ratio for the total spend for each customer segment. ratio calculated: (new + reactivated) / lapsed
    * @param retention The retention rate: (Returning in (t))/(new + react + return in (t-1))
+   * @param retentionGrowth The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100
+   * @param returnNewSales Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+   * @param returnNewTxn Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+   * @param returnNewCust Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)
+   * @param returnReactSales Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+   * @param returnReactTxn Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+   * @param returnReactCust Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)
+   * @param returnReturnSales Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+   * @param returnReturnTxn Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+   * @param returnReturnCust Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)
+   * @param ttlSalesLift Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)
+   * @param avgSalesLift Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]
+   * @param ttlTxnLift Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)
+   * @param avgTxnLift Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]
    */
-  public TimePeriodData(java.lang.Integer timePeriod, java.lang.CharSequence anchorDate, java.lang.Long newCustCount, java.lang.Long newTxnCount, java.lang.Double newTxnAmt, java.lang.Double newDiscAmt, java.lang.Long newItemQty, java.lang.Double newCustSpendAvg, java.lang.Double newCustVisitAvg, java.lang.Double newCustItemAvg, java.lang.Double newCustDiscAvg, java.lang.Double newVisitSpendAvg, java.lang.Double newVisitDiscAvg, java.lang.Double newVisitItemAvg, java.lang.Long reactCustCount, java.lang.Long reactTxnCount, java.lang.Double reactTxnAmt, java.lang.Double reactDiscAmt, java.lang.Long reactItemQty, java.lang.Double reactCustSpendAvg, java.lang.Double reactCustVisitAvg, java.lang.Double reactCustItemAvg, java.lang.Double reactCustDiscAvg, java.lang.Double reactVisitSpendAvg, java.lang.Double reactVisitDiscAvg, java.lang.Double reactVisitItemAvg, java.lang.Long returnCustCount, java.lang.Long returnTxnCount, java.lang.Double returnTxnAmt, java.lang.Double returnDiscAmt, java.lang.Long returnItemQty, java.lang.Double returnCustSpendAvg, java.lang.Double returnCustVisitAvg, java.lang.Double returnCustItemAvg, java.lang.Double returnCustDiscAvg, java.lang.Double returnVisitSpendAvg, java.lang.Double returnVisitDiscAvg, java.lang.Double returnVisitItemAvg, java.lang.Long lapsedCustCount, java.lang.Long lapsedTxnCount, java.lang.Double lapsedTxnAmt, java.lang.Double lapsedDiscAmt, java.lang.Long lapsedItemQty, java.lang.Double lapsedCustSpendAvg, java.lang.Double lapsedCustVisitAvg, java.lang.Double lapsedCustItemAvg, java.lang.Double lapsedCustDiscAvg, java.lang.Double lapsedVisitSpendAvg, java.lang.Double lapsedVisitDiscAvg, java.lang.Double lapsedVisitItemAvg, java.lang.Double custBalor, java.lang.Double txnBalor, java.lang.Double spendBalor, java.lang.Double retention) {
+  public TimePeriodData(java.lang.Integer timePeriod, java.lang.CharSequence anchorDate, java.lang.Long newCustCount, java.lang.Long newTxnCount, java.lang.Double newTxnAmt, java.lang.Double newDiscAmt, java.lang.Long newItemQty, java.lang.Double newCustSpendAvg, java.lang.Double newCustVisitAvg, java.lang.Double newCustItemAvg, java.lang.Double newCustDiscAvg, java.lang.Double newVisitSpendAvg, java.lang.Double newVisitDiscAvg, java.lang.Double newVisitItemAvg, java.lang.Long reactCustCount, java.lang.Long reactTxnCount, java.lang.Double reactTxnAmt, java.lang.Double reactDiscAmt, java.lang.Long reactItemQty, java.lang.Double reactCustSpendAvg, java.lang.Double reactCustVisitAvg, java.lang.Double reactCustItemAvg, java.lang.Double reactCustDiscAvg, java.lang.Double reactVisitSpendAvg, java.lang.Double reactVisitDiscAvg, java.lang.Double reactVisitItemAvg, java.lang.Long returnCustCount, java.lang.Long returnTxnCount, java.lang.Double returnTxnAmt, java.lang.Double returnDiscAmt, java.lang.Long returnItemQty, java.lang.Double returnCustSpendAvg, java.lang.Double returnCustVisitAvg, java.lang.Double returnCustItemAvg, java.lang.Double returnCustDiscAvg, java.lang.Double returnVisitSpendAvg, java.lang.Double returnVisitDiscAvg, java.lang.Double returnVisitItemAvg, java.lang.Long lapsedCustCount, java.lang.Long lapsedTxnCount, java.lang.Double lapsedTxnAmt, java.lang.Double lapsedDiscAmt, java.lang.Long lapsedItemQty, java.lang.Double lapsedCustSpendAvg, java.lang.Double lapsedCustVisitAvg, java.lang.Double lapsedCustItemAvg, java.lang.Double lapsedCustDiscAvg, java.lang.Double lapsedVisitSpendAvg, java.lang.Double lapsedVisitDiscAvg, java.lang.Double lapsedVisitItemAvg, java.lang.Double custBalor, java.lang.Double txnBalor, java.lang.Double spendBalor, java.lang.Double retention, java.lang.Double retentionGrowth, java.lang.Double returnNewSales, java.lang.Long returnNewTxn, java.lang.Long returnNewCust, java.lang.Double returnReactSales, java.lang.Long returnReactTxn, java.lang.Long returnReactCust, java.lang.Double returnReturnSales, java.lang.Long returnReturnTxn, java.lang.Long returnReturnCust, java.lang.Double ttlSalesLift, java.lang.Double avgSalesLift, java.lang.Double ttlTxnLift, java.lang.Double avgTxnLift) {
     this.timePeriod = timePeriod;
     this.anchorDate = anchorDate;
     this.newCustCount = newCustCount;
@@ -241,6 +283,20 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
     this.txnBalor = txnBalor;
     this.spendBalor = spendBalor;
     this.retention = retention;
+    this.retentionGrowth = retentionGrowth;
+    this.returnNewSales = returnNewSales;
+    this.returnNewTxn = returnNewTxn;
+    this.returnNewCust = returnNewCust;
+    this.returnReactSales = returnReactSales;
+    this.returnReactTxn = returnReactTxn;
+    this.returnReactCust = returnReactCust;
+    this.returnReturnSales = returnReturnSales;
+    this.returnReturnTxn = returnReturnTxn;
+    this.returnReturnCust = returnReturnCust;
+    this.ttlSalesLift = ttlSalesLift;
+    this.avgSalesLift = avgSalesLift;
+    this.ttlTxnLift = ttlTxnLift;
+    this.avgTxnLift = avgTxnLift;
   }
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
@@ -301,6 +357,20 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
     case 51: return txnBalor;
     case 52: return spendBalor;
     case 53: return retention;
+    case 54: return retentionGrowth;
+    case 55: return returnNewSales;
+    case 56: return returnNewTxn;
+    case 57: return returnNewCust;
+    case 58: return returnReactSales;
+    case 59: return returnReactTxn;
+    case 60: return returnReactCust;
+    case 61: return returnReturnSales;
+    case 62: return returnReturnTxn;
+    case 63: return returnReturnCust;
+    case 64: return ttlSalesLift;
+    case 65: return avgSalesLift;
+    case 66: return ttlTxnLift;
+    case 67: return avgTxnLift;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -363,6 +433,20 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
     case 51: txnBalor = (java.lang.Double)value$; break;
     case 52: spendBalor = (java.lang.Double)value$; break;
     case 53: retention = (java.lang.Double)value$; break;
+    case 54: retentionGrowth = (java.lang.Double)value$; break;
+    case 55: returnNewSales = (java.lang.Double)value$; break;
+    case 56: returnNewTxn = (java.lang.Long)value$; break;
+    case 57: returnNewCust = (java.lang.Long)value$; break;
+    case 58: returnReactSales = (java.lang.Double)value$; break;
+    case 59: returnReactTxn = (java.lang.Long)value$; break;
+    case 60: returnReactCust = (java.lang.Long)value$; break;
+    case 61: returnReturnSales = (java.lang.Double)value$; break;
+    case 62: returnReturnTxn = (java.lang.Long)value$; break;
+    case 63: returnReturnCust = (java.lang.Long)value$; break;
+    case 64: ttlSalesLift = (java.lang.Double)value$; break;
+    case 65: avgSalesLift = (java.lang.Double)value$; break;
+    case 66: ttlTxnLift = (java.lang.Double)value$; break;
+    case 67: avgTxnLift = (java.lang.Double)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -1286,6 +1370,244 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
   }
 
   /**
+   * Gets the value of the 'retentionGrowth' field.
+   * @return The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100
+   */
+  public java.lang.Double getRetentionGrowth() {
+    return retentionGrowth;
+  }
+
+  /**
+   * Sets the value of the 'retentionGrowth' field.
+   * The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100
+   * @param value the value to set.
+   */
+  public void setRetentionGrowth(java.lang.Double value) {
+    this.retentionGrowth = value;
+  }
+
+  /**
+   * Gets the value of the 'returnNewSales' field.
+   * @return Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Double getReturnNewSales() {
+    return returnNewSales;
+  }
+
+  /**
+   * Sets the value of the 'returnNewSales' field.
+   * Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnNewSales(java.lang.Double value) {
+    this.returnNewSales = value;
+  }
+
+  /**
+   * Gets the value of the 'returnNewTxn' field.
+   * @return Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Long getReturnNewTxn() {
+    return returnNewTxn;
+  }
+
+  /**
+   * Sets the value of the 'returnNewTxn' field.
+   * Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnNewTxn(java.lang.Long value) {
+    this.returnNewTxn = value;
+  }
+
+  /**
+   * Gets the value of the 'returnNewCust' field.
+   * @return Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Long getReturnNewCust() {
+    return returnNewCust;
+  }
+
+  /**
+   * Sets the value of the 'returnNewCust' field.
+   * Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnNewCust(java.lang.Long value) {
+    this.returnNewCust = value;
+  }
+
+  /**
+   * Gets the value of the 'returnReactSales' field.
+   * @return Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Double getReturnReactSales() {
+    return returnReactSales;
+  }
+
+  /**
+   * Sets the value of the 'returnReactSales' field.
+   * Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnReactSales(java.lang.Double value) {
+    this.returnReactSales = value;
+  }
+
+  /**
+   * Gets the value of the 'returnReactTxn' field.
+   * @return Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Long getReturnReactTxn() {
+    return returnReactTxn;
+  }
+
+  /**
+   * Sets the value of the 'returnReactTxn' field.
+   * Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnReactTxn(java.lang.Long value) {
+    this.returnReactTxn = value;
+  }
+
+  /**
+   * Gets the value of the 'returnReactCust' field.
+   * @return Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Long getReturnReactCust() {
+    return returnReactCust;
+  }
+
+  /**
+   * Sets the value of the 'returnReactCust' field.
+   * Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnReactCust(java.lang.Long value) {
+    this.returnReactCust = value;
+  }
+
+  /**
+   * Gets the value of the 'returnReturnSales' field.
+   * @return Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Double getReturnReturnSales() {
+    return returnReturnSales;
+  }
+
+  /**
+   * Sets the value of the 'returnReturnSales' field.
+   * Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnReturnSales(java.lang.Double value) {
+    this.returnReturnSales = value;
+  }
+
+  /**
+   * Gets the value of the 'returnReturnTxn' field.
+   * @return Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Long getReturnReturnTxn() {
+    return returnReturnTxn;
+  }
+
+  /**
+   * Sets the value of the 'returnReturnTxn' field.
+   * Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnReturnTxn(java.lang.Long value) {
+    this.returnReturnTxn = value;
+  }
+
+  /**
+   * Gets the value of the 'returnReturnCust' field.
+   * @return Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Long getReturnReturnCust() {
+    return returnReturnCust;
+  }
+
+  /**
+   * Sets the value of the 'returnReturnCust' field.
+   * Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnReturnCust(java.lang.Long value) {
+    this.returnReturnCust = value;
+  }
+
+  /**
+   * Gets the value of the 'ttlSalesLift' field.
+   * @return Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)
+   */
+  public java.lang.Double getTtlSalesLift() {
+    return ttlSalesLift;
+  }
+
+  /**
+   * Sets the value of the 'ttlSalesLift' field.
+   * Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)
+   * @param value the value to set.
+   */
+  public void setTtlSalesLift(java.lang.Double value) {
+    this.ttlSalesLift = value;
+  }
+
+  /**
+   * Gets the value of the 'avgSalesLift' field.
+   * @return Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]
+   */
+  public java.lang.Double getAvgSalesLift() {
+    return avgSalesLift;
+  }
+
+  /**
+   * Sets the value of the 'avgSalesLift' field.
+   * Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]
+   * @param value the value to set.
+   */
+  public void setAvgSalesLift(java.lang.Double value) {
+    this.avgSalesLift = value;
+  }
+
+  /**
+   * Gets the value of the 'ttlTxnLift' field.
+   * @return Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)
+   */
+  public java.lang.Double getTtlTxnLift() {
+    return ttlTxnLift;
+  }
+
+  /**
+   * Sets the value of the 'ttlTxnLift' field.
+   * Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)
+   * @param value the value to set.
+   */
+  public void setTtlTxnLift(java.lang.Double value) {
+    this.ttlTxnLift = value;
+  }
+
+  /**
+   * Gets the value of the 'avgTxnLift' field.
+   * @return Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]
+   */
+  public java.lang.Double getAvgTxnLift() {
+    return avgTxnLift;
+  }
+
+  /**
+   * Sets the value of the 'avgTxnLift' field.
+   * Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]
+   * @param value the value to set.
+   */
+  public void setAvgTxnLift(java.lang.Double value) {
+    this.avgTxnLift = value;
+  }
+
+  /**
    * Creates a new TimePeriodData RecordBuilder.
    * @return A new TimePeriodData RecordBuilder
    */
@@ -1425,6 +1747,34 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
     private double spendBalor;
     /** The retention rate: (Returning in (t))/(new + react + return in (t-1)) */
     private double retention;
+    /** The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100 */
+    private java.lang.Double retentionGrowth;
+    /** Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t) */
+    private java.lang.Double returnNewSales;
+    /** Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t) */
+    private java.lang.Long returnNewTxn;
+    /** Total customer count in (t) that were NEW in (t-1) and RETURNING in (t) */
+    private java.lang.Long returnNewCust;
+    /** Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t) */
+    private java.lang.Double returnReactSales;
+    /** Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t) */
+    private java.lang.Long returnReactTxn;
+    /** Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t) */
+    private java.lang.Long returnReactCust;
+    /** Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t) */
+    private java.lang.Double returnReturnSales;
+    /** Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t) */
+    private java.lang.Long returnReturnTxn;
+    /** Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t) */
+    private java.lang.Long returnReturnCust;
+    /** Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales) */
+    private java.lang.Double ttlSalesLift;
+    /** Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)] */
+    private java.lang.Double avgSalesLift;
+    /** Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn) */
+    private java.lang.Double ttlTxnLift;
+    /** Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)] */
+    private java.lang.Double avgTxnLift;
 
     /** Creates a new Builder */
     private Builder() {
@@ -1653,6 +2003,62 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
         this.retention = data().deepCopy(fields()[53].schema(), other.retention);
         fieldSetFlags()[53] = true;
       }
+      if (isValidValue(fields()[54], other.retentionGrowth)) {
+        this.retentionGrowth = data().deepCopy(fields()[54].schema(), other.retentionGrowth);
+        fieldSetFlags()[54] = true;
+      }
+      if (isValidValue(fields()[55], other.returnNewSales)) {
+        this.returnNewSales = data().deepCopy(fields()[55].schema(), other.returnNewSales);
+        fieldSetFlags()[55] = true;
+      }
+      if (isValidValue(fields()[56], other.returnNewTxn)) {
+        this.returnNewTxn = data().deepCopy(fields()[56].schema(), other.returnNewTxn);
+        fieldSetFlags()[56] = true;
+      }
+      if (isValidValue(fields()[57], other.returnNewCust)) {
+        this.returnNewCust = data().deepCopy(fields()[57].schema(), other.returnNewCust);
+        fieldSetFlags()[57] = true;
+      }
+      if (isValidValue(fields()[58], other.returnReactSales)) {
+        this.returnReactSales = data().deepCopy(fields()[58].schema(), other.returnReactSales);
+        fieldSetFlags()[58] = true;
+      }
+      if (isValidValue(fields()[59], other.returnReactTxn)) {
+        this.returnReactTxn = data().deepCopy(fields()[59].schema(), other.returnReactTxn);
+        fieldSetFlags()[59] = true;
+      }
+      if (isValidValue(fields()[60], other.returnReactCust)) {
+        this.returnReactCust = data().deepCopy(fields()[60].schema(), other.returnReactCust);
+        fieldSetFlags()[60] = true;
+      }
+      if (isValidValue(fields()[61], other.returnReturnSales)) {
+        this.returnReturnSales = data().deepCopy(fields()[61].schema(), other.returnReturnSales);
+        fieldSetFlags()[61] = true;
+      }
+      if (isValidValue(fields()[62], other.returnReturnTxn)) {
+        this.returnReturnTxn = data().deepCopy(fields()[62].schema(), other.returnReturnTxn);
+        fieldSetFlags()[62] = true;
+      }
+      if (isValidValue(fields()[63], other.returnReturnCust)) {
+        this.returnReturnCust = data().deepCopy(fields()[63].schema(), other.returnReturnCust);
+        fieldSetFlags()[63] = true;
+      }
+      if (isValidValue(fields()[64], other.ttlSalesLift)) {
+        this.ttlSalesLift = data().deepCopy(fields()[64].schema(), other.ttlSalesLift);
+        fieldSetFlags()[64] = true;
+      }
+      if (isValidValue(fields()[65], other.avgSalesLift)) {
+        this.avgSalesLift = data().deepCopy(fields()[65].schema(), other.avgSalesLift);
+        fieldSetFlags()[65] = true;
+      }
+      if (isValidValue(fields()[66], other.ttlTxnLift)) {
+        this.ttlTxnLift = data().deepCopy(fields()[66].schema(), other.ttlTxnLift);
+        fieldSetFlags()[66] = true;
+      }
+      if (isValidValue(fields()[67], other.avgTxnLift)) {
+        this.avgTxnLift = data().deepCopy(fields()[67].schema(), other.avgTxnLift);
+        fieldSetFlags()[67] = true;
+      }
     }
 
     /**
@@ -1876,6 +2282,62 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       if (isValidValue(fields()[53], other.retention)) {
         this.retention = data().deepCopy(fields()[53].schema(), other.retention);
         fieldSetFlags()[53] = true;
+      }
+      if (isValidValue(fields()[54], other.retentionGrowth)) {
+        this.retentionGrowth = data().deepCopy(fields()[54].schema(), other.retentionGrowth);
+        fieldSetFlags()[54] = true;
+      }
+      if (isValidValue(fields()[55], other.returnNewSales)) {
+        this.returnNewSales = data().deepCopy(fields()[55].schema(), other.returnNewSales);
+        fieldSetFlags()[55] = true;
+      }
+      if (isValidValue(fields()[56], other.returnNewTxn)) {
+        this.returnNewTxn = data().deepCopy(fields()[56].schema(), other.returnNewTxn);
+        fieldSetFlags()[56] = true;
+      }
+      if (isValidValue(fields()[57], other.returnNewCust)) {
+        this.returnNewCust = data().deepCopy(fields()[57].schema(), other.returnNewCust);
+        fieldSetFlags()[57] = true;
+      }
+      if (isValidValue(fields()[58], other.returnReactSales)) {
+        this.returnReactSales = data().deepCopy(fields()[58].schema(), other.returnReactSales);
+        fieldSetFlags()[58] = true;
+      }
+      if (isValidValue(fields()[59], other.returnReactTxn)) {
+        this.returnReactTxn = data().deepCopy(fields()[59].schema(), other.returnReactTxn);
+        fieldSetFlags()[59] = true;
+      }
+      if (isValidValue(fields()[60], other.returnReactCust)) {
+        this.returnReactCust = data().deepCopy(fields()[60].schema(), other.returnReactCust);
+        fieldSetFlags()[60] = true;
+      }
+      if (isValidValue(fields()[61], other.returnReturnSales)) {
+        this.returnReturnSales = data().deepCopy(fields()[61].schema(), other.returnReturnSales);
+        fieldSetFlags()[61] = true;
+      }
+      if (isValidValue(fields()[62], other.returnReturnTxn)) {
+        this.returnReturnTxn = data().deepCopy(fields()[62].schema(), other.returnReturnTxn);
+        fieldSetFlags()[62] = true;
+      }
+      if (isValidValue(fields()[63], other.returnReturnCust)) {
+        this.returnReturnCust = data().deepCopy(fields()[63].schema(), other.returnReturnCust);
+        fieldSetFlags()[63] = true;
+      }
+      if (isValidValue(fields()[64], other.ttlSalesLift)) {
+        this.ttlSalesLift = data().deepCopy(fields()[64].schema(), other.ttlSalesLift);
+        fieldSetFlags()[64] = true;
+      }
+      if (isValidValue(fields()[65], other.avgSalesLift)) {
+        this.avgSalesLift = data().deepCopy(fields()[65].schema(), other.avgSalesLift);
+        fieldSetFlags()[65] = true;
+      }
+      if (isValidValue(fields()[66], other.ttlTxnLift)) {
+        this.ttlTxnLift = data().deepCopy(fields()[66].schema(), other.ttlTxnLift);
+        fieldSetFlags()[66] = true;
+      }
+      if (isValidValue(fields()[67], other.avgTxnLift)) {
+        this.avgTxnLift = data().deepCopy(fields()[67].schema(), other.avgTxnLift);
+        fieldSetFlags()[67] = true;
       }
     }
 
@@ -4148,6 +4610,608 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       return this;
     }
 
+    /**
+      * Gets the value of the 'retentionGrowth' field.
+      * The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100
+      * @return The value.
+      */
+    public java.lang.Double getRetentionGrowth() {
+      return retentionGrowth;
+    }
+
+    /**
+      * Sets the value of the 'retentionGrowth' field.
+      * The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100
+      * @param value The value of 'retentionGrowth'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setRetentionGrowth(java.lang.Double value) {
+      validate(fields()[54], value);
+      this.retentionGrowth = value;
+      fieldSetFlags()[54] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'retentionGrowth' field has been set.
+      * The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100
+      * @return True if the 'retentionGrowth' field has been set, false otherwise.
+      */
+    public boolean hasRetentionGrowth() {
+      return fieldSetFlags()[54];
+    }
+
+
+    /**
+      * Clears the value of the 'retentionGrowth' field.
+      * The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearRetentionGrowth() {
+      retentionGrowth = null;
+      fieldSetFlags()[54] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnNewSales' field.
+      * Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Double getReturnNewSales() {
+      return returnNewSales;
+    }
+
+    /**
+      * Sets the value of the 'returnNewSales' field.
+      * Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnNewSales'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnNewSales(java.lang.Double value) {
+      validate(fields()[55], value);
+      this.returnNewSales = value;
+      fieldSetFlags()[55] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnNewSales' field has been set.
+      * Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+      * @return True if the 'returnNewSales' field has been set, false otherwise.
+      */
+    public boolean hasReturnNewSales() {
+      return fieldSetFlags()[55];
+    }
+
+
+    /**
+      * Clears the value of the 'returnNewSales' field.
+      * Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnNewSales() {
+      returnNewSales = null;
+      fieldSetFlags()[55] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnNewTxn' field.
+      * Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Long getReturnNewTxn() {
+      return returnNewTxn;
+    }
+
+    /**
+      * Sets the value of the 'returnNewTxn' field.
+      * Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnNewTxn'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnNewTxn(java.lang.Long value) {
+      validate(fields()[56], value);
+      this.returnNewTxn = value;
+      fieldSetFlags()[56] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnNewTxn' field has been set.
+      * Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+      * @return True if the 'returnNewTxn' field has been set, false otherwise.
+      */
+    public boolean hasReturnNewTxn() {
+      return fieldSetFlags()[56];
+    }
+
+
+    /**
+      * Clears the value of the 'returnNewTxn' field.
+      * Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnNewTxn() {
+      returnNewTxn = null;
+      fieldSetFlags()[56] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnNewCust' field.
+      * Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Long getReturnNewCust() {
+      return returnNewCust;
+    }
+
+    /**
+      * Sets the value of the 'returnNewCust' field.
+      * Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnNewCust'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnNewCust(java.lang.Long value) {
+      validate(fields()[57], value);
+      this.returnNewCust = value;
+      fieldSetFlags()[57] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnNewCust' field has been set.
+      * Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)
+      * @return True if the 'returnNewCust' field has been set, false otherwise.
+      */
+    public boolean hasReturnNewCust() {
+      return fieldSetFlags()[57];
+    }
+
+
+    /**
+      * Clears the value of the 'returnNewCust' field.
+      * Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnNewCust() {
+      returnNewCust = null;
+      fieldSetFlags()[57] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnReactSales' field.
+      * Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Double getReturnReactSales() {
+      return returnReactSales;
+    }
+
+    /**
+      * Sets the value of the 'returnReactSales' field.
+      * Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnReactSales'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnReactSales(java.lang.Double value) {
+      validate(fields()[58], value);
+      this.returnReactSales = value;
+      fieldSetFlags()[58] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnReactSales' field has been set.
+      * Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return True if the 'returnReactSales' field has been set, false otherwise.
+      */
+    public boolean hasReturnReactSales() {
+      return fieldSetFlags()[58];
+    }
+
+
+    /**
+      * Clears the value of the 'returnReactSales' field.
+      * Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnReactSales() {
+      returnReactSales = null;
+      fieldSetFlags()[58] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnReactTxn' field.
+      * Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Long getReturnReactTxn() {
+      return returnReactTxn;
+    }
+
+    /**
+      * Sets the value of the 'returnReactTxn' field.
+      * Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnReactTxn'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnReactTxn(java.lang.Long value) {
+      validate(fields()[59], value);
+      this.returnReactTxn = value;
+      fieldSetFlags()[59] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnReactTxn' field has been set.
+      * Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return True if the 'returnReactTxn' field has been set, false otherwise.
+      */
+    public boolean hasReturnReactTxn() {
+      return fieldSetFlags()[59];
+    }
+
+
+    /**
+      * Clears the value of the 'returnReactTxn' field.
+      * Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnReactTxn() {
+      returnReactTxn = null;
+      fieldSetFlags()[59] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnReactCust' field.
+      * Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Long getReturnReactCust() {
+      return returnReactCust;
+    }
+
+    /**
+      * Sets the value of the 'returnReactCust' field.
+      * Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnReactCust'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnReactCust(java.lang.Long value) {
+      validate(fields()[60], value);
+      this.returnReactCust = value;
+      fieldSetFlags()[60] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnReactCust' field has been set.
+      * Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return True if the 'returnReactCust' field has been set, false otherwise.
+      */
+    public boolean hasReturnReactCust() {
+      return fieldSetFlags()[60];
+    }
+
+
+    /**
+      * Clears the value of the 'returnReactCust' field.
+      * Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnReactCust() {
+      returnReactCust = null;
+      fieldSetFlags()[60] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnReturnSales' field.
+      * Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Double getReturnReturnSales() {
+      return returnReturnSales;
+    }
+
+    /**
+      * Sets the value of the 'returnReturnSales' field.
+      * Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnReturnSales'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnReturnSales(java.lang.Double value) {
+      validate(fields()[61], value);
+      this.returnReturnSales = value;
+      fieldSetFlags()[61] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnReturnSales' field has been set.
+      * Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+      * @return True if the 'returnReturnSales' field has been set, false otherwise.
+      */
+    public boolean hasReturnReturnSales() {
+      return fieldSetFlags()[61];
+    }
+
+
+    /**
+      * Clears the value of the 'returnReturnSales' field.
+      * Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnReturnSales() {
+      returnReturnSales = null;
+      fieldSetFlags()[61] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnReturnTxn' field.
+      * Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Long getReturnReturnTxn() {
+      return returnReturnTxn;
+    }
+
+    /**
+      * Sets the value of the 'returnReturnTxn' field.
+      * Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnReturnTxn'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnReturnTxn(java.lang.Long value) {
+      validate(fields()[62], value);
+      this.returnReturnTxn = value;
+      fieldSetFlags()[62] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnReturnTxn' field has been set.
+      * Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+      * @return True if the 'returnReturnTxn' field has been set, false otherwise.
+      */
+    public boolean hasReturnReturnTxn() {
+      return fieldSetFlags()[62];
+    }
+
+
+    /**
+      * Clears the value of the 'returnReturnTxn' field.
+      * Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnReturnTxn() {
+      returnReturnTxn = null;
+      fieldSetFlags()[62] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnReturnCust' field.
+      * Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Long getReturnReturnCust() {
+      return returnReturnCust;
+    }
+
+    /**
+      * Sets the value of the 'returnReturnCust' field.
+      * Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnReturnCust'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnReturnCust(java.lang.Long value) {
+      validate(fields()[63], value);
+      this.returnReturnCust = value;
+      fieldSetFlags()[63] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnReturnCust' field has been set.
+      * Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)
+      * @return True if the 'returnReturnCust' field has been set, false otherwise.
+      */
+    public boolean hasReturnReturnCust() {
+      return fieldSetFlags()[63];
+    }
+
+
+    /**
+      * Clears the value of the 'returnReturnCust' field.
+      * Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnReturnCust() {
+      returnReturnCust = null;
+      fieldSetFlags()[63] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'ttlSalesLift' field.
+      * Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)
+      * @return The value.
+      */
+    public java.lang.Double getTtlSalesLift() {
+      return ttlSalesLift;
+    }
+
+    /**
+      * Sets the value of the 'ttlSalesLift' field.
+      * Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)
+      * @param value The value of 'ttlSalesLift'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setTtlSalesLift(java.lang.Double value) {
+      validate(fields()[64], value);
+      this.ttlSalesLift = value;
+      fieldSetFlags()[64] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'ttlSalesLift' field has been set.
+      * Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)
+      * @return True if the 'ttlSalesLift' field has been set, false otherwise.
+      */
+    public boolean hasTtlSalesLift() {
+      return fieldSetFlags()[64];
+    }
+
+
+    /**
+      * Clears the value of the 'ttlSalesLift' field.
+      * Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearTtlSalesLift() {
+      ttlSalesLift = null;
+      fieldSetFlags()[64] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'avgSalesLift' field.
+      * Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]
+      * @return The value.
+      */
+    public java.lang.Double getAvgSalesLift() {
+      return avgSalesLift;
+    }
+
+    /**
+      * Sets the value of the 'avgSalesLift' field.
+      * Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]
+      * @param value The value of 'avgSalesLift'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setAvgSalesLift(java.lang.Double value) {
+      validate(fields()[65], value);
+      this.avgSalesLift = value;
+      fieldSetFlags()[65] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'avgSalesLift' field has been set.
+      * Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]
+      * @return True if the 'avgSalesLift' field has been set, false otherwise.
+      */
+    public boolean hasAvgSalesLift() {
+      return fieldSetFlags()[65];
+    }
+
+
+    /**
+      * Clears the value of the 'avgSalesLift' field.
+      * Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearAvgSalesLift() {
+      avgSalesLift = null;
+      fieldSetFlags()[65] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'ttlTxnLift' field.
+      * Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)
+      * @return The value.
+      */
+    public java.lang.Double getTtlTxnLift() {
+      return ttlTxnLift;
+    }
+
+    /**
+      * Sets the value of the 'ttlTxnLift' field.
+      * Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)
+      * @param value The value of 'ttlTxnLift'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setTtlTxnLift(java.lang.Double value) {
+      validate(fields()[66], value);
+      this.ttlTxnLift = value;
+      fieldSetFlags()[66] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'ttlTxnLift' field has been set.
+      * Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)
+      * @return True if the 'ttlTxnLift' field has been set, false otherwise.
+      */
+    public boolean hasTtlTxnLift() {
+      return fieldSetFlags()[66];
+    }
+
+
+    /**
+      * Clears the value of the 'ttlTxnLift' field.
+      * Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearTtlTxnLift() {
+      ttlTxnLift = null;
+      fieldSetFlags()[66] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'avgTxnLift' field.
+      * Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]
+      * @return The value.
+      */
+    public java.lang.Double getAvgTxnLift() {
+      return avgTxnLift;
+    }
+
+    /**
+      * Sets the value of the 'avgTxnLift' field.
+      * Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]
+      * @param value The value of 'avgTxnLift'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setAvgTxnLift(java.lang.Double value) {
+      validate(fields()[67], value);
+      this.avgTxnLift = value;
+      fieldSetFlags()[67] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'avgTxnLift' field has been set.
+      * Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]
+      * @return True if the 'avgTxnLift' field has been set, false otherwise.
+      */
+    public boolean hasAvgTxnLift() {
+      return fieldSetFlags()[67];
+    }
+
+
+    /**
+      * Clears the value of the 'avgTxnLift' field.
+      * Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearAvgTxnLift() {
+      avgTxnLift = null;
+      fieldSetFlags()[67] = false;
+      return this;
+    }
+
     @Override
     public TimePeriodData build() {
       try {
@@ -4206,6 +5270,20 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
         record.txnBalor = fieldSetFlags()[51] ? this.txnBalor : (java.lang.Double) defaultValue(fields()[51]);
         record.spendBalor = fieldSetFlags()[52] ? this.spendBalor : (java.lang.Double) defaultValue(fields()[52]);
         record.retention = fieldSetFlags()[53] ? this.retention : (java.lang.Double) defaultValue(fields()[53]);
+        record.retentionGrowth = fieldSetFlags()[54] ? this.retentionGrowth : (java.lang.Double) defaultValue(fields()[54]);
+        record.returnNewSales = fieldSetFlags()[55] ? this.returnNewSales : (java.lang.Double) defaultValue(fields()[55]);
+        record.returnNewTxn = fieldSetFlags()[56] ? this.returnNewTxn : (java.lang.Long) defaultValue(fields()[56]);
+        record.returnNewCust = fieldSetFlags()[57] ? this.returnNewCust : (java.lang.Long) defaultValue(fields()[57]);
+        record.returnReactSales = fieldSetFlags()[58] ? this.returnReactSales : (java.lang.Double) defaultValue(fields()[58]);
+        record.returnReactTxn = fieldSetFlags()[59] ? this.returnReactTxn : (java.lang.Long) defaultValue(fields()[59]);
+        record.returnReactCust = fieldSetFlags()[60] ? this.returnReactCust : (java.lang.Long) defaultValue(fields()[60]);
+        record.returnReturnSales = fieldSetFlags()[61] ? this.returnReturnSales : (java.lang.Double) defaultValue(fields()[61]);
+        record.returnReturnTxn = fieldSetFlags()[62] ? this.returnReturnTxn : (java.lang.Long) defaultValue(fields()[62]);
+        record.returnReturnCust = fieldSetFlags()[63] ? this.returnReturnCust : (java.lang.Long) defaultValue(fields()[63]);
+        record.ttlSalesLift = fieldSetFlags()[64] ? this.ttlSalesLift : (java.lang.Double) defaultValue(fields()[64]);
+        record.avgSalesLift = fieldSetFlags()[65] ? this.avgSalesLift : (java.lang.Double) defaultValue(fields()[65]);
+        record.ttlTxnLift = fieldSetFlags()[66] ? this.ttlTxnLift : (java.lang.Double) defaultValue(fields()[66]);
+        record.avgTxnLift = fieldSetFlags()[67] ? this.avgTxnLift : (java.lang.Double) defaultValue(fields()[67]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
