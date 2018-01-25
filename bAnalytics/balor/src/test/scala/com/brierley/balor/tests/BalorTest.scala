@@ -858,7 +858,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
         assert(realBalor1 === balor1)
         assert(realBalor2 === balor2)
 
-        assert(retention1 ===.33 +- .01)
+        assert(retention1 ===33.33 +- .01)
         assert(retention2 === 0)
       }
     }
@@ -905,8 +905,8 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
         assert(realBalor2 === balor2)
         assert(realBalor3 === balor3)
 
-        assert(retention1 ===.33 +- .01)
-        assert(retention2 ===.25 +- .01)
+        assert(retention1 === 33.33 +- .01)
+        assert(retention2 === 25.00 +- .01)
         assert(retention3 === 0)
       }
     }
@@ -932,8 +932,8 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
         assert(realBalor2 === balor2)
         assert(realBalor3 === balor3)
 
-        assert(retention1 ===.22 +- .01)
-        assert(retention2 ===.02 +- .01)
+        assert(retention1 === 22.22 +- .01)
+        assert(retention2 === 2.04 +- .01)
         assert(retention3 === 0)
 
       }
@@ -1018,7 +1018,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
         assert(balor1.getCustBalor === 0.5294117647058824)
         assert(balor1.getTxnBalor === .6111111111111112)
         assert(balor1.getSpendBalor === 0.6842105263157895)
-        assert(balor1.getRetention === .2222222222222222)
+        assert(balor1.getRetention === 22.22222222222222)
 
         assert(balor2.getTimePeriod === 2)
         assert(balor2.getNewCustCount === 23)

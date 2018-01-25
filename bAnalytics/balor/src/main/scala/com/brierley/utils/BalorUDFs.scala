@@ -27,7 +27,7 @@ object BalorUDFs {
   def retentionFunc(currRet: Long, lastReact: Long, lastNew: Long, lastRet: Long): Double = {
     if (currRet == 0) 0
     else if ((lastReact + lastNew + lastRet) == 0) 0
-    else currRet.toDouble / (lastReact + lastNew + lastRet)
+    else (currRet.toDouble / (lastReact + lastNew + lastRet)) * 100
   }
 
   def longAvgCalcFunc(num: Long, denom: Long): Double = {
