@@ -24,39 +24,33 @@
       <!--//+++++col1+++++-->
       <!--+++++col2+++++-->
       <v-flex xs4 lg3 fill-height>
-        <!--cad summary-->
-        <v-layout row wrap class="cad_sum">
+        <v-layout row wrap>
           <v-flex xs12 class="pb-3">
-            <div class="sum_brd1">
-              <v-card horizontal class="white card_height">
-                <v-card-text class="white red--text card_pad">
-                  <v-card-title primary-title class="pt-0 pb-3 pl-0">
-                    <h6 class="red--text text-xs-left mb-0 pt-0 pb-0 pl-0">Cadence Summary</h6>
-                  </v-card-title>
-                  <v-divider class="red"></v-divider>
-                  <table
-                      cellpadding="0"
-                      cellspacing="0"
-                      width="100%"
-                      class="summary">
-                      <tr v-for="item in sumItems" class="hov_row">
-                        <td class="pa-2">{{ item.name }}</td>
-                        <td class="pa-2">{{ item.vals }}</td>
-                      </tr>
-                  </table>
-                </v-card-text>
-              </v-card>
+            <div class="white elevation-1">
+            <v-card class="white elevation-0">
+              <v-card-title primary-title class="primary white--text">
+                <h6 class="text-xs-left mb-0 white--text">Cadence Summary</h6>
+              </v-card-title>
+              <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
+                  <!-- cadence_sum_items -->
+                  <template>
+                    <div v-for="item in sumItems" :key="item.name" class="panel_body mt-1 pl-3 pt-2 pb-2">
+                      <p class="body-1 pa-0 mb-0">{{ item.name }}</p>
+                      <h6 class="mb-0">{{ item.vals }}</h6>
+                    </div>
+                  </template>
+              </div>
+            </v-card>
             </div>
           </v-flex>
         </v-layout>
-        <!--//cad summary-->
         <!--cad raw data-->
-        <v-layout row wrap>
+        <v-layout row wrap class="mb-4">
         <v-flex xs12 fill-height>
         <v-card class="white">
-          <v-card-title primary-title class="white">
-            <h6 v-if="cadWeeks" class="primary--text text-xs-left mb-0">Cadence Raw Data (Weeks)</h6>
-            <h6 v-else class="primary--text text-xs-left mb-0">Cadence Raw Data (Days)</h6>
+          <v-card-title primary-title class="primary">
+            <h6 v-if="cadWeeks" class="white--text text-xs-left mb-0">Cadence Raw Data (Weeks)</h6>
+            <h6 v-else class="white--text text-xs-left mb-0">Cadence Raw Data (Days)</h6>
           </v-card-title>
           <v-divider class="primary pb-0 pl-3 pr-3"></v-divider>
             <div class="constrainer">
@@ -376,9 +370,10 @@
   }
 
   .bar_chart {
-    position: relative;
-    margin: 0 auto;
+    position: relative !important;
+    margin: 0 auto !important;
     height: 596px !important;
+    width: 100% !important;
   }
 
   .tbl_cells {
@@ -405,5 +400,23 @@
   .scrolltable > .tbl_body {
     flex: 1;
     -webkit-flex: 1;
+  }
+
+  .panel {
+    height: 300px;
+    overflow: auto;
+  }
+
+  .panel .panel_body {
+    border: 1px solid #E6EAEE;
+    background-color: #FFFFFF;
+    border-left: 3px solid #8EAC1D;
+    /*border-left: 3px solid #0087aa;*/
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+  }
+
+  .panel .panel_body p, .panel .panel_body h6 {
+    color:#354052;
   }
 </style>

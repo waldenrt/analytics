@@ -1,16 +1,17 @@
 <template>
   <v-container fluid class="balorSegmentTrend pl-3 pr-3">
+
     <!-- =====ROW1===== -->
     <v-layout row wrap class="pt-0 mb-3">
       <v-flex xs12>
-        <v-card-title primary-title class="primary">
-          <h6 class="white--text text-xs-left mb-0">Segment Trends</h6>
-        </v-card-title>
-        <v-card class="pa-0 ma-0 grey lighten-2">
-          <v-layout row wrap>
-
+        <v-card class="white">
+          <v-card-title primary-title class="primary">
+            <h6 class="white--text text-xs-left mb-0">Segment Trends</h6>
+          </v-card-title>
+          <!-- dropdown_row [a] -->
+          <v-card-row class="grey lighten-2">
             <!--Dropdown1-->
-            <v-flex xs12 sm3>
+            <v-flex xs12 sm3 class="pl-0">
               <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
@@ -118,14 +119,9 @@
               </v-card>
             </v-flex>
             <!--//Dropdown3-->
-
-          </v-layout>
-        </v-card>
-      </v-flex>
-      <!--chart-->
-      <v-flex xs12>
-        <v-card class="white">
-          <!-- LEGEND -->
+          </v-card-row>
+          <!-- //dropdown_row [a] -->
+          <!-- legend_row [a] -->
           <v-layout row wrap>
             <v-flex xs12>
               <v-card flat class="white pa-3">
@@ -140,86 +136,89 @@
               </v-card>
             </v-flex>
           </v-layout>
-          <!-- //LEGEND -->
-          <div class="bar_chart1">
-            <pareto-chart :chart-data="totalBars" :options="paretoOptions" class="pa-2"></pareto-chart>
-          </div>
+          <!-- //legend_row [a] -->
+          <!--chart-->
+          <v-layout row wrap class="pa-2">
+            <v-flex xs12 fill-height>
+              <pareto-chart :chart-data="totalBars" :options="paretoOptions" class="bar_chart1"></pareto-chart>
+            </v-flex>
+          </v-layout>
+          <!--//chart-->
         </v-card>
       </v-flex>
-      <!--//chart-->
     </v-layout>
     <!-- //=====ROW1===== -->
 
     <!-- =====ROW2===== -->
-    <v-layout row wrap class="mt-4 mb-4">
+    <v-layout row wrap class="mt-4 mb-5">
       <v-flex xs12>
+        <v-card class="white">
         <v-card-title primary-title class="primary">
           <h6 class="white--text text-xs-left mb-0">Segment Profiles</h6>
         </v-card-title>
-        <v-card class="pa-0 ma-0 grey lighten-2">
-          <v-layout row wrap>
-            <!--Dropdown1-->
-            <v-flex xs12 sm3>
-              <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
-                <v-layout row wrap>
-                  <v-flex xs12>
-                    <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      BALOR time period:
-                    </div>
-                  </v-flex>
-                  <v-flex xs12>
-                      <v-select
-                      v-bind:items="tpArray"
-                      v-model="tpSelect"
-                      label="Select BALOR Time Period"
-                      single-line
-                      bottom
-                      hide-details
-                      v-on:input="updateTPMetric"
-                      class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
-                      </v-select>
-                  </v-flex>
-                </v-layout>
-              </v-card>
-            </v-flex>
-            <!--//Dropdown1-->
-            <!--Dropdown2-->
-            <v-flex xs12 sm3>
-              <v-card flat class="pl-2 pr-2 grey lighten-2">
-                <v-layout row wrap>
-                  <v-flex xs12>
-                    <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      BALOR metric:
-                    </div>
-                  </v-flex>
-                  <v-flex xs12>
-                      <v-select
-                      v-bind:items="avgList"
-                      v-model="tpAvgSelect"
-                      label="Select BALOR Metric"
-                      single-line
-                      bottom
-                      hide-details
-                      v-on:input="updateTPMetric"
-                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
-                      </v-select>
-                  </v-flex>
-                </v-layout>
-              </v-card>
-            </v-flex>
-            <!--//Dropdown2-->
-          </v-layout>
-        </v-card>
+        <!-- dropdown_row [a] -->
+        <v-card-row class="grey lighten-2">
+          <!--Dropdown1-->
+          <v-flex xs12 sm3 class="pl-0">
+            <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
+              <v-layout row wrap>
+                <v-flex xs12>
+                  <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                    BALOR time period:
+                  </div>
+                </v-flex>
+                <v-flex xs12>
+                    <v-select
+                    v-bind:items="tpArray"
+                    v-model="tpSelect"
+                    label="Select BALOR Time Period"
+                    single-line
+                    bottom
+                    hide-details
+                    v-on:input="updateTPMetric"
+                    class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
+                    </v-select>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-flex>
+          <!--//Dropdown1-->
+          <!--Dropdown2-->
+          <v-flex xs12 sm3>
+            <v-card flat class="pl-2 pr-2 grey lighten-2">
+              <v-layout row wrap>
+                <v-flex xs12>
+                  <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                    BALOR metric:
+                  </div>
+                </v-flex>
+                <v-flex xs12>
+                    <v-select
+                    v-bind:items="avgList"
+                    v-model="tpAvgSelect"
+                    label="Select BALOR Metric"
+                    single-line
+                    bottom
+                    hide-details
+                    v-on:input="updateTPMetric"
+                        class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
+                    </v-select>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-flex>
+          <!--//Dropdown2-->
+        </v-card-row>
+        <!-- //dropdown_row [a] -->
+        <!--chart-->
+        <v-layout row wrap class="mb-3 pa-2">
+          <v-flex xs12 fill-height>
+            <horizontal-chart :chart-data="avgBars" :options="avgOptions" class="bar_chart1"></horizontal-chart>
+          </v-flex>
+        </v-layout>
+        <!--//chart-->
+      </v-card>
       </v-flex>
-      <!--chart-->
-      <v-flex xs12 class="pb-4">
-        <v-card class="white">
-          <div class="bar_chart1">
-            <horizontal-chart :chart-data="avgBars" :options="avgOptions" class="pa-2"></horizontal-chart>
-          </div>
-        </v-card>
-      </v-flex>
-      <!--//chart-->
     </v-layout>
     <!-- //=====ROW2===== -->
 
@@ -2570,7 +2569,8 @@
   .bar_chart1 {
     position: relative;
     margin: 0 auto;
-    height: 40vh !important;
+    height: 300px !important;
+    width: 100% !important;
   }
 
   .padT18 {

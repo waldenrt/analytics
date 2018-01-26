@@ -617,8 +617,8 @@
 
   .prod_share_container {
     width:100% !important;
-    position: relative;
-    height:100%;
+    position: relative !important;
+    height:100% !important;
   }
 
   .scroller {

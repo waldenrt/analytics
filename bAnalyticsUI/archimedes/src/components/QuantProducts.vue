@@ -1036,8 +1036,8 @@
     height:430px !important;
   }
   .prod_chart {
-    position: relative;
-    margin: 0 auto;
+    position: relative !important;
+    margin: 0 auto !important;
     height: 353px !important;
   }
 </style>

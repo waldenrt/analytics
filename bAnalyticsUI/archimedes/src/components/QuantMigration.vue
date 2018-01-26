@@ -136,7 +136,7 @@
               <td class="text-xs-center">4</td>
               <td class="text-xs-center">5</td>
               <td class="text-xs-center">6</td>
-              <td class=" text-xs-center">7</td>
+              <td class="text-xs-center">7</td>
               <td class="text-xs-center">8</td>
               <td class="text-xs-center">9</td>
               <td class="text-xs-center">10</td>
@@ -592,8 +592,8 @@
     text-align: center;
   }
   .pareto_chart2 {
-    position: relative;
-    margin: 0 auto;
+    position: relative !important;
+    margin: 0 auto !important;
     height: 279px !important;
   }
   .w_100 { width: 100%; }

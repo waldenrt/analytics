@@ -206,7 +206,7 @@
     </v-layout>
     <!-- //=====ROW2===== -->
     <!-- =====ROW3===== -->
-    <v-layout row wrap class="mb-3">
+    <v-layout row wrap class="mb-5">
       <v-flex xs12 fill-height class="mb-3">
         <v-card class="white">
           <v-layout row wrap>

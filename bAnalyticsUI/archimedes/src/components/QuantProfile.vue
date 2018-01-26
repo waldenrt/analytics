@@ -104,7 +104,7 @@
           <div class="title primary--text text-xs-center pa-1">Quantile Pareto Analysis</div>
           <v-layout row wrap class="mb-3 pa-3">
             <v-flex xs12 fill-height>
-              <pareto-chart :chart-data="paretoData" :options="paretoOptions"  class="pareto_chart1"></pareto-chart>
+              <pareto-chart :chart-data="paretoData" :options="paretoOptions" class="pareto_chart1"></pareto-chart>
             </v-flex>
           </v-layout>
         </v-card>
@@ -626,8 +626,9 @@
 
 <style scoped>
 .pareto_chart1 {
-  position:relative;
-  margin:0 auto;
+  position:relative !important;
+  margin:0 auto !important;
   height:200px !important;
+  width: 100% !important;
 }
 </style>

@@ -970,8 +970,8 @@
   }
 
   .lifecycle_chart1 {
-    width: 100%;
-    position: relative;
+    width: 100% !important;
+    position: relative !important;
     height: 330px !important;
   }
 
