@@ -76,7 +76,7 @@
             <!--//slider-->
           </v-layout>
           <!--trendlines-->
-          <v-layout row wrap class="mb-3 pa-3 prod_container">
+          <v-layout row wrap class="mb-3 pa-3">
             <v-flex xs12 fill-height>
               <balor-trend-line :chart-data="trendLine" class="line_chart"></balor-trend-line>
             </v-flex>

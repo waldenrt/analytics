@@ -193,7 +193,7 @@
           <v-divider class="primary pb-0"></v-divider>
               <div style="width:100%;" class="pb-3">
                 <table cellpadding="0" cellspacing="0" width="100%" class="ret_table">
-                  <tr class="grey lighten-2">
+                  <tr class="grey lighten-2 elevation-1">
                     <td class="pt-1 pb-1 grey lighten-2 primary--text">Quantile</td>
                     <!--<td class="pt-1 pb-1">Prior Customers</td>-->
                     <td class="pt-1 pb-1 grey lighten-2 primary--text">Retained<br />Customers</td>
@@ -270,11 +270,9 @@
             </v-layout>
             <!--//row1-->
             <!--row2-->
-            <v-layout row wrap class="pt-0 mt-0">
-              <v-flex xs12>
-                <div class="pl-1 pr-1 pt-3 pb-2 pareto_chart2">
-                  <bar-chart :chart-data="quantbars"></bar-chart>
-                </div>
+            <v-layout row wrap class="pl-1 pr-1 pt-3 pb-2">
+              <v-flex xs12 fill-height>
+                  <bar-chart :chart-data="quantbars" class="pareto_chart2"></bar-chart>
               </v-flex>
             </v-layout>
             <!-- //row2-->
@@ -596,7 +594,7 @@
   .pareto_chart2 {
     position: relative;
     margin: 0 auto;
-    height: 302px !important;
+    height: 279px !important;
   }
   .w_100 { width: 100%; }
   .y_axis {

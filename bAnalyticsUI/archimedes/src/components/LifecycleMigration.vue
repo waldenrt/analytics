@@ -110,7 +110,7 @@
                       </div>
                       <div class="inliner">
                         <div class="legend info"></div>
-                        <div class="caption inliner padR5">Middle of the road</div>
+                        <div class="caption inliner padR5">Middle of the Road</div>
                       </div>
                       <div class="inliner">
                         <div class="legend warning"></div>
@@ -274,11 +274,9 @@
                     </v-layout>
                     <!-- //=====ROW1===== -->
                     <!-- =====ROW2===== -->
-                    <v-layout row wrap class="pt-0 mt-0">
-                      <v-flex xs12 class="pa-0 ma-0">
-                        <div class="mt-3 lifecycle_chart1">
-                          <bar-chart :chart-data="barData"></bar-chart>
-                        </div>
+                    <v-layout row wrap class="mb-3 pt-3">
+                      <v-flex xs12 fill-height>
+                        <bar-chart :chart-data="barData" class="lifecycle_chart1"></bar-chart>
                       </v-flex>
                     </v-layout>
                     <!-- //=====ROW2===== -->
@@ -974,7 +972,7 @@
   .lifecycle_chart1 {
     width: 100%;
     position: relative;
-    height: 350px;
+    height: 330px !important;
   }
 
 </style>

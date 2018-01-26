@@ -54,7 +54,7 @@
                       </div>
                       <div class="inliner">
                         <div class="legend info"></div>
-                        <div class="caption inliner padR5">Middle of the road</div>
+                        <div class="caption inliner padR5">Middle of the Road</div>
                       </div>
                       <div class="inliner">
                         <div class="legend warning"></div>

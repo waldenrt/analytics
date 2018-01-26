@@ -102,9 +102,11 @@
       <v-flex xs12 class="pt-0 mt-0">
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <div class="title primary--text text-xs-center pa-1">Quantile Pareto Analysis</div>
-          <div class="pareto_chart1">
-            <pareto-chart :chart-data="paretoData" :options="paretoOptions"></pareto-chart>
-          </div>
+          <v-layout row wrap class="mb-3 pa-3">
+            <v-flex xs12 fill-height>
+              <pareto-chart :chart-data="paretoData" :options="paretoOptions"  class="pareto_chart1"></pareto-chart>
+            </v-flex>
+          </v-layout>
         </v-card>
       </v-flex>
     </v-layout>
@@ -626,6 +628,6 @@
 .pareto_chart1 {
   position:relative;
   margin:0 auto;
-  height:23vh;
+  height:200px !important;
 }
 </style>

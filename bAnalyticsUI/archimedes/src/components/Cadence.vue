@@ -8,14 +8,17 @@
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Purchase Cadence Distribution</h6>
           </v-card-title>
-          <div class="white pa-1 pt-2 bar_chart">
-            <!--Chart-->
-              <annotated-bar-chart
-                  :chart-data="cadenceBars"
-                  :options="cadOptions"
-                  id="cadChart"></annotated-bar-chart>
-            <!--//Chart-->
-          </div>
+          <v-layout row wrap class="mb-3 pa-3">
+            <v-flex xs12 fill-height>
+              <!--Chart-->
+                <annotated-bar-chart
+                    :chart-data="cadenceBars"
+                    :options="cadOptions"
+                    class="bar_chart"
+                    id="cadChart"></annotated-bar-chart>
+              <!--//Chart-->
+            </v-flex>
+          </v-layout>
         </v-card>
       </v-flex>
       <!--//+++++col1+++++-->
@@ -58,7 +61,7 @@
           <v-divider class="primary pb-0 pl-3 pr-3"></v-divider>
             <div class="constrainer">
               <div class="scrolltable">
-                <div class="grey lighten-2 pt-2 pb-2">
+                <div class="grey lighten-2 pt-2 pb-2 elevation-1">
                 <table
                     cellpadding="0"
                     cellspacing="0"
@@ -375,7 +378,7 @@
   .bar_chart {
     position: relative;
     margin: 0 auto;
-    height: 625px !important;
+    height: 596px !important;
   }
 
   .tbl_cells {
