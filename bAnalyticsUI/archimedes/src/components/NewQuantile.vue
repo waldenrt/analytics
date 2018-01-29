@@ -373,6 +373,7 @@
                 alert('Form Submitted!')
                 console.log(response)
                 vm.disabledBtn = false
+                this.$router.push('/JobHistory')
               })
             return
           } else {

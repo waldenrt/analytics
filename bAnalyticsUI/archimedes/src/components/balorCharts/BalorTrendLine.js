@@ -3,6 +3,7 @@
  */
 
 import { Line, mixins } from 'vue-chartjs'
+import 'chartjs-plugin-annotation'
 const { reactiveProp } = mixins
 
 export default Line.extend({
@@ -22,9 +23,22 @@ export default Line.extend({
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'BALOR Ratio'
+              labelString: 'BALOR Ratio',
+              id: 'y-axis-0'
             }
           }]
+        },
+        annotation: {
+          annotations: [
+            {
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: 1,
+              borderColor: '#D63A09',
+              borderDash: [2, 2]
+            }
+          ]
         }
       }
     }

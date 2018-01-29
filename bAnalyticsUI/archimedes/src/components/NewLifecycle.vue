@@ -244,6 +244,7 @@
                 alert('Form Submitted!')
                 console.log(response)
                 vm.disabledBtn = false
+                this.$router.push('/JobHistory')
               })
           } else {
             alert('Correct the errors!')
