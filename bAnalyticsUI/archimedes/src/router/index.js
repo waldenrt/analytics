@@ -1,12 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/Login'
+import Logout from '@/components/Logout'
 import Home from '@/components/Home'
 import JobHistory from '@/components/JobHistory'
 import Settings from '@/components/Settings'
 import Feedback from '@/components/Feedback'
 import Help from '@/components/Help'
 import Nav from '@/components/Navigation'
+import PasswordReset from '@/components/PasswordReset'
+import PasswordResetConfirm from '@/components/PasswordResetConfirm'
 
 import Balor from '@/components/Balor'
 import NewBalor from '@/components/NewBalor'
@@ -48,6 +51,21 @@ export default new Router({
       component: Login
     },
     {
+      path: '/Logout',
+      name: 'Logout',
+      component: Logout
+    },
+    {
+      path: '/PasswordReset',
+      name: 'PasswordReset',
+      component: PasswordReset
+    },
+    {
+      path: '/PasswordResetConfirm',
+      name: 'PasswordResetConfirm',
+      component: PasswordResetConfirm
+    },
+    {
       path: '/',
       name: 'UserHome',
       component: Nav,
@@ -66,11 +84,6 @@ export default new Router({
           path: 'Help',
           name: 'Help',
           component: Help
-        },
-        {
-          path: 'Logout',
-          name: 'Logout',
-          component: Home
         },
         {
           path: 'Settings',

@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="NewQuantile pl-3 pr-3">
     <v-layout row wrap style="height:100%;">
-      <v-flex xs6 offset-xs3 class="pl-0 pr-0 mt-0">
+      <v-flex xs6 offset-xs3 class="pl-0 pr-0 mt-0 mb-4">
         <div class="centereddiv">
 
           <!-- FORM STARTS -->
@@ -32,7 +32,7 @@
                   <v-text-field
                       label="Enter Job Name"
                       v-model="job_pareto"
-                      class="ma-0 input-group--focused"
+                      class="ma-0 input-group--focused custom_input"
                       single-line
                       hide-details
                       data-vv-name="job_pareto"
@@ -54,7 +54,7 @@
                     type="file"
                     :name="uploadFieldName"
                     @change="fileUpload($event.target.name, $event.target.files)"
-                    class="ma-0 input-group--focused"
+                    class="ma-0 input-group--focused custom_input"
                     style="width:100%;"
                     data-vv-name="file_pareto"
                     v-validate="'required|ext:txt,csv,dsv'"
@@ -74,7 +74,7 @@
                       v-bind:items="items1"
                       v-model="select_delimiter"
                       label="Select file type"
-                      class="ma-0 input-group--focused"
+                      class="ma-0 input-group--focused custom_input"
                       single-line
                       hide-details
                       data-vv-name="select_delimiter"
@@ -102,7 +102,7 @@
                         v-bind:items="items2"
                         v-model="select_tp"
                         label="Select"
-                        class="ma-0 input-group--focused"
+                        class="ma-0 input-group--focused custom_input"
                         single-line
                         hide-details
                         data-vv-name="select_tp"
@@ -123,7 +123,7 @@
                       v-bind:items="items3"
                       v-model="select_paretoValue"
                       label="Select pareto value"
-                      class="ma-0 input-group--focused"
+                      class="ma-0 input-group--focused custom_input"
                       single-line
                       hide-details>
                     </v-select>
@@ -133,7 +133,7 @@
                 <!--SELECT-->
                 <div class="xs12 pb-3">
                   <label class="body-2">Select dimension to decile</label>
-                  <p class="control mb-0">
+                  <p class="control mb-0 custom_input">
                     <v-layout xs12 class="pad_LR12">
                     <v-radio
                         label="Customer Level"
@@ -171,7 +171,7 @@
                     <v-text-field
                         label="Enter number of products"
                         v-model="numProds"
-                        class="ma-0 input-group--focused"
+                        class="ma-0 input-group--focused custom_input"
                         single-line
                         hide-details
                         data-vv-name="numProds"
@@ -191,7 +191,7 @@
                   <v-text-field
                       label="Enter hierarchy"
                       v-model="product1"
-                      class="ma-0 input-group--focused"
+                      class="ma-0 input-group--focused custom_input"
                       single-line
                       hide-details
                       data-vv-name="product1"
@@ -211,7 +211,7 @@
                   <v-text-field
                       label="Enter hierarchy"
                       v-model="product2"
-                      class="ma-0 input-group--focused"
+                      class="ma-0 input-group--focused custom_input"
                       single-line
                       hide-details
                       id="product2">
@@ -226,7 +226,7 @@
                   <v-text-field
                       label="Enter hierarchy"
                       v-model="product3"
-                      class="ma-0 input-group--focused"
+                      class="ma-0 input-group--focused custom_input"
                       single-line
                       hide-details
                       id="product3">

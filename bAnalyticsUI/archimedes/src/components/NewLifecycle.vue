@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="NewLifecycle pl-3 pr-3">
     <v-layout row wrap style="height:100%;">
-      <v-flex xs6 offset-xs3 class="pl-0 pr-0 mt-0">
+      <v-flex xs6 offset-xs3 class="pl-0 pr-0 mt-0 mb-4">
         <div class="centereddiv">
         <form name="lifeForm" @submit.prevent="validateBeforeSubmit()">
           <v-card class="white v_card">
@@ -30,7 +30,7 @@
                 <v-text-field
                     label="Enter Job Name"
                     v-model="job_lifecycle"
-                    class="ma-0 input-group--focused"
+                    class="ma-0 input-group--focused custom_input"
                     single-line
                     hide-details
                     data-vv-name="job_lifecycle"
@@ -52,7 +52,7 @@
                     type="file"
                     :name="uploadFieldName"
                     @change="fileUpload($event.target.name, $event.target.files)"
-                    class="ma-0 input-group--focused"
+                    class="ma-0 input-group--focused custom_input"
                     style="width:100%;"
                     data-vv-name="file_lifecycle"
                     v-validate="'required|ext:txt,csv,dsv'"
@@ -72,7 +72,7 @@
                     v-bind:items="items1"
                     v-model="select_lifecycle1"
                     label="Select file type"
-                    class="ma-0 input-group--focused"
+                    class="ma-0 input-group--focused custom_input"
                     single-line
                     hide-details
                     data-vv-name="select_lifecycle1"
@@ -93,7 +93,7 @@
                     v-bind:items="items2"
                     v-model="select_lifecycle2"
                     label="Select file type"
-                    class="ma-0 input-group--focused"
+                    class="ma-0 input-group--focused custom_input"
                     single-line
                     hide-details
                     data-vv-name="select_lifecycle2"
@@ -113,7 +113,7 @@
                   <v-text-field
                       label="Enter Product Column Name"
                       v-model="prodCol"
-                      class="ma-0 input-group--focused"
+                      class="ma-0 input-group--focused custom_input"
                       single-line
                       hide-details
                       data-vv-name="prodCol"

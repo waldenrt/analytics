@@ -3,8 +3,34 @@
 
     <!-- =====ROW1===== -->
     <v-layout row wrap class="pa-0 mb-0">
-      <!--+++++col_1+++++-->
-        <!-- BALOR Summary -->
+      <!-- BALOR Trendline -->
+      <v-flex xs9>
+        <v-card class="white">
+          <v-card-title primary-title class="primary">
+            <h6 class="white--text text-xs-left mb-0">BALOR Period Trendline</h6>
+          </v-card-title>
+          <v-layout row wrap>
+            <!--slider-->
+            <v-flex xs12>
+              <v-layout row wrap class="mt-2 mb-3 pl-4 pr-4">
+                <v-flex xs12>
+                  <div id="ratioSlide" class="noUiSlider" ref="mySlider"></div>
+                </v-flex>
+              </v-layout>
+            </v-flex>
+            <!--//slider-->
+          </v-layout>
+          <!--trendlines-->
+          <v-layout row wrap class="mb-3 pa-3">
+            <v-flex xs12 fill-height>
+              <balor-trend-line :chart-data="trendLine" class="line_chart"></balor-trend-line>
+            </v-flex>
+          </v-layout>
+          <!--//trendlines-->
+        </v-card>
+      </v-flex>
+      <!--// BALOR Trendline -->
+      <!-- BALOR Summary -->
       <v-flex xs3>
         <v-layout row wrap>
           <v-flex xs12 class="pb-3">
@@ -56,66 +82,13 @@
         </v-layout>
       </v-flex>
       <!--// BALOR Summary -->
-      <!--//+++++col_1+++++-->
-      <!--+++++col_2+++++-->
-      <!-- BALOR Trendline -->
-      <v-flex xs6>
-        <v-card class="white">
-          <v-card-title primary-title class="primary">
-            <h6 class="white--text text-xs-left mb-0">BALOR Period Trendline</h6>
-          </v-card-title>
-          <v-layout row wrap>
-            <!--slider-->
-            <v-flex xs12>
-              <v-layout row wrap class="mt-2 mb-3 pl-4 pr-4">
-                <v-flex xs12>
-                  <div id="ratioSlide" class="noUiSlider" ref="mySlider"></div>
-                </v-flex>
-              </v-layout>
-            </v-flex>
-            <!--//slider-->
-          </v-layout>
-          <!--trendlines-->
-          <v-layout row wrap class="mb-3 pa-3">
-            <v-flex xs12 fill-height>
-              <balor-trend-line :chart-data="trendLine" class="line_chart"></balor-trend-line>
-            </v-flex>
-          </v-layout>
-          <!--//trendlines-->
-        </v-card>
-      </v-flex>
-      <!--// BALOR Trendline -->
-      <!--//+++++col_2+++++-->
-      <!--+++++col_3+++++-->
-      <!-- Retention Summary -->
-      <v-flex xs3>
-        <v-layout row wrap>
-          <v-flex xs12 class="pb-3">
-            <div class="white elevation-1">
-            <v-card class="white elevation-0">
-              <v-card-title primary-title class="primary white--text">
-                <h6 class="text-xs-left mb-0 white--text">Rentention Summary</h6>
-              </v-card-title>
-              <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
-                  <!-- data_row -->
-                  <div class="panel_body mt-1 pl-3 pt-2 pb-2" v-for="item in retentionItems" v-bind:key="item.name">
-                    <p class="body-1 pa-0 mb-0">{{ item.name }}:</p>
-                    <h6 class="mb-0">{{ item.vals }}</h6>
-                  </div>
-              </div>
-            </v-card>
-            </div>
-          </v-flex>
-        </v-layout>
-      </v-flex>
-      <!--// Retention Summary -->
-      <!--//+++++col_3+++++-->
     </v-layout>
     <!-- //=====ROW1===== -->
 
     <!-- =====ROW2===== -->
     <v-layout row wrap class="mb-3">
-      <v-flex xs12 fill-height>
+      <!-- PieCharts & Ratio Lines -->
+      <v-flex xs9 fill-height>
         <v-card class="white">
 
           <!-- SELECTION ROW -->
@@ -203,6 +176,29 @@
           <!--/Pie Charts-->
         </v-card>
       </v-flex>
+      <!-- //PieCharts & Ratio Lines -->
+      <!-- Retention Summary -->
+      <v-flex xs3>
+        <v-layout row wrap>
+          <v-flex xs12 class="pb-3">
+            <div class="white elevation-1">
+            <v-card class="white elevation-0">
+              <v-card-title primary-title class="primary white--text">
+                <h6 class="text-xs-left mb-0 white--text">Rentention Summary</h6>
+              </v-card-title>
+              <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-3 pt-2 pb-2" v-for="item in retentionItems" v-bind:key="item.name">
+                    <p class="body-1 pa-0 mb-0">{{ item.name }}:</p>
+                    <h6 class="mb-0">{{ item.vals }}</h6>
+                  </div>
+              </div>
+            </v-card>
+            </div>
+          </v-flex>
+        </v-layout>
+      </v-flex>
+      <!--// Retention Summary -->
     </v-layout>
     <!-- //=====ROW2===== -->
     <!-- =====ROW3===== -->

@@ -1,6 +1,6 @@
 <template style="height:100%;">
   <v-container fluid class="login pa-0 marT60" style="height:100%;">
-    <v-layout row wrap class="mt-0 mb-3 pa-0" style="height:100%;">
+    <v-layout row wrap class="ma-0 pa-0" style="height:100%;">
       <!--COLUMN1-->
       <v-flex xs12 sm6 class="ma-0 pt-0 pl-5 pr-5 bg">
         <div class="contain_div pt-5">
@@ -21,7 +21,7 @@
         <v-layout row wrap class="pl-0 pr-0" style="height:100%;">
           <v-flex xs10 offset-xs1 class="pl-0 pr-0 mt-0">
             <div class="centereddiv">
-                  <h3 class="primary--text text-xs-center mb-3 pa-3">Archimedes</h3>
+                  <h3 class="primary--text text-xs-center ma-0 pl-3 pr-3 pt-0 pb-3">Archimedes</h3>
               <v-card>
                 <v-card-title primary-title class="primary">
                   <h6 class="white--text text-xs-left mb-0">Login</h6>
@@ -30,18 +30,19 @@
                 <div class="pa-3">
                   <!--USERNAME-->
                   <div class="xs12 mt-3 mb-3">
+                    <label class="body-2">Username</label>
                     <v-layout class="xs12 ma-0">
                       <v-text-field
                           label="Username"
                           v-model="username"
-                          class="white mt-0 mb-0 ml-0"
+                          class="white mt-0 mb-0 ml-0 custom_input"
                           single-line
                           hide-details
+                          append-icon="person"
                           data-vv-name="username"
                           v-validate="'required'"
                           id="username">
                       </v-text-field>
-                      <v-icon dark class="primary white--text mt-0" style="padding:3px;">person</v-icon>
                     </v-layout>
                     <v-layout class="xs12 ma-0">
                       <small v-show="vErrors.has('username')" class="error--text">* {{ vErrors.first('username') }}</small>
@@ -51,18 +52,19 @@
 
                   <!--PASSWORD-->
                   <div class="xs12 mt-3 mb-3">
+                    <label class="body-2">Password</label>
                     <v-layout class="xs12 ma-0">
                       <v-text-field
                           label="Password"
                           v-model="password"
-                          class="white mt-0 mb-0 ml-0"
+                          class="white mt-0 mb-0 ml-0 custom_input"
                           single-line
                           hide-details
+                          append-icon="lock"
                           data-vv-name="password"
                           v-validate="'required'"
                           id="username">
                       </v-text-field>
-                      <v-icon dark class="primary white--text mt-0" style="padding:3px;">lock</v-icon>
                     </v-layout>
                     <v-layout class="xs12 ma-0">
                       <small v-show="vErrors.has('password')" class="error--text">* {{ vErrors.first('password') }}</small>
@@ -104,14 +106,14 @@
                 </div>
                 </form>
               </v-card>
-              <v-card class="mt-5 primary--text">
+              <v-card class="mt-3 primary--text">
                 <v-card-row xs12>
                   <a href="mailto:name@email.com?subject=Demo%20Please&amp;body=The%20body%20of%20the%20email" target="_top" style="width:100%; text-decoration:none;">
-                    <div style="display:inline-block;">
-                      <v-icon dark class="primary white--text ml-3 mt-0" style="padding:3px;">email</v-icon>
+                    <div class="inliner">
+                      <v-icon dark class="primary white--text ml-3 mt-0 pa-1">email</v-icon>
                     </div>
-                    <div style="display:inline-block;">
-                      <v-card-text style="display:inline-block;">Request a demo</v-card-text>
+                    <div class="inliner">
+                      <v-card-text class="inliner">Request a demo</v-card-text>
                     </div>
                   </a>
                 </v-card-row>
@@ -185,4 +187,5 @@
   text-decoration: none;
   color:#354052;
 }
+.inliner {display:inline-block;}
 </style>

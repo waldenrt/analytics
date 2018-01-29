@@ -2,7 +2,7 @@
   <v-container fluid class="NewBalor pl-3 pr-3" style="height:100%;">
 
     <v-layout row wrap style="height:100%;">
-      <v-flex xs6 offset-xs3 class="pl-0 pr-0 mt-0">
+      <v-flex xs6 offset-xs3 class="pl-0 pr-0 mt-0 mb-5">
         <div class="centereddiv">
 
         <!-- FORM STARTS -->
@@ -36,7 +36,7 @@
                   <v-text-field
                       label="Enter Job Name"
                       v-model="job_balor"
-                      class="ma-0 input-group--focused"
+                      class="ma-0 input-group--focused custom_input"
                       single-line
                       hide-details
                       data-vv-name="job_balor"
@@ -58,7 +58,7 @@
                       type="file"
                       :name="uploadFieldName"
                       @change="fileUpload($event.target.name, $event.target.files)"
-                      class="ma-0 input-group--focused"
+                      class="ma-0 input-group--focused custom_input"
                       style="width:100%;"
                       data-vv-name="file_balor"
                       v-validate="'required|ext:txt,csv,dsv'"
@@ -78,7 +78,7 @@
                       v-bind:items="items"
                       v-model="select_balor"
                       label="Select file type"
-                      class="ma-0 input-group--focused"
+                      class="ma-0 input-group--focused custom_input"
                       single-line
                       hide-details
                       data-vv-name="select_balor"

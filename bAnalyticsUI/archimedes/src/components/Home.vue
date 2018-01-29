@@ -46,7 +46,7 @@
               <v-flex xs12 class="pl-1 pr-1">
                 <h5 class="grey--text">App <span class="primary--text">Modules</span></h5>
               </v-flex>
-              <v-flex xs12 sm6 md3 class="pl-1 pr-1 pb-3" v-for="item in cardItems">
+              <v-flex xs12 sm6 md3 class="pl-1 pr-1 pb-3" v-for="item in cardItems" :key="item.title">
                 <v-card class="white card_crnr">
                   <v-card-row :class="item.titleColor">
                     <v-card-title class="pa-0 ma-0">
