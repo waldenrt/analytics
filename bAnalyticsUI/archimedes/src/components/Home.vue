@@ -22,7 +22,7 @@
                     <div class="wrap1 text-xs-center">
                       <div class="wrap2 text-xs-center">
                         <v-icon x-large class="white--text">date_range</v-icon>
-                        <div class="white--text">Date</div>
+                        <div class="white--text">{{ new Date().getMonth() }} {{ new Date().getDate() }}, {{ new Date().getFullYear() }}</div>
                       </div>
                     </div>
                   </v-flex>
@@ -32,7 +32,7 @@
                     <div class="wrap1 text-xs-center">
                       <div class="wrap2">
                         <v-icon x-large class="white--text">timer</v-icon>
-                        <div class="white--text">Time</div>
+                        <div class="white--text">time</div>
                       </div>
                     </div>
                   </v-flex>
@@ -41,7 +41,7 @@
               </v-flex>
           </v-layout>
           <!-- //Image Row -->
-          <!-- Input Pages Row -->
+          <!-- App Modules Row -->
           <v-layout wrap row class="pl-4 pr-4 pt-3 pb-0">
               <v-flex xs12 class="pl-1 pr-1">
                 <h5 class="grey--text">App <span class="primary--text">Modules</span></h5>
@@ -64,7 +64,7 @@
                 </v-card>
               </v-flex>
           </v-layout>
-          <!-- //Input Pages Row -->
+          <!-- //App Modules Row -->
           <!-- Misc Info Row -->
           <v-layout wrap row class="pl-4 pr-4 pt-3 pb-0">
               <v-flex xs12 class="pl-1 pr-1">
@@ -144,44 +144,17 @@ export default {
         }
       ],
       linkItems: [
-        {
-          name: 'LoyaltyOnDemand',
-          site: 'http://www.brierley.com/technology-products/brierley-loyaltyondemand'
-        },
-        {
-          name: 'Campaign Module',
-          site: 'http://www.brierley.com/technology-products/brierley-campaign'
-        },
-        {
-          name: 'Survey Module',
-          site: 'http://www.brierley.com/technology-products/brierley-survey'
-        },
-        {
-          name: 'Digital Messaging Suite',
-          site: 'http://www.brierley.com/technology-products/brierley-digital-messaging-suite'
-        },
-        {
-          name: 'Data360',
-          site: 'http://www.brierley.com/technology-products/brierley-data360'
-        }
+        { name: 'LoyaltyOnDemand', site: 'http://www.brierley.com/technology-products/brierley-loyaltyondemand' },
+        { name: 'Campaign Module', site: 'http://www.brierley.com/technology-products/brierley-campaign' },
+        { name: 'Survey Module', site: 'http://www.brierley.com/technology-products/brierley-survey' },
+        { name: 'Digital Messaging Suite', site: 'http://www.brierley.com/technology-products/brierley-digital-messaging-suite' },
+        { name: 'Data360', site: 'http://www.brierley.com/technology-products/brierley-data360' }
       ],
       historyItems: [
-        {
-          name: 'BALOR Job History',
-          histLink: '#/Balor'
-        },
-        {
-          name: 'Pareto Job History',
-          histLink: '#/Pareto'
-        },
-        {
-          name: 'Core Lifecycle Job History',
-          histLink: '#/Lifecycle'
-        },
-        {
-          name: 'b-Relevant Job History',
-          histLink: '#/bRelevant/NewBRelevant'
-        }
+        { name: 'BALOR Job History', histLink: '#/Balor' },
+        { name: 'Pareto Job History', histLink: '#/Pareto' },
+        { name: 'Core Lifecycle Job History', histLink: '#/Lifecycle' },
+        { name: 'b-Relevant Job History', histLink: '#/bRelevant/NewBRelevant' }
       ]
     }
   },

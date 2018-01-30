@@ -35,7 +35,7 @@
             </v-flex>
             <!--//Dropdown1-->
             <!-- LEGEND -->
-            <v-flex xs12 sm6>
+            <v-flex xs12 sm10>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
                   <!-- LEGEND -->

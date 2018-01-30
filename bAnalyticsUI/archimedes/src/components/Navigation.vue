@@ -36,48 +36,57 @@
         <v-toolbar-side-icon @click.native.stop="showmenu = !showmenu"></v-toolbar-side-icon>
         <v-toolbar-title class="text--text">{{ appmodule }}</v-toolbar-title>
         <v-toolbar-items>
-
-          <v-menu bottom left offset-y>
-            <v-btn
-                primary
-                outline
-                slot="activator"
-                v-tooltip:bottom="{ html: 'Select Client' }"
-                class="primary--text padR6">
-                  Client<v-icon>arrow_drop_down</v-icon>
-            </v-btn>
-            <v-list>
-              <v-list-item v-for="client in clients" :key="client.id">
-                <v-list-tile>
-                  <v-list-tile-title>{{ client.name }}</v-list-tile-title>
-                </v-list-tile>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+          <v-select
+              v-bind:items="clients"
+              v-model="activeClient"
+              label="Select Client"
+              single-line
+              auto
+              append-icon="arrow_drop_down"
+              hide-details
+              style="width:200px;"
+              class="custom_input"
+              v-tooltip:bottom="{ html: 'Select Client' }"
+            ></v-select>
           <v-btn
               router
               to="/JobHistory"
               icon slot="activator"
+              class="accent--text"
               v-tooltip:bottom="{ html: 'Global Job History' }">
                 <v-icon x-large>history</v-icon>
           </v-btn>
           <v-menu bottom left offset-y>
             <v-btn
-                icon
-                slot="activator"
+                icon slot="activator"
                 v-tooltip:bottom="{ html: 'Profile' }">
-              <v-icon class="blue-grey--text text--darken-2">account_circle</v-icon>
+              <v-icon class="accent--text">account_circle</v-icon>
             </v-btn>
-            <v-list>
-              <v-list-item>
+            <v-list class="pt-0" style="width:300px;">
+              <v-icon class="accent--text drop_arrow2">arrow_drop_up</v-icon>
+              <v-list-item v-for="item in userInfo" v-bind:key="item.LastName">
+              <!-- User Info -->
+              <div class="pt-2 pb-2 success">
+                  <v-list-tile avatar class="pl-0 pr-0">
+                    <div class="ml-1 mr-1" style="height:100%;">
+                      <v-list-tile-avatar class="bg_avatar" :class="[item.iconClass]">
+                        <h6 class="mb-0 white--text" style="margin:0 auto;">JF</h6>
+                        <!--<img src="/static/bp_logo_reverse_color2.png" />-->
+                      </v-list-tile-avatar>
+                    </div>
+                    <v-list-tile-content class="ml-1">
+                      <v-list-tile-title class="white--text">{{item.firstName}} {{item.lastName}}</v-list-tile-title>
+                      <v-list-tile-sub-title class="white--text">{{item.email}}</v-list-tile-sub-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+              </div>
+            </v-list-item>
+              <!-- //User Info -->
+              <v-list-item v-for="item in profile" v-bind:key="item.name" class="drop_item">
                 <v-list-tile>
                   <v-list-tile-title>
-                    <router-link to="/Logout" style="color: #354052">Logout</router-link>
-                  </v-list-tile-title>
-                </v-list-tile>
-                <v-list-tile>
-                  <v-list-tile-title>
-                    <router-link to="/Settings">Settings</router-link>
+                    <v-icon class="pr-2">{{item.icon}}</v-icon>
+                    <a :href="item.link" class="body-2">{{ item.name }}</a>
                   </v-list-tile-title>
                 </v-list-tile>
               </v-list-item>
@@ -110,11 +119,12 @@
     name: 'nav',
     data () {
       return {
+        activeClient: null,
         showmenu: false,
         showBalor: 1,
         clients: [
-          {id: 1, name: 'Wendy'},
-          {id: 2, name: 'Hertz'}
+          {text: 'Wendy\'s', icon: 'account_box', link: ''},
+          {text: 'Hertz', icon: 'account_circle', link: ''}
         ],
         modules: [
           {name: 'BALOR', active: true, icon: 'label', link: '/Balor'},
@@ -126,6 +136,16 @@
           {name: 'Help', active: false, icon: 'help', link: '/Help'},
           {name: 'Feedback', active: false, icon: 'feedback', link: '/Feedback'},
           {name: 'Logout', active: false, icon: 'exit_to_app', link: '/Logout'}
+        ],
+        profile: [
+          {name: 'Profile', icon: 'person', link: '/Home'},
+          {name: 'Settings', icon: 'settings', link: '/Settings'},
+          {name: 'Feeback', icon: 'feedback', link: '/Feedback'},
+          {name: 'Help', icon: 'help', link: '/Help'},
+          {name: 'Logout', icon: 'exit_to_app', link: '/Logout'}
+        ],
+        userInfo: [
+          {firstName: 'FirstName', lastName: 'LastName', email: 'someone@juju.com', iconClass: 'info'}
         ]
       }
     },
@@ -154,6 +174,14 @@
   .footer .logo {height:45px;}
   .application--footer-fixed.application--toolbar > aside.navigation-drawer.navigation-drawer--clipped  {max-height:calc(100vh - 55px) !important;}
 
+  .bg_avatar {
+    border-radius: 30px;
+    border:1px solid #000000;
+  }
+  .drop_arrow2{
+    position:relative;
+    left:270px;
+  }
   @media (max-width: 550px) {
     body {font-size: 12px;}
   }
