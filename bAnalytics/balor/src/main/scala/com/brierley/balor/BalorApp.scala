@@ -160,29 +160,37 @@ object BalorApp {
     joinedDF
   }
 
-  def retentionData(labelDF: DataFrame): Try [DataFrame] = Try {
+  def retentionData(labelDF: DataFrame): Try[DataFrame] = Try {
+    val maxTP = labelDF
+      .select(max("TimePeriod")).head().getInt(0)
+
     val prevWindow = Window
       .partitionBy("CUST_ID")
       .orderBy("TimePeriod")
 
     val retDF = labelDF
       .withColumn("PrevLabel", lead(("Label"), 1).over(prevWindow))
+      .withColumn("PrevTxnCount", lead("TXN_COUNT", 1).over(prevWindow))
+      .withColumn("PrevSales", lead("TXN_AMT", 1).over(prevWindow))
       .filter(col("Label") === "Returning" && col("PrevLabel") != "Lapsed")
+      .filter(col("TimePeriod") < (maxTP - 1))
+
+    val pivotRetDF = retDF
       .groupBy("TimePeriod")
       .pivot("PrevLabel", Seq("New", "Reactivated", "Returning"))
-      .agg(count("CUST_ID"), sum("TXN_COUNT"), sum("TXN_AMT"))
+      .agg(count("CUST_ID"), sum("PrevTxnCount"), sum("PrevSales"))
       .na.fill(0)
       .withColumnRenamed("New_count(CUST_ID)", "returnNewCust")
-      .withColumnRenamed("New_sum(TXN_COUNT)", "returnNewTxn")
-      .withColumnRenamed("New_sum(TXN_AMT)", "returnNewSales")
+      .withColumnRenamed("New_sum(PrevTxnCount)", "returnNewTxn")
+      .withColumnRenamed("New_sum(PrevSales)", "returnNewSales")
       .withColumnRenamed("Reactivated_count(CUST_ID)", "returnReactCust")
-      .withColumnRenamed("Reactivated_sum(TXN_COUNT)", "returnReactTxn")
-      .withColumnRenamed("Reactivated_sum(TXN_AMT)", "returnReactSales")
+      .withColumnRenamed("Reactivated_sum(PrevTxnCount)", "returnReactTxn")
+      .withColumnRenamed("Reactivated_sum(PrevSales)", "returnReactSales")
       .withColumnRenamed("Returning_count(CUST_ID)", "returnReturnCust")
-      .withColumnRenamed("Returning_sum(TXN_COUNT)", "returnReturnTxn")
-      .withColumnRenamed("Returning_sum(TXN_AMT)", "returnReturnSales")
+      .withColumnRenamed("Returning_sum(PrevTxnCount)", "returnReturnTxn")
+      .withColumnRenamed("Returning_sum(PrevSales)", "returnReturnSales")
 
-    retDF
+    pivotRetDF
   }
 
   def counts(labelDF: DataFrame): Try[DataFrame] = Try {
@@ -274,7 +282,7 @@ object BalorApp {
       .withColumn("ttlTxnLift", (countRetDF("returnTxnCount") / (countRetDF("returnNewTxn") + countRetDF("returnReactTxn") + countRetDF("returnReturnTxn"))) * 100)
       .withColumn("avgTxnLift", ((countRetDF("returnTxnCount") / countRetDF("returnCustCount")) / ((countRetDF("returnNewTxn") + countRetDF("returnReactTxn") + countRetDF("returnReturnTxn")) /
         (countRetDF("returnNewCust") + countRetDF("returnReactCust") + countRetDF("returnReturnCust")))) * 100)
-      .withColumn("retentionGrowth", ((col("retention") - lead(col("retention"), 1).over(segWindow)) / col("retention")) * 100)
+      .withColumn("retentionGrowth", ((col("retention") - lead(col("retention"), 1).over(segWindow)) / lead(col("retention"), 1).over(segWindow)) * 100)
       .na.fill(0)
 
     balorDF

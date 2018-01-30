@@ -609,6 +609,8 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
       val retDF = BalorApp.retentionData(fourMonthsPlusOldest) getOrElse singleSimpleBalorSet
 
       retDF.show()
+
+      assert(retDF != singleSimpleBalorSet)
     }
   }
 
