@@ -267,7 +267,7 @@ object Quantile {
       .withColumn("TP", dense_rank().over(Window.orderBy(col("TimePeriod").desc)))
       .drop("TimePeriod")
       .withColumnRenamed("TP", "TimePeriod")
-      .withColumn("StringAnchor", stringDate(avgDF("AnchorDate")))
+      .withColumn("StringAnchor", stringDate(col("AnchorDate")))
 
     invertedDF.show()
 
