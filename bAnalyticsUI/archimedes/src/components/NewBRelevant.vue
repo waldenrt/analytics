@@ -93,9 +93,9 @@
         e1: null,
         items: [
           {text: '.txt (tab separated)'},
-          {text: '.CSV ("," delimeter)'},
-          {text: '.DSV ("|" delimeter)'},
-          {text: '.DSV (";" delimeter)'}
+          {text: '.CSV ("," delimiter)'},
+          {text: '.DSV ("|" delimiter)'},
+          {text: '.DSV (";" delimiter)'}
         ],
         dialog: false,
         valid: true

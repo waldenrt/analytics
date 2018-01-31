@@ -157,7 +157,7 @@
       <v-flex xs12 class="pt-0 mt-0">
         <v-card class="pl-3 pr-3 pt-1 pb-1">
           <div class="title primary--text text-xs-center pa-1"><em>Product Share Index during Time Period <span
-              class="grey--text darken-2">1</span> for Segments <span class="grey--text darken-2">All</span></span></em>
+              class="grey--text darken-2">{{tpSelect}}</span> for Segments <span class="grey--text darken-2">{{segSelect}}</span></span></em>
           </div>
         </v-card>
       </v-flex>

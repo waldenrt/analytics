@@ -163,9 +163,9 @@
         select_lifecycle2: '',
         items1: [
           {text: '.txt (tab separated)', value: '/t'},
-          {text: '.CSV ("," delimeter)', value: ','},
-          {text: '.DSV ("|" delimeter)', value: '|'},
-          {text: '.DSV (";" delimeter)', value: ';'}
+          {text: '.CSV ("," delimiter)', value: ','},
+          {text: '.DSV ("|" delimiter)', value: '|'},
+          {text: '.DSV (";" delimiter)', value: ';'}
         ],
         items2: [
           {text: 'All Data', value: '0'},

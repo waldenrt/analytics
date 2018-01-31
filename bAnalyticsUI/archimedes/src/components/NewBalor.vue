@@ -131,9 +131,9 @@
         disabledBtn: '',
         items: [
           {text: '.txt (tab separated)', value: '/t'},
-          {text: '.CSV ("," delimeter)', value: ','},
-          {text: '.DSV ("|" delimeter)', value: '|'},
-          {text: '.DSV (";" delimeter)', value: ';'}
+          {text: '.CSV ("," delimiter)', value: ','},
+          {text: '.DSV ("|" delimiter)', value: '|'},
+          {text: '.DSV (";" delimiter)', value: ';'}
         ],
         dialog: false,
         valid: true,

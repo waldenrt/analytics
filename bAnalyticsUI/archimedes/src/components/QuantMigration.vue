@@ -626,4 +626,14 @@
   .quantTbl .tRow td:first-child {
     background-color:#e7eeda;
   }
+  @media (max-width: 768px) {
+    .quantTbl .tRow td:first-child {
+      width:30px;
+      padding: 5px;
+    }
+    .quantTbl td {
+      padding:10px;
+      font-size:13px;
+    }
+  }
 </style>
