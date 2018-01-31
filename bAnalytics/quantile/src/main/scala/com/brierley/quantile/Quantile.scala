@@ -797,6 +797,7 @@ object Quantile {
       case Failure(ex) => {
         println(s"There was an error: $ex")
         sendQuantileError(jobKey, "BalorApp", "unknown", ex.toString, "System", propsOnly)
+        println("stackTrace: " + ex.printStackTrace())
 
         sc.stop()
         System.exit(-1)
