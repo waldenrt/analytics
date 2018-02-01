@@ -1,4 +1,4 @@
-<template>
+<template style="height:100%;">
   <v-container fluid class="home pa-0" style="height:100%;">
     <v-layout row wrap class="mt-0 mb-3 pa-0" style="height:100%;">
 
@@ -66,11 +66,11 @@
           </v-layout>
           <!-- //App Modules Row -->
           <!-- Misc Info Row -->
-          <v-layout wrap row class="pl-4 pr-4 pt-3 pb-0">
+          <v-layout wrap row class="pl-4 pr-4 pt-3 mb-5">
               <v-flex xs12 class="pl-1 pr-1">
                 <h5 class="grey--text">Misc <span class="primary--text">Info</span></h5>
               </v-flex>
-              <v-flex xs4 class="pl-1 pr-1">
+              <v-flex xs4 class="pl-1 pr-1 mb-2">
                 <v-card class="white">
                   <v-card-row>
                     <v-card-title class="pa-0 ma-0">
@@ -87,7 +87,7 @@
                   </v-card-text>
                 </v-card>
               </v-flex>
-              <v-flex xs4 class="pl-1 pr-1">
+              <v-flex xs4 class="pl-1 pr-1 mb-2">
                 <v-card class="white">
                   <v-card-row>
                     <v-card-title class="pa-0 ma-0">

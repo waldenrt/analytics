@@ -27,4 +27,5 @@
     background-color:#F5F8FA !important;
     border:1px solid #DFE3E9 !important;
   }
+  body {height:fit-content !important;}
 </style>

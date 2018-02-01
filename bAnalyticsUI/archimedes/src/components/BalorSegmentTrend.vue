@@ -492,62 +492,62 @@
         for (var i = 0; i < this.jsonMsg.timePeriods.length; i++) {
           tempTp.push(this.jsonMsg.timePeriods[i].timePeriod)
 
-          tempCustRet.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnCustCount)
-          tempCustLap.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedCustCount)
-          tempCustNew.push(this.jsonMsg.timePeriods[i].newCustInfo.newCustCount)
-          tempCustReact.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactCustCount)
+          tempCustRet.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnCustCount.toFixed(2))
+          tempCustLap.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedCustCount.toFixed(2))
+          tempCustNew.push(this.jsonMsg.timePeriods[i].newCustInfo.newCustCount.toFixed(2))
+          tempCustReact.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactCustCount.toFixed(2))
 
-          tempTxnRet.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnTxnCount)
-          tempTxnLap.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedTxnCount)
-          tempTxnNew.push(this.jsonMsg.timePeriods[i].newCustInfo.newTxnCount)
-          tempTxnReact.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactTxnCount)
+          tempTxnRet.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnTxnCount.toFixed(2))
+          tempTxnLap.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedTxnCount.toFixed(2))
+          tempTxnNew.push(this.jsonMsg.timePeriods[i].newCustInfo.newTxnCount.toFixed(2))
+          tempTxnReact.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactTxnCount.toFixed(2))
 
-          tempItemRet.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnItemQty)
-          tempItemLap.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedItemQty)
-          tempItemNew.push(this.jsonMsg.timePeriods[i].newCustInfo.newItemQty)
-          tempItemReact.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactItemQty)
+          tempItemRet.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnItemQty.toFixed(2))
+          tempItemLap.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedItemQty.toFixed(2))
+          tempItemNew.push(this.jsonMsg.timePeriods[i].newCustInfo.newItemQty.toFixed(2))
+          tempItemReact.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactItemQty.toFixed(2))
 
-          tempSpendRet.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnTxnAmt)
-          tempSpendLap.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedTxnAmt)
-          tempSpendNew.push(this.jsonMsg.timePeriods[i].newCustInfo.newTxnAmt)
-          tempSpendReact.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactTxnAmt)
+          tempSpendRet.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnTxnAmt.toFixed(2))
+          tempSpendLap.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedTxnAmt.toFixed(2))
+          tempSpendNew.push(this.jsonMsg.timePeriods[i].newCustInfo.newTxnAmt.toFixed(2))
+          tempSpendReact.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactTxnAmt.toFixed(2))
 
-          tempDiscRet.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnDiscAmt)
-          tempDiscLap.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedDiscAmt)
-          tempDiscNew.push(this.jsonMsg.timePeriods[i].newCustInfo.newDiscAmt)
-          tempDiscReact.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactDiscAmt)
+          tempDiscRet.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnDiscAmt.toFixed(2))
+          tempDiscLap.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedDiscAmt.toFixed(2))
+          tempDiscNew.push(this.jsonMsg.timePeriods[i].newCustInfo.newDiscAmt.toFixed(2))
+          tempDiscReact.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactDiscAmt.toFixed(2))
 
-          tempNewCustSpend.push(this.jsonMsg.timePeriods[i].newCustInfo.newCustSpendAvg)
-          tempNewCustItems.push(this.jsonMsg.timePeriods[i].newCustInfo.newCustItemAvg)
-          tempNewCustDisc.push(this.jsonMsg.timePeriods[i].newCustInfo.newCustDiscAvg)
-          tempNewCustTxn.push(this.jsonMsg.timePeriods[i].newCustInfo.newCustVisitAvg)
-          tempNewVisitSpend.push(this.jsonMsg.timePeriods[i].newCustInfo.newVisitSpendAvg)
-          tempNewVisitItems.push(this.jsonMsg.timePeriods[i].newCustInfo.newVisitItemAvg)
-          tempNewVisitDisc.push(this.jsonMsg.timePeriods[i].newCustInfo.newVisitDiscAvg)
+          tempNewCustSpend.push(this.jsonMsg.timePeriods[i].newCustInfo.newCustSpendAvg.toFixed(2))
+          tempNewCustItems.push(this.jsonMsg.timePeriods[i].newCustInfo.newCustItemAvg.toFixed(2))
+          tempNewCustDisc.push(this.jsonMsg.timePeriods[i].newCustInfo.newCustDiscAvg.toFixed(2))
+          tempNewCustTxn.push(this.jsonMsg.timePeriods[i].newCustInfo.newCustVisitAvg.toFixed(2))
+          tempNewVisitSpend.push(this.jsonMsg.timePeriods[i].newCustInfo.newVisitSpendAvg.toFixed(2))
+          tempNewVisitItems.push(this.jsonMsg.timePeriods[i].newCustInfo.newVisitItemAvg.toFixed(2))
+          tempNewVisitDisc.push(this.jsonMsg.timePeriods[i].newCustInfo.newVisitDiscAvg.toFixed(2))
 
-          tempRetCustSpend.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnCustSpendAvg)
-          tempRetCustItems.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnCustItemAvg)
-          tempRetCustDisc.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnCustDiscAvg)
-          tempRetCustTxn.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnCustVisitAvg)
-          tempRetVisitSpend.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnVisitSpendAvg)
-          tempRetVisitItems.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnVisitItemAvg)
-          tempRetVisitDisc.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnVisitDiscAvg)
+          tempRetCustSpend.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnCustSpendAvg.toFixed(2))
+          tempRetCustItems.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnCustItemAvg.toFixed(2))
+          tempRetCustDisc.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnCustDiscAvg.toFixed(2))
+          tempRetCustTxn.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnCustVisitAvg.toFixed(2))
+          tempRetVisitSpend.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnVisitSpendAvg.toFixed(2))
+          tempRetVisitItems.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnVisitItemAvg.toFixed(2))
+          tempRetVisitDisc.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnVisitDiscAvg.toFixed(2))
 
-          tempReactCustSpend.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactCustSpendAvg)
-          tempReactCustItems.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactCustItemAvg)
-          tempReactCustDisc.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactCustDiscAvg)
-          tempReactCustTxn.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactCustVisitAvg)
-          tempReactVisitSpend.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactVisitSpendAvg)
-          tempReactVisitItems.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactVisitItemAvg)
-          tempReactVisitDisc.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactVisitDiscAvg)
+          tempReactCustSpend.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactCustSpendAvg.toFixed(2))
+          tempReactCustItems.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactCustItemAvg.toFixed(2))
+          tempReactCustDisc.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactCustDiscAvg.toFixed(2))
+          tempReactCustTxn.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactCustVisitAvg.toFixed(2))
+          tempReactVisitSpend.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactVisitSpendAvg.toFixed(2))
+          tempReactVisitItems.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactVisitItemAvg.toFixed(2))
+          tempReactVisitDisc.push(this.jsonMsg.timePeriods[i].reactCustInfo.reactVisitDiscAvg.toFixed(2))
 
-          tempLapCustSpend.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedCustSpendAvg)
-          tempLapCustItems.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedCustItemAvg)
-          tempLapCustDisc.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedCustDiscAvg)
-          tempLapCustTxn.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedCustVisitAvg)
-          tempLapVisitSpend.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedVisitSpendAvg)
-          tempLapVisitItems.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedVisitItemAvg)
-          tempLapVisitDisc.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedVisitDiscAvg)
+          tempLapCustSpend.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedCustSpendAvg.toFixed(2))
+          tempLapCustItems.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedCustItemAvg.toFixed(2))
+          tempLapCustDisc.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedCustDiscAvg.toFixed(2))
+          tempLapCustTxn.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedCustVisitAvg.toFixed(2))
+          tempLapVisitSpend.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedVisitSpendAvg.toFixed(2))
+          tempLapVisitItems.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedVisitItemAvg.toFixed(2))
+          tempLapVisitDisc.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedVisitDiscAvg.toFixed(2))
         }
 
         this.tpArray = tempTp
@@ -2573,21 +2573,13 @@
     width: 100% !important;
   }
 
-  .padT18 {
-    padding-top: 18px !important;
-  }
+  .padT18 {padding-top: 18px !important;}
 
-  .inliner {
-    display: inline-block;
-  }
+  .inliner {display: inline-block;}
 
-  .left_float {
-    float: left;
-  }
+  .left_float {float: left;}
 
-  .right_float {
-    float: right;
-  }
+  .right_float {float: right;}
 
   .legend {
     display: inline-block;
@@ -2596,23 +2588,13 @@
     margin-right: 5px;
   }
 
-  .legend_color1 {
-    background-color: #D63809;
-  }
+  .legend_color1 {background-color: #D63809;}
 
-  .legend_color2 {
-    background-color: #8EAC1D;
-  }
+  .legend_color2 {background-color: #8EAC1D;}
 
-  .legend_color3 {
-    background-color: #F7970E;
-  }
+  .legend_color3 {background-color: #F7970E;}
 
-  .legend_color4 {
-    background-color: #0087AA;
-  }
+  .legend_color4 {background-color: #0087AA;}
 
-  .padR5 {
-    padding-right: 5px;
-  }
+  .padR5 {padding-right: 5px;}
 </style>

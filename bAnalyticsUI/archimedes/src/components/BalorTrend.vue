@@ -432,9 +432,9 @@
         var tempTP = []
 
         for (var i = 0; i < this.jsonMsg.timePeriods.length; i++) {
-          tempCust.push(this.jsonMsg.timePeriods[i].custBalor)
-          tempTxn.push(this.jsonMsg.timePeriods[i].txnBalor)
-          tempSpend.push(this.jsonMsg.timePeriods[i].spendBalor)
+          tempCust.push(this.jsonMsg.timePeriods[i].custBalor.toFixed(2))
+          tempTxn.push(this.jsonMsg.timePeriods[i].txnBalor.toFixed(2))
+          tempSpend.push(this.jsonMsg.timePeriods[i].spendBalor.toFixed(2))
           tempTP.push(this.jsonMsg.timePeriods[i].timePeriod)
         }
 
@@ -573,9 +573,9 @@
         this.spendData = {
           datasets: [{
             data: [
-              this.jsonMsg.timePeriods[tp].newTxnAmt,
-              this.jsonMsg.timePeriods[tp].returnTxnAmt,
-              this.jsonMsg.timePeriods[tp].reactTxnAmt],
+              this.jsonMsg.timePeriods[tp].newTxnAmt.toFixed(2),
+              this.jsonMsg.timePeriods[tp].returnTxnAmt.toFixed(2),
+              this.jsonMsg.timePeriods[tp].reactTxnAmt.toFixed(2)],
             backgroundColor: [
               '#8EAC1D',
               '#F7970E',
@@ -656,9 +656,9 @@
         this.spendData = {
           datasets: [{
             data: [
-              this.jsonMsg.timePeriods[this.tp - 1].newTxnAmt,
-              this.jsonMsg.timePeriods[this.tp - 1].returnTxnAmt,
-              this.jsonMsg.timePeriods[this.tp - 1].reactTxnAmt],
+              this.jsonMsg.timePeriods[this.tp - 1].newTxnAmt.toFixed(2),
+              this.jsonMsg.timePeriods[this.tp - 1].returnTxnAmt.toFixed(2),
+              this.jsonMsg.timePeriods[this.tp - 1].reactTxnAmt.toFixed(2)],
             backgroundColor: [
               '#8EAC1D',
               '#F7970E',

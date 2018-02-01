@@ -163,8 +163,8 @@
     <!-- =====ROW3===== -->
     <v-layout wrap row class="mt-3">
       <!--+++++col_1+++++-->
-      <v-flex xs3 fill-height>
-        <v-card class="white pl-3 pr-3 pt-1 pb-1">
+      <v-flex xs4 md3 fill-height>
+        <v-card class="white pl-1 pr-1 pt-1 pb-1">
           <!--Total Spend Table-->
           <table cellpadding="0" cellspacing="0" width="100%" class="quant_prod_table1">
             <tr>
@@ -185,10 +185,10 @@
       </v-flex>
       <!--//+++++col_1+++++-->
       <!--+++++col_2+++++-->
-      <v-flex xs9 fill-height>
-        <v-card fill-height class="white pl-3 pr-3 pt-1 pb-1" style="height:100%">
+      <v-flex xs8 md9 fill-height>
+        <v-card fill-height class="white pl-1 pr-2 pt-1 pb-1" style="height:100%">
           <div class="primary--text text-xs-center pa-1 subhead">Products</div>
-          <v-layout row wrap class="mb-3 pa-3">
+          <v-layout row wrap class="mb-1 pa-1">
             <v-flex xs12 fill-height>
               <stacked-bar :chart-data="barData" :options="barOptions" class="prod_chart"></stacked-bar>
             </v-flex>
@@ -1038,6 +1038,6 @@
   .prod_chart {
     position: relative !important;
     margin: 0 auto !important;
-    height: 353px !important;
+    height: 389px !important;
   }
 </style>
