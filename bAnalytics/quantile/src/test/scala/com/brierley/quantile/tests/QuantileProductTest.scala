@@ -187,14 +187,14 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
 
     import sqlCtx.implicits._
 
-    val spendCols = List("TimePeriod", "AnchorDate", "Quantile", "Type", "Descr", "Amt", "Rank", "RowNum", "Position")
-    val qtyCols = List("TimePeriod","AnchorDate", "Quantile", "Type", "Descr", "Qty", "Rank", "RowNum", "Position")
+    val spendCols = List("TimePeriod", "Quantile", "Type", "AnchorDate", "Descr", "Amt", "Rank", "RowNum", "Position")
+    val qtyCols = List("TimePeriod", "Quantile", "Type", "AnchorDate", "Descr", "Qty", "Rank", "RowNum", "Position")
 
     val amtSchema = StructType(Array(
       StructField("TimePeriod", IntegerType, false),
-      StructField("AnchorDate", StringType, true),
       StructField("Quantile", IntegerType, false),
       StructField("Type", StringType, true),
+      StructField("AnchorDate", StringType, true),
       StructField("Descr", StringType, true),
       StructField("Amt", DoubleType, false),
       StructField("Rank", IntegerType, true),
@@ -203,9 +203,9 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
 
     val qtySchema = StructType(Array(
       StructField("TimePeriod", IntegerType, false),
-      StructField("AnchorDate", StringType, true),
       StructField("Quantile", IntegerType, false),
       StructField("Type", StringType, true),
+      StructField("AnchorDate", StringType, true),
       StructField("Descr", StringType, true),
       StructField("Qty", IntegerType, false),
       StructField("Rank", IntegerType, true),
@@ -521,30 +521,30 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
       assert(spendDF.columns === spendCols)
 
       val quant1DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, "01/01/2015", 1, "1", "Grocery", 200.00, Some(1), Some(1), "Top"),
-        Row(1, "01/01/2015", 1, "1", "Womens", 54.00, Some(2), Some(2), "Top"),
-        Row(1, "01/01/2015", 1, "1", "Girls", 30.00, Some(3), Some(3), "Top"),
-        Row(1, "01/01/2015", 1, "1", "Mens", 25.00, Some(5), Some(5), "Bottom"),
-        Row(1, "01/01/2015", 1, "1", "Boys", 21.00, Some(6), Some(6), "Bottom"),
-        Row(1, "01/01/2015", 1, "1", "Baby", 5.00, Some(7), Some(7), "Bottom")
+        Row(1, 1, "1", "01/01/2015", "Grocery", 200.00, Some(1), Some(1), "Top"),
+        Row(1, 1, "1", "01/01/2015", "Womens", 54.00, Some(2), Some(2), "Top"),
+        Row(1, 1, "1", "01/01/2015", "Girls", 30.00, Some(3), Some(3), "Top"),
+        Row(1, 1, "1", "01/01/2015", "Mens", 25.00, Some(5), Some(5), "Bottom"),
+        Row(1, 1, "1", "01/01/2015", "Boys", 21.00, Some(6), Some(6), "Bottom"),
+        Row(1, 1, "1", "01/01/2015", "Baby", 5.00, Some(7), Some(7), "Bottom")
       )), amtSchema)
 
       val quant2DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, "01/01/2015", 2, "1", "Grocery", 175.00, Some(1), Some(1), "Top"),
-        Row(1, "01/01/2015", 2, "1", "Boys", 30.00, Some(2), Some(2), "Top"),
-        Row(1, "01/01/2015", 2, "1", "Girls", 25.00, Some(3), Some(3), "Top"),
-        Row(1, "01/01/2015", 2, "1", "Womens", 23.00, Some(4), Some(4), "Bottom"),
-        Row(1, "01/01/2015", 2, "1", "Mens", 21.00, Some(5), Some(5), "Bottom"),
-        Row(1, "01/01/2015", 2, "1", "Pet", 5.00, Some(6), Some(6), "Bottom")
+        Row(1, 2, "1", "01/01/2015", "Grocery", 175.00, Some(1), Some(1), "Top"),
+        Row(1, 2, "1", "01/01/2015", "Boys", 30.00, Some(2), Some(2), "Top"),
+        Row(1, 2, "1", "01/01/2015", "Girls", 25.00, Some(3), Some(3), "Top"),
+        Row(1, 2, "1", "01/01/2015", "Womens", 23.00, Some(4), Some(4), "Bottom"),
+        Row(1, 2, "1", "01/01/2015", "Mens", 21.00, Some(5), Some(5), "Bottom"),
+        Row(1, 2, "1", "01/01/2015", "Pet", 5.00, Some(6), Some(6), "Bottom")
       )), amtSchema)
 
       val quant3DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, "01/01/2015", 3, "1", "Baby", 36.00, Some(1), Some(1), "Top"),
-        Row(1, "01/01/2015", 3, "1", "Womens", 20.00, Some(2), Some(2), "Top"),
-        Row(1, "01/01/2015", 3, "1", "Mens", 12.00, Some(3), Some(3), "Top"),
-        Row(1, "01/01/2015", 3, "1", "Mens", 12.00, Some(3), Some(3), "Bottom"),
-        Row(1, "01/01/2015", 3, "1", "Pet", 9.00, Some(4), Some(4), "Bottom"),
-        Row(1, "01/01/2015", 3, "1", "Boys", 5.00, Some(5), Some(5), "Bottom")
+        Row(1, 3, "1", "01/01/2015", "Baby", 36.00, Some(1), Some(1), "Top"),
+        Row(1, 3, "1", "01/01/2015", "Womens", 20.00, Some(2), Some(2), "Top"),
+        Row(1, 3, "1", "01/01/2015", "Mens", 12.00, Some(3), Some(3), "Top"),
+        Row(1, 3, "1", "01/01/2015", "Mens", 12.00, Some(3), Some(3), "Bottom"),
+        Row(1, 3, "1", "01/01/2015", "Pet", 9.00, Some(4), Some(4), "Bottom"),
+        Row(1, 3, "1", "01/01/2015", "Boys", 5.00, Some(5), Some(5), "Bottom")
       )), amtSchema)
 
       val quant1 = spendDF.where("Quantile = 1")
@@ -578,30 +578,30 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
       assert(amtDF.count() === 18)
 
       val lvl1DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, "01/01/2015", 1, "1", "Grocery", 200.00, Some(1), 1, "Top"),
-        Row(1, "01/01/2015", 1, "1", "Womens", 54.00, Some(2), 2, "Top"),
-        Row(1, "01/01/2015", 1, "1", "Girls", 30.00, Some(3), 3, "Top"),
-        Row(1, "01/01/2015", 1, "1", "Mens", 25.00, Some(5), 5, "Bottom"),
-        Row(1, "01/01/2015", 1, "1", "Boys", 21.00, Some(6), 6, "Bottom"),
-        Row(1, "01/01/2015", 1, "1", "Baby", 5.00, Some(7), 7, "Bottom")
+        Row(1, 1, "1", "01/01/2015", "Grocery", 200.00, Some(1), 1, "Top"),
+        Row(1, 1, "1", "01/01/2015", "Womens", 54.00, Some(2), 2, "Top"),
+        Row(1, 1, "1", "01/01/2015", "Girls", 30.00, Some(3), 3, "Top"),
+        Row(1, 1, "1", "01/01/2015", "Mens", 25.00, Some(5), 5, "Bottom"),
+        Row(1, 1, "1", "01/01/2015", "Boys", 21.00, Some(6), 6, "Bottom"),
+        Row(1, 1, "1", "01/01/2015", "Baby", 5.00, Some(7), 7, "Bottom")
       )), amtSchema)
 
       val lvl2DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, "01/01/2015", 1, "2", "Pants", 45.00, Some(1), 1, "Top"),
-        Row(1, "01/01/2015", 1, "2", "Diapers", 22.00, Some(2), 2, "Top"),
-        Row(1, "01/01/2015", 1, "2", "Dress", 20.00, Some(3), 3, "Top"),
-        Row(1, "01/01/2015", 1, "2", "Baby Tanks", 11.00, Some(6), 6, "Bottom"),
-        Row(1, "01/01/2015", 1, "2", "Mens Shorts", 10.00, Some(7), 7, "Bottom"),
-        Row(1, "01/01/2015", 1, "2", "Paci", 8.00, Some(8), 8, "Bottom")
+        Row(1, 1, "2", "01/01/2015", "Pants", 45.00, Some(1), 1, "Top"),
+        Row(1, 1, "2", "01/01/2015", "Diapers", 22.00, Some(2), 2, "Top"),
+        Row(1, 1, "2", "01/01/2015", "Dress", 20.00, Some(3), 3, "Top"),
+        Row(1, 1, "2", "01/01/2015", "Baby Tanks", 11.00, Some(6), 6, "Bottom"),
+        Row(1, 1, "2", "01/01/2015", "Mens Shorts", 10.00, Some(7), 7, "Bottom"),
+        Row(1, 1, "2", "01/01/2015", "Paci", 8.00, Some(8), 8, "Bottom")
       )), amtSchema)
 
       val lvl3DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, "01/01/2015", 1, "3", "size 2 diapers", 22.00, Some(1), 1, "Top"),
-        Row(1, "01/01/2015", 1, "3", "Mens board shorts", 20.00, Some(2), 2, "Top"),
-        Row(1, "01/01/2015", 1, "3", "Womens maxi dress", 18.00, Some(3), 3, "Top"),
-        Row(1, "01/01/2015", 1, "3", "Green chew toy", 6.00, Some(5), 5, "Bottom"),
-        Row(1, "01/01/2015", 1, "3", "boy paci", 4.00, Some(6), 6, "Bottom"),
-        Row(1, "01/01/2015", 1, "3", "girls paci", 4.00, Some(6), 7, "Bottom")
+        Row(1, 1, "3", "01/01/2015", "size 2 diapers", 22.00, Some(1), 1, "Top"),
+        Row(1, 1, "3", "01/01/2015", "Mens board shorts", 20.00, Some(2), 2, "Top"),
+        Row(1, 1, "3", "01/01/2015", "Womens maxi dress", 18.00, Some(3), 3, "Top"),
+        Row(1, 1, "3", "01/01/2015", "Green chew toy", 6.00, Some(5), 5, "Bottom"),
+        Row(1, 1, "3", "01/01/2015", "boy paci", 4.00, Some(6), 6, "Bottom"),
+        Row(1, 1, "3", "01/01/2015", "girls paci", 4.00, Some(6), 7, "Bottom")
       )), amtSchema)
 
       val level1 = amtDF.filter(amtDF("Type") === 1)
@@ -626,30 +626,30 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
       assert(qtyDF.columns === qtyCols)
 
       val quant1DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, "01/01/2015", 1, "1", "Grocery", 54, Some(1), 1, "Top"),
-        Row(1, "01/01/2015", 1, "1", "Pet", 15, Some(2), 2, "Top"),
-        Row(1, "01/01/2015", 1, "1", "Womens", 10, Some(3), 3, "Top"),
-        Row(1, "01/01/2015", 1, "1", "Mens", 5, Some(5), 5, "Bottom"),
-        Row(1, "01/01/2015", 1, "1", "Girls", 3, Some(6), 6, "Bottom"),
-        Row(1, "01/01/2015", 1, "1", "Baby", 2, Some(7), 7, "Bottom")
+        Row(1, 1, "1", "01/01/2015", "Grocery", 54, Some(1), 1, "Top"),
+        Row(1, 1, "1",  "01/01/2015","Pet", 15, Some(2), 2, "Top"),
+        Row(1, 1, "1", "01/01/2015", "Womens", 10, Some(3), 3, "Top"),
+        Row(1, 1, "1", "01/01/2015", "Mens", 5, Some(5), 5, "Bottom"),
+        Row(1, 1, "1", "01/01/2015", "Girls", 3, Some(6), 6, "Bottom"),
+        Row(1, 1, "1", "01/01/2015", "Baby", 2, Some(7), 7, "Bottom")
       )), qtySchema)
 
       val quant2DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, "01/01/2015", 2, "1", "Grocery", 51, Some(1), 1, "Top"),
-        Row(1, "01/01/2015", 2, "1", "Mens", 8, Some(2), 2, "Top"),
-        Row(1, "01/01/2015", 2, "1", "Womens", 7, Some(3), 3, "Top"),
-        Row(1, "01/01/2015", 2, "1", "Girls", 5, Some(4), 4, "Bottom"),
-        Row(1, "01/01/2015", 2, "1", "Boys", 3, Some(5), 5, "Bottom"),
-        Row(1, "01/01/2015", 2, "1", "Pet", 2, Some(6), 6, "Bottom")
+        Row(1, 2, "1", "01/01/2015", "Grocery", 51, Some(1), 1, "Top"),
+        Row(1, 2, "1", "01/01/2015", "Mens", 8, Some(2), 2, "Top"),
+        Row(1, 2, "1", "01/01/2015", "Womens", 7, Some(3), 3, "Top"),
+        Row(1, 2, "1", "01/01/2015", "Girls", 5, Some(4), 4, "Bottom"),
+        Row(1, 2, "1", "01/01/2015", "Boys", 3, Some(5), 5, "Bottom"),
+        Row(1, 2, "1", "01/01/2015", "Pet", 2, Some(6), 6, "Bottom")
       )), qtySchema)
 
       val quant3DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, "01/01/2015", 3, "1", "Boys", 25, Some(1), 1, "Top"),
-        Row(1, "01/01/2015", 3, "1", "Baby", 12, Some(2), 2, "Top"),
-        Row(1, "01/01/2015", 3, "1", "Pet", 8, Some(3), 3, "Top"),
-        Row(1, "01/01/2015", 3, "1", "Pet", 8, Some(3), 3, "Bottom"),
-        Row(1, "01/01/2015", 3, "1", "Mens", 5, Some(4), 4, "Bottom"),
-        Row(1, "01/01/2015", 3, "1", "Womens", 2, Some(5), 5, "Bottom")
+        Row(1, 3, "1", "01/01/2015", "Boys", 25, Some(1), 1, "Top"),
+        Row(1, 3, "1", "01/01/2015", "Baby", 12, Some(2), 2, "Top"),
+        Row(1, 3, "1", "01/01/2015", "Pet", 8, Some(3), 3, "Top"),
+        Row(1, 3, "1", "01/01/2015", "Pet", 8, Some(3), 3, "Bottom"),
+        Row(1, 3, "1", "01/01/2015", "Mens", 5, Some(4), 4, "Bottom"),
+        Row(1, 3, "1", "01/01/2015", "Womens", 2, Some(5), 5, "Bottom")
       )), qtySchema)
 
       val quant1 = qtyDF.filter(qtyDF("Quantile") === 1)

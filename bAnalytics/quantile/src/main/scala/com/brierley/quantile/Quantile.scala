@@ -371,10 +371,11 @@ object Quantile {
       .withColumn("RowNum", row_number().over(spendWindow))
 
     val maxDF = rankDF
-      .groupBy("TimePeriod", "AnchorDate", "Quantile", "Type")
+      .drop("AnchorDate")
+      .groupBy("TimePeriod", "Quantile", "Type")
       .max("RowNum")
 
-    val joinedDF = rankDF.join(maxDF, Seq("TimePeriod", "AnchorDate", "Quantile", "Type"))
+    val joinedDF = rankDF.join(maxDF, Seq("TimePeriod", "Quantile", "Type"))
 
     val topDF = joinedDF
       .filter(col("RowNum") <= num)
@@ -399,10 +400,11 @@ object Quantile {
       .withColumn("RowNum", row_number().over(countWindow))
 
     val maxDF = rankDF
-      .groupBy("TimePeriod","AnchorDate", "Quantile", "Type")
+        .drop("AnchorDate")
+      .groupBy("TimePeriod", "Quantile", "Type")
       .max("RowNum")
 
-    val joinedDF = rankDF.join(maxDF, Seq("TimePeriod", "AnchorDate", "Quantile", "Type"))
+    val joinedDF = rankDF.join(maxDF, Seq("TimePeriod", "Quantile", "Type"))
 
     val topDF = joinedDF
       .filter(col("RowNum") <= num)
@@ -640,7 +642,7 @@ object Quantile {
     val invertSumDF = sumDF
       .withColumnRenamed("TimePeriod", "TP")
       .withColumn("TimePeriod", dense_rank().over(Window.orderBy(col("TP").desc)))
-        .withColumn("StringDate", stringDate(col("AnchorDate")))
+      .withColumn("StringDate", stringDate(col("AnchorDate")))
       .select("TimePeriod", "CurrQuant", "PrevQuant", "Count", "StringDate")
 
     val invertCountDF = countDF
