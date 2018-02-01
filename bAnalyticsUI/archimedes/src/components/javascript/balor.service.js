@@ -4,7 +4,7 @@
 
 import * as axios from 'axios'
 
-const BASE_URL = 'http://10.4.3.18:8001/api/balor'
+const BASE_URL = 'http://10.4.3.18:8001/api/v1/balor'
 
 function cadence (jobId) {
   const url = `${BASE_URL}/balorcadence/${jobId}`
