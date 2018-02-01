@@ -400,7 +400,7 @@ object Quantile {
       .withColumn("RowNum", row_number().over(countWindow))
 
     val maxDF = rankDF
-        .drop("AnchorDate")
+      .drop("AnchorDate")
       .groupBy("TimePeriod", "Quantile", "Type")
       .max("RowNum")
 
@@ -429,7 +429,8 @@ object Quantile {
     val joinedDF = spendDF
       .withColumnRenamed("Descr", "SpendDescr")
       .withColumnRenamed("Rank", "SpendRank")
-      .join(qtyDF, Seq("TimePeriod", "AnchorDate", "Quantile", "Type", "RowNum", "Position"))
+        .drop("AnchorDate")
+      .join(qtyDF, Seq("TimePeriod", "Quantile", "Type", "RowNum", "Position"))
       .sort("TimePeriod", "AnchorDate", "Quantile", "Type", "RowNum")
       .drop("RowNum")
 
@@ -545,8 +546,9 @@ object Quantile {
 
   def countTotals(migDF: DataFrame): Try[DataFrame] = Try {
     val maxTP = migDF.select(max("TimePeriod")).head().getInt(0)
-    val countDF = migDF.filter(migDF("PrevQuant") isNull)
-      .filter(migDF("TimePeriod") < maxTP)
+    val countDF = migDF
+      .filter(migDF("PrevQuant") isNull)
+     // .filter(migDF("TimePeriod") < maxTP)
       .groupBy("TimePeriod", "CurrQuant")
       .agg(count("ID"))
       .drop("PrevQuant")
