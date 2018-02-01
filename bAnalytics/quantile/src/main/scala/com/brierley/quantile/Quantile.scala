@@ -616,6 +616,7 @@ object Quantile {
         innerMigArray = new util.ArrayList[migrationArray]
         val qmr = new quantileMigrationResults()
         qmr.setTimePeriod(row.getInt(0))
+        qmr.setAnchorDate(row.getString(4))
         migArray.add(qmr)
 
         setInnerMigArray(row)
@@ -651,6 +652,9 @@ object Quantile {
       .withColumnRenamed("TimePeriod", "TP")
       .withColumn("TimePeriod", dense_rank().over(Window.orderBy(col("TP").desc)))
       .select("TimePeriod", "CurrQuant", "count(ID)")
+
+    invertCountDF.show()
+    invertSumDF.show()
 
 
     invertSumDF.sort("TimePeriod").collect().foreach(f => mapMigArrays(f))
