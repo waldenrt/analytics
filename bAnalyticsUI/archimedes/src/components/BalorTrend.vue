@@ -297,6 +297,7 @@
         custBalorArray: [],
         txnBalorArray: [],
         spendBalorArray: [],
+        dateArray: [],
         tpArray: [],
         custTrendData: {
           labels: this.tpArray,
@@ -430,18 +431,21 @@
         var tempTxn = []
         var tempSpend = []
         var tempTP = []
+        var tempDate = []
 
         for (var i = 0; i < this.jsonMsg.timePeriods.length; i++) {
           tempCust.push(this.jsonMsg.timePeriods[i].custBalor.toFixed(2))
           tempTxn.push(this.jsonMsg.timePeriods[i].txnBalor.toFixed(2))
           tempSpend.push(this.jsonMsg.timePeriods[i].spendBalor.toFixed(2))
           tempTP.push(this.jsonMsg.timePeriods[i].timePeriod)
+          tempDate.push(this.jsonMsg.timePeriods[i].anchorDate)
         }
 
         this.custBalorArray = tempCust
         this.txnBalorArray = tempTxn
         this.spendBalorArray = tempSpend
         this.tpArray = tempTP
+        this.dateArray = tempDate
 
         this.ratioLine = {
           labels: ['Customer', 'Transaction', 'Sales'],
@@ -461,7 +465,7 @@
         }
 
         this.trendLine = {
-          labels: this.tpArray,
+          labels: this.dateArray,
           datasets: [
             {
               label: 'Customer',
