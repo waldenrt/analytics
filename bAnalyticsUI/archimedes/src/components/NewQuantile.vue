@@ -11,12 +11,12 @@
               <div><h6 class="white--text text-xs-left mb-0">Pareto Input</h6></div>
               <v-spacer></v-spacer>
               <div class="file">
-                <v-dialog v-model="dialog" width="550px">
+                <v-dialog v-model="dialog" width="1000px">
                   <div slot="activator">
                     <div class="white--text subheading inliner">Sample File Image</div>
                     <div class="inliner"><v-icon primary light slot="activator">image</v-icon></div>
                   </div>
-                  <v-card>
+                  <v-card style="width:1000px;">
                     <img src="../assets/images/pareto_file_img.png" width="100%" height="100%" class="file_sample">
                   </v-card>
                 </v-dialog>
