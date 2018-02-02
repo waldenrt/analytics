@@ -352,12 +352,12 @@
         for (let i = 0; i < tps.length; i++) {
           if (tps[i].timePeriod === this.tpSelect) {
             tempLabels.push(tps[i].productCat)
-            tempSpendPer.push(tps[i].prodPercentSales)
-            tempBestIndex.push(tps[i].bestIndex)
-            tempRisingIndex.push(tps[i].risingIndex)
-            tempMiddleIndex.push(tps[i].middleIndex)
-            tempLapsingIndex.push(tps[i].lapsingIndex)
-            tempDeeplyIndex.push(tps[i].deeplyIndex)
+            tempSpendPer.push(tps[i].prodPercentSales.toFixed(2))
+            tempBestIndex.push(tps[i].bestIndex.toFixed(2))
+            tempRisingIndex.push(tps[i].risingIndex.toFixed(2))
+            tempMiddleIndex.push(tps[i].middleIndex.toFixed(2))
+            tempLapsingIndex.push(tps[i].lapsingIndex.toFixed(2))
+            tempDeeplyIndex.push(tps[i].deeplyIndex.toFixed(2))
           }
         }
 

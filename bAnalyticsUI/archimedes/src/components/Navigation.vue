@@ -45,7 +45,7 @@
               append-icon="arrow_drop_down"
               hide-details
               style="width:200px;"
-              class="custom_input"
+              class="input-group--focused custom_input"
               v-tooltip:bottom="{ html: 'Select Client' }"
             ></v-select>
           <v-btn

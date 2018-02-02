@@ -133,7 +133,7 @@
           } else if (this.jsonMsg[i].jobStatus.includes('Error') || this.jsonMsg[i].jobStatus.includes('error')) {
             links[i].bgColors = 'backgroundColor: #D63A09'
           } else if (this.jsonMsg[i].jobStatus.includes('Complete') || this.jsonMsg[i].jobStatus.includes('complete')) {
-            links[i].bgColors = 'backgroundColor: red'
+            links[i].bgColors = 'backgroundColor: #8EAC1D'
           }
         }
       },

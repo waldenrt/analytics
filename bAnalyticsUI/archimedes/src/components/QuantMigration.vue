@@ -635,5 +635,8 @@
       padding:10px;
       font-size:13px;
     }
+    .quantTbl thead td {
+      padding: 5px 10px;
+    }
   }
 </style>
