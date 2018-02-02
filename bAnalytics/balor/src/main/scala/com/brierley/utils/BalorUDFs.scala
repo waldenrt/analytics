@@ -26,7 +26,8 @@ object BalorUDFs {
 
   def retentionFunc(currRet: Long, lastReact: Long, lastNew: Long, lastRet: Long): Double = {
     if (currRet == 0) 0
-    else currRet.toDouble / (lastReact + lastNew + lastRet)
+    else if ((lastReact + lastNew + lastRet) == 0) 0
+    else (currRet.toDouble / (lastReact + lastNew + lastRet)) * 100
   }
 
   def longAvgCalcFunc(num: Long, denom: Long): Double = {
@@ -35,9 +36,21 @@ object BalorUDFs {
   }
 
   def doubleAvgCalcFunc(num: Double, denom: Long): Double = {
-    if(num == 0 || denom == 0) 0
-    else num/denom
+    if (num == 0 || denom == 0) 0
+    else num / denom
   }
+
+  def stringDateFunc(date: java.sql.Date, cad: Int): String = {
+    if (cad == 1 || cad == 2) {
+      val format = new java.text.SimpleDateFormat("MM/dd/yyyy")
+      format.format(date)
+    }
+    else {
+      val format = new java.text.SimpleDateFormat("MMM yyyy")
+      format.format(date)
+    }
+  }
+
 
   val nonLapsedLabel = udf(nonLapsedLabelFunc(_: Long, _: Long))
   val balorMoney = udf(balorMoneyFunc(_: Double, _: Double, _: Double))
@@ -45,5 +58,6 @@ object BalorUDFs {
   val retention = udf(retentionFunc(_: Long, _: Long, _: Long, _: Long))
   val longAvgCalc = udf(longAvgCalcFunc(_: Long, _: Long))
   val doubleAvgCalc = udf(doubleAvgCalcFunc(_: Double, _: Long))
+  val stringDate = udf(stringDateFunc(_: java.sql.Date, _: Int))
 
 }

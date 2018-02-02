@@ -33,6 +33,10 @@
 				 "type": "int",
 				 "doc": "The Balor time period, calculated ascending"},
 
+				{"name": "anchorDate",
+				 "type": ["null", "string"],
+				 "doc" : "the earliest date for each time period, month will be formatted 'MMM yyyy' and weeks will be formatted 'MM/dd/yyyy', nullable to allow previous schema to appear in topic."},
+
 				{"name": "newCustCount",
 				 "type": "long",
 				 "doc": "The count of customers that are considered new in the given Balor time period.  To be considered new the cust_id must not appear in the previous 2 cadence periods"},
@@ -239,7 +243,63 @@
 
 				{"name": "retention",
 				 "type": "double",
-				 "doc": "The retention rate: (Returning in (t))/(new + react + return in (t-1))"}
+				 "doc": "The retention rate: (Returning in (t))/(new + react + return in (t-1))"},
+
+				{"name": "retentionGrowth",
+                 "type": ["null", "double"],
+                 "doc": "The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100"},
+
+                {"name": "returnNewSales",
+                 "type": ["null", "double"],
+                 "doc": "Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)"},
+
+                {"name": "returnNewTxn",
+                 "type": ["null", "long"],
+                 "doc": "Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t)"},
+
+                {"name": "returnNewCust",
+                 "type": ["null", "long"],
+                 "doc": "Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)"},
+
+                {"name": "returnReactSales",
+                 "type": ["null", "double"],
+                 "doc": "Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)"},
+
+                {"name": "returnReactTxn",
+                 "type": ["null", "long"],
+                 "doc": "Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)"},
+
+                {"name": "returnReactCust",
+                 "type": ["null", "long"],
+                 "doc": "Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)"},
+
+                {"name": "returnReturnSales",
+                 "type": ["null", "double"],
+                 "doc": "Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)"},
+
+                {"name": "returnReturnTxn",
+                 "type": ["null", "long"],
+                 "doc": "Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)"},
+
+                {"name": "returnReturnCust",
+                 "type": ["null", "long"],
+                 "doc": "Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)"},
+
+                {"name": "ttlSalesLift",
+                 "type": ["null", "double"],
+                 "doc": "Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)"},
+
+                {"name": "avgSalesLift",
+                 "type": ["null", "double"],
+                 "doc": "Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]"},
+
+                {"name": "ttlTxnLift",
+                 "type": ["null", "double"],
+                 "doc": "Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)"},
+
+                {"name": "avgTxnLift",
+                 "type": ["null", "double"],
+                 "doc": "Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]"}
 				 ]
 				}}
 			}
