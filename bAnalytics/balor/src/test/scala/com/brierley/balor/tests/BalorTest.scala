@@ -1,5 +1,8 @@
 package com.brierley.balor.tests
 
+import java.util
+
+import com.brierley.avro.schemas.TimePeriodData
 import com.brierley.balor.BalorApp
 import com.brierley.utils.{OneMonth, TwoWeeks}
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
@@ -555,7 +558,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
   test("One of each label, single transaction per period") {
     new ClassLabelData {
       val labelDF = BalorApp.assignSegmentLabel(oneNewLapsedDeeplyLapsedReturningReact) getOrElse threeOverTwo
-      val labelCol = labelDF.filter(labelDF("TimePeriod") === 1).select("Label").map(_ (0)).collect()
+      val labelCol = labelDF.filter(labelDF("TimePeriod") === 1).select("Label").map(_(0)).collect()
 
       labelDF.show()
       val labels = Array("New", "Reactivated", "Returning", "Lapsed")
@@ -940,7 +943,7 @@ class BalorTest extends FunSuite with DataFrameSuiteBase {
 
       }
     }
-
+  
     //AVRO SCHEMA CREATION
     //too  many rows to create complete dataframe, will submit DF to calcBalorRatios, calcSegmentAvg, and then to createBalorAvro
     //this test should always be run last, that way if it fails it will be because of the avro and not a previous method
