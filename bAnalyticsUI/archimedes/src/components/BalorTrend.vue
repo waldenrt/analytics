@@ -407,6 +407,7 @@
             this.incomingJson = response.data
             console.log(this.incomingJson)
             this.createPies()
+            this.createRetentionItems()
             this.createLines()
             this.createBalSumItems()
           })
@@ -527,9 +528,22 @@
             }]
         }
       },
+      createRetentionItems () {
+        var ttlSales = this.jsonMsg.timePeriods[this.tp - 1].retention.returnNewSales + this.jsonMsg.timePeriods[this.tp - 1].retention.returnReactSales +
+          this.jsonMsg.timePeriods[this.tp - 1].retention.returnReturnSales
+        var ttlTxns = this.jsonMsg.timePeriods[this.tp - 1].retention.returnNewTxn + this.jsonMsg.timePeriods[this.tp - 1].retention.returnReactTxn +
+          this.jsonMsg.timePeriods[this.tp - 1].retention.returnReturnTxn
+        this.retentionItems = [
+          {name: 'Retention', vals: numeral(this.jsonMsg.timePeriods[this.tp - 1].retention.retention).format('0.00') + '%'},
+          {name: 'Retention Growth', vals: numeral(this.jsonMsg.timePeriods[this.tp - 1].retention.retentionGrowth).format('0.00') + '%'},
+          {name: 'Retention Sales Lift', vals: numeral(this.jsonMsg.timePeriods[this.tp - 1].retention.ttlSalesLift).format('0.00')},
+          {name: 'Retained Customer Sales from Prior Period', vals: numeral(ttlSales).format('$0,0.00')},
+          {name: 'Retention Transaction Lift', vals: numeral(this.jsonMsg.timePeriods[this.tp - 1].retention.ttlTxnLift).format('0.00')},
+          {name: 'Retained Customer Txns from Prior Period', vals: numeral(ttlTxns).format('0,0')}
+        ]
+      },
       createPies () {
         var tp = 0
-        this.retentionItems = [{name: 'Retention', vals: numeral(this.jsonMsg.timePeriods[tp].returnTxnCount).format()}]
 
         this.custData = {
           datasets: [{
@@ -614,6 +628,8 @@
         this.Slider.noUiSlider.on('change', this.slideUpdateTrends)
       },
       setTP () {
+        this.createRetentionItems()
+
         this.custData = {
           datasets: [{
             data: [
@@ -693,8 +709,6 @@
             }
           ]
         }
-
-        this.retentionItems = [{name: 'Retention', vals: this.jsonMsg.timePeriods[this.tp].returnTxnCount}]
       }
     }
   }
