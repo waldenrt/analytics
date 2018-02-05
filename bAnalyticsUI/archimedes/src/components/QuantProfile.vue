@@ -116,7 +116,7 @@
       <v-flex xs12>
         <v-card class="white pl-3 pr-3 pt-1 pb-1">
           <div class="title primary--text text-xs-center pa-1">Quantile Purchase Profiles</div>
-          <v-data-table
+          <v-data-table v-if="dimension === 'customer'"
               v-bind:headers="custHeaders"
               :items="custItems"
               hide-actions>
@@ -128,6 +128,23 @@
               <td class="text-xs-right">{{ props.item.avgCustUnits }}</td>
               <td class="text-xs-right">{{ props.item.avgVisitUnits }}</td>
               <td class="text-xs-right">{{ props.item.avgCustVisits }}</td>
+            </template>
+          </v-data-table>
+
+          <v-data-table v-if="dimension === 'store'"
+              v-bind:headers="storeHeaders"
+              :items="custItems"
+              hide-actions>
+            <template slot="items" scope="props">
+              <td>{{ props.item.quantile }}</td>
+              <td class="text-xs-right">{{ props.item.avgCustSales }}</td>
+              <td class="text-xs-right">{{ props.item.avgCustUnits }}</td>
+              <td class="text-xs-right">{{ props.item.avgCustVisits }}</td>
+              <td class="text-xs-right">{{ props.item.avgStoreVisitSpend }}</td>
+              <td class="text-xs-right">{{ props.item.avgStoreVisitUnits }}</td>
+              <td class="text-xs-right">{{ props.item.avgStoreSales }}</td>
+              <td class="text-xs-right">{{ props.item.avgStoreCust }}</td>
+              <td class="text-xs-right">{{ props.item.avgStoreUnits }}</td>
             </template>
           </v-data-table>
         </v-card>
@@ -186,6 +203,21 @@
           {text: 'avgUnitsVisit', value: 'avgVisitUnits'},
           {text: 'avgVisitMember', value: 'avgCustVisits'}
         ],
+        storeHeaders: [
+          {
+            text: 'Quantiles',
+            align: 'left',
+            value: 'quantile'
+          },
+          {text: 'avgSpendMember($)', value: 'avgCustSales'},
+          {text: 'avgUnitsMember', value: 'avgCustUnits'},
+          {text: 'avgVisitMember', value: 'avgCustVisits'},
+          {text: 'avgStoreSpendVisit($)', value: 'avgStoreVisitSpend'},
+          {text: 'avgStoreUnitsVisit($)', value: 'avgStoreVisitUnits'},
+          {text: 'avgStoreSales($)', value: 'avgStoreSales'},
+          {text: 'avgStoreCust', value: 'avgStoreCust'},
+          {text: 'avgStoreUnits', value: 'avgStoreUnits'}
+        ],
         custItems: [],
         groupName: 'Quantile'
       }
@@ -199,6 +231,9 @@
       },
       jobApp: function () {
         return this.$store.state.jobApp
+      },
+      dimension: function () {
+        return this.incomingJson.data.quantileDimension.dimension
       },
       paretoOptions: function () {
         let opts = {
@@ -265,19 +300,40 @@
 
       createTable () {
         var tempObj = []
-        for (var i = 0; i < this.jsonMsg.quantileResult.length; i++) {
-          if (this.jsonMsg.quantileResult[i].timePeriod === this.TPSelect) {
-            tempObj.push({
-              'quantile': this.jsonMsg.quantileResult[i].quantile,
-              'avgCustSales': numeral(this.jsonMsg.quantileResult[i].avgSpend).format('$0.00'),
-              'avgVisitSpend': numeral(this.jsonMsg.quantileResult[i].avgVisitSpend).format('$0.00'),
-              'avgItemSales': numeral(this.jsonMsg.quantileResult[i].avgItemSales).format('$0.00'),
-              'avgCustUnits': numeral(this.jsonMsg.quantileResult[i].avgUnits).format('0.00'),
-              'avgVisitUnits': numeral(this.jsonMsg.quantileResult[i].avgVisitUnits).format('0.00'),
-              'avgCustVisits': numeral(this.jsonMsg.quantileResult[i].avgVisits).format('0.00')
-            })
+        if (this.jsonMsg.quantileDimension.dimension === 'customer') {
+          this.tableHeaders = this.custHeaders
+          for (let i = 0; i < this.jsonMsg.quantileResult.length; i++) {
+            if (this.jsonMsg.quantileResult[i].timePeriod === this.TPSelect) {
+              tempObj.push({
+                'quantile': this.jsonMsg.quantileResult[i].quantile,
+                'avgCustSales': numeral(this.jsonMsg.quantileResult[i].summaryAverages.avgSpend).format('$0.00'),
+                'avgVisitSpend': numeral(this.jsonMsg.quantileResult[i].summaryAverages.avgVisitSpend).format('$0.00'),
+                'avgItemSales': numeral(this.jsonMsg.quantileResult[i].summaryAverages.avgItemSales).format('$0.00'),
+                'avgCustUnits': numeral(this.jsonMsg.quantileResult[i].summaryAverages.avgUnits).format('0.00'),
+                'avgVisitUnits': numeral(this.jsonMsg.quantileResult[i].summaryAverages.avgVisitUnits).format('0.00'),
+                'avgCustVisits': numeral(this.jsonMsg.quantileResult[i].summaryAverages.avgVisits).format('0.00')
+              })
+            }
+          }
+        } else if (this.jsonMsg.quantileDimension.dimension === 'store') {
+          this.tableHeaders = this.storeHeaders
+          for (let i = 0; i < this.jsonMsg.quantileResult.length; i++) {
+            if (this.jsonMsg.quantileResult[i].timePeriod === this.TPSelect) {
+              tempObj.push({
+                'quantile': this.jsonMsg.quantileResult[i].quantile,
+                'avgCustSales': numeral(this.jsonMsg.quantileResult[i].summaryAverages.avgCustSales).format('$0.00'),
+                'avgCustUnits': numeral(this.jsonMsg.quantileResult[i].summaryAverages.avgCustUnits).format('0.00'),
+                'avgCustVisits': numeral(this.jsonMsg.quantileResult[i].summaryAverages.avgCustVisits).format('0.00'),
+                'avgStoreVisitSpend': numeral(this.jsonMsg.quantileResult[i].summaryAverages.avgVisitSpend).format('$0.00'),
+                'avgStoreVisitUnits': numeral(this.jsonMsg.quantileResult[i].summaryAverages.avgVisitUnits).format('0.00'),
+                'avgStoreSales': numeral(this.jsonMsg.quantileResult[i].summaryAverages.avgSpend).format('$0,0.00'),
+                'avgStoreCust': numeral(this.jsonMsg.quantileResult[i].summaryAverages.avgStoreCust).format('0,0.00'),
+                'avgStoreUnits': numeral(this.jsonMsg.quantileResult[i].summaryAverages.avgUnits).format('0,0.00')
+              })
+            }
           }
         }
+
         this.custItems = tempObj
         console.log(tempObj)
 
@@ -410,9 +466,9 @@
           if (this.jsonMsg.quantileResult[i].timePeriod === this.TPSelect) {
             tempObj.push({
               'quantile': this.jsonMsg.quantileResult[i].quantile,
-              'totalSpend': this.jsonMsg.quantileResult[i].totalSpend,
-              'totalVisits': this.jsonMsg.quantileResult[i].totalVisits,
-              'totalUnits': this.jsonMsg.quantileResult[i].totalUnits
+              'totalSpend': this.jsonMsg.quantileResult[i].summaryTotals.totalSpend,
+              'totalVisits': this.jsonMsg.quantileResult[i].summaryTotals.totalVisits,
+              'totalUnits': this.jsonMsg.quantileResult[i].summaryTotals.totalUnits
             })
           }
 
@@ -517,6 +573,8 @@
         }
       },
       selectTP () {
+        this.createTable()
+
         var tempVisit = []
         var tempUnit = []
         var tempSpend = []
@@ -526,9 +584,9 @@
           if (this.jsonMsg.quantileResult[i].timePeriod === this.TPSelect) {
             tempObj.push({
               'quantile': this.jsonMsg.quantileResult[i].quantile,
-              'totalSpend': this.jsonMsg.quantileResult[i].totalSpend,
-              'totalVisits': this.jsonMsg.quantileResult[i].totalVisits,
-              'totalUnits': this.jsonMsg.quantileResult[i].totalUnits
+              'totalSpend': this.jsonMsg.quantileResult[i].summaryTotals.totalSpend,
+              'totalVisits': this.jsonMsg.quantileResult[i].summaryTotals.totalVisits,
+              'totalUnits': this.jsonMsg.quantileResult[i].summaryTotals.totalUnits
             })
           }
         }
