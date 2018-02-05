@@ -20,8 +20,8 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
 
     import sqlCtx.implicits._
 
-    val prodStoreColumns = List("TimePeriod", "STORE_ID", "ITEM_QTY", "ITEM_AMT", "Level1", "Level2", "Level3", "Quantile")
-    val prodCustColumns = List("TimePeriod", "CUST_ID", "ITEM_QTY", "ITEM_AMT", "Level1", "Level2", "Level3", "Quantile")
+    val prodStoreColumns = List("TimePeriod", "STORE_ID", "ITEM_QTY", "ITEM_AMT", "Level1", "Level2", "Level3", "Quantile", "AnchorDate")
+    val prodCustColumns = List("TimePeriod", "CUST_ID", "ITEM_QTY", "ITEM_AMT", "Level1", "Level2", "Level3", "Quantile", "AnchorDate")
 
     val storesTP = sc.parallelize(List(
       ("StoreA", "CustA", "12/31/2016", "HeaderId1", "DetailID1", 3, 5.00, 0.00, "class1", "style1", "dept1", 1),
@@ -34,6 +34,7 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
       ("StoreE", "CustA", "10/30/2016", "HeaderID7", "DetailID8", 1, 11.00, 0.50, "class5", "style5", "dept5", 1)
     )).toDF("STORE_ID", "CUST_ID", "TXN_DATE", "TXN_HEADER_ID", "TXN_DETAIL_ID", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "Level2", "Level3", "Level1", "TimePeriod")
       .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
+      .withColumn("AnchorDate", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val fiveStores1TP = sc.parallelize(List(
       (1, "StoreA", 1, 1, 1, 1.00, 0.00, 2),
@@ -61,6 +62,7 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
       ("StoreB", "CustF", "10/24/2016", "HeaderID6", "DetailID7", 2, 5.00, 2.50, "class2", "style1", "dept1", 2)
     )).toDF("STORE_ID", "CUST_ID", "TXN_DATE", "TXN_HEADER_ID", "TXN_DETAIL_ID", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", "Level2", "Level3", "Level1", "TimePeriod")
       .withColumn("Date", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
+      .withColumn("AnchorDate", to_date(unix_timestamp($"TXN_DATE", "MM/dd/yyyy").cast("timestamp")))
 
     val nineCusts2TP = sc.parallelize(List(
       (1, "CustA", 1, 1, 1.00, 0.00, 4),
@@ -87,94 +89,94 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
 
     import sqlCtx.implicits._
 
-    val aggColumns = List("TimePeriod", "Quantile", "Descr", "Qty", "Amt", "Type")
+    val aggColumns = List("TimePeriod", "AnchorDate", "Quantile", "Descr", "Qty", "Amt", "Type")
 
     val storesSingle = sc.parallelize(List(
-      (1, "StoreA", 3, 5.00, "class1", 4),
-      (1, "StoreA", 4, 10.00, "class2", 4),
-      (1, "StoreB", 5, 15.00, "class2", 4),
-      (1, "StoreB", 5, 15.00, "class3", 4),
-      (1, "StoreA", 5, 15.00, "class3", 4),
-      (1, "StoreA", 6, 12.00, "class4", 4),
-      (1, "StoreB", 2, 5.00, "class2", 4),
-      (1, "StoreB", 1, 11.00, "class5", 3),
-      (1, "StoreB", 1, 11.00, "class5", 3),
-      (1, "StoreB", 1, 11.00, "class5", 3),
-      (1, "StoreA", 6, 12.00, "class4", 3),
-      (1, "StoreB", 2, 5.00, "class2", 3),
-      (1, "StoreA", 5, 15.00, "class3", 2),
-      (1, "StoreA", 6, 12.00, "class4", 2),
-      (1, "StoreB", 2, 5.00, "class2", 2),
-      (1, "StoreB", 1, 11.00, "class5", 2),
-      (1, "StoreB", 1, 11.00, "class5", 2),
-      (1, "StoreA", 6, 12.00, "class4", 1),
-      (1, "StoreB", 2, 5.00, "class2", 1),
-      (1, "StoreB", 1, 11.00, "class5", 1),
-      (1, "StoreB", 1, 11.00, "class5", 1),
-      (1, "StoreB", 1, 11.00, "class5", 1),
-      (1, "StoreA", 6, 12.00, "class4", 1),
-      (1, "StoreB", 2, 5.00, "class2", 1),
-      (1, "StoreA", 5, 15.00, "class3", 1),
-      (1, "StoreA", 6, 12.00, "class4", 1)
-    )).toDF("TimePeriod", "STORE_ID", "ITEM_QTY", "ITEM_AMT", "Level1", "Quantile")
+      (1, "01/01/2015", "StoreA", 3, 5.00, "class1", 4),
+      (1, "01/01/2015", "StoreA", 4, 10.00, "class2", 4),
+      (1, "01/01/2015", "StoreB", 5, 15.00, "class2", 4),
+      (1, "01/01/2015", "StoreB", 5, 15.00, "class3", 4),
+      (1, "01/01/2015", "StoreA", 5, 15.00, "class3", 4),
+      (1, "01/01/2015", "StoreA", 6, 12.00, "class4", 4),
+      (1, "01/01/2015", "StoreB", 2, 5.00, "class2", 4),
+      (1, "01/01/2015", "StoreB", 1, 11.00, "class5", 3),
+      (1, "01/01/2015", "StoreB", 1, 11.00, "class5", 3),
+      (1, "01/01/2015", "StoreB", 1, 11.00, "class5", 3),
+      (1, "01/01/2015", "StoreA", 6, 12.00, "class4", 3),
+      (1, "01/01/2015", "StoreB", 2, 5.00, "class2", 3),
+      (1, "01/01/2015", "StoreA", 5, 15.00, "class3", 2),
+      (1, "01/01/2015", "StoreA", 6, 12.00, "class4", 2),
+      (1, "01/01/2015", "StoreB", 2, 5.00, "class2", 2),
+      (1, "01/01/2015", "StoreB", 1, 11.00, "class5", 2),
+      (1, "01/01/2015", "StoreB", 1, 11.00, "class5", 2),
+      (1, "01/01/2015", "StoreA", 6, 12.00, "class4", 1),
+      (1, "01/01/2015", "StoreB", 2, 5.00, "class2", 1),
+      (1, "01/01/2015", "StoreB", 1, 11.00, "class5", 1),
+      (1, "01/01/2015", "StoreB", 1, 11.00, "class5", 1),
+      (1, "01/01/2015", "StoreB", 1, 11.00, "class5", 1),
+      (1, "01/01/2015", "StoreA", 6, 12.00, "class4", 1),
+      (1, "01/01/2015", "StoreB", 2, 5.00, "class2", 1),
+      (1, "01/01/2015", "StoreA", 5, 15.00, "class3", 1),
+      (1, "01/01/2015", "StoreA", 6, 12.00, "class4", 1)
+    )).toDF("TimePeriod", "AnchorDate", "STORE_ID", "ITEM_QTY", "ITEM_AMT", "Level1", "Quantile")
 
     val custDouble = sc.parallelize(List(
-      (1, "CustA", 3, 5.00, "class1", "style1", 4),
-      (1, "CustB", 4, 10.00, "class2", "style1", 4),
-      (1, "CustD", 5, 15.00, "class2", "style1", 4),
-      (1, "CustB", 5, 15.00, "class3", "style2", 4),
-      (1, "CustE", 5, 15.00, "class3", "style2", 4),
-      (1, "CustC", 6, 12.00, "class4", "style3", 4),
-      (1, "CustF", 2, 5.00, "class2", "style1", 4),
-      (1, "CustG", 1, 11.00, "class5", "style5", 3),
-      (1, "CustG", 1, 11.00, "class5", "style5", 3),
-      (1, "CustG", 1, 11.00, "class5", "style5", 3),
-      (1, "CustC", 6, 12.00, "class4", "style3", 3),
-      (1, "CustF", 2, 5.00, "class2", "style1", 3),
-      (1, "CustE", 5, 15.00, "class3", "style2", 2),
-      (1, "CustC", 6, 12.00, "class4", "style3", 2),
-      (1, "CustF", 2, 5.00, "class2", "style1", 2),
-      (1, "CustG", 1, 11.00, "class5", "style5", 2),
-      (1, "CustG", 1, 11.00, "class5", "style5", 2),
-      (1, "CustC", 6, 12.00, "class4", "style3", 1),
-      (1, "CustF", 2, 5.00, "class2", "style1", 1),
-      (1, "CustG", 1, 11.00, "class5", "style5", 1),
-      (1, "CustG", 1, 11.00, "class5", "style5", 1),
-      (1, "CustG", 1, 11.00, "class5", "style5", 1),
-      (1, "CustC", 6, 12.00, "class4", "style3", 1),
-      (1, "CustF", 2, 5.00, "class2", "style1", 1),
-      (1, "CustE", 5, 15.00, "class3", "style2", 1),
-      (1, "CustC", 6, 12.00, "class4", "style3", 1)
-    )).toDF("TimePeriod", "CUST_ID", "ITEM_QTY", "ITEM_AMT", "Level1", "Level2", "Quantile")
+      (1, "01/01/2015", "CustA", 3, 5.00, "class1", "style1", 4),
+      (1, "01/01/2015", "CustB", 4, 10.00, "class2", "style1", 4),
+      (1, "01/01/2015", "CustD", 5, 15.00, "class2", "style1", 4),
+      (1, "01/01/2015", "CustB", 5, 15.00, "class3", "style2", 4),
+      (1, "01/01/2015", "CustE", 5, 15.00, "class3", "style2", 4),
+      (1, "01/01/2015", "CustC", 6, 12.00, "class4", "style3", 4),
+      (1, "01/01/2015", "CustF", 2, 5.00, "class2", "style1", 4),
+      (1, "01/01/2015", "CustG", 1, 11.00, "class5", "style5", 3),
+      (1, "01/01/2015", "CustG", 1, 11.00, "class5", "style5", 3),
+      (1, "01/01/2015", "CustG", 1, 11.00, "class5", "style5", 3),
+      (1, "01/01/2015", "CustC", 6, 12.00, "class4", "style3", 3),
+      (1, "01/01/2015", "CustF", 2, 5.00, "class2", "style1", 3),
+      (1, "01/01/2015", "CustE", 5, 15.00, "class3", "style2", 2),
+      (1, "01/01/2015", "CustC", 6, 12.00, "class4", "style3", 2),
+      (1, "01/01/2015", "CustF", 2, 5.00, "class2", "style1", 2),
+      (1, "01/01/2015", "CustG", 1, 11.00, "class5", "style5", 2),
+      (1, "01/01/2015", "CustG", 1, 11.00, "class5", "style5", 2),
+      (1, "01/01/2015", "CustC", 6, 12.00, "class4", "style3", 1),
+      (1, "01/01/2015", "CustF", 2, 5.00, "class2", "style1", 1),
+      (1, "01/01/2015", "CustG", 1, 11.00, "class5", "style5", 1),
+      (1, "01/01/2015", "CustG", 1, 11.00, "class5", "style5", 1),
+      (1, "01/01/2015", "CustG", 1, 11.00, "class5", "style5", 1),
+      (1, "01/01/2015", "CustC", 6, 12.00, "class4", "style3", 1),
+      (1, "01/01/2015", "CustF", 2, 5.00, "class2", "style1", 1),
+      (1, "01/01/2015", "CustE", 5, 15.00, "class3", "style2", 1),
+      (1, "01/01/2015", "CustC", 6, 12.00, "class4", "style3", 1)
+    )).toDF("TimePeriod", "AnchorDate", "CUST_ID", "ITEM_QTY", "ITEM_AMT", "Level1", "Level2", "Quantile")
 
     val custThree = sc.parallelize(List(
-      (1, "CustA", 3, 5.00, "class1", "style1", "dept1", 4),
-      (1, "CustB", 4, 10.00, "class2", "style1", "dept1", 4),
-      (1, "CustD", 5, 15.00, "class2", "style1", "dept1", 4),
-      (1, "CustB", 5, 15.00, "class3", "style2", "dept1", 4),
-      (1, "CustE", 5, 15.00, "class3", "style2", "dept1", 4),
-      (1, "CustC", 6, 12.00, "class4", "style3", "dept2", 4),
-      (1, "CustF", 2, 5.00, "class2", "style1", "dept1", 4),
-      (1, "CustG", 1, 11.00, "class5", "style5", "dept5", 3),
-      (1, "CustG", 1, 11.00, "class5", "style5", "dept5", 3),
-      (1, "CustG", 1, 11.00, "class5", "style5", "dept5", 3),
-      (1, "CustC", 6, 12.00, "class4", "style3", "dept2", 3),
-      (1, "CustF", 2, 5.00, "class2", "style1", "dept1", 3),
-      (1, "CustE", 5, 15.00, "class3", "style2", "dept1", 2),
-      (1, "CustC", 6, 12.00, "class4", "style3", "dept2", 2),
-      (1, "CustF", 2, 5.00, "class2", "style1", "dept1", 2),
-      (1, "CustG", 1, 11.00, "class5", "style5", "dept5", 2),
-      (1, "CustG", 1, 11.00, "class5", "style5", "dept5", 2),
-      (1, "CustC", 6, 12.00, "class4", "style3", "dept2", 1),
-      (1, "CustF", 2, 5.00, "class2", "style1", "dept1", 1),
-      (1, "CustG", 1, 11.00, "class5", "style5", "dept5", 1),
-      (1, "CustG", 1, 11.00, "class5", "style5", "dept5", 1),
-      (1, "CustG", 1, 11.00, "class5", "style5", "dept5", 1),
-      (1, "CustC", 6, 12.00, "class4", "style3", "dept2", 1),
-      (1, "CustF", 2, 5.00, "class2", "style1", "dept1", 1),
-      (1, "CustE", 5, 15.00, "class3", "style2", "dept1", 1),
-      (1, "CustC", 6, 12.00, "class4", "style3", "dept2", 1)
-    )).toDF("TimePeriod", "CUST_ID", "ITEM_QTY", "ITEM_AMT", "Level2", "Level3", "Level1", "Quantile")
+      (1, "01/01/2015", "CustA", 3, 5.00, "class1", "style1", "dept1", 4),
+      (1, "01/01/2015", "CustB", 4, 10.00, "class2", "style1", "dept1", 4),
+      (1, "01/01/2015", "CustD", 5, 15.00, "class2", "style1", "dept1", 4),
+      (1, "01/01/2015", "CustB", 5, 15.00, "class3", "style2", "dept1", 4),
+      (1, "01/01/2015", "CustE", 5, 15.00, "class3", "style2", "dept1", 4),
+      (1, "01/01/2015", "CustC", 6, 12.00, "class4", "style3", "dept2", 4),
+      (1, "01/01/2015", "CustF", 2, 5.00, "class2", "style1", "dept1", 4),
+      (1, "01/01/2015", "CustG", 1, 11.00, "class5", "style5", "dept5", 3),
+      (1, "01/01/2015", "CustG", 1, 11.00, "class5", "style5", "dept5", 3),
+      (1, "01/01/2015", "CustG", 1, 11.00, "class5", "style5", "dept5", 3),
+      (1, "01/01/2015", "CustC", 6, 12.00, "class4", "style3", "dept2", 3),
+      (1, "01/01/2015", "CustF", 2, 5.00, "class2", "style1", "dept1", 3),
+      (1, "01/01/2015", "CustE", 5, 15.00, "class3", "style2", "dept1", 2),
+      (1, "01/01/2015", "CustC", 6, 12.00, "class4", "style3", "dept2", 2),
+      (1, "01/01/2015", "CustF", 2, 5.00, "class2", "style1", "dept1", 2),
+      (1, "01/01/2015", "CustG", 1, 11.00, "class5", "style5", "dept5", 2),
+      (1, "01/01/2015", "CustG", 1, 11.00, "class5", "style5", "dept5", 2),
+      (1, "01/01/2015", "CustC", 6, 12.00, "class4", "style3", "dept2", 1),
+      (1, "01/01/2015", "CustF", 2, 5.00, "class2", "style1", "dept1", 1),
+      (1, "01/01/2015", "CustG", 1, 11.00, "class5", "style5", "dept5", 1),
+      (1, "01/01/2015", "CustG", 1, 11.00, "class5", "style5", "dept5", 1),
+      (1, "01/01/2015", "CustG", 1, 11.00, "class5", "style5", "dept5", 1),
+      (1, "01/01/2015", "CustC", 6, 12.00, "class4", "style3", "dept2", 1),
+      (1, "01/01/2015", "CustF", 2, 5.00, "class2", "style1", "dept1", 1),
+      (1, "01/01/2015", "CustE", 5, 15.00, "class3", "style2", "dept1", 1),
+      (1, "01/01/2015", "CustC", 6, 12.00, "class4", "style3", "dept2", 1)
+    )).toDF("TimePeriod", "AnchorDate", "CUST_ID", "ITEM_QTY", "ITEM_AMT", "Level2", "Level3", "Level1", "Quantile")
 
 
     val orElseDF = sc.parallelize(List(1, 2, 3, 4)).toDF("Dummy")
@@ -185,13 +187,14 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
 
     import sqlCtx.implicits._
 
-    val spendCols = List("TimePeriod", "Quantile", "Type", "Descr", "Amt", "Rank", "RowNum", "Position")
-    val qtyCols = List("TimePeriod", "Quantile", "Type", "Descr", "Qty", "Rank", "RowNum", "Position")
+    val spendCols = List("TimePeriod", "Quantile", "Type", "AnchorDate", "Descr", "Amt", "Rank", "RowNum", "Position")
+    val qtyCols = List("TimePeriod", "Quantile", "Type", "AnchorDate", "Descr", "Qty", "Rank", "RowNum", "Position")
 
     val amtSchema = StructType(Array(
       StructField("TimePeriod", IntegerType, false),
       StructField("Quantile", IntegerType, false),
       StructField("Type", StringType, true),
+      StructField("AnchorDate", StringType, true),
       StructField("Descr", StringType, true),
       StructField("Amt", DoubleType, false),
       StructField("Rank", IntegerType, true),
@@ -202,6 +205,7 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
       StructField("TimePeriod", IntegerType, false),
       StructField("Quantile", IntegerType, false),
       StructField("Type", StringType, true),
+      StructField("AnchorDate", StringType, true),
       StructField("Descr", StringType, true),
       StructField("Qty", IntegerType, false),
       StructField("Rank", IntegerType, true),
@@ -210,74 +214,74 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
 
 
     val top3SingleNoTie = sc.parallelize(List(
-      (1, 1, "1", "Mens", 5, 25.00),
-      (1, 1, "1", "Girls", 3, 30.00),
-      (1, 1, "1", "Boys", 8, 21.00),
-      (1, 1, "1", "Womens", 10, 54.00),
-      (1, 1, "1", "Baby", 2, 5.00),
-      (1, 1, "1", "Pet", 15, 28.00),
-      (1, 1, "1", "Grocery", 54, 200.00),
-      (1, 2, "1", "Girls", 5, 25.00),
-      (1, 2, "1", "Boys", 3, 30.00),
-      (1, 2, "1", "Mens", 8, 21.00),
-      (1, 2, "1", "Pet", 2, 5.00),
-      (1, 2, "1", "Womens", 7, 23.00),
-      (1, 2, "1", "Grocery", 51, 175.00),
-      (1, 3, "1", "Womens", 2, 20.00),
-      (1, 3, "1", "Pet", 8, 9.00),
-      (1, 3, "1", "Mens", 5, 12.00),
-      (1, 3, "1", "Boys", 25, 5.00),
-      (1, 3, "1", "Baby", 12, 36.00)
-    )).toDF("TimePeriod", "Quantile", "Type", "Descr", "Qty", "Amt")
+      (1, "01/01/2015", 1, "1", "Mens", 5, 25.00),
+      (1,"01/01/2015", 1, "1", "Girls", 3, 30.00),
+      (1, "01/01/2015", 1, "1", "Boys", 8, 21.00),
+      (1, "01/01/2015", 1, "1", "Womens", 10, 54.00),
+      (1, "01/01/2015", 1, "1", "Baby", 2, 5.00),
+      (1, "01/01/2015", 1, "1", "Pet", 15, 28.00),
+      (1, "01/01/2015", 1, "1", "Grocery", 54, 200.00),
+      (1, "01/01/2015", 2, "1", "Girls", 5, 25.00),
+      (1, "01/01/2015", 2, "1", "Boys", 3, 30.00),
+      (1, "01/01/2015", 2, "1", "Mens", 8, 21.00),
+      (1,"01/01/2015",  2, "1", "Pet", 2, 5.00),
+      (1, "01/01/2015", 2, "1", "Womens", 7, 23.00),
+      (1, "01/01/2015", 2, "1", "Grocery", 51, 175.00),
+      (1, "01/01/2015", 3, "1", "Womens", 2, 20.00),
+      (1, "01/01/2015", 3, "1", "Pet", 8, 9.00),
+      (1, "01/01/2015", 3, "1", "Mens", 5, 12.00),
+      (1, "01/01/2015", 3, "1", "Boys", 25, 5.00),
+      (1, "01/01/2015", 3, "1", "Baby", 12, 36.00)
+    )).toDF("TimePeriod", "AnchorDate", "Quantile", "Type", "Descr", "Qty", "Amt")
 
     val top3AllLevels = sc.parallelize(List(
-      (1, 1, "1", "Mens", 5, 25.00),
-      (1, 1, "1", "Girls", 3, 30.00),
-      (1, 1, "1", "Boys", 8, 21.00),
-      (1, 1, "1", "Womens", 10, 54.00),
-      (1, 1, "1", "Baby", 2, 5.00),
-      (1, 1, "1", "Pet", 15, 28.00),
-      (1, 1, "1", "Grocery", 54, 200.00),
-      (1, 1, "2", "Mens Shorts", 2, 10.00),
-      (1, 1, "2", "Mens Shirts", 3, 15.00),
-      (1, 1, "2", "Dress", 4, 20.00),
-      (1, 1, "2", "Pants", 6, 45.00),
-      (1, 1, "2", "Baby Tanks", 3, 11.00),
-      (1, 1, "2", "Boys shorts", 2, 19.00),
-      (1, 1, "2", "Paci", 4, 8.00),
-      (1, 1, "2", "Diapers", 1, 22.00),
-      (1, 1, "3", "size 2 diapers", 1, 22.00),
-      (1, 1, "3", "boy paci", 4, 4.00),
-      (1, 1, "3", "girls paci", 3, 4.00),
-      (1, 1, "3", "Boy dino tank", 3, 8.00),
-      (1, 1, "3", "Mens board shorts", 1, 20.00),
-      (1, 1, "3", "Womens maxi dress", 2, 18.00),
-      (1, 1, "3", "Green chew toy", 3, 6.00)
-    )).toDF("TimePeriod", "Quantile", "Type", "Descr", "Qty", "Amt")
+      (1, "01/01/2015", 1, "1", "Mens", 5, 25.00),
+      (1, "01/01/2015", 1, "1", "Girls", 3, 30.00),
+      (1, "01/01/2015", 1, "1", "Boys", 8, 21.00),
+      (1, "01/01/2015", 1, "1", "Womens", 10, 54.00),
+      (1, "01/01/2015", 1, "1", "Baby", 2, 5.00),
+      (1, "01/01/2015", 1, "1", "Pet", 15, 28.00),
+      (1, "01/01/2015", 1, "1", "Grocery", 54, 200.00),
+      (1, "01/01/2015", 1, "2", "Mens Shorts", 2, 10.00),
+      (1, "01/01/2015", 1, "2", "Mens Shirts", 3, 15.00),
+      (1, "01/01/2015", 1, "2", "Dress", 4, 20.00),
+      (1, "01/01/2015", 1, "2", "Pants", 6, 45.00),
+      (1, "01/01/2015", 1, "2", "Baby Tanks", 3, 11.00),
+      (1, "01/01/2015", 1, "2", "Boys shorts", 2, 19.00),
+      (1, "01/01/2015", 1, "2", "Paci", 4, 8.00),
+      (1, "01/01/2015", 1, "2", "Diapers", 1, 22.00),
+      (1, "01/01/2015", 1, "3", "size 2 diapers", 1, 22.00),
+      (1, "01/01/2015", 1, "3", "boy paci", 4, 4.00),
+      (1, "01/01/2015", 1, "3", "girls paci", 3, 4.00),
+      (1, "01/01/2015", 1, "3", "Boy dino tank", 3, 8.00),
+      (1, "01/01/2015", 1, "3", "Mens board shorts", 1, 20.00),
+      (1, "01/01/2015", 1, "3", "Womens maxi dress", 2, 18.00),
+      (1, "01/01/2015", 1, "3", "Green chew toy", 3, 6.00)
+    )).toDF("TimePeriod", "AnchorDate", "Quantile", "Type", "Descr", "Qty", "Amt")
 
     val top3SingleTie = sc.parallelize(List(
-      (1, 1, "1", "Mens", 5, 25.00),
-      (1, 1, "1", "Girls", 3, 30.00),
-      (1, 1, "1", "Boys", 8, 21.00),
-      (1, 1, "1", "Womens", 10, 54.00),
-      (1, 1, "1", "Baby", 2, 5.00),
-      (1, 1, "1", "Pet", 15, 28.00),
-      (1, 1, "1", "Books", 8, 28.00),
-      (1, 1, "1", "Grocery", 54, 200.00),
-      (1, 2, "1", "Girls", 5, 25.00),
-      (1, 2, "1", "Boys", 3, 30.00),
-      (1, 2, "1", "Mens", 8, 21.00),
-      (1, 2, "1", "Pet", 2, 5.00),
-      (1, 2, "1", "Womens", 7, 23.00),
-      (1, 2, "1", "Books", 5, 25.00),
-      (1, 2, "1", "Grocery", 51, 175.00),
-      (1, 3, "1", "Womens", 2, 20.00),
-      (1, 3, "1", "Pet", 8, 9.00),
-      (1, 3, "1", "Mens", 5, 12.00),
-      (1, 3, "1", "Boys", 25, 5.00),
-      (1, 3, "1", "Baby", 12, 36.00),
-      (1, 3, "1", "Books", 8, 9.00)
-    )).toDF("TimePeriod", "Quantile", "Type", "Descr", "Qty", "Amt")
+      (1, "01/01/2015", 1, "1", "Mens", 5, 25.00),
+      (1, "01/01/2015", 1, "1", "Girls", 3, 30.00),
+      (1, "01/01/2015", 1, "1", "Boys", 8, 21.00),
+      (1, "01/01/2015", 1, "1", "Womens", 10, 54.00),
+      (1, "01/01/2015", 1, "1", "Baby", 2, 5.00),
+      (1, "01/01/2015", 1, "1", "Pet", 15, 28.00),
+      (1, "01/01/2015", 1, "1", "Books", 8, 28.00),
+      (1, "01/01/2015", 1, "1", "Grocery", 54, 200.00),
+      (1, "01/01/2015", 2, "1", "Girls", 5, 25.00),
+      (1, "01/01/2015", 2, "1", "Boys", 3, 30.00),
+      (1, "01/01/2015", 2, "1", "Mens", 8, 21.00),
+      (1, "01/01/2015", 2, "1", "Pet", 2, 5.00),
+      (1, "01/01/2015", 2, "1", "Womens", 7, 23.00),
+      (1, "01/01/2015", 2, "1", "Books", 5, 25.00),
+      (1, "01/01/2015", 2, "1", "Grocery", 51, 175.00),
+      (1, "01/01/2015", 3, "1", "Womens", 2, 20.00),
+      (1, "01/01/2015", 3, "1", "Pet", 8, 9.00),
+      (1, "01/01/2015", 3, "1", "Mens", 5, 12.00),
+      (1,"01/01/2015", 3, "1", "Boys", 25, 5.00),
+      (1,"01/01/2015", 3, "1", "Baby", 12, 36.00),
+      (1, "01/01/2015", 3, "1", "Books", 8, 9.00)
+    )).toDF("TimePeriod", "AnchorDate", "Quantile", "Type", "Descr", "Qty", "Amt")
 
     val orElseDF = sc.parallelize(List(1, 2, 3, 4)).toDF("Dummy")
   }
@@ -288,88 +292,96 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
     import sqlCtx.implicits._
 
     val spendDF = sc.parallelize(List(
-      (1, 1, 1, "1", "Grocery", 200.00, 1, "Top"),
-      (2, 1, 1, "1", "Womens", 54.00, 2, "Top"),
-      (3, 1, 1, "1", "Girls", 30.00, 3, "Top"),
-      (10, 1, 1, "1", "Baby", 5.00, 7, "Bottom"),
-      (9, 1, 1, "1", "Boys", 21.00, 6, "Bottom"),
-      (8, 1, 1, "1", "Mens", 25.00, 5, "Bottom"),
-      (1, 1, 2, "1", "Grocery", 175.00, 1, "Top"),
-      (2, 1, 2, "1", "Boys", 30.00, 2, "Top"),
-      (3, 1, 2, "1", "Girls", 25.00, 3, "Top"),
-      (8, 1, 2, "1", "Pet", 5.00, 6, "Bottom"),
-      (7, 1, 2, "1", "Mens", 21.00, 5, "Bottom"),
-      (6, 1, 2, "1", "Womens", 23.00, 4, "Bottom"),
-      (1, 1, 3, "1", "Baby", 36.00, 1, "Top"),
-      (2, 1, 3, "1", "Womens", 20.00, 2, "Top"),
-      (3, 1, 3, "1", "Mens", 12.00, 3, "Top"),
-      (6, 1, 3, "1", "Boys",  5.00, 5, "Bottom"),
-      (5, 1, 3, "1", "Pet", 9.00, 4, "Bottom"),
-      (4, 1, 3, "1", "Mens", 12.00, 3, "Bottom")
-    )).toDF("RowNum", "TimePeriod", "Quantile", "Type", "Descr", "Amt", "Rank", "Position")
+      (1, 1, 1, "1", "Grocery", 200.00, 1, "Top", "01/01/2015"),
+      (2, 1, 1, "1", "Womens", 54.00, 2, "Top", "01/01/2015"),
+      (3, 1, 1, "1", "Girls", 30.00, 3, "Top", "01/01/2015"),
+      (10, 1, 1, "1", "Baby", 5.00, 7, "Bottom", "01/01/2015"),
+      (9, 1, 1, "1", "Boys", 21.00, 6, "Bottom", "01/01/2015"),
+      (8, 1, 1, "1", "Mens", 25.00, 5, "Bottom", "01/01/2015"),
+      (1, 1, 2, "1", "Grocery", 175.00, 1, "Top", "01/01/2015"),
+      (2, 1, 2, "1", "Boys", 30.00, 2, "Top", "01/01/2015"),
+      (3, 1, 2, "1", "Girls", 25.00, 3, "Top", "01/01/2015"),
+      (8, 1, 2, "1", "Pet", 5.00, 6, "Bottom", "01/01/2015"),
+      (7, 1, 2, "1", "Mens", 21.00, 5, "Bottom", "01/01/2015"),
+      (6, 1, 2, "1", "Womens", 23.00, 4, "Bottom", "01/01/2015"),
+      (1, 1, 3, "1", "Baby", 36.00, 1, "Top", "01/01/2015"),
+      (2, 1, 3, "1", "Womens", 20.00, 2, "Top", "01/01/2015"),
+      (3, 1, 3, "1", "Mens", 12.00, 3, "Top", "01/01/2015"),
+      (6, 1, 3, "1", "Boys", 5.00, 5, "Bottom", "01/01/2015"),
+      (5, 1, 3, "1", "Pet", 9.00, 4, "Bottom", "01/01/2015"),
+      (4, 1, 3, "1", "Mens", 12.00, 3, "Bottom", "01/01/2015")
+    )).toDF("RowNum", "TimePeriod", "Quantile", "Type", "Descr", "Amt", "Rank", "Position", "TDate")
+      .withColumn("AnchorDate", to_date(unix_timestamp($"TDate", "MM/dd/yyyy").cast("timestamp")))
+      .drop("TDate")
 
     val qtyDF = sc.parallelize(List(
-      (1, 1, 1, "1", "Grocery", 54.toLong, 1, "Top"),
-      (2, 1, 1, "1", "Pet", 15.toLong, 2, "Top"),
-      (3, 1, 1, "1", "Womens", 10.toLong, 3, "Top"),
-      (10, 1, 1, "1", "Baby", 2.toLong, 7, "Bottom"),
-      (9, 1, 1, "1", "Girls", 3.toLong, 6, "Bottom"),
-      (8, 1, 1, "1", "Mens", 5.toLong, 5, "Bottom"),
-      (1, 1, 2, "1", "Grocery", 51.toLong, 1, "Top"),
-      (2, 1, 2, "1", "Mens", 8.toLong, 2, "Top"),
-      (3, 1, 2, "1", "Womens", 7.toLong, 3, "Top"),
-      (8, 1, 2, "1", "Pet", 2.toLong, 6, "Bottom"),
-      (7, 1, 2, "1", "Boys", 3.toLong, 5, "Bottom"),
-      (6, 1, 2, "1", "Girls", 5.toLong, 4, "Bottom"),
-      (1, 1, 3, "1", "Boys", 25.toLong, 1, "Top"),
-      (2, 1, 3, "1", "Baby", 12.toLong, 2, "Top"),
-      (3, 1, 3, "1", "Pet", 8.toLong, 3, "Top"),
-      (6, 1, 3, "1", "Womens", 2.toLong, 5, "Bottom"),
-      (5, 1, 3, "1", "Mens", 5.toLong, 4, "Bottom"),
-      (4, 1, 3, "1", "Pet", 8.toLong, 3, "Bottom")
-    )).toDF("RowNum", "TimePeriod", "Quantile", "Type", "Descr", "Qty", "Rank", "Position")
+      (1, 1, 1, "1", "Grocery", 54.toLong, 1, "Top", "01/01/2015"),
+      (2, 1, 1, "1", "Pet", 15.toLong, 2, "Top", "01/01/2015"),
+      (3, 1, 1, "1", "Womens", 10.toLong, 3, "Top", "01/01/2015"),
+      (10, 1, 1, "1", "Baby", 2.toLong, 7, "Bottom", "01/01/2015"),
+      (9, 1, 1, "1", "Girls", 3.toLong, 6, "Bottom", "01/01/2015"),
+      (8, 1, 1, "1", "Mens", 5.toLong, 5, "Bottom", "01/01/2015"),
+      (1, 1, 2, "1", "Grocery", 51.toLong, 1, "Top", "01/01/2015"),
+      (2, 1, 2, "1", "Mens", 8.toLong, 2, "Top", "01/01/2015"),
+      (3, 1, 2, "1", "Womens", 7.toLong, 3, "Top", "01/01/2015"),
+      (8, 1, 2, "1", "Pet", 2.toLong, 6, "Bottom", "01/01/2015"),
+      (7, 1, 2, "1", "Boys", 3.toLong, 5, "Bottom", "01/01/2015"),
+      (6, 1, 2, "1", "Girls", 5.toLong, 4, "Bottom", "01/01/2015"),
+      (1, 1, 3, "1", "Boys", 25.toLong, 1, "Top", "01/01/2015"),
+      (2, 1, 3, "1", "Baby", 12.toLong, 2, "Top", "01/01/2015"),
+      (3, 1, 3, "1", "Pet", 8.toLong, 3, "Top", "01/01/2015"),
+      (6, 1, 3, "1", "Womens", 2.toLong, 5, "Bottom", "01/01/2015"),
+      (5, 1, 3, "1", "Mens", 5.toLong, 4, "Bottom", "01/01/2015"),
+      (4, 1, 3, "1", "Pet", 8.toLong, 3, "Bottom", "01/01/2015")
+    )).toDF("RowNum", "TimePeriod", "Quantile", "Type", "Descr", "Qty", "Rank", "Position", "TDate")
+      .withColumn("AnchorDate", to_date(unix_timestamp($"TDate", "MM/dd/yyyy").cast("timestamp")))
+      .drop("TDate")
 
     val spendDF3 = sc.parallelize(List(
-      (1, 1, 1, "1", "Grocery", 200.00, 1, "Top"),
-      (2, 1, 1, "1", "Womens", 54.00, 2, "Top"),
-      (3, 1, 1, "1", "Girls", 30.00, 3, "Top"),
-      (3, 1, 1, "1", "Baby", 5.00, 7, "Bottom"),
-      (2, 1, 1, "1", "Boys", 21.00, 6, "Bottom"),
-      (1, 1, 1, "1", "Mens", 25.00, 5, "Bottom"),
-      (1, 1, 1, "2", "Pants", 45.00, 1, "Top"),
-      (2, 1, 1, "2", "Diapers", 22.00, 2, "Top"),
-      (3, 1, 1, "2", "Dress", 20.00, 3, "Top"),
-      (8, 1, 1, "2", "Paci", 8.00, 8, "Bottom"),
-      (7, 1, 1, "2", "Mens Shorts", 10.00, 7, "Bottom"),
-      (6, 1, 1, "2", "Baby Tanks", 11.00, 6, "Bottom"),
-      (1, 1, 1, "3", "size 2 diapers", 22.00, 1, "Top"),
-      (2, 1, 1, "3", "Mens board shorts", 20.00, 2, "Top"),
-      (3, 1, 1, "3", "Womens maxi dress", 18.00, 3, "Top"),
-      (6, 1, 1, "3", "boy paci", 4.00, 6, "Bottom"),
-      (5, 1, 1, "3", "girls paci", 4.00, 6, "Bottom"),
-      (4, 1, 1, "3", "Green chew toy", 6.00, 5, "Bottom")
-    )).toDF("RowNum", "TimePeriod", "Quantile", "Type", "Descr", "Amt", "Rank", "Position")
+      (1, 1, 1, "1", "Grocery", 200.00, 1, "Top", "01/01/2015"),
+      (2, 1, 1, "1", "Womens", 54.00, 2, "Top", "01/01/2015"),
+      (3, 1, 1, "1", "Girls", 30.00, 3, "Top", "01/01/2015"),
+      (3, 1, 1, "1", "Baby", 5.00, 7, "Bottom", "01/01/2015"),
+      (2, 1, 1, "1", "Boys", 21.00, 6, "Bottom", "01/01/2015"),
+      (1, 1, 1, "1", "Mens", 25.00, 5, "Bottom", "01/01/2015"),
+      (1, 1, 1, "2", "Pants", 45.00, 1, "Top", "01/01/2015"),
+      (2, 1, 1, "2", "Diapers", 22.00, 2, "Top", "01/01/2015"),
+      (3, 1, 1, "2", "Dress", 20.00, 3, "Top", "01/01/2015"),
+      (8, 1, 1, "2", "Paci", 8.00, 8, "Bottom", "01/01/2015"),
+      (7, 1, 1, "2", "Mens Shorts", 10.00, 7, "Bottom", "01/01/2015"),
+      (6, 1, 1, "2", "Baby Tanks", 11.00, 6, "Bottom", "01/01/2015"),
+      (1, 1, 1, "3", "size 2 diapers", 22.00, 1, "Top", "01/01/2015"),
+      (2, 1, 1, "3", "Mens board shorts", 20.00, 2, "Top", "01/01/2015"),
+      (3, 1, 1, "3", "Womens maxi dress", 18.00, 3, "Top", "01/01/2015"),
+      (6, 1, 1, "3", "boy paci", 4.00, 6, "Bottom", "01/01/2015"),
+      (5, 1, 1, "3", "girls paci", 4.00, 6, "Bottom", "01/01/2015"),
+      (4, 1, 1, "3", "Green chew toy", 6.00, 5, "Bottom", "01/01/2015")
+    )).toDF("RowNum", "TimePeriod", "Quantile", "Type", "Descr", "Amt", "Rank", "Position", "TDate")
+      .withColumn("AnchorDate", to_date(unix_timestamp($"TDate", "MM/dd/yyyy").cast("timestamp")))
+      .drop("TDate")
 
     val qtyDF3 = sc.parallelize(List(
-      (1, 1, 1, "1", "Grocery", 54.toLong, 1, "Top"),
-      (2, 1, 1, "1", "Pet", 15.toLong, 2, "Top"),
-      (3, 1, 1, "1", "Womens", 10.toLong, 3, "Top"),
-      (3, 1, 1, "1", "Baby", 2.toLong, 7, "Bottom"),
-      (2, 1, 1, "1", "Girls", 3.toLong, 6, "Bottom"),
-      (1, 1, 1, "1", "Mens", 5.toLong, 5, "Bottom"),
-      (1, 1, 1, "2", "Pants", 6.toLong, 1, "Top"),
-      (2, 1, 1, "2", "Dress", 4.toLong, 2, "Top"),
-      (3, 1, 1, "2", "Paci", 4.toLong, 2, "Top"),
-      (8, 1, 1, "2", "Diapers", 1.toLong, 8, "Bottom"),
-      (7, 1, 1, "2", "Mens Shorts", 2.toLong, 6, "Bottom"),
-      (6, 1, 1, "2", "Boys shorts", 2.toLong, 6, "Bottom"),
-      (1, 1, 1, "3", "boy paci", 3.toLong, 1, "Top"),
-      (2 ,1, 1, "3", "girls paci", 2.toLong, 2, "Top"),
-      (3, 1, 1, "3", "Boy dino tank", 2.toLong, 2, "Top"),
-      (6, 1, 1, "3", "Mens board shorts", 1.toLong, 5, "Bottom"),
-      (5, 1, 1, "3", "size 2 diapers", 1.toLong, 5, "Bottom"),
-      (4, 1, 1, "3", "Womens maxi dress", 1.toLong, 5, "Bottom")
-    )).toDF("RowNum", "TimePeriod", "Quantile", "Type", "Descr", "Qty", "Rank", "Position")
+      (1, 1, 1, "1", "Grocery", 54.toLong, 1, "Top", "01/01/2015"),
+      (2, 1, 1, "1", "Pet", 15.toLong, 2, "Top", "01/01/2015"),
+      (3, 1, 1, "1", "Womens", 10.toLong, 3, "Top", "01/01/2015"),
+      (3, 1, 1, "1", "Baby", 2.toLong, 7, "Bottom", "01/01/2015"),
+      (2, 1, 1, "1", "Girls", 3.toLong, 6, "Bottom", "01/01/2015"),
+      (1, 1, 1, "1", "Mens", 5.toLong, 5, "Bottom", "01/01/2015"),
+      (1, 1, 1, "2", "Pants", 6.toLong, 1, "Top", "01/01/2015"),
+      (2, 1, 1, "2", "Dress", 4.toLong, 2, "Top", "01/01/2015"),
+      (3, 1, 1, "2", "Paci", 4.toLong, 2, "Top", "01/01/2015"),
+      (8, 1, 1, "2", "Diapers", 1.toLong, 8, "Bottom", "01/01/2015"),
+      (7, 1, 1, "2", "Mens Shorts", 2.toLong, 6, "Bottom", "01/01/2015"),
+      (6, 1, 1, "2", "Boys shorts", 2.toLong, 6, "Bottom", "01/01/2015"),
+      (1, 1, 1, "3", "boy paci", 3.toLong, 1, "Top", "01/01/2015"),
+      (2, 1, 1, "3", "girls paci", 2.toLong, 2, "Top", "01/01/2015"),
+      (3, 1, 1, "3", "Boy dino tank", 2.toLong, 2, "Top", "01/01/2015"),
+      (6, 1, 1, "3", "Mens board shorts", 1.toLong, 5, "Bottom", "01/01/2015"),
+      (5, 1, 1, "3", "size 2 diapers", 1.toLong, 5, "Bottom", "01/01/2015"),
+      (4, 1, 1, "3", "Womens maxi dress", 1.toLong, 5, "Bottom", "01/01/2015")
+    )).toDF("RowNum", "TimePeriod", "Quantile", "Type", "Descr", "Qty", "Rank", "Position", "TDate")
+      .withColumn("AnchorDate", to_date(unix_timestamp($"TDate", "MM/dd/yyyy").cast("timestamp")))
+      .drop("TDate")
   }
 
 
@@ -509,30 +521,30 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
       assert(spendDF.columns === spendCols)
 
       val quant1DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, 1, "1", "Grocery", 200.00, Some(1), Some(1),"Top"),
-        Row(1, 1, "1", "Womens", 54.00, Some(2), Some(2),"Top"),
-        Row(1, 1, "1", "Girls", 30.00, Some(3), Some(3), "Top"),
-        Row(1, 1, "1", "Mens", 25.00, Some(5), Some(5),"Bottom"),
-        Row(1, 1, "1", "Boys", 21.00, Some(6), Some(6),"Bottom"),
-        Row(1, 1, "1", "Baby", 5.00, Some(7), Some(7),"Bottom")
+        Row(1, 1, "1", "01/01/2015", "Grocery", 200.00, Some(1), Some(1), "Top"),
+        Row(1, 1, "1", "01/01/2015", "Womens", 54.00, Some(2), Some(2), "Top"),
+        Row(1, 1, "1", "01/01/2015", "Girls", 30.00, Some(3), Some(3), "Top"),
+        Row(1, 1, "1", "01/01/2015", "Mens", 25.00, Some(5), Some(5), "Bottom"),
+        Row(1, 1, "1", "01/01/2015", "Boys", 21.00, Some(6), Some(6), "Bottom"),
+        Row(1, 1, "1", "01/01/2015", "Baby", 5.00, Some(7), Some(7), "Bottom")
       )), amtSchema)
 
       val quant2DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, 2, "1", "Grocery", 175.00, Some(1),Some(1), "Top"),
-        Row(1, 2, "1", "Boys", 30.00, Some(2),Some(2), "Top"),
-        Row(1, 2, "1", "Girls", 25.00, Some(3), Some(3), "Top"),
-        Row(1, 2, "1", "Womens", 23.00, Some(4),Some(4), "Bottom"),
-        Row(1, 2, "1", "Mens", 21.00, Some(5),Some(5), "Bottom"),
-        Row(1, 2, "1", "Pet", 5.00, Some(6),Some(6), "Bottom")
+        Row(1, 2, "1", "01/01/2015", "Grocery", 175.00, Some(1), Some(1), "Top"),
+        Row(1, 2, "1", "01/01/2015", "Boys", 30.00, Some(2), Some(2), "Top"),
+        Row(1, 2, "1", "01/01/2015", "Girls", 25.00, Some(3), Some(3), "Top"),
+        Row(1, 2, "1", "01/01/2015", "Womens", 23.00, Some(4), Some(4), "Bottom"),
+        Row(1, 2, "1", "01/01/2015", "Mens", 21.00, Some(5), Some(5), "Bottom"),
+        Row(1, 2, "1", "01/01/2015", "Pet", 5.00, Some(6), Some(6), "Bottom")
       )), amtSchema)
 
       val quant3DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, 3, "1", "Baby", 36.00, Some(1),Some(1), "Top"),
-        Row(1, 3, "1", "Womens", 20.00, Some(2),Some(2), "Top"),
-        Row(1, 3, "1", "Mens", 12.00, Some(3),Some(3), "Top"),
-        Row(1, 3, "1", "Mens", 12.00, Some(3),Some(3), "Bottom"),
-        Row(1, 3, "1", "Pet", 9.00, Some(4),Some(4), "Bottom"),
-        Row(1, 3, "1", "Boys", 5.00, Some(5),Some(5), "Bottom")
+        Row(1, 3, "1", "01/01/2015", "Baby", 36.00, Some(1), Some(1), "Top"),
+        Row(1, 3, "1", "01/01/2015", "Womens", 20.00, Some(2), Some(2), "Top"),
+        Row(1, 3, "1", "01/01/2015", "Mens", 12.00, Some(3), Some(3), "Top"),
+        Row(1, 3, "1", "01/01/2015", "Mens", 12.00, Some(3), Some(3), "Bottom"),
+        Row(1, 3, "1", "01/01/2015", "Pet", 9.00, Some(4), Some(4), "Bottom"),
+        Row(1, 3, "1", "01/01/2015", "Boys", 5.00, Some(5), Some(5), "Bottom")
       )), amtSchema)
 
       val quant1 = spendDF.where("Quantile = 1")
@@ -566,30 +578,30 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
       assert(amtDF.count() === 18)
 
       val lvl1DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, 1, "1", "Grocery", 200.00, Some(1),1,  "Top"),
-        Row(1, 1, "1", "Womens", 54.00, Some(2), 2,"Top"),
-        Row(1, 1, "1", "Girls", 30.00, Some(3), 3,"Top"),
-        Row(1, 1, "1", "Mens", 25.00, Some(5), 5,"Bottom"),
-        Row(1, 1, "1", "Boys", 21.00, Some(6), 6,"Bottom"),
-        Row(1, 1, "1", "Baby", 5.00, Some(7), 7,"Bottom")
+        Row(1, 1, "1", "01/01/2015", "Grocery", 200.00, Some(1), 1, "Top"),
+        Row(1, 1, "1", "01/01/2015", "Womens", 54.00, Some(2), 2, "Top"),
+        Row(1, 1, "1", "01/01/2015", "Girls", 30.00, Some(3), 3, "Top"),
+        Row(1, 1, "1", "01/01/2015", "Mens", 25.00, Some(5), 5, "Bottom"),
+        Row(1, 1, "1", "01/01/2015", "Boys", 21.00, Some(6), 6, "Bottom"),
+        Row(1, 1, "1", "01/01/2015", "Baby", 5.00, Some(7), 7, "Bottom")
       )), amtSchema)
 
       val lvl2DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, 1, "2", "Pants", 45.00, Some(1), 1,"Top"),
-        Row(1, 1, "2", "Diapers", 22.00, Some(2), 2,"Top"),
-        Row(1, 1, "2", "Dress", 20.00, Some(3), 3,"Top"),
-        Row(1, 1, "2", "Baby Tanks", 11.00, Some(6), 6,"Bottom"),
-        Row(1, 1, "2", "Mens Shorts", 10.00, Some(7), 7,"Bottom"),
-        Row(1, 1, "2", "Paci", 8.00, Some(8), 8,"Bottom")
+        Row(1, 1, "2", "01/01/2015", "Pants", 45.00, Some(1), 1, "Top"),
+        Row(1, 1, "2", "01/01/2015", "Diapers", 22.00, Some(2), 2, "Top"),
+        Row(1, 1, "2", "01/01/2015", "Dress", 20.00, Some(3), 3, "Top"),
+        Row(1, 1, "2", "01/01/2015", "Baby Tanks", 11.00, Some(6), 6, "Bottom"),
+        Row(1, 1, "2", "01/01/2015", "Mens Shorts", 10.00, Some(7), 7, "Bottom"),
+        Row(1, 1, "2", "01/01/2015", "Paci", 8.00, Some(8), 8, "Bottom")
       )), amtSchema)
 
       val lvl3DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, 1, "3", "size 2 diapers", 22.00, Some(1), 1,"Top"),
-        Row(1, 1, "3", "Mens board shorts", 20.00, Some(2), 2,"Top"),
-        Row(1, 1, "3", "Womens maxi dress", 18.00, Some(3), 3,"Top"),
-        Row(1, 1, "3", "Green chew toy", 6.00, Some(5), 5,"Bottom"),
-        Row(1, 1, "3", "boy paci", 4.00, Some(6), 6,"Bottom"),
-        Row(1, 1, "3", "girls paci", 4.00, Some(6), 7,"Bottom")
+        Row(1, 1, "3", "01/01/2015", "size 2 diapers", 22.00, Some(1), 1, "Top"),
+        Row(1, 1, "3", "01/01/2015", "Mens board shorts", 20.00, Some(2), 2, "Top"),
+        Row(1, 1, "3", "01/01/2015", "Womens maxi dress", 18.00, Some(3), 3, "Top"),
+        Row(1, 1, "3", "01/01/2015", "Green chew toy", 6.00, Some(5), 5, "Bottom"),
+        Row(1, 1, "3", "01/01/2015", "boy paci", 4.00, Some(6), 6, "Bottom"),
+        Row(1, 1, "3", "01/01/2015", "girls paci", 4.00, Some(6), 7, "Bottom")
       )), amtSchema)
 
       val level1 = amtDF.filter(amtDF("Type") === 1)
@@ -614,30 +626,30 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
       assert(qtyDF.columns === qtyCols)
 
       val quant1DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, 1, "1", "Grocery", 54, Some(1), 1, "Top"),
-        Row(1, 1, "1", "Pet", 15, Some(2), 2, "Top"),
-        Row(1, 1, "1", "Womens", 10, Some(3), 3, "Top"),
-        Row(1, 1, "1", "Mens", 5, Some(5), 5,"Bottom"),
-        Row(1, 1, "1", "Girls", 3, Some(6),6, "Bottom"),
-        Row(1, 1, "1", "Baby", 2, Some(7), 7,"Bottom")
+        Row(1, 1, "1", "01/01/2015", "Grocery", 54, Some(1), 1, "Top"),
+        Row(1, 1, "1",  "01/01/2015","Pet", 15, Some(2), 2, "Top"),
+        Row(1, 1, "1", "01/01/2015", "Womens", 10, Some(3), 3, "Top"),
+        Row(1, 1, "1", "01/01/2015", "Mens", 5, Some(5), 5, "Bottom"),
+        Row(1, 1, "1", "01/01/2015", "Girls", 3, Some(6), 6, "Bottom"),
+        Row(1, 1, "1", "01/01/2015", "Baby", 2, Some(7), 7, "Bottom")
       )), qtySchema)
 
       val quant2DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, 2, "1", "Grocery", 51, Some(1), 1,"Top"),
-        Row(1, 2, "1", "Mens", 8, Some(2), 2,"Top"),
-        Row(1, 2, "1", "Womens", 7, Some(3), 3,"Top"),
-        Row(1, 2, "1", "Girls", 5, Some(4), 4, "Bottom"),
-        Row(1, 2, "1", "Boys", 3, Some(5), 5,"Bottom"),
-        Row(1, 2, "1", "Pet", 2, Some(6), 6, "Bottom")
+        Row(1, 2, "1", "01/01/2015", "Grocery", 51, Some(1), 1, "Top"),
+        Row(1, 2, "1", "01/01/2015", "Mens", 8, Some(2), 2, "Top"),
+        Row(1, 2, "1", "01/01/2015", "Womens", 7, Some(3), 3, "Top"),
+        Row(1, 2, "1", "01/01/2015", "Girls", 5, Some(4), 4, "Bottom"),
+        Row(1, 2, "1", "01/01/2015", "Boys", 3, Some(5), 5, "Bottom"),
+        Row(1, 2, "1", "01/01/2015", "Pet", 2, Some(6), 6, "Bottom")
       )), qtySchema)
 
       val quant3DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, 3, "1", "Boys", 25, Some(1), 1,"Top"),
-        Row(1, 3, "1", "Baby", 12, Some(2), 2,"Top"),
-        Row(1, 3, "1", "Pet", 8, Some(3), 3,"Top"),
-        Row(1, 3, "1", "Pet", 8, Some(3), 3, "Bottom"),
-        Row(1, 3, "1", "Mens", 5, Some(4), 4,"Bottom"),
-        Row(1, 3, "1", "Womens", 2, Some(5), 5,"Bottom")
+        Row(1, 3, "1", "01/01/2015", "Boys", 25, Some(1), 1, "Top"),
+        Row(1, 3, "1", "01/01/2015", "Baby", 12, Some(2), 2, "Top"),
+        Row(1, 3, "1", "01/01/2015", "Pet", 8, Some(3), 3, "Top"),
+        Row(1, 3, "1", "01/01/2015", "Pet", 8, Some(3), 3, "Bottom"),
+        Row(1, 3, "1", "01/01/2015", "Mens", 5, Some(4), 4, "Bottom"),
+        Row(1, 3, "1", "01/01/2015", "Womens", 2, Some(5), 5, "Bottom")
       )), qtySchema)
 
       val quant1 = qtyDF.filter(qtyDF("Quantile") === 1)
@@ -671,30 +683,30 @@ class QuantileProductTest extends FunSuite with DataFrameSuiteBase {
       assert(qtyDF.count() === 18)
 
       val lvl1DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, 1, "1", "Grocery", 54, Some(1), 1, "Top"),
-        Row(1, 1, "1", "Pet", 15, Some(2), 2,"Top"),
-        Row(1, 1, "1", "Womens", 10, Some(3), 3,"Top"),
-        Row(1, 1, "1", "Mens", 5, Some(5), 5,"Bottom"),
-        Row(1, 1, "1", "Girls", 3, Some(6), 6,"Bottom"),
-        Row(1, 1, "1", "Baby", 2, Some(7), 7,"Bottom")
+        Row(1, 1, "1","01/01/2015",  "Grocery", 54, Some(1), 1, "Top"),
+        Row(1, 1, "1","01/01/2015",  "Pet", 15, Some(2), 2, "Top"),
+        Row(1, 1, "1","01/01/2015",  "Womens", 10, Some(3), 3, "Top"),
+        Row(1, 1, "1","01/01/2015",  "Mens", 5, Some(5), 5, "Bottom"),
+        Row(1, 1, "1","01/01/2015",  "Girls", 3, Some(6), 6, "Bottom"),
+        Row(1, 1, "1","01/01/2015",  "Baby", 2, Some(7), 7, "Bottom")
       )), qtySchema)
 
       val lvl2DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, 1, "2", "Pants", 6, Some(1), 1,"Top"),
-        Row(1, 1, "2", "Dress", 4, Some(2), 2,"Top"),
-        Row(1, 1, "2", "Paci", 4, Some(2), 3,"Top"),
-        Row(1, 1, "2", "Mens Shorts", 2, Some(6), 6,"Bottom"),
-        Row(1, 1, "2", "Boys shorts", 2, Some(6), 7,"Bottom"),
-        Row(1, 1, "2", "Diapers", 1, Some(8), 8,"Bottom")
+        Row(1, 1, "2","01/01/2015",  "Pants", 6, Some(1), 1, "Top"),
+        Row(1, 1, "2","01/01/2015",  "Dress", 4, Some(2), 2, "Top"),
+        Row(1, 1, "2","01/01/2015",  "Paci", 4, Some(2), 3, "Top"),
+        Row(1, 1, "2","01/01/2015",  "Mens Shorts", 2, Some(6), 6, "Bottom"),
+        Row(1, 1, "2","01/01/2015",  "Boys shorts", 2, Some(6), 7, "Bottom"),
+        Row(1, 1, "2","01/01/2015",  "Diapers", 1, Some(8), 8, "Bottom")
       )), qtySchema)
 
       val lvl3DF = sqlCtx.createDataFrame(sc.parallelize(List(
-        Row(1, 1, "3", "boy paci", 4, Some(1), 1,"Top"),
-        Row(1, 1, "3", "girls paci", 3, Some(2), 2,"Top"),
-        Row(1, 1, "3", "Boy dino tank", 3, Some(2), 3,"Top"),
-        Row(1, 1, "3", "Womens maxi dress", 2, Some(5), 5,"Bottom"),
-        Row(1, 1, "3", "size 2 diapers", 1, Some(6), 6,"Bottom"),
-        Row(1, 1, "3", "Mens board shorts", 1, Some(6), 7,"Bottom")
+        Row(1, 1, "3","01/01/2015",  "boy paci", 4, Some(1), 1, "Top"),
+        Row(1, 1, "3","01/01/2015",  "girls paci", 3, Some(2), 2, "Top"),
+        Row(1, 1, "3","01/01/2015",  "Boy dino tank", 3, Some(2), 3, "Top"),
+        Row(1, 1, "3","01/01/2015",  "Womens maxi dress", 2, Some(5), 5, "Bottom"),
+        Row(1, 1, "3","01/01/2015",  "size 2 diapers", 1, Some(6), 6, "Bottom"),
+        Row(1, 1, "3","01/01/2015",  "Mens board shorts", 1, Some(6), 7, "Bottom")
       )), qtySchema)
 
       val level1 = qtyDF.filter(qtyDF("Type") === 1)

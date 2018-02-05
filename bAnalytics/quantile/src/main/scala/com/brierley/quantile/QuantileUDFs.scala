@@ -25,6 +25,12 @@ object QuantileUDFs {
       bucket.toInt
   }
 
+  def stringDateFunc(date: Date): String = {
+   val format = new java.text.SimpleDateFormat("MMM yyyy")
+    format.format(date)
+  }
+
   val periodCalc = udf(periodCalcFunc(_: Date, _: Date, _: Int))
   val calcQuant = udf(calcQuantFunc(_: Double, _: Double))
+  val stringDate = udf(stringDateFunc(_: Date))
 }
