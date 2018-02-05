@@ -429,7 +429,7 @@ object Quantile {
     val joinedDF = spendDF
       .withColumnRenamed("Descr", "SpendDescr")
       .withColumnRenamed("Rank", "SpendRank")
-        .drop("AnchorDate")
+      .drop("AnchorDate")
       .join(qtyDF, Seq("TimePeriod", "Quantile", "Type", "RowNum", "Position"))
       .sort("TimePeriod", "AnchorDate", "Quantile", "Type", "RowNum")
       .drop("RowNum")
@@ -545,16 +545,20 @@ object Quantile {
   }
 
   def countTotals(migDF: DataFrame): Try[DataFrame] = Try {
-    val maxTP = migDF.select(max("TimePeriod")).head().getInt(0)
+    val completeDF = migDF.groupBy("TimePeriod", "CurrQuant")
+      .agg(count("ID"))
+      .drop(col("count(ID)"))
+
     val countDF = migDF
       .filter(migDF("PrevQuant") isNull)
-     // .filter(migDF("TimePeriod") < maxTP)
       .groupBy("TimePeriod", "CurrQuant")
       .agg(count("ID"))
-      .drop("PrevQuant")
 
-    countDF.show()
-    countDF
+    val joinedCounts = completeDF.join(countDF, Seq("TimePeriod", "CurrQuant"), "left_outer")
+      .na.fill(0)
+    joinedCounts.show()
+
+    joinedCounts
   }
 
   def sumMigrations(migrationDF: DataFrame, quant: Double, sqlCtx: HiveContext, sc: SparkContext): Try[DataFrame] = Try {
