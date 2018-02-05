@@ -1,128 +1,114 @@
 <template style="height:100%;">
-  <v-container fluid class="login pa-0 marT60" style="height:100%;">
+  <v-container fluid class="login pa-0" style="height:100%;">
     <v-layout row wrap class="ma-0 pa-0" style="height:100%;">
-      <!--COLUMN1-->
-      <v-flex xs12 sm6 class="ma-0 pt-0 pl-5 pr-5 bg">
-        <div class="contain_div pt-5">
-          <div class="mar1">
-            <img src="/static/bp_logo_horz_color.png" class="logo" alt="B+P logo" />
+      <!-- COL1 -->
+      <v-flex xs6 class="ma-0 pa-0" style="background-color:#006984;">
+          <div class="grid-container1">
+            <div class="grid-item"></div>
+            <div class="grid-item">
+              <!-- =====row1===== -->
+              <div class="row1"></div>
+              <!-- =====row2===== -->
+              <div class="row2">
+                <div class="inner_row1 text-xs-left pl-4">
+                  <a href="http://www.brierley.com/" target="_blank"><img src="/static/bp_logo_reverse_color2.png" class="logo" /></a>
+                </div>
+                <div class="inner_row2 pt-5 pb-5 pl-4 pr-4 card1">
+                  <h5 class="white--text text-xs-left mb-2">Welcome to Brierley Archimedes<sup>&reg;</sup></h5>
+                  <p class="subheading text-xs-left white--text mb-0">Subheading</p>
+                </div>
+                <div class="inner_row3 text-xs-left pl-4"></div>
+              </div>
+              <!-- =====row3===== -->
+              <div class="row3"></div>
+            </div>
           </div>
-          <div class="mar2">
-            <h5>Global Loyalty + CRM Innovators</h5>
-          </div>
-          <div class="mar3">
-            <h5>The Leader in Loyalty brings a new analytics suite designed specifically with marketers in&nbsp;mind.</h5>
-          </div>
-        </div>
       </v-flex>
-      <!--//COLUMN1-->
-      <!--COLUMN2-->
-      <v-flex xs12 sm6 class="white ma-0 pa-0">
-        <v-layout row wrap class="pl-0 pr-0" style="height:100%;">
-          <v-flex xs10 offset-xs1 class="pl-0 pr-0 mt-0">
-            <div class="centereddiv">
-                  <h3 class="primary--text text-xs-center ma-0 pl-3 pr-3 pt-0 pb-3">Archimedes</h3>
-              <v-card>
-                <v-card-title primary-title class="primary">
-                  <h6 class="white--text text-xs-left mb-0">Login</h6>
-                </v-card-title>
-                <form name="inputForm" @submit.prevent="validateBeforeSubmit()">
-                <div class="pa-3">
-                  <!--USERNAME-->
-                  <div class="xs12 mt-3 mb-3">
-                    <label class="body-2">Username</label>
-                    <v-layout class="xs12 ma-0">
-                      <v-text-field
-                          label="Username"
-                          v-model="username"
-                          class="white mt-0 mb-0 ml-0 custom_input"
-                          single-line
-                          hide-details
-                          append-icon="person"
-                          data-vv-name="username"
-                          v-validate="'required'"
-                          id="username">
-                      </v-text-field>
-                    </v-layout>
-                    <v-layout class="xs12 ma-0">
-                      <small v-show="vErrors.has('username')" class="error--text">* {{ vErrors.first('username') }}</small>
-                    </v-layout>
-                  </div>
-                  <!--//USERNAME-->
+      <!-- //COL1 -->
+      <!-- COL2 -->
+      <v-flex xs6 class="info ma-0 pa-0">
+          <div class="grid-container2">
+            <div class="grid-item">
+              <!-- =====row1===== -->
+              <div class="row1"></div>
+              <!-- =====row2===== -->
+              <div class="row2">
+                <div class="inner_row1 text-xs-left pl-4">
+                  <h5 class="white--text text-xs-left mb-0 pt-4">Sign in to your account</h5>
+                </div>
+                <div class="inner_row2 pl-4 pr-4 pt-4 card2 white">
+                  <v-layout row wrap class="pl-3 pr-5">
+                    <form name="inputForm" @submit.prevent="validateBeforeSubmit()">
+                  <div class="pa-0">
+                    <!--USERNAME-->
+                    <div class="xs12 mt-3 mb-3">
+                      <label class="body-2">Username</label>
+                      <v-layout class="xs12 ma-0">
+                        <v-text-field
+                            label="Username"
+                            v-model="username"
+                            class="white mt-0 mb-0 ml-0 custom_input"
+                            single-line
+                            hide-details
+                            data-vv-name="username"
+                            v-validate="'required'"
+                            id="username">
+                        </v-text-field>
+                      </v-layout>
+                      <v-layout class="xs12 ma-0">
+                        <small v-show="vErrors.has('username')" class="error--text">* {{ vErrors.first('username') }}</small>
+                      </v-layout>
+                    </div>
+                    <!--//USERNAME-->
 
-                  <!--PASSWORD-->
-                  <div class="xs12 mt-3 mb-3">
-                    <label class="body-2">Password</label>
-                    <v-layout class="xs12 ma-0">
-                      <v-text-field
-                          label="Password"
-                          v-model="password"
-                          class="white mt-0 mb-0 ml-0 custom_input"
-                          single-line
-                          hide-details
-                          append-icon="lock"
-                          data-vv-name="password"
-                          v-validate="'required'"
-                          id="username">
-                      </v-text-field>
-                    </v-layout>
-                    <v-layout class="xs12 ma-0">
-                      <small v-show="vErrors.has('password')" class="error--text">* {{ vErrors.first('password') }}</small>
-                    </v-layout>
+                    <!--PASSWORD-->
+                    <div class="xs12 mt-3 mb-3">
+                      <label class="body-2">Password</label>
+                      <v-layout class="xs12 ma-0">
+                        <v-text-field
+                            label="Password"
+                            v-model="password"
+                            class="white mt-0 mb-0 ml-0 custom_input"
+                            single-line
+                            hide-details
+                            data-vv-name="password"
+                            v-validate="'required'"
+                            id="username">
+                        </v-text-field>
+                      </v-layout>
+                      <v-layout class="xs12 ma-0">
+                        <small v-show="vErrors.has('password')" class="error--text">* {{ vErrors.first('password') }}</small>
+                      </v-layout>
+                    </div>
+                    <!--//PASSWORD-->
                   </div>
-                  <!--//PASSWORD-->
-
+                  </form>
+                  </v-layout>
+                </div>
+                <div class="inner_row3 text-xs-left pl-4">
                   <!-- LOGIN -->
-                  <v-layout class="xs12 ma-0">
-                    <v-btn
-                      @click.native="validateBeforeSubmit()"
-                      primary
-                      block
-                      class="success white--text mb-0">Log In</v-btn>
+                  <v-layout class="xs12 ma-0 pt-4">
+                    <div class="inliner">
+                      <v-btn
+                        @click.native="validateBeforeSubmit()"
+                        class="white--text pa-0 ma-0 log_btn">Log In</v-btn>
+                    </div>
+                    <div class="inliner">
+                      <p class="caption white--text mb-0 pt-3 pl-3">
+                        <a href="#/PasswordReset" class="white--text">Forgot Username or Password?</a>
+                      </p>
+                    </div>
                   </v-layout>
                   <!-- //LOGIN -->
-
-                  <v-card-row xs12>
-                    <v-flex xs12 class="pa-0">
-                      <v-card-text class="ma-0 pa-0">
-                        <v-checkbox
-                          v-bind:label="`Remember Me`"
-                          v-model="checkbox1"
-                          hide-details
-                          class="info--text"
-                          data-vv-name="checkbox1"></v-checkbox>
-                      </v-card-text>
-                    </v-flex>
-                  </v-card-row>
-                  <div class="pa-0"><v-divider class="primary"></v-divider></div>
-                  <v-card-row xs12 class="link_row pb-3 pt-3">
-                    <v-flex xs6 class="pa-0 text-xs-left">
-                      <a href="#">Forgot Username</a>
-                    </v-flex>
-                    <v-flex xs6 class="pa-0 text-xs-right">
-                      <a href="#">Reset Password</a>
-                    </v-flex>
-                  </v-card-row>
                 </div>
-                </form>
-              </v-card>
-              <v-card class="mt-3 primary--text">
-                <v-card-row xs12>
-                  <a href="mailto:name@email.com?subject=Demo%20Please&amp;body=The%20body%20of%20the%20email" target="_top" style="width:100%; text-decoration:none;">
-                    <div class="inliner">
-                      <v-icon dark class="primary white--text ml-3 mt-0 pa-1">email</v-icon>
-                    </div>
-                    <div class="inliner">
-                      <v-card-text class="inliner">Request a demo</v-card-text>
-                    </div>
-                  </a>
-                </v-card-row>
-              </v-card>
+              </div>
+              <!-- =====row3===== -->
+              <div class="row3"></div>
             </div>
-          </v-flex>
-        </v-layout>
+            <div class="grid-item"></div>
+          </div>
       </v-flex>
-      <!--//COLUMN2-->
+      <!-- //COL2 -->
     </v-layout>
   </v-container>
 </template>
@@ -171,10 +157,6 @@
   height: 100%;
 }
 .contain_div{max-width: 600px;}
-.logo{width:250px;}
-.mar1{margin-top:40px;}
-.mar2{margin-top:100px;}
-.mar3{margin-top:80px;}
 .centereddiv{
   position:relative;
   width: 100%;
@@ -183,9 +165,43 @@
   transform: translate(-52%, -50%);
   max-width: 450px;
 }
-.link_row a{
-  text-decoration: none;
-  color:#354052;
-}
 .inliner {display:inline-block;}
+.grid-container1{
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 100%;
+  height: 100%;
+}
+.grid-container1 .rows {grid-row:1 / 4;}
+.logo {width:auto; height:75px;}
+.card1 {
+  border-top-left-radius:4px;
+  border-bottom-left-radius:4px;
+  background-color:#005e76;
+}
+
+.grid-container2{
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 100%;
+  height: 100%;
+}
+
+.grid-container2 .rows {grid-row:1 / 4;}
+
+.row1, .row3 {height:20%;}
+
+.row2 {height:60%;}
+
+.inner_row1 {min-height:90px;}
+
+.inner_row2 {min-height:230px;}
+
+.inner_row2 form {width:100%;}
+
+.card2 {
+  border-top-right-radius:4px;
+  border-bottom-right-radius:4px;
+}
+.log_btn {background-color:#005e76;}
 </style>

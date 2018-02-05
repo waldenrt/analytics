@@ -33,12 +33,11 @@
             <template slot="items" scope="props">
               <td class="text-xs-center pl-0 pr-0">
                 <v-btn
-                  round
-                  success
                   icon="icon"
                   slot="activator"
+                  :disabled="props.item.resultsInProgress"
                   v-on:click.native="updateStore(props.item.jobId, props.item.app, props.item.routeLink)"
-                ><v-icon class="white--text text-xs-center">visibility</v-icon></v-btn>
+                ><v-icon class="text-xs-center" :class="props.item.enableDisable">{{props.item.jobIcon}}</v-icon></v-btn>
               </td>
               <td class="text-xs-left pl-2 pr-2">{{ props.item.jobName }}</td>
               <td class="text-xs-left pl-2 pr-2">{{ props.item.jobId }}</td>
@@ -92,7 +91,8 @@
           // { text: 'Actions', value: 'action' }
         ],
         clientName: 'BPDemo',
-        incomingJson: {}
+        incomingJson: {},
+        resultsInProgress: false
       }
     },
     computed: {
@@ -124,16 +124,32 @@
           links.push(this.jsonMsg[i])
           links[i].routeLink = '/Pareto/Summary'
           // Adding status colors to the status column
+          // Enabling or Disabling view icon on results ready
           if (this.jsonMsg[i].jobStatus.includes('Finished') || this.jsonMsg[i].jobStatus.includes('finished')) {
             links[i].bgColors = 'backgroundColor: #8EAC1D'
+            links[i].resultsInProgress = false // creates property for results in progress
+            links[i].jobIcon = 'visibility' // changes visibility icon, clickable when results, disables when no results
+            links[i].enableDisable = 'success--text' // class to bind to jobIcon
           } else if (this.jsonMsg[i].jobStatus.includes('Running') || this.jsonMsg[i].jobStatus.includes('running')) {
             links[i].bgColors = 'backgroundColor: #F7970E'
+            links[i].resultsInProgress = true
+            links[i].jobIcon = 'visibility_off'
+            links[i].enableDisable = 'grey--text'
           } else if (this.jsonMsg[i].jobStatus.includes('Awaiting') || this.jsonMsg[i].jobStatus.includes('awaiting')) {
             links[i].bgColors = 'backgroundColor: #006984'
+            links[i].resultsInProgress = true
+            links[i].jobIcon = 'visibility_off'
+            links[i].enableDisable = 'grey--text'
           } else if (this.jsonMsg[i].jobStatus.includes('Error') || this.jsonMsg[i].jobStatus.includes('error')) {
             links[i].bgColors = 'backgroundColor: #D63A09'
+            links[i].resultsInProgress = true
+            links[i].jobIcon = 'visibility_off'
+            links[i].enableDisable = 'grey--text'
           } else if (this.jsonMsg[i].jobStatus.includes('Complete') || this.jsonMsg[i].jobStatus.includes('complete')) {
             links[i].bgColors = 'backgroundColor: #8EAC1D'
+            links[i].resultsInProgress = false
+            links[i].jobIcon = 'visibility'
+            links[i].enableDisable = 'success--text'
           }
         }
       },
