@@ -288,6 +288,7 @@
         totalBars: {},
         avgBars: {},
         tpArray: [],
+        dateArray: [],
         ttlReturnCust: [],
         ttlLapsedCust: [],
         ttlNewCust: [],
@@ -487,10 +488,12 @@
         var tempLapVisitDisc = []
 
         var tempTp = []
+        var tempDate = []
 
         // Bar chart arrays
         for (var i = 0; i < this.jsonMsg.timePeriods.length; i++) {
           tempTp.push(this.jsonMsg.timePeriods[i].timePeriod)
+          tempDate.push(this.jsonMsg.timePeriods[i].anchorDate.substring(1, this.jsonMsg.timePeriods[i].anchorDate.length - 1))
 
           tempCustRet.push(this.jsonMsg.timePeriods[i].returnCustInfo.returnCustCount.toFixed(2))
           tempCustLap.push(this.jsonMsg.timePeriods[i].lapsedCustInfo.lapsedCustCount.toFixed(2))
@@ -551,6 +554,7 @@
         }
 
         this.tpArray = tempTp
+        this.dateArray = tempDate
         this.ttlReturnCust = tempCustRet
         this.ttlLapsedCust = tempCustLap
         this.ttlNewCust = tempCustNew
@@ -604,7 +608,7 @@
 
       createBars () {
         this.totalBars = {
-          labels: this.tpArray,
+          labels: this.dateArray,
           datasets: []
         }
 
@@ -672,7 +676,7 @@
         if (this.dimensionSelect === 'Customer') {
           this.avgSelect = 'Avg Spend per Customer'
           this.totalBars = {
-            labels: this.tpArray,
+            labels: this.dateArray,
             datasets: []
           }
 
@@ -793,7 +797,7 @@
         } else if (this.dimensionSelect === 'Visits') {
           this.avgSelect = 'Avg Spend per Basket'
           this.totalBars = {
-            labels: this.tpArray,
+            labels: this.dateArray,
             datasets: []
           }
 
@@ -913,7 +917,7 @@
           }
         } else if (this.dimensionSelect === 'Spend') {
           this.avgSelect = 'Avg Spend per Customer'
-          this.totalBars = {labels: this.tpArray, datasets: []}
+          this.totalBars = {labels: this.dateArray, datasets: []}
           if (this.segSelect.includes('All')) {
             this.totalBars.datasets.push(
               {
@@ -1030,7 +1034,7 @@
           }
         } else if (this.dimensionSelect === 'Discount') {
           this.avgSelect = 'Avg Discount per Customer'
-          this.totalBars = {labels: this.tpArray, datasets: []}
+          this.totalBars = {labels: this.dateArray, datasets: []}
           if (this.segSelect.includes('All')) {
             this.totalBars.datasets.push(
               {
@@ -1151,7 +1155,7 @@
       selectAvg () {
         if (this.dimensionSelect === 'Customer' && this.avgSelect === 'Avg Spend per Customer') {
           this.totalBars = {
-            labels: this.tpArray,
+            labels: this.dateArray,
             datasets: []
           }
 
@@ -1271,7 +1275,7 @@
           }
         } else if (this.dimensionSelect === 'Customer' && this.avgSelect === 'Avg Items per Customer') {
           this.totalBars = {
-            labels: this.tpArray,
+            labels: this.dateArray,
             datasets: []
           }
 
@@ -1391,7 +1395,7 @@
           }
         } else if (this.dimensionSelect === 'Customer' && this.avgSelect === 'Avg Discount per Customer') {
           this.totalBars = {
-            labels: this.tpArray,
+            labels: this.dateArray,
             datasets: []
           }
 
@@ -1511,7 +1515,7 @@
           }
         } else if (this.dimensionSelect === 'Customer' && this.avgSelect === 'Avg Transactions per Customer') {
           this.totalBars = {
-            labels: this.tpArray,
+            labels: this.dateArray,
             datasets: []
           }
 
@@ -1631,7 +1635,7 @@
           }
         } else if (this.dimensionSelect === 'Visits' && this.avgSelect === 'Avg Spend per Basket') {
           this.totalBars = {
-            labels: this.tpArray,
+            labels: this.dateArray,
             datasets: []
           }
 
@@ -1751,7 +1755,7 @@
           }
         } else if (this.dimensionSelect === 'Visits' && this.avgSelect === 'Avg Items per Basket') {
           this.totalBars = {
-            labels: this.tpArray,
+            labels: this.dateArray,
             datasets: []
           }
 
@@ -1871,7 +1875,7 @@
           }
         } else if (this.dimensionSelect === 'Visits' && this.avgSelect === 'Avg Discount per Basket') {
           this.totalBars = {
-            labels: this.tpArray,
+            labels: this.dateArray,
             datasets: []
           }
 
@@ -1991,7 +1995,7 @@
           }
         } else if (this.dimensionSelect === 'Spend' && this.avgSelect === 'Avg Spend per Customer') {
           this.totalBars = {
-            labels: this.tpArray,
+            labels: this.dateArray,
             datasets: []
           }
 
@@ -2111,7 +2115,7 @@
           }
         } else if (this.dimensionSelect === 'Spend' && this.avgSelect === 'Avg Spend per Basket') {
           this.totalBars = {
-            labels: this.tpArray,
+            labels: this.dateArray,
             datasets: []
           }
 
@@ -2231,7 +2235,7 @@
           }
         } else if (this.dimensionSelect === 'Discount' && this.avgSelect === 'Avg Discount per Customer') {
           this.totalBars = {
-            labels: this.tpArray,
+            labels: this.dateArray,
             datasets: []
           }
 
@@ -2351,7 +2355,7 @@
           }
         } else if (this.dimensionSelect === 'Discount' && this.avgSelect === 'Avg Discount per Basket') {
           this.totalBars = {
-            labels: this.tpArray,
+            labels: this.dateArray,
             datasets: []
           }
 

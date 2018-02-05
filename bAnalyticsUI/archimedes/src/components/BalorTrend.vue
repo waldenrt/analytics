@@ -438,7 +438,7 @@
           tempTxn.push(this.jsonMsg.timePeriods[i].txnBalor.toFixed(2))
           tempSpend.push(this.jsonMsg.timePeriods[i].spendBalor.toFixed(2))
           tempTP.push(this.jsonMsg.timePeriods[i].timePeriod)
-          tempDate.push(this.jsonMsg.timePeriods[i].anchorDate)
+          tempDate.push(this.jsonMsg.timePeriods[i].anchorDate.substring(1, this.jsonMsg.timePeriods[i].anchorDate.length - 1))
         }
 
         this.custBalorArray = tempCust
