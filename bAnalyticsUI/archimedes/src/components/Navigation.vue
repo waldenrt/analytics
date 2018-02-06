@@ -1,5 +1,5 @@
 <template>
-  <div class="content pa-0 ma-0">
+  <div class="content pa-0 ma-0" style="height:100%;">
     <v-app id="navigation" left-fixed-sidebar top-toolbar sidebar-under-toolbar>
 
       <!-- =====slideout nav===== -->

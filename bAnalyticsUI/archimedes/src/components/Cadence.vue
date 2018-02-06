@@ -385,7 +385,7 @@
     width: 100%;
   }
   .scrolltable {
-    overflow-x: scroll;
+    overflow-y: scroll;
     height: 100%;
     display: flex;
     display: -webkit-flex;

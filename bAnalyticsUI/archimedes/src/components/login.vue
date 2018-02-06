@@ -47,7 +47,7 @@
                         <v-text-field
                             label="Username"
                             v-model="username"
-                            class="white mt-0 mb-0 ml-0 custom_input"
+                            class="white mt-0 mb-0 ml-0 input-group--focused custom_input"
                             single-line
                             hide-details
                             data-vv-name="username"
@@ -68,7 +68,7 @@
                         <v-text-field
                             label="Password"
                             v-model="password"
-                            class="white mt-0 mb-0 ml-0 custom_input"
+                            class="white mt-0 mb-0 ml-0 input-group--focused custom_input"
                             single-line
                             hide-details
                             data-vv-name="password"

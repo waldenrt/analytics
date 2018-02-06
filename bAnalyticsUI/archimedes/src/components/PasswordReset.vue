@@ -73,7 +73,7 @@
               </form>
               <div class="text-xs-center mt-4">
                 <v-layout row wrap class="text-xs-center">
-                  <b1 class="text-xs-center white--text" style="margin:0 auto;">All Rights Reserved &copy; {{ new Date().getFullYear() }}</b1>
+                  <span class="body-1 text-xs-center white--text" style="margin:0 auto;">All Rights Reserved &copy; {{ new Date().getFullYear() }}</span>
                 </v-layout>
               </div>
             </div><!--//centereddiv-->
