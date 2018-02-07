@@ -27,7 +27,5 @@
     background-color:#F5F8FA !important;
     border:1px solid #DFE3E9 !important;
   }
-  html {
-    background-color:#eff3f6;
-  }
+  html {background-color:#eff3f6;}
 </style>

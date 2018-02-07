@@ -36,31 +36,29 @@
         <v-toolbar-side-icon @click.native.stop="showmenu = !showmenu"></v-toolbar-side-icon>
         <v-toolbar-title class="text--text">{{ appmodule }}</v-toolbar-title>
         <v-toolbar-items>
-          <v-select
-              v-bind:items="clients"
-              v-model="activeClient"
-              label="Select Client"
-              single-line
-              auto
-              append-icon="arrow_drop_down"
-              hide-details
-              style="width:200px;"
-              class="input-group--focused custom_input"
-              v-tooltip:bottom="{ html: 'Select Client' }"
-            ></v-select>
           <v-btn
+              outline
+              class="success--text info"
+              v-tooltip:bottom="{ html: 'Select Client' }">
+            <v-icon class="success--text">list</v-icon>
+            <span>CLIENT</span>
+          </v-btn>
+          <v-btn
+              outline
               router
               to="/JobHistory"
               icon slot="activator"
-              class="accent--text"
+              class="success--text info"
               v-tooltip:bottom="{ html: 'Global Job History' }">
                 <v-icon x-large>history</v-icon>
           </v-btn>
           <v-menu bottom left offset-y>
             <v-btn
+                outline
                 icon slot="activator"
+                class="success--text info"
                 v-tooltip:bottom="{ html: 'Profile' }">
-              <v-icon class="accent--text">account_circle</v-icon>
+              <v-icon>account_circle</v-icon>
             </v-btn>
             <v-list class="pt-0" style="width:300px;">
               <v-icon class="accent--text drop_arrow2">arrow_drop_up</v-icon>
@@ -138,11 +136,11 @@
           {name: 'Logout', active: false, icon: 'exit_to_app', link: '/Logout'}
         ],
         profile: [
-          {name: 'Profile', icon: 'person', link: '/Home'},
-          {name: 'Settings', icon: 'settings', link: '/Settings'},
-          {name: 'Feeback', icon: 'feedback', link: '/Feedback'},
-          {name: 'Help', icon: 'help', link: '/Help'},
-          {name: 'Logout', icon: 'exit_to_app', link: '/Logout'}
+          {name: 'Profile', icon: 'person', link: '#/Home'},
+          {name: 'Settings', icon: 'settings', link: '#/Settings'},
+          {name: 'Feeback', icon: 'feedback', link: '#/Feedback'},
+          {name: 'Help', icon: 'help', link: '#/Help'},
+          {name: 'Logout', icon: 'exit_to_app', link: '#/Logout'}
         ],
         userInfo: [
           {firstName: 'FirstName', lastName: 'LastName', email: 'someone@juju.com', iconClass: 'info'}

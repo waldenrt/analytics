@@ -1,9 +1,52 @@
 <template>
   <v-container fluid class="cadence pl-3 pr-3">
-    <!-- =====ROW2===== -->
+    <!-- =====ROW1===== -->
     <v-layout row wrap class="mb-4">
       <!--+++++col1+++++-->
-      <v-flex xs8 lg9 fill-height>
+      <v-flex xs12 sm6 md3 lg3 order-xs2 order-md1 fill-height>
+      <!--cad raw data-->
+      <v-layout row wrap class="mb-4">
+        <v-flex xs12 fill-height>
+        <v-card class="white">
+          <v-card-title primary-title class="primary">
+            <h6 v-if="cadWeeks" class="white--text text-xs-left mb-0 truncate1">Cadence Raw Data (Weeks)</h6>
+            <h6 v-else class="white--text text-xs-left mb-0 truncate1">Cadence Raw Data (Days)</h6>
+          </v-card-title>
+          <v-divider class="primary pb-0 pl-3 pr-3"></v-divider>
+            <div class="constrainer">
+              <div class="scrolltable">
+                <div class="tbl_header grey lighten-2 pt-2 pb-2 elevation-1">
+                <table cellpadding="0" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th class="tbl_cells text-xs-center">Cadence</th>
+                        <th class="tbl_cells text-xs-center">Frequency</th>
+                        <th class="tbl_cells text-xs-center">Cumlative<br />Frequency</th>
+                      </tr>
+                    </thead>
+                </table>
+                </div>
+                <div class="tbl_body mt-2 mb-2">
+                <table cellpadding="0" cellspacing="0">
+                  <tbody>
+                    <tr v-for="item in tableData" v-bind:key="item.text" style="width:100%;">
+                      <td class="tbl_cells text-xs-center pt-1 pb-1" v-text="item.cadence"></td>
+                      <td class="tbl_cells text-xs-center" v-text="item.frequency"></td>
+                      <td class="tbl_cells text-xs-center" v-text="item.cumFreq"></td>
+                    </tr>
+                  </tbody>
+                </table>
+                </div>
+              </div>
+            </div>
+          </v-card>
+        </v-flex>
+      </v-layout>
+      <!--//cad raw data-->
+      </v-flex>
+      <!--//+++++col1+++++-->
+      <!--+++++col2+++++-->
+      <v-flex xs12 sm12 md6 lg7 order-xs1 order-md2 fill-height>
         <v-card fill-height class="white pa-0" style="height:100%">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Purchase Cadence Distribution</h6>
@@ -21,9 +64,9 @@
           </v-layout>
         </v-card>
       </v-flex>
-      <!--//+++++col1+++++-->
-      <!--+++++col2+++++-->
-      <v-flex xs4 lg3 fill-height>
+      <!--//+++++col2+++++-->
+      <!--+++++col3+++++-->
+      <v-flex xs12 sm6 md3 lg2 order-xs3 order-md3 fill-height>
         <v-layout row wrap>
           <v-flex xs12 class="pb-3">
             <div class="white elevation-1">
@@ -35,8 +78,8 @@
                   <!-- cadence_sum_items -->
                   <template>
                     <div v-for="item in sumItems" :key="item.name" class="panel_body mt-1 pl-3 pt-2 pb-2">
-                      <p class="body-1 pa-0 mb-0">{{ item.name }}</p>
-                      <h6 class="mb-0">{{ item.vals }}</h6>
+                      <p class="body-1 pa-0 mb-0 text-xs-center">{{ item.name }}</p>
+                      <h6 class="mb-0 text-xs-center">{{ item.vals }}</h6>
                     </div>
                   </template>
               </div>
@@ -44,66 +87,10 @@
             </div>
           </v-flex>
         </v-layout>
-        <!--cad raw data-->
-        <v-layout row wrap class="mb-4">
-        <v-flex xs12 fill-height>
-        <v-card class="white">
-          <v-card-title primary-title class="primary">
-            <h6 v-if="cadWeeks" class="white--text text-xs-left mb-0">Cadence Raw Data (Weeks)</h6>
-            <h6 v-else class="white--text text-xs-left mb-0">Cadence Raw Data (Days)</h6>
-          </v-card-title>
-          <v-divider class="primary pb-0 pl-3 pr-3"></v-divider>
-            <div class="constrainer">
-              <div class="scrolltable">
-                <div class="grey lighten-2 pt-2 pb-2 elevation-1">
-                <table
-                    cellpadding="0"
-                    cellspacing="0"
-                    width="100%"
-                    style="width:90%; margin:0 auto;"
-                    class="tbl_header">
-                    <thead>
-                      <tr>
-                        <th class="tbl_cells text-xs-center">Cadence</th>
-                        <th class="tbl_cells text-xs-center">Frequency</th>
-                        <th class="tbl_cells text-xs-center">Cumlative<br />Frequency</th>
-                      </tr>
-                    </thead>
-                </table>
-                </div>
-                <div class="tbl_body mt-2 mb-2">
-                <table style="width:90%; margin:0 auto;">
-                  <tbody>
-                    <tr v-for="item in tableData" v-bind:key="item.text" style="width:100%;">
-                      <td class="tbl_cells text-xs-center pt-1 pb-1" v-text="item.cadence"></td>
-                      <td class="tbl_cells text-xs-center" v-text="item.frequency"></td>
-                      <td class="tbl_cells text-xs-center" v-text="item.cumFreq"></td>
-                    </tr>
-                  </tbody>
-                </table>
-                </div>
-              </div>
-              <!--<v-data-table
-                  v-bind:headers="tableHeaders"
-                  :items="tableData"
-                  v-bind:search="search"
-                  hide-actions>
-                <template slot="items" scope="props">
-                  <td class="pa-3">{{ props.item.cadence }}</td>
-                  <td>{{ props.item.frequency }}</td>
-                  <td>{{ props.item.cumFreq }}</td>
-                </template>
-              </v-data-table>-->
-
-            </div>
-          </v-card>
-        </v-flex>
-      </v-layout>
-      <!--//cad raw data-->
       </v-flex>
-      <!--//+++++col2+++++-->
+      <!--//+++++col3+++++-->
     </v-layout>
-    <!-- //=====ROW2===== -->
+    <!-- //=====ROW1===== -->
   </v-container>
 </template>
 
@@ -372,7 +359,7 @@
   .bar_chart {
     position: relative !important;
     margin: 0 auto !important;
-    height: 596px !important;
+    height: 499px !important;
     width: 100% !important;
   }
 
@@ -381,7 +368,7 @@
   }
 
   .constrainer {
-    height: 260px;
+    height: 530px;
     width: 100%;
   }
   .scrolltable {
@@ -391,6 +378,10 @@
     display: -webkit-flex;
     flex-direction: column;
     -webkit-flex-direction: column;
+  }
+  .scrolltable .tbl_header table, .scrolltable .tbl_body table {
+    width:90%;
+    margin:0 auto;
   }
   .scrolltable > .tbl_body {
     width: -webkit-fit-content;
@@ -403,7 +394,7 @@
   }
 
   .panel {
-    height: 300px;
+    height: 530px;
     overflow: auto;
   }
 
@@ -418,5 +409,19 @@
 
   .panel .panel_body p, .panel .panel_body h6 {
     color:#354052;
+  }
+
+  .truncate1 {
+    width: 272px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 550px) {
+    .panel {
+      height:auto;
+      margin-bottom:18px;
+    }
   }
 </style>

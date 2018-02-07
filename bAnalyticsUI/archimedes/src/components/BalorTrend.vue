@@ -4,7 +4,7 @@
     <!-- =====ROW1===== -->
     <v-layout row wrap class="pa-0 mb-0">
       <!-- BALOR Trendline -->
-      <v-flex xs9>
+      <v-flex xs12 sm8 md9 lg10>
         <v-card class="white">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">BALOR Period Trendline</h6>
@@ -31,49 +31,49 @@
       </v-flex>
       <!--// BALOR Trendline -->
       <!-- BALOR Summary -->
-      <v-flex xs3>
+      <v-flex xs12 sm4 md3 lg2>
         <v-layout row wrap>
           <v-flex xs12 class="pb-3">
             <div class="white elevation-1">
             <v-card class="white elevation-0">
               <v-card-title primary-title class="primary white--text">
-                <h6 class="text-xs-left mb-0 white--text">BALOR Summary</h6>
+                <h6 class="text-xs-left mb-0 white--text truncate1">BALOR Summary</h6>
               </v-card-title>
               <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
                   <!-- data_row -->
-                  <div class="panel_body mt-1 pl-3 pt-2 pb-2">
-                    <p class="body-1 pa-0 mb-0">Min. Date</p>
-                    <h6 class="mb-0">{{ this.sumItems.minDateBalor }}</h6>
+                  <div class="panel_body mt-1 pl-1 pr-1 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0 text-xs-center">Min. Date</p>
+                    <h6 class="mb-0 text-xs-center">{{ this.sumItems.minDateBalor }}</h6>
                   </div>
                   <!-- data_row -->
-                  <div class="panel_body mt-1 pl-3 pt-2 pb-2">
-                    <p class="body-1 pa-0 mb-0">Max. Date</p>
-                    <h6 class="mb-0">{{ this.sumItems.maxDateBalor }}</h6>
+                  <div class="panel_body mt-1 pl-1 pr-1 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0 text-xs-center">Max. Date</p>
+                    <h6 class="mb-0 text-xs-center">{{ this.sumItems.maxDateBalor }}</h6>
                   </div>
                   <!-- data_row -->
-                  <div class="panel_body mt-1 pl-3 pt-2 pb-2">
-                    <p class="body-1 pa-0 mb-0">Customer Base:</p>
-                    <h6 class="mb-0">{{ this.sumItems.totalCusts }}</h6>
+                  <div class="panel_body mt-1 pl-1 pr-1 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0 text-xs-center">Customer Base:</p>
+                    <h6 class="mb-0 text-xs-center">{{ this.sumItems.totalCusts }}</h6>
                   </div>
                   <!-- data_row -->
-                  <div class="panel_body mt-1 pl-3 pt-2 pb-2">
-                    <p class="body-1 pa-0 mb-0">% Customer - 1 Purchase:</p>
-                    <h6 class="mb-0">{{ this.sumItems.percentCust }}</h6>
+                  <div class="panel_body mt-1 pl-1 pr-1 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0 text-xs-center">% Customer - 1 Purchase:</p>
+                    <h6 class="mb-0 text-xs-center">{{ this.sumItems.percentCust }}</h6>
                   </div>
                   <!-- data_row -->
-                  <div class="panel_body mt-1 pl-3 pt-2 pb-2">
-                    <p class="body-1 pa-0 mb-0">Transactions:</p>
-                    <h6 class="mb-0">{{ this.sumItems.numRecords }}</h6>
+                  <div class="panel_body mt-1 pl-1 pr-1 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0 text-xs-center">Transactions:</p>
+                    <h6 class="mb-0 text-xs-center">{{ this.sumItems.numRecords }}</h6>
                   </div>
                   <!-- data_row -->
-                  <div class="panel_body mt-1 pl-3 pt-2 pb-2">
-                    <p class="body-1 pa-0 mb-0">Purchase Cadence - 80th Percentile:</p>
-                    <h6 class="mb-0">{{ this.sumItems.normalizedCadence }}</h6>
+                  <div class="panel_body mt-1 pl-1 pr-1 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0 text-xs-center">Purchase Cadence - <br />80th Percentile:</p>
+                    <h6 class="mb-0 text-xs-center">{{ this.sumItems.normalizedCadence }}</h6>
                   </div>
                   <!-- data_row -->
-                  <div class="panel_body mt-1 pl-3 pt-2 pb-2">
-                    <p class="body-1 pa-0 mb-0">Time Periods:</p>
-                    <h6 class="mb-0">{{ this.sumItems.timePeriods }}</h6>
+                  <div class="panel_body mt-1 pl-1 pr-1 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0 text-xs-center">Time Periods:</p>
+                    <h6 class="mb-0 text-xs-center">{{ this.sumItems.timePeriods }}</h6>
                   </div>
               </div>
             </v-card>
@@ -88,7 +88,7 @@
     <!-- =====ROW2===== -->
     <v-layout row wrap class="mb-3">
       <!-- PieCharts & Ratio Lines -->
-      <v-flex xs9 fill-height>
+      <v-flex xs12 sm8 md9 lg10 fill-height>
         <v-card class="white">
 
           <!-- SELECTION ROW -->
@@ -100,7 +100,7 @@
                 </v-card-title>
                 <v-layout row wrap>
                   <!--Dropdown1-->
-                  <v-flex xs12 sm2>
+                  <v-flex xs12>
                     <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
                       <v-layout row wrap>
                         <v-flex xs12>
@@ -131,70 +131,77 @@
             <!--//selection-->
           </v-layout>
           <!-- //SELECTION ROW -->
-          <!-- LEGEND -->
-          <v-layout row wrap>
-            <v-flex xs12>
-              <v-card flat class="white pa-3">
-                <div class="legend legend_color1"></div>
-                <div class="inliner padR5">Lapsed</div>
-                <div class="legend legend_color2"></div>
-                <div class="inliner padR5">New</div>
-                <div class="legend legend_color3"></div>
-                <div class="inliner padR5">Returning</div>
-                <div class="legend legend_color4"></div>
-                <div class="inliner padR5">Reactivated</div>
-              </v-card>
+          <v-layout row>
+            <v-flex xs12 class="pie_ratio_height">
+
+              <!-- LEGEND -->
+              <v-layout row wrap>
+                <v-flex xs12>
+                  <v-card flat class="white pa-3">
+                    <div class="legend legend_color1"></div>
+                    <div class="inliner padR5">Lapsed</div>
+                    <div class="legend legend_color2"></div>
+                    <div class="inliner padR5">New</div>
+                    <div class="legend legend_color3"></div>
+                    <div class="inliner padR5">Returning</div>
+                    <div class="legend legend_color4"></div>
+                    <div class="inliner padR5">Reactivated</div>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+              <!-- //LEGEND -->
+              <!--PIE CHARTS ROW-->
+              <v-layout row wrap>
+              <!--Pie Charts-->
+                <v-flex xs12 sm6 md3 lg3>
+                  <v-card flat class="white pa-3">
+                    <pie-charts class="white pie_chart1" :chart-data='custData' :width="250" :height="250" ></pie-charts>
+                    <div primary-title class="primary--text text-xs-center pa-2">Customers</div>
+                  </v-card>
+                </v-flex>
+                <v-flex xs12 sm6 md3 lg3>
+                  <v-card flat class="white pa-3">
+                    <pie-charts class="white pie_chart1" :chart-data='txnData' :width="250" :height="250"></pie-charts>
+                    <div primary-title class="primary--text text-xs-center pa-2">Transactions</div>
+                  </v-card>
+                </v-flex>
+                <v-flex xs12 sm6 md3 lg3>
+                  <v-card flat class="white pa-3">
+                    <pie-charts class="white pie_chart1" :chart-data='spendData' :width="250" :height="250"></pie-charts>
+                    <div primary-title class="primary--text text-xs-center pa-2">Sales</div>
+                  </v-card>
+                </v-flex>
+                <!--//Pie Charts-->
+                <!--Ratio Lines-->
+                <v-flex xs12 sm6 md3 lg3>
+                  <v-card flat class="white pt-4 pl-2 pr-4 pb-3">
+                    <balor-trend-line class="white ratio_line" :chart-data='ratioLine' :width="250" :height="250"></balor-trend-line>
+                  </v-card>
+                </v-flex>
+                <!--//Ratio Lines-->
+              </v-layout>
+              <!--//PIE CHARTS ROW-->
             </v-flex>
           </v-layout>
-          <!-- //LEGEND -->
-          <!--Pie Charts-->
-          <v-layout row wrap>
-            <v-flex xs12 sm6 md3 lg3>
-              <v-card flat class="white pa-3">
-                <pie-charts class="white pie_chart1" :chart-data='custData'></pie-charts>
-                <div primary-title class="primary--text text-xs-center pa-2">Customers</div>
-              </v-card>
-            </v-flex>
-            <v-flex xs12 sm6 md3 lg3>
-              <v-card flat class="white pa-3">
-                <pie-charts class="white pie_chart1" :chart-data='txnData'></pie-charts>
-                <div primary-title class="primary--text text-xs-center pa-2">Transactions</div>
-              </v-card>
-            </v-flex>
-            <v-flex xs12 sm6 md3 lg3>
-              <v-card flat class="white pa-3">
-                <pie-charts class="white pie_chart1" :chart-data='spendData'></pie-charts>
-                <div primary-title class="primary--text text-xs-center pa-2">Sales</div>
-              </v-card>
-            </v-flex>
-            <v-flex xs12 sm6 md3 lg3>
-              <v-card flat class="white pt-4 pl-2 pr-2 pb-3">
-                <balor-trend-line class="white ratio_line" :chart-data='ratioLine'></balor-trend-line>
-              </v-card>
-            </v-flex>
-          </v-layout>
-          <!--/Pie Charts-->
         </v-card>
       </v-flex>
       <!-- //PieCharts & Ratio Lines -->
       <!-- Retention Summary -->
-      <v-flex xs3>
+      <v-flex xs12 sm4 md3 lg2>
         <v-layout row wrap>
           <v-flex xs12 class="pb-3">
-            <div class="white elevation-1">
-            <v-card class="white elevation-0">
+            <v-card class="white ret_sum_height">
               <v-card-title primary-title class="primary white--text">
-                <h6 class="text-xs-left mb-0 white--text">Rentention Summary</h6>
+                <h6 class="text-xs-left mb-0 white--text truncate1">Rentention Summary</h6>
               </v-card-title>
               <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
                   <!-- data_row -->
                   <div class="panel_body mt-1 pl-3 pt-2 pb-2" v-for="item in retentionItems" v-bind:key="item.name">
-                    <p class="body-1 pa-0 mb-0">{{ item.name }}:</p>
-                    <h6 class="mb-0">{{ item.vals }}</h6>
+                    <p class="body-1 pa-0 mb-0 text-xs-center">{{ item.name }}:</p>
+                    <h6 class="mb-0 text-xs-center">{{ item.vals }}</h6>
                   </div>
               </div>
             </v-card>
-            </div>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -737,19 +744,27 @@
   .line_chart {
     position: relative;
     margin: 0 auto;
-    height: 385px !important;
+    height: 396px !important;
+  }
+
+  .pie_ratio_height {
+    height:372px !important;
+  }
+
+  .ret_sum_height {
+    height:500px !important;
   }
 
   .pie_chart1 {
     position: relative;
     margin: 0 auto;
-    height: 20vw !important;
+    /*height: 100px !important;*/
   }
 
   .ratio_line {
     position: relative;
     margin: 0 auto;
-    height: 20vw !important;
+    /*height: 20vw !important;*/
   }
 
   .left_float {
@@ -808,7 +823,6 @@
   }
 
   .panel {
-    height: 463px;
     overflow: auto;
   }
 
@@ -823,5 +837,12 @@
 
   .panel .panel_body p, .panel .panel_body h6 {
     color:#354052;
+  }
+
+  .truncate1 {
+    width: 207px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 </style>
