@@ -1,0 +1,70 @@
+@font-face {
+	font-family: 'VerbLight';
+	src: url('./assets/fonts/verb/VerbLight.eot');
+	src: local('☺'), url('./assets/fonts/verb/VerbLight.woff') format('woff'), url('./assets/fonts/verb/VerbLight.ttf') format('truetype'), url('./assets/fonts/verb/VerbLight.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'VerbLight';
+	src: url('./assets/fonts/verb/VerbLight-Italic.eot');
+	src: local('☺'), url('./assets/fonts/verb/VerbLight-Italic.woff') format('woff'), url('./assets/fonts/verb/VerbLight-Italic.ttf') format('truetype'), url('./assets/fonts/verb/VerbLight-Italic.svg') format('svg');
+	font-weight: normal;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'VerbMedium';
+	src: url('./assets/fonts/verb/VerbMedium.eot');
+	src: local('☺'), url('./assets/fonts/verb/VerbMedium.woff') format('woff'), url('./assets/fonts/verb/VerbMedium.ttf') format('truetype'), url('./assets/fonts/verb/VerbMedium.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'VerbMedium';
+	src: url('./assets/fonts/verb/VerbMedium-Italic.eot');
+	src: local('☺'), url('./assets/fonts/verb/VerbMedium-Italic.woff') format('woff'), url('./assets/fonts/verb/VerbMedium-Italic.ttf') format('truetype'), url('./assets/fonts/verb/VerbMedium-Italic.svg') format('svg');
+	font-weight: normal;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'VerbRegular';
+	src: url('./assets/fonts/verb/VerbRegular.eot');
+	src: local('☺'), url('./assets/fonts/verb/VerbRegular.woff') format('woff'), url('./assets/fonts/verb/VerbRegular.ttf') format('truetype'), url('./assets/fonts/verb/VerbRegular.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'VerbRegular';
+	src: url('./assets/fonts/verb/VerbRegular-Bold.eot');
+	src: local('☺'), url('./assets/fonts/verb/VerbRegular-Bold.woff') format('woff'), url('./assets/fonts/verb/VerbRegular-Bold.ttf') format('truetype'), url('./assets/fonts/verb/VerbRegular-Bold.svg') format('svg');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'VerbRegular';
+	src: url('./assets/fonts/verb/VerbRegular-BoldItalic.eot');
+	src: local('☺'), url('./assets/fonts/verb/VerbRegular-BoldItalic.woff') format('woff'), url('./assets/fonts/verb/VerbRegular-BoldItalic.ttf') format('truetype'), url('./assets/fonts/verb/VerbRegular-BoldItalic.svg') format('svg');
+	font-weight: bold;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'VerbRegular';
+	src: url('./assets/fonts/verb/VerbRegular-Italic.eot');
+	src: local('☺'), url('./assets/fonts/verb/VerbRegular-Italic.woff') format('woff'), url('./assets/fonts/verb/VerbRegular-Italic.ttf') format('truetype'), url('./assets/fonts/verb/VerbRegular-Italic.svg') format('svg');
+	font-weight: normal;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'VerbSemibold';
+	src: url('./assets/fonts/verb/VerbSemibold.eot');
+	src: local('☺'), url('./assets/fonts/verb/VerbSemibold.woff') format('woff'), url('./assets/fonts/verb/VerbSemibold.ttf') format('truetype'), url('./assets/fonts/verb/VerbSemibold.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'VerbSemibold';
+	src: url('./assets/fonts/verb/VerbSemibold-Italic.eot');
+	src: local('☺'), url('./assets/fonts/verb/VerbSemibold-Italic.woff') format('woff'), url('./assets/fonts/verb/VerbSemibold-Italic.ttf') format('truetype'), url('./assets/fonts/verb/VerbSemibold-Italic.svg') format('svg');
+	font-weight: normal;
+	font-style: italic;
+}

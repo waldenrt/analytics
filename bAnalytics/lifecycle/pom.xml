@@ -1,27 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <artifactId>Analytics</artifactId>
         <groupId>com.brierley</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
-    <artifactId>balor</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
-    <name>balor-leaky bucket analysis</name>
-    <description>Balor module of Analytics Master</description>
-    <inceptionYear>2017</inceptionYear>
-    <licenses>
-        <license>
-            <name>My License</name>
-            <url>http://....</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>lifecycle</artifactId>
     <properties>
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
@@ -33,6 +18,21 @@
         <confluent.version>3.2.0</confluent.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>confluent</id>
+            <url>http://packages.confluent.io/maven/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>scala-tools.org</id>
+            <name>Scala-Tools Maven2 Repository</name>
+            <url>http://scala-tools.org/repo-releases</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <dependencies>
         <dependency>
             <groupId>org.scala-lang</groupId>
@@ -40,11 +40,11 @@
             <version>${scala.version}</version>
         </dependency>
 
-        <!-- Test -->
+        <!-- TEST -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -99,6 +99,7 @@
             <version>1.4.0</version>
         </dependency>
 
+        <!-- KAFKA/AVRO -->
         <dependency>
             <groupId>com.databricks</groupId>
             <artifactId>spark-avro_2.10</artifactId>
@@ -109,16 +110,10 @@
             <artifactId>avro</artifactId>
             <version>1.8.1</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka_${scala.compat.version}</artifactId>
             <version>${kafka.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.confluent</groupId>
-            <artifactId>kafka-avro-serializer</artifactId>
-            <version>${confluent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.kafka</groupId>
@@ -126,6 +121,11 @@
             <version>${kafka.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.brierley</groupId>
+            <artifactId>analytics-utils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -221,11 +221,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>confluent</id>
-            <url>http://packages.confluent.io/maven/</url>
-        </repository>
-    </repositories>
 </project>

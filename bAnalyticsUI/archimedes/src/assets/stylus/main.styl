@@ -1,0 +1,64 @@
+@import '../../../node_modules/vuetify/src/stylus/settings/_colors'
+// update colors here before importing the main stylesheet
+$red = {
+  "base":       #D63A09
+}
+$orange = {
+  "base":       #F7970E
+}
+$green = {
+  "base":       #8EAC1D
+}
+$blue = {
+  "base":       #0087AA,
+  "darken-1":   #006984,
+  "darken-2":   #005E76,
+  "darken-3":   #003947,
+  "darken-4":   #00313D,
+}
+$grey = {
+  "base":       #EFF3F6,
+  "lighten-1":  #F7F9FB,
+  "darken-1":   #848C98,
+  "darken-2":   #354052
+}
+
+$body-font-family := 'Roboto', sans-serif
+$body-bg := $grey.base
+
+$theme := {
+  primary: $blue.base
+  accent: $blue.darken-4
+  secondary: $grey.lighten-1
+  info: $blue.base
+  warning: $orange.base
+  error: $red.base
+  success: $green.base
+  text: $grey.darken-2
+}
+
+$material-light := {
+  bg-color: #eff3f6
+  fg-color: #354052
+  text-color: #354052
+  primary-text-percent: .87
+  secondary-text-percent: .54
+  disabledORhints-text-percent: .38
+  divider-percent: .12
+  active-icon-percent: .54
+  inactive-icon-percent: .38
+}
+
+$material-dark := {
+  bg-color: #00313D
+  fg-color: #F7F9FB
+  text-color: #F7F9FB
+  primary-text-percent: 1
+  secondary-text-percent: .70
+  disabledORhints-text-percent: .50
+  divider-percent: .12
+  active-icon-percent: 1
+  inactive-icon-percent: .50
+}
+
+@import '../../../node_modules/vuetify/src/stylus/main'
