@@ -9,12 +9,12 @@
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
-            <v-flex xs12 sm2>
+            <v-flex xs6 sm3>
               <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Select Top/Bottom<br/>View:
+                      Top/Bottom View:
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -35,12 +35,12 @@
             </v-flex>
             <!--//Dropdown1-->
             <!--Dropdown2-->
-            <v-flex xs12 sm2>
+            <v-flex xs6 sm3>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Select<br/>Measure:
+                      Measure:
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -62,12 +62,12 @@
             </v-flex>
             <!--//Dropdown2-->
             <!--Dropdown3-->
-            <v-flex xs12 sm2>
+            <v-flex xs6 sm3>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Choose A<br/>Time Period:
+                      Time Period:
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -89,12 +89,12 @@
             </v-flex>
             <!--//Dropdown3-->
             <!--Dropdown4-->
-            <v-flex xs12 sm2>
+            <v-flex xs6 sm3>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Select Customer<br/>Quantiles:
+                      Customer Quantiles:
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -117,12 +117,12 @@
             </v-flex>
             <!--//Dropdown4-->
             <!--Dropdown5-->
-            <v-flex xs12 sm2>
+            <v-flex xs6 sm3>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Choose A<br/>Product Level:
+                      Product Level:
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -151,11 +151,13 @@
     <!-- =====ROW2===== -->
     <v-layout wrap row>
       <v-flex xs12 class="pt-0 mt-0">
-        <v-card class="pl-3 pr-3 pt-1 pb-1">
-          <div class="title primary--text text-xs-center pa-1"><em><span class="grey--text darken-2">{{ topBottomSelect }}</span>
+        <v-card class="pl-1 pr-1 pt-2 pb-2">
+          <div class="title primary--text text-xs-center">
+            <em><span class="grey--text darken-2">{{ topBottomSelect }}</span>
             Products by <span class="grey--text darken-2">{{ measureSelect }}</span> during Period
             <span class="grey--text darken-2">{{ tpSelect }}</span>, with Customer Quantiles
-            <span class="grey--text darken-2">{{ quantSelect }} </span></em></div>
+            <span class="grey--text darken-2">{{ quantSelect }} </span></em>
+          </div>
         </v-card>
       </v-flex>
     </v-layout>

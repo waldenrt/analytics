@@ -9,12 +9,12 @@
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
-            <v-flex xs12 sm3>
+            <v-flex xs6 sm4>
               <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Select Prior Period for Analysis:
+                      Prior Period <br class="mob_break2" />for Analysis:
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -33,6 +33,30 @@
             </v-flex>
             <!--//Dropdown1-->
             <!--Dropdown2-->
+            <v-flex xs6 sm4>
+              <v-card flat class="pl-2 pr-2 grey lighten-2">
+                <v-layout row wrap>
+                  <v-flex xs12>
+                    <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                      View <br class="mob_break2" />Table As:
+                    </div>
+                  </v-flex>
+                  <v-flex xs12>
+                      <v-select v-bind:items="views"
+                                v-model="viewType"
+                                v-on:input="selectView()"
+                                label="View Table As"
+                                single-line
+                                bottom
+                                hide-details
+                                class="pl-1 pr-1 mt-1 mb-2 white elevation-1"></v-select>
+                      </v-select>
+                  </v-flex>
+                </v-layout>
+              </v-card>
+            </v-flex>
+            <!--//Dropdown2-->
+            <!--Dropdown3-->
             <!--add in at later date
             <v-flex xs12 sm3>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
@@ -55,8 +79,8 @@
                 </v-layout>
               </v-card>
             </v-flex> -->
-            <!--//Dropdown2-->
-            <!--Dropdown3-->
+            <!--//Dropdown3-->
+            <!--Dropdown4-->
             <!--add in at later date
             <v-flex xs12 sm3>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
@@ -80,30 +104,6 @@
                 </v-layout>
               </v-card>
             </v-flex> -->
-            <!--//Dropdown3-->
-            <!--Dropdown4-->
-            <v-flex xs12 sm3>
-              <v-card flat class="pl-2 pr-2 grey lighten-2">
-                <v-layout row wrap>
-                  <v-flex xs12>
-                    <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      View Table As:
-                    </div>
-                  </v-flex>
-                  <v-flex xs12>
-                      <v-select v-bind:items="views"
-                                v-model="viewType"
-                                v-on:input="selectView()"
-                                label="View Table As"
-                                single-line
-                                bottom
-                                hide-details
-                                class="pl-1 pr-1 mt-1 mb-2 white elevation-1"></v-select>
-                      </v-select>
-                  </v-flex>
-                </v-layout>
-              </v-card>
-            </v-flex>
             <!--//Dropdown4-->
           </v-layout>
         </v-card>
@@ -113,19 +113,21 @@
     <!-- =====ROW2===== -->
     <v-layout wrap row>
       <v-flex xs12 class="pt-0 mt-0">
-        <v-card class="pl-3 pr-3 pt-1 pb-1">
-          <div class="title primary--text text-xs-center pa-1 emphasis"><em>Period <span class="grey--text darken-2">{{ tpSelect }}</span>
-            [Quantile] Migration from Prior Period [Quantiles] <span class="grey--text darken-2">{{ priorPeriod }}</span> to
-            Post Period [Quantiles] <span class="grey--text darken-2">{{ postPeriod }}</span></em></div>
+        <v-card class="pl-1 pr-1 pt-2 pb-2">
+          <div class="title primary--text text-xs-center">
+            <em>Period <span class="grey--text darken-2">{{ tpSelect }}</span>
+            [Quantile] Migration from Prior Period [Quantiles] <br class="mob_break1" /><span class="grey--text darken-2">{{ priorPeriod }}</span> to
+            Post Period [Quantiles] <span class="grey--text darken-2">{{ postPeriod }}</span></em>
+          </div>
         </v-card>
       </v-flex>
     </v-layout>
     <!-- //=====ROW2===== -->
     <!-- =====ROW3===== -->
     <v-layout wrap row class="pt-0 mt-0">
-      <v-flex xs12>
+      <v-flex xs12 class="scrolltable">
         <div class="y_axis caption text-xs-center">Customer Prior Period Quantile</div>
-        <v-card class="white w_100 pt-3 pb-3">
+        <v-card class="white w_100 pt-3 pb-3 scrolltable">
           <div class="x_axis caption text-xs-center">Customer Post Period Quantile</div>
           <table cellpadding="0" cellspacing="0" class="quantTbl subheading pt-2 pl-5 pr-3">
             <thead>
@@ -586,6 +588,7 @@
 </script>
 
 <style scoped>
+  .mob_break {display: none;}
   .card_width { width: 100% !important; }
   .ret_table {
     height: 360px !important;
@@ -626,6 +629,12 @@
   .quantTbl .tRow td:first-child {
     background-color:#e7eeda;
   }
+
+  .mob_break2 {
+    display:none;
+  }
+
+
   @media (max-width: 768px) {
     .quantTbl .tRow td:first-child {
       width:30px;
@@ -637,6 +646,54 @@
     }
     .quantTbl thead td {
       padding: 5px 10px;
+    }
+  }
+  /* Smartphones (portrait and landscape) ----------- */
+  @media only screen and (min-device-width: 481px) and (max-device-width: 960px) {
+    /* Styles */
+    .mob_break1 {
+      display:block;
+    }
+    .mob_break2 {
+      display:none;
+    }
+  }
+
+  /* Smartphones (portrait and landscape) ----------- */
+  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    /* Styles */
+    .mob_break1 {
+      display:none;
+    }
+    .mob_break2 {
+      display:block;
+    }
+  }
+  /* Smartphones (portrait and landscape) ----------- */
+  @media only screen and (min-device-width: 100px) and (max-device-width: 320px) {
+    /* Styles */
+    .scrolltable {
+      width: 320px !important;
+      overflow-x: scroll;
+    }
+    .mob_break2 {
+      display:block;
+    }
+  }
+  /* Smartphones (portrait and landscape) ----------- */
+  @media only screen and (min-device-width: 321px) and (max-device-width: 375px) {
+    /* Styles */
+    .scrolltable {
+      width: 375px !important;
+      overflow-x: scroll;
+    }
+  }
+  /* Smartphones (portrait and landscape) ----------- */
+  @media only screen and (min-device-width: 376px) and (max-device-width: 425px) {
+    /* Styles */
+    .scrolltable {
+      width: 425px !important;
+      overflow-x: scroll;
     }
   }
 </style>

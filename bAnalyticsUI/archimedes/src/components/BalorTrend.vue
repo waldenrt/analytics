@@ -810,18 +810,6 @@
     padding: 0;
   }
 
-  /* Smartphones (portrait and landscape) ----------- */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
-    /* Styles */
-    .pie_chart1 {
-      height: 30vh !important;
-    }
-
-    .padT15_mob {
-      padding-top: 15px;
-    }
-  }
-
   .panel {
     overflow: auto;
   }
@@ -844,5 +832,24 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  /* Smartphones (portrait and landscape) ----------- */
+  @media only screen and (min-device-width: 481px) and (max-device-width: 960px) {
+    /* Styles */
+    .pie_ratio_height {
+      height:auto !important;
+    }
+    .ret_sum_height {
+      height:820px !important;
+    }
+  }
+
+  /* Smartphones (portrait and landscape) ----------- */
+  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    /* Styles */
+
+    .padT15_mob {
+      padding-top: 15px;
+    }
   }
 </style>

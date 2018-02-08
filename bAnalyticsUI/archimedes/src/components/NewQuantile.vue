@@ -1,26 +1,13 @@
 <template>
   <v-container fluid class="NewQuantile pl-3 pr-3">
     <v-layout row wrap style="height:100%;">
-      <v-flex xs6 offset-xs3 class="pl-0 pr-0 mt-0 mb-4">
-        <div class="centereddiv">
+      <v-flex xs12  sm8 offset-sm2  md6 offset-md3  class="pl-0 pr-0 mt-0 mb-4">
 
           <!-- FORM STARTS -->
           <form name="quantForm" @submit.prevent="validateBeforeSubmit()">
           <v-card class="white v_card">
             <v-card-title primary-title class="primary">
               <div><h6 class="white--text text-xs-left mb-0">Pareto Input</h6></div>
-              <v-spacer></v-spacer>
-              <div class="file">
-                <v-dialog v-model="dialog" width="1000px">
-                  <div slot="activator">
-                    <div class="white--text subheading inliner">Sample File Image</div>
-                    <div class="inliner"><v-icon primary light slot="activator">image</v-icon></div>
-                  </div>
-                  <v-card style="width:1000px;">
-                    <img src="../assets/images/pareto_file_img.png" width="100%" height="100%" class="file_sample">
-                  </v-card>
-                </v-dialog>
-              </div>
             </v-card-title>
             <v-layout row wrap>
             <!--+++++col1+++++-->
@@ -48,6 +35,16 @@
               <!--FILE-LOADER-->
               <div class="xs12 pb-3">
                 <label class="body-2">Select file for analysis</label>
+                <div class="file">
+                  <v-dialog v-model="dialog" width="1000px">
+                    <div slot="activator">
+                      <div class="inliner"><v-icon class="warning--text" slot="activator">note</v-icon></div>
+                    </div>
+                    <v-card style="width:1000px;">
+                      <img src="../assets/images/pareto_file_img.png" width="100%" height="100%" class="file_sample">
+                    </v-card>
+                  </v-dialog>
+                </div>
                 <v-layout xs12 class="pad_LR12">
                 <form enctype="multipart/form-data" style="width:100%;">
                   <input
@@ -241,7 +238,8 @@
             <v-layout wrap row>
             <v-flex xs12 class="pt-3 pl-4 pr-4 pb-3">
               <!--BUTTONS-->
-              <v-card-row xs12 style="float:right;">
+              <v-card-row xs12>
+                <v-spacer></v-spacer>
                 <div v-if="uploadInProgress">Uploading file
                   <v-btn disabled class="success white--text ma-0">Submit</v-btn></div>
                 <v-btn v-else
@@ -254,7 +252,6 @@
           </v-card>
         </form>
         <!-- FORM ENDS -->
-        </div>
       </v-flex>
     </v-layout>
   </v-container>
@@ -390,7 +387,7 @@
 <style scoped>
 .inliner {display:inline-block;}
 .v_card {border-radius:4px;}
-.file {cursor:pointer;}
+.file {cursor:pointer;display: inline-block;}
 .file_sample {padding:10px; position:relative; top:3px;}
 .pad_LR12 { padding-left:12px; padding-right:12px;}
 .input-group {margin-top:0; margin-bottom:0;}

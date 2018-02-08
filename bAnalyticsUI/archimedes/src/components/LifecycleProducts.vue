@@ -9,7 +9,7 @@
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
-            <v-flex xs12 sm2>
+            <v-flex xs12 sm2 md2>
               <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
@@ -33,7 +33,7 @@
             </v-flex>
             <!--//Dropdown1-->
             <!--Dropdown2-->
-            <v-flex xs12 sm2>
+            <v-flex xs12 sm3 md3>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
@@ -59,7 +59,7 @@
             </v-flex>
             <!--//Dropdown2-->
             <!--Dropdown3-->
-            <v-flex xs12 sm2>
+            <v-flex xs12 sm2 md3>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
@@ -85,7 +85,7 @@
             </v-flex>
             <!--//Dropdown3-->
             <!--Dropdown4-->
-            <v-flex xs12 sm2>
+            <v-flex xs12 sm5 md3>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
@@ -103,7 +103,7 @@
                           v-on:keyup.enter.native="topProds()"
                           class="pl-1 pr-1 mt-1 mb-2 white elevation-1"></v-text-field>
                   </v-flex>
-                  <v-flex xs4>
+                  <v-flex xs4 class="pl-0" style="padding-top:3px;">
                     <v-btn light primary default v-on:click.native="topProds()" class="ma-0">Filter</v-btn>
                   </v-flex>
                 </v-layout>
@@ -111,7 +111,7 @@
             </v-flex>
             <!--//Dropdown4-->
             <!--Legend-->
-            <v-flex xs12 sm4>
+            <v-flex xs12>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
                   <!-- LEGEND -->

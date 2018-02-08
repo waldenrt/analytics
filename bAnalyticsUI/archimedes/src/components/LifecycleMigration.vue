@@ -95,7 +95,7 @@
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
                   <!-- LEGEND -->
-                  <v-flex xs12>
+                  <v-flex xs12 class="pl-0 pr-0">
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-1 pt-2">
                       Legend:<br/><br/>
                     </div>

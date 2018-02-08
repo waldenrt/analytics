@@ -9,12 +9,12 @@
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
-            <v-flex xs12 sm3>
+            <v-flex xs6 sm4 md3>
               <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Select Customer<br/>Quantiles:
+                      Customer Quantiles:
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -34,12 +34,12 @@
             </v-flex>
             <!--//Dropdown1-->
             <!--Dropdown2-->
-            <v-flex xs12 sm3>
+            <v-flex xs6 sm4 md3>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Choose A Time<br/>Period:
+                      Time Period:
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -59,12 +59,12 @@
             </v-flex>
             <!--//Dropdown2-->
             <!--Dropdown3-->
-            <v-flex xs12 sm3>
+            <v-flex xs12 sm4 md3>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Select Metrics for<br/>Pareto Analysis:
+                      Metrics for Pareto Analysis:
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -91,8 +91,10 @@
     <!-- =====ROW2===== -->
     <v-layout wrap row>
       <v-flex xs12 class="pt-0 mt-0">
-        <v-card class="pl-3 pr-3 pt-1 pb-1">
-          <div class="title primary--text text-xs-center pa-1"><em><span class="grey--text darken-2">Visits</span> Analysis for Quantiles <span class="grey--text darken-2">All</span> during Period <span class="grey--text darken-2">1</span>, with reference line at <span class="grey--text darken-2">70.00</span> percent of total</em></div>
+        <v-card class="pl-1 pr-1 pt-2 pb-2">
+          <div class="title primary--text text-xs-center">
+            <em><span class="grey--text darken-2">Visits</span> Analysis for Quantiles <span class="grey--text darken-2">All</span> during Period <span class="grey--text darken-2">1</span>, with reference line at <span class="grey--text darken-2">70.00</span> percent of total</em>
+          </div>
         </v-card>
       </v-flex>
     </v-layout>
@@ -100,9 +102,9 @@
     <!-- =====ROW3===== -->
     <v-layout wrap row>
       <v-flex xs12 class="pt-0 mt-0">
-        <v-card class="white pl-3 pr-3 pt-1 pb-1">
-          <div class="title primary--text text-xs-center pa-1">Quantile Pareto Analysis</div>
-          <v-layout row wrap class="mb-3 pa-3">
+        <v-card class="white pa-1 mob_padLR_0">
+          <div class="title primary--text text-xs-center pa-1 mb-2">Quantile Pareto Analysis</div>
+          <v-layout row wrap class="mb-2 mob_marB_0">
             <v-flex xs12 fill-height>
               <pareto-chart :chart-data="paretoData" :options="paretoOptions" class="pareto_chart1"></pareto-chart>
             </v-flex>
@@ -687,6 +689,89 @@
   position:relative !important;
   margin:0 auto !important;
   height:200px !important;
-  width: 100% !important;
+  width:100% !important;
+}
+.mob_break1 {display:none;}
+.mob_break2 {display:none;}
+/* Tablets (portrait and landscape) ----------- */
+@media only screen and (min-device-width: 481px) and (max-device-width: 960px) {
+  /* Styles */
+  .mob_break1 {
+    display:block;
+  }
+  .mob_break2 {
+    display:none;
+  }
+  .mob_padLR_0 {
+    padding-left:0px !important;
+    padding-right:0px !important;
+  }
+  .mob_padLR_1 {
+    padding-left:4px !important;
+    padding-right:4px !important;
+  }
+  .mob_padLR_2 {
+    padding-left:8px !important;
+    padding-right:8px !important;
+  }
+  .mob_padTB_0 {
+    padding-top:0px !important;
+    padding-bottom:0px !important;
+  }
+  .mob_padTB_1 {
+    padding-top:4px !important;
+    padding-bottom:4px !important;
+  }
+  .mob_padTB_2 {
+    padding-top:8px !important;
+    padding-bottom:8px !important;
+  }
+  .mob_marB_0 {
+    margin-bottom:0 !important;
+  }
+  .mob_padB_1 {
+    padding-bottom:4px !important;
+  }
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  /* Styles */
+  .mob_break1 {
+    display:none;
+  }
+  .mob_break2 {
+    display:none;
+  }
+  .mob_padLR_0 {
+    padding-left:0px !important;
+    padding-right:0px !important;
+  }
+  .mob_padLR_1 {
+    padding-left:4px !important;
+    padding-right:4px !important;
+  }
+  .mob_padLR_2 {
+    padding-left:8px !important;
+    padding-right:8px !important;
+  }
+  .mob_padTB_0 {
+    padding-top:0px !important;
+    padding-bottom:0px !important;
+  }
+  .mob_padTB_1 {
+    padding-top:4px !important;
+    padding-bottom:4px !important;
+  }
+  .mob_padTB_2 {
+    padding-top:8px !important;
+    padding-bottom:8px !important;
+  }
+  .mob_marB_0 {
+    margin-bottom:0 !important;
+  }
+  .mob_padB_1 {
+    padding-bottom:4px !important;
+  }
 }
 </style>
