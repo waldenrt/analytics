@@ -10,11 +10,13 @@ import org.apache.avro.specific.SpecificData;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 6088801656793236895L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"TimePeriodData\",\"namespace\":\"com.brierley.avro.schemas\",\"fields\":[{\"name\":\"timePeriod\",\"type\":\"int\",\"doc\":\"The Balor time period, calculated ascending\"},{\"name\":\"newCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered new in the given Balor time period.  To be considered new the cust_id must not appear in the previous 2 cadence periods\"},{\"name\":\"newTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all NEW customers in the given Balor time period.\"},{\"name\":\"newCustSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per NEW customer in the given time period.\"},{\"name\":\"newCustVisitAvg\",\"type\":\"double\",\"doc\":\"The average number of visits per NEW customer in the given time period.\"},{\"name\":\"newCustItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per NEW customer in the given time period.\"},{\"name\":\"newCustDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per NEW customer in the given time period.\"},{\"name\":\"newVisitSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per visit for NEW customers in the given time period.\"},{\"name\":\"newVisitDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per visit for NEW customers in the given time period.\"},{\"name\":\"newVisitItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per visit for NEW customers in the given time period.\"},{\"name\":\"reactCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered REACTIVATED in the given Balor time period.  To be considered reactivated the cust_id must appear in the current and t-2 time period\"},{\"name\":\"reactTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactCustSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per REACTIVATED customer in the given time period.\"},{\"name\":\"reactCustVisitAvg\",\"type\":\"double\",\"doc\":\"The average number of visits per REACTIVATED customer in the given time period.\"},{\"name\":\"reactCustItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per REACTIVATED customer in the given time period.\"},{\"name\":\"reactCustDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per REACTIVATED customer in the given time period.\"},{\"name\":\"reactVisitSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per visit for REACTIVATED customers in the given time period.\"},{\"name\":\"reactVisitDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per visit for REACTIVATED customers in the given time period.\"},{\"name\":\"reactVisitItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per visit for REACTIVATED customers in the given time period.\"},{\"name\":\"returnCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered RETURNING in the given Balor time period.  To be considered returning the cust_id must appear in the 2 most recent time periods, or all 3\"},{\"name\":\"returnTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all RETURNING customers in the given Balor time period.\"},{\"name\":\"returnCustSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per RETURNING customer in the given time period.\"},{\"name\":\"returnCustVisitAvg\",\"type\":\"double\",\"doc\":\"The average number of visits per RETURNING customer in the given time period.\"},{\"name\":\"returnCustItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per RETURNING customer in the given time period.\"},{\"name\":\"returnCustDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per RETURNING customer in the given time period.\"},{\"name\":\"returnVisitSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per visit for RETURNING customers in the given time period.\"},{\"name\":\"returnVisitDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per visit for RETURNING customers in the given time period.\"},{\"name\":\"returnVisitItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per visit for RETURNING customers in the given time period.\"},{\"name\":\"lapsedCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered LAPSED in the given Balor time period.  To be considered lapsed the cust_id cannot appear in the current time period\"},{\"name\":\"lapsedTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedCustSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per LAPSED customer in the given time period.\"},{\"name\":\"lapsedCustVisitAvg\",\"type\":\"double\",\"doc\":\"The average number of visits per LAPSED customer in the given time period.\"},{\"name\":\"lapsedCustItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per LAPSED customer in the given time period.\"},{\"name\":\"lapsedCustDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per LAPSED customer in the given time period.\"},{\"name\":\"lapsedVisitSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per visit for LAPSED customers in the given time period.\"},{\"name\":\"lapsedVisitDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per visit for LAPSED customers in the given time period.\"},{\"name\":\"lapsedVisitItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per visit for LAPSED customers in the given time period.\"},{\"name\":\"custBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for customer counts. ratio calculated: (new + reactivated) / lapsed\"},{\"name\":\"txnBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for transaction counts per customer segment. ratio calculated: (new + reactivated) / lapsed\"},{\"name\":\"spendBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for the total spend for each customer segment. ratio calculated: (new + reactivated) / lapsed\"},{\"name\":\"retention\",\"type\":\"double\",\"doc\":\"The retention rate: (Returning in (t))/(new + react + return in (t-1))\"}]}");
+  private static final long serialVersionUID = 430613573011844729L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"TimePeriodData\",\"namespace\":\"com.brierley.avro.schemas\",\"fields\":[{\"name\":\"timePeriod\",\"type\":\"int\",\"doc\":\"The Balor time period, calculated ascending\"},{\"name\":\"anchorDate\",\"type\":[\"null\",\"string\"],\"doc\":\"the earliest date for each time period, month will be formatted 'MMM yyyy' and weeks will be formatted 'MM/dd/yyyy', nullable to allow previous schema to appear in topic.\"},{\"name\":\"newCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered new in the given Balor time period.  To be considered new the cust_id must not appear in the previous 2 cadence periods\"},{\"name\":\"newTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by NEW customers in the given Balor time period.\"},{\"name\":\"newItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all NEW customers in the given Balor time period.\"},{\"name\":\"newCustSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per NEW customer in the given time period.\"},{\"name\":\"newCustVisitAvg\",\"type\":\"double\",\"doc\":\"The average number of visits per NEW customer in the given time period.\"},{\"name\":\"newCustItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per NEW customer in the given time period.\"},{\"name\":\"newCustDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per NEW customer in the given time period.\"},{\"name\":\"newVisitSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per visit for NEW customers in the given time period.\"},{\"name\":\"newVisitDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per visit for NEW customers in the given time period.\"},{\"name\":\"newVisitItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per visit for NEW customers in the given time period.\"},{\"name\":\"reactCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered REACTIVATED in the given Balor time period.  To be considered reactivated the cust_id must appear in the current and t-2 time period\"},{\"name\":\"reactTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all REACTIVATED customers in the given Balor time period.\"},{\"name\":\"reactCustSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per REACTIVATED customer in the given time period.\"},{\"name\":\"reactCustVisitAvg\",\"type\":\"double\",\"doc\":\"The average number of visits per REACTIVATED customer in the given time period.\"},{\"name\":\"reactCustItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per REACTIVATED customer in the given time period.\"},{\"name\":\"reactCustDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per REACTIVATED customer in the given time period.\"},{\"name\":\"reactVisitSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per visit for REACTIVATED customers in the given time period.\"},{\"name\":\"reactVisitDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per visit for REACTIVATED customers in the given time period.\"},{\"name\":\"reactVisitItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per visit for REACTIVATED customers in the given time period.\"},{\"name\":\"returnCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered RETURNING in the given Balor time period.  To be considered returning the cust_id must appear in the 2 most recent time periods, or all 3\"},{\"name\":\"returnTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by RETURNING customers in the given Balor time period.\"},{\"name\":\"returnItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all RETURNING customers in the given Balor time period.\"},{\"name\":\"returnCustSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per RETURNING customer in the given time period.\"},{\"name\":\"returnCustVisitAvg\",\"type\":\"double\",\"doc\":\"The average number of visits per RETURNING customer in the given time period.\"},{\"name\":\"returnCustItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per RETURNING customer in the given time period.\"},{\"name\":\"returnCustDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per RETURNING customer in the given time period.\"},{\"name\":\"returnVisitSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per visit for RETURNING customers in the given time period.\"},{\"name\":\"returnVisitDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per visit for RETURNING customers in the given time period.\"},{\"name\":\"returnVisitItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per visit for RETURNING customers in the given time period.\"},{\"name\":\"lapsedCustCount\",\"type\":\"long\",\"doc\":\"The count of customers that are considered LAPSED in the given Balor time period.  To be considered lapsed the cust_id cannot appear in the current time period\"},{\"name\":\"lapsedTxnCount\",\"type\":\"long\",\"doc\":\"The number of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedTxnAmt\",\"type\":\"double\",\"doc\":\"The total spend of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedDiscAmt\",\"type\":\"double\",\"doc\":\"The total discount amount of transactions made by LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedItemQty\",\"type\":\"long\",\"doc\":\"The total number of items purchased by all LAPSED customers in the given Balor time period.\"},{\"name\":\"lapsedCustSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per LAPSED customer in the given time period.\"},{\"name\":\"lapsedCustVisitAvg\",\"type\":\"double\",\"doc\":\"The average number of visits per LAPSED customer in the given time period.\"},{\"name\":\"lapsedCustItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per LAPSED customer in the given time period.\"},{\"name\":\"lapsedCustDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per LAPSED customer in the given time period.\"},{\"name\":\"lapsedVisitSpendAvg\",\"type\":\"double\",\"doc\":\"The average sales per visit for LAPSED customers in the given time period.\"},{\"name\":\"lapsedVisitDiscAvg\",\"type\":\"double\",\"doc\":\"The average discount amount per visit for LAPSED customers in the given time period.\"},{\"name\":\"lapsedVisitItemAvg\",\"type\":\"double\",\"doc\":\"The average number of purchased items per visit for LAPSED customers in the given time period.\"},{\"name\":\"custBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for customer counts. ratio calculated: (new + reactivated) / lapsed\"},{\"name\":\"txnBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for transaction counts per customer segment. ratio calculated: (new + reactivated) / lapsed\"},{\"name\":\"spendBalor\",\"type\":\"double\",\"doc\":\"The balor ratio for the total spend for each customer segment. ratio calculated: (new + reactivated) / lapsed\"},{\"name\":\"retention\",\"type\":\"double\",\"doc\":\"The retention rate: (Returning in (t))/(new + react + return in (t-1))\"},{\"name\":\"retentionGrowth\",\"type\":[\"null\",\"double\"],\"doc\":\"The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100\"},{\"name\":\"returnNewSales\",\"type\":[\"null\",\"double\"],\"doc\":\"Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)\"},{\"name\":\"returnNewTxn\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of transactions in (t) for customers that were NEW in (","t-1) and RETURNING in (t)\"},{\"name\":\"returnNewCust\",\"type\":[\"null\",\"long\"],\"doc\":\"Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)\"},{\"name\":\"returnReactSales\",\"type\":[\"null\",\"double\"],\"doc\":\"Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)\"},{\"name\":\"returnReactTxn\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)\"},{\"name\":\"returnReactCust\",\"type\":[\"null\",\"long\"],\"doc\":\"Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)\"},{\"name\":\"returnReturnSales\",\"type\":[\"null\",\"double\"],\"doc\":\"Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)\"},{\"name\":\"returnReturnTxn\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)\"},{\"name\":\"returnReturnCust\",\"type\":[\"null\",\"long\"],\"doc\":\"Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)\"},{\"name\":\"ttlSalesLift\",\"type\":[\"null\",\"double\"],\"doc\":\"Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)\"},{\"name\":\"avgSalesLift\",\"type\":[\"null\",\"double\"],\"doc\":\"Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]\"},{\"name\":\"ttlTxnLift\",\"type\":[\"null\",\"double\"],\"doc\":\"Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)\"},{\"name\":\"avgTxnLift\",\"type\":[\"null\",\"double\"],\"doc\":\"Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** The Balor time period, calculated ascending */
   @Deprecated public int timePeriod;
+  /** the earliest date for each time period, month will be formatted 'MMM yyyy' and weeks will be formatted 'MM/dd/yyyy', nullable to allow previous schema to appear in topic. */
+  @Deprecated public java.lang.CharSequence anchorDate;
   /** The count of customers that are considered new in the given Balor time period.  To be considered new the cust_id must not appear in the previous 2 cadence periods */
   @Deprecated public long newCustCount;
   /** The number of transactions made by NEW customers in the given Balor time period. */
@@ -119,6 +121,34 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
   @Deprecated public double spendBalor;
   /** The retention rate: (Returning in (t))/(new + react + return in (t-1)) */
   @Deprecated public double retention;
+  /** The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100 */
+  @Deprecated public java.lang.Double retentionGrowth;
+  /** Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Double returnNewSales;
+  /** Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Long returnNewTxn;
+  /** Total customer count in (t) that were NEW in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Long returnNewCust;
+  /** Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Double returnReactSales;
+  /** Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Long returnReactTxn;
+  /** Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Long returnReactCust;
+  /** Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Double returnReturnSales;
+  /** Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Long returnReturnTxn;
+  /** Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t) */
+  @Deprecated public java.lang.Long returnReturnCust;
+  /** Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales) */
+  @Deprecated public java.lang.Double ttlSalesLift;
+  /** Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)] */
+  @Deprecated public java.lang.Double avgSalesLift;
+  /** Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn) */
+  @Deprecated public java.lang.Double ttlTxnLift;
+  /** Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)] */
+  @Deprecated public java.lang.Double avgTxnLift;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -130,6 +160,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
   /**
    * All-args constructor.
    * @param timePeriod The Balor time period, calculated ascending
+   * @param anchorDate the earliest date for each time period, month will be formatted 'MMM yyyy' and weeks will be formatted 'MM/dd/yyyy', nullable to allow previous schema to appear in topic.
    * @param newCustCount The count of customers that are considered new in the given Balor time period.  To be considered new the cust_id must not appear in the previous 2 cadence periods
    * @param newTxnCount The number of transactions made by NEW customers in the given Balor time period.
    * @param newTxnAmt The total spend of transactions made by NEW customers in the given Balor time period.
@@ -182,9 +213,24 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
    * @param txnBalor The balor ratio for transaction counts per customer segment. ratio calculated: (new + reactivated) / lapsed
    * @param spendBalor The balor ratio for the total spend for each customer segment. ratio calculated: (new + reactivated) / lapsed
    * @param retention The retention rate: (Returning in (t))/(new + react + return in (t-1))
+   * @param retentionGrowth The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100
+   * @param returnNewSales Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+   * @param returnNewTxn Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+   * @param returnNewCust Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)
+   * @param returnReactSales Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+   * @param returnReactTxn Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+   * @param returnReactCust Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)
+   * @param returnReturnSales Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+   * @param returnReturnTxn Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+   * @param returnReturnCust Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)
+   * @param ttlSalesLift Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)
+   * @param avgSalesLift Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]
+   * @param ttlTxnLift Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)
+   * @param avgTxnLift Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]
    */
-  public TimePeriodData(java.lang.Integer timePeriod, java.lang.Long newCustCount, java.lang.Long newTxnCount, java.lang.Double newTxnAmt, java.lang.Double newDiscAmt, java.lang.Long newItemQty, java.lang.Double newCustSpendAvg, java.lang.Double newCustVisitAvg, java.lang.Double newCustItemAvg, java.lang.Double newCustDiscAvg, java.lang.Double newVisitSpendAvg, java.lang.Double newVisitDiscAvg, java.lang.Double newVisitItemAvg, java.lang.Long reactCustCount, java.lang.Long reactTxnCount, java.lang.Double reactTxnAmt, java.lang.Double reactDiscAmt, java.lang.Long reactItemQty, java.lang.Double reactCustSpendAvg, java.lang.Double reactCustVisitAvg, java.lang.Double reactCustItemAvg, java.lang.Double reactCustDiscAvg, java.lang.Double reactVisitSpendAvg, java.lang.Double reactVisitDiscAvg, java.lang.Double reactVisitItemAvg, java.lang.Long returnCustCount, java.lang.Long returnTxnCount, java.lang.Double returnTxnAmt, java.lang.Double returnDiscAmt, java.lang.Long returnItemQty, java.lang.Double returnCustSpendAvg, java.lang.Double returnCustVisitAvg, java.lang.Double returnCustItemAvg, java.lang.Double returnCustDiscAvg, java.lang.Double returnVisitSpendAvg, java.lang.Double returnVisitDiscAvg, java.lang.Double returnVisitItemAvg, java.lang.Long lapsedCustCount, java.lang.Long lapsedTxnCount, java.lang.Double lapsedTxnAmt, java.lang.Double lapsedDiscAmt, java.lang.Long lapsedItemQty, java.lang.Double lapsedCustSpendAvg, java.lang.Double lapsedCustVisitAvg, java.lang.Double lapsedCustItemAvg, java.lang.Double lapsedCustDiscAvg, java.lang.Double lapsedVisitSpendAvg, java.lang.Double lapsedVisitDiscAvg, java.lang.Double lapsedVisitItemAvg, java.lang.Double custBalor, java.lang.Double txnBalor, java.lang.Double spendBalor, java.lang.Double retention) {
+  public TimePeriodData(java.lang.Integer timePeriod, java.lang.CharSequence anchorDate, java.lang.Long newCustCount, java.lang.Long newTxnCount, java.lang.Double newTxnAmt, java.lang.Double newDiscAmt, java.lang.Long newItemQty, java.lang.Double newCustSpendAvg, java.lang.Double newCustVisitAvg, java.lang.Double newCustItemAvg, java.lang.Double newCustDiscAvg, java.lang.Double newVisitSpendAvg, java.lang.Double newVisitDiscAvg, java.lang.Double newVisitItemAvg, java.lang.Long reactCustCount, java.lang.Long reactTxnCount, java.lang.Double reactTxnAmt, java.lang.Double reactDiscAmt, java.lang.Long reactItemQty, java.lang.Double reactCustSpendAvg, java.lang.Double reactCustVisitAvg, java.lang.Double reactCustItemAvg, java.lang.Double reactCustDiscAvg, java.lang.Double reactVisitSpendAvg, java.lang.Double reactVisitDiscAvg, java.lang.Double reactVisitItemAvg, java.lang.Long returnCustCount, java.lang.Long returnTxnCount, java.lang.Double returnTxnAmt, java.lang.Double returnDiscAmt, java.lang.Long returnItemQty, java.lang.Double returnCustSpendAvg, java.lang.Double returnCustVisitAvg, java.lang.Double returnCustItemAvg, java.lang.Double returnCustDiscAvg, java.lang.Double returnVisitSpendAvg, java.lang.Double returnVisitDiscAvg, java.lang.Double returnVisitItemAvg, java.lang.Long lapsedCustCount, java.lang.Long lapsedTxnCount, java.lang.Double lapsedTxnAmt, java.lang.Double lapsedDiscAmt, java.lang.Long lapsedItemQty, java.lang.Double lapsedCustSpendAvg, java.lang.Double lapsedCustVisitAvg, java.lang.Double lapsedCustItemAvg, java.lang.Double lapsedCustDiscAvg, java.lang.Double lapsedVisitSpendAvg, java.lang.Double lapsedVisitDiscAvg, java.lang.Double lapsedVisitItemAvg, java.lang.Double custBalor, java.lang.Double txnBalor, java.lang.Double spendBalor, java.lang.Double retention, java.lang.Double retentionGrowth, java.lang.Double returnNewSales, java.lang.Long returnNewTxn, java.lang.Long returnNewCust, java.lang.Double returnReactSales, java.lang.Long returnReactTxn, java.lang.Long returnReactCust, java.lang.Double returnReturnSales, java.lang.Long returnReturnTxn, java.lang.Long returnReturnCust, java.lang.Double ttlSalesLift, java.lang.Double avgSalesLift, java.lang.Double ttlTxnLift, java.lang.Double avgTxnLift) {
     this.timePeriod = timePeriod;
+    this.anchorDate = anchorDate;
     this.newCustCount = newCustCount;
     this.newTxnCount = newTxnCount;
     this.newTxnAmt = newTxnAmt;
@@ -237,6 +283,20 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
     this.txnBalor = txnBalor;
     this.spendBalor = spendBalor;
     this.retention = retention;
+    this.retentionGrowth = retentionGrowth;
+    this.returnNewSales = returnNewSales;
+    this.returnNewTxn = returnNewTxn;
+    this.returnNewCust = returnNewCust;
+    this.returnReactSales = returnReactSales;
+    this.returnReactTxn = returnReactTxn;
+    this.returnReactCust = returnReactCust;
+    this.returnReturnSales = returnReturnSales;
+    this.returnReturnTxn = returnReturnTxn;
+    this.returnReturnCust = returnReturnCust;
+    this.ttlSalesLift = ttlSalesLift;
+    this.avgSalesLift = avgSalesLift;
+    this.ttlTxnLift = ttlTxnLift;
+    this.avgTxnLift = avgTxnLift;
   }
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
@@ -244,58 +304,73 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return timePeriod;
-    case 1: return newCustCount;
-    case 2: return newTxnCount;
-    case 3: return newTxnAmt;
-    case 4: return newDiscAmt;
-    case 5: return newItemQty;
-    case 6: return newCustSpendAvg;
-    case 7: return newCustVisitAvg;
-    case 8: return newCustItemAvg;
-    case 9: return newCustDiscAvg;
-    case 10: return newVisitSpendAvg;
-    case 11: return newVisitDiscAvg;
-    case 12: return newVisitItemAvg;
-    case 13: return reactCustCount;
-    case 14: return reactTxnCount;
-    case 15: return reactTxnAmt;
-    case 16: return reactDiscAmt;
-    case 17: return reactItemQty;
-    case 18: return reactCustSpendAvg;
-    case 19: return reactCustVisitAvg;
-    case 20: return reactCustItemAvg;
-    case 21: return reactCustDiscAvg;
-    case 22: return reactVisitSpendAvg;
-    case 23: return reactVisitDiscAvg;
-    case 24: return reactVisitItemAvg;
-    case 25: return returnCustCount;
-    case 26: return returnTxnCount;
-    case 27: return returnTxnAmt;
-    case 28: return returnDiscAmt;
-    case 29: return returnItemQty;
-    case 30: return returnCustSpendAvg;
-    case 31: return returnCustVisitAvg;
-    case 32: return returnCustItemAvg;
-    case 33: return returnCustDiscAvg;
-    case 34: return returnVisitSpendAvg;
-    case 35: return returnVisitDiscAvg;
-    case 36: return returnVisitItemAvg;
-    case 37: return lapsedCustCount;
-    case 38: return lapsedTxnCount;
-    case 39: return lapsedTxnAmt;
-    case 40: return lapsedDiscAmt;
-    case 41: return lapsedItemQty;
-    case 42: return lapsedCustSpendAvg;
-    case 43: return lapsedCustVisitAvg;
-    case 44: return lapsedCustItemAvg;
-    case 45: return lapsedCustDiscAvg;
-    case 46: return lapsedVisitSpendAvg;
-    case 47: return lapsedVisitDiscAvg;
-    case 48: return lapsedVisitItemAvg;
-    case 49: return custBalor;
-    case 50: return txnBalor;
-    case 51: return spendBalor;
-    case 52: return retention;
+    case 1: return anchorDate;
+    case 2: return newCustCount;
+    case 3: return newTxnCount;
+    case 4: return newTxnAmt;
+    case 5: return newDiscAmt;
+    case 6: return newItemQty;
+    case 7: return newCustSpendAvg;
+    case 8: return newCustVisitAvg;
+    case 9: return newCustItemAvg;
+    case 10: return newCustDiscAvg;
+    case 11: return newVisitSpendAvg;
+    case 12: return newVisitDiscAvg;
+    case 13: return newVisitItemAvg;
+    case 14: return reactCustCount;
+    case 15: return reactTxnCount;
+    case 16: return reactTxnAmt;
+    case 17: return reactDiscAmt;
+    case 18: return reactItemQty;
+    case 19: return reactCustSpendAvg;
+    case 20: return reactCustVisitAvg;
+    case 21: return reactCustItemAvg;
+    case 22: return reactCustDiscAvg;
+    case 23: return reactVisitSpendAvg;
+    case 24: return reactVisitDiscAvg;
+    case 25: return reactVisitItemAvg;
+    case 26: return returnCustCount;
+    case 27: return returnTxnCount;
+    case 28: return returnTxnAmt;
+    case 29: return returnDiscAmt;
+    case 30: return returnItemQty;
+    case 31: return returnCustSpendAvg;
+    case 32: return returnCustVisitAvg;
+    case 33: return returnCustItemAvg;
+    case 34: return returnCustDiscAvg;
+    case 35: return returnVisitSpendAvg;
+    case 36: return returnVisitDiscAvg;
+    case 37: return returnVisitItemAvg;
+    case 38: return lapsedCustCount;
+    case 39: return lapsedTxnCount;
+    case 40: return lapsedTxnAmt;
+    case 41: return lapsedDiscAmt;
+    case 42: return lapsedItemQty;
+    case 43: return lapsedCustSpendAvg;
+    case 44: return lapsedCustVisitAvg;
+    case 45: return lapsedCustItemAvg;
+    case 46: return lapsedCustDiscAvg;
+    case 47: return lapsedVisitSpendAvg;
+    case 48: return lapsedVisitDiscAvg;
+    case 49: return lapsedVisitItemAvg;
+    case 50: return custBalor;
+    case 51: return txnBalor;
+    case 52: return spendBalor;
+    case 53: return retention;
+    case 54: return retentionGrowth;
+    case 55: return returnNewSales;
+    case 56: return returnNewTxn;
+    case 57: return returnNewCust;
+    case 58: return returnReactSales;
+    case 59: return returnReactTxn;
+    case 60: return returnReactCust;
+    case 61: return returnReturnSales;
+    case 62: return returnReturnTxn;
+    case 63: return returnReturnCust;
+    case 64: return ttlSalesLift;
+    case 65: return avgSalesLift;
+    case 66: return ttlTxnLift;
+    case 67: return avgTxnLift;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -305,58 +380,73 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: timePeriod = (java.lang.Integer)value$; break;
-    case 1: newCustCount = (java.lang.Long)value$; break;
-    case 2: newTxnCount = (java.lang.Long)value$; break;
-    case 3: newTxnAmt = (java.lang.Double)value$; break;
-    case 4: newDiscAmt = (java.lang.Double)value$; break;
-    case 5: newItemQty = (java.lang.Long)value$; break;
-    case 6: newCustSpendAvg = (java.lang.Double)value$; break;
-    case 7: newCustVisitAvg = (java.lang.Double)value$; break;
-    case 8: newCustItemAvg = (java.lang.Double)value$; break;
-    case 9: newCustDiscAvg = (java.lang.Double)value$; break;
-    case 10: newVisitSpendAvg = (java.lang.Double)value$; break;
-    case 11: newVisitDiscAvg = (java.lang.Double)value$; break;
-    case 12: newVisitItemAvg = (java.lang.Double)value$; break;
-    case 13: reactCustCount = (java.lang.Long)value$; break;
-    case 14: reactTxnCount = (java.lang.Long)value$; break;
-    case 15: reactTxnAmt = (java.lang.Double)value$; break;
-    case 16: reactDiscAmt = (java.lang.Double)value$; break;
-    case 17: reactItemQty = (java.lang.Long)value$; break;
-    case 18: reactCustSpendAvg = (java.lang.Double)value$; break;
-    case 19: reactCustVisitAvg = (java.lang.Double)value$; break;
-    case 20: reactCustItemAvg = (java.lang.Double)value$; break;
-    case 21: reactCustDiscAvg = (java.lang.Double)value$; break;
-    case 22: reactVisitSpendAvg = (java.lang.Double)value$; break;
-    case 23: reactVisitDiscAvg = (java.lang.Double)value$; break;
-    case 24: reactVisitItemAvg = (java.lang.Double)value$; break;
-    case 25: returnCustCount = (java.lang.Long)value$; break;
-    case 26: returnTxnCount = (java.lang.Long)value$; break;
-    case 27: returnTxnAmt = (java.lang.Double)value$; break;
-    case 28: returnDiscAmt = (java.lang.Double)value$; break;
-    case 29: returnItemQty = (java.lang.Long)value$; break;
-    case 30: returnCustSpendAvg = (java.lang.Double)value$; break;
-    case 31: returnCustVisitAvg = (java.lang.Double)value$; break;
-    case 32: returnCustItemAvg = (java.lang.Double)value$; break;
-    case 33: returnCustDiscAvg = (java.lang.Double)value$; break;
-    case 34: returnVisitSpendAvg = (java.lang.Double)value$; break;
-    case 35: returnVisitDiscAvg = (java.lang.Double)value$; break;
-    case 36: returnVisitItemAvg = (java.lang.Double)value$; break;
-    case 37: lapsedCustCount = (java.lang.Long)value$; break;
-    case 38: lapsedTxnCount = (java.lang.Long)value$; break;
-    case 39: lapsedTxnAmt = (java.lang.Double)value$; break;
-    case 40: lapsedDiscAmt = (java.lang.Double)value$; break;
-    case 41: lapsedItemQty = (java.lang.Long)value$; break;
-    case 42: lapsedCustSpendAvg = (java.lang.Double)value$; break;
-    case 43: lapsedCustVisitAvg = (java.lang.Double)value$; break;
-    case 44: lapsedCustItemAvg = (java.lang.Double)value$; break;
-    case 45: lapsedCustDiscAvg = (java.lang.Double)value$; break;
-    case 46: lapsedVisitSpendAvg = (java.lang.Double)value$; break;
-    case 47: lapsedVisitDiscAvg = (java.lang.Double)value$; break;
-    case 48: lapsedVisitItemAvg = (java.lang.Double)value$; break;
-    case 49: custBalor = (java.lang.Double)value$; break;
-    case 50: txnBalor = (java.lang.Double)value$; break;
-    case 51: spendBalor = (java.lang.Double)value$; break;
-    case 52: retention = (java.lang.Double)value$; break;
+    case 1: anchorDate = (java.lang.CharSequence)value$; break;
+    case 2: newCustCount = (java.lang.Long)value$; break;
+    case 3: newTxnCount = (java.lang.Long)value$; break;
+    case 4: newTxnAmt = (java.lang.Double)value$; break;
+    case 5: newDiscAmt = (java.lang.Double)value$; break;
+    case 6: newItemQty = (java.lang.Long)value$; break;
+    case 7: newCustSpendAvg = (java.lang.Double)value$; break;
+    case 8: newCustVisitAvg = (java.lang.Double)value$; break;
+    case 9: newCustItemAvg = (java.lang.Double)value$; break;
+    case 10: newCustDiscAvg = (java.lang.Double)value$; break;
+    case 11: newVisitSpendAvg = (java.lang.Double)value$; break;
+    case 12: newVisitDiscAvg = (java.lang.Double)value$; break;
+    case 13: newVisitItemAvg = (java.lang.Double)value$; break;
+    case 14: reactCustCount = (java.lang.Long)value$; break;
+    case 15: reactTxnCount = (java.lang.Long)value$; break;
+    case 16: reactTxnAmt = (java.lang.Double)value$; break;
+    case 17: reactDiscAmt = (java.lang.Double)value$; break;
+    case 18: reactItemQty = (java.lang.Long)value$; break;
+    case 19: reactCustSpendAvg = (java.lang.Double)value$; break;
+    case 20: reactCustVisitAvg = (java.lang.Double)value$; break;
+    case 21: reactCustItemAvg = (java.lang.Double)value$; break;
+    case 22: reactCustDiscAvg = (java.lang.Double)value$; break;
+    case 23: reactVisitSpendAvg = (java.lang.Double)value$; break;
+    case 24: reactVisitDiscAvg = (java.lang.Double)value$; break;
+    case 25: reactVisitItemAvg = (java.lang.Double)value$; break;
+    case 26: returnCustCount = (java.lang.Long)value$; break;
+    case 27: returnTxnCount = (java.lang.Long)value$; break;
+    case 28: returnTxnAmt = (java.lang.Double)value$; break;
+    case 29: returnDiscAmt = (java.lang.Double)value$; break;
+    case 30: returnItemQty = (java.lang.Long)value$; break;
+    case 31: returnCustSpendAvg = (java.lang.Double)value$; break;
+    case 32: returnCustVisitAvg = (java.lang.Double)value$; break;
+    case 33: returnCustItemAvg = (java.lang.Double)value$; break;
+    case 34: returnCustDiscAvg = (java.lang.Double)value$; break;
+    case 35: returnVisitSpendAvg = (java.lang.Double)value$; break;
+    case 36: returnVisitDiscAvg = (java.lang.Double)value$; break;
+    case 37: returnVisitItemAvg = (java.lang.Double)value$; break;
+    case 38: lapsedCustCount = (java.lang.Long)value$; break;
+    case 39: lapsedTxnCount = (java.lang.Long)value$; break;
+    case 40: lapsedTxnAmt = (java.lang.Double)value$; break;
+    case 41: lapsedDiscAmt = (java.lang.Double)value$; break;
+    case 42: lapsedItemQty = (java.lang.Long)value$; break;
+    case 43: lapsedCustSpendAvg = (java.lang.Double)value$; break;
+    case 44: lapsedCustVisitAvg = (java.lang.Double)value$; break;
+    case 45: lapsedCustItemAvg = (java.lang.Double)value$; break;
+    case 46: lapsedCustDiscAvg = (java.lang.Double)value$; break;
+    case 47: lapsedVisitSpendAvg = (java.lang.Double)value$; break;
+    case 48: lapsedVisitDiscAvg = (java.lang.Double)value$; break;
+    case 49: lapsedVisitItemAvg = (java.lang.Double)value$; break;
+    case 50: custBalor = (java.lang.Double)value$; break;
+    case 51: txnBalor = (java.lang.Double)value$; break;
+    case 52: spendBalor = (java.lang.Double)value$; break;
+    case 53: retention = (java.lang.Double)value$; break;
+    case 54: retentionGrowth = (java.lang.Double)value$; break;
+    case 55: returnNewSales = (java.lang.Double)value$; break;
+    case 56: returnNewTxn = (java.lang.Long)value$; break;
+    case 57: returnNewCust = (java.lang.Long)value$; break;
+    case 58: returnReactSales = (java.lang.Double)value$; break;
+    case 59: returnReactTxn = (java.lang.Long)value$; break;
+    case 60: returnReactCust = (java.lang.Long)value$; break;
+    case 61: returnReturnSales = (java.lang.Double)value$; break;
+    case 62: returnReturnTxn = (java.lang.Long)value$; break;
+    case 63: returnReturnCust = (java.lang.Long)value$; break;
+    case 64: ttlSalesLift = (java.lang.Double)value$; break;
+    case 65: avgSalesLift = (java.lang.Double)value$; break;
+    case 66: ttlTxnLift = (java.lang.Double)value$; break;
+    case 67: avgTxnLift = (java.lang.Double)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -376,6 +466,23 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
    */
   public void setTimePeriod(java.lang.Integer value) {
     this.timePeriod = value;
+  }
+
+  /**
+   * Gets the value of the 'anchorDate' field.
+   * @return the earliest date for each time period, month will be formatted 'MMM yyyy' and weeks will be formatted 'MM/dd/yyyy', nullable to allow previous schema to appear in topic.
+   */
+  public java.lang.CharSequence getAnchorDate() {
+    return anchorDate;
+  }
+
+  /**
+   * Sets the value of the 'anchorDate' field.
+   * the earliest date for each time period, month will be formatted 'MMM yyyy' and weeks will be formatted 'MM/dd/yyyy', nullable to allow previous schema to appear in topic.
+   * @param value the value to set.
+   */
+  public void setAnchorDate(java.lang.CharSequence value) {
+    this.anchorDate = value;
   }
 
   /**
@@ -1263,6 +1370,244 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
   }
 
   /**
+   * Gets the value of the 'retentionGrowth' field.
+   * @return The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100
+   */
+  public java.lang.Double getRetentionGrowth() {
+    return retentionGrowth;
+  }
+
+  /**
+   * Sets the value of the 'retentionGrowth' field.
+   * The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100
+   * @param value the value to set.
+   */
+  public void setRetentionGrowth(java.lang.Double value) {
+    this.retentionGrowth = value;
+  }
+
+  /**
+   * Gets the value of the 'returnNewSales' field.
+   * @return Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Double getReturnNewSales() {
+    return returnNewSales;
+  }
+
+  /**
+   * Sets the value of the 'returnNewSales' field.
+   * Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnNewSales(java.lang.Double value) {
+    this.returnNewSales = value;
+  }
+
+  /**
+   * Gets the value of the 'returnNewTxn' field.
+   * @return Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Long getReturnNewTxn() {
+    return returnNewTxn;
+  }
+
+  /**
+   * Sets the value of the 'returnNewTxn' field.
+   * Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnNewTxn(java.lang.Long value) {
+    this.returnNewTxn = value;
+  }
+
+  /**
+   * Gets the value of the 'returnNewCust' field.
+   * @return Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Long getReturnNewCust() {
+    return returnNewCust;
+  }
+
+  /**
+   * Sets the value of the 'returnNewCust' field.
+   * Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnNewCust(java.lang.Long value) {
+    this.returnNewCust = value;
+  }
+
+  /**
+   * Gets the value of the 'returnReactSales' field.
+   * @return Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Double getReturnReactSales() {
+    return returnReactSales;
+  }
+
+  /**
+   * Sets the value of the 'returnReactSales' field.
+   * Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnReactSales(java.lang.Double value) {
+    this.returnReactSales = value;
+  }
+
+  /**
+   * Gets the value of the 'returnReactTxn' field.
+   * @return Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Long getReturnReactTxn() {
+    return returnReactTxn;
+  }
+
+  /**
+   * Sets the value of the 'returnReactTxn' field.
+   * Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnReactTxn(java.lang.Long value) {
+    this.returnReactTxn = value;
+  }
+
+  /**
+   * Gets the value of the 'returnReactCust' field.
+   * @return Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Long getReturnReactCust() {
+    return returnReactCust;
+  }
+
+  /**
+   * Sets the value of the 'returnReactCust' field.
+   * Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnReactCust(java.lang.Long value) {
+    this.returnReactCust = value;
+  }
+
+  /**
+   * Gets the value of the 'returnReturnSales' field.
+   * @return Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Double getReturnReturnSales() {
+    return returnReturnSales;
+  }
+
+  /**
+   * Sets the value of the 'returnReturnSales' field.
+   * Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnReturnSales(java.lang.Double value) {
+    this.returnReturnSales = value;
+  }
+
+  /**
+   * Gets the value of the 'returnReturnTxn' field.
+   * @return Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Long getReturnReturnTxn() {
+    return returnReturnTxn;
+  }
+
+  /**
+   * Sets the value of the 'returnReturnTxn' field.
+   * Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnReturnTxn(java.lang.Long value) {
+    this.returnReturnTxn = value;
+  }
+
+  /**
+   * Gets the value of the 'returnReturnCust' field.
+   * @return Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)
+   */
+  public java.lang.Long getReturnReturnCust() {
+    return returnReturnCust;
+  }
+
+  /**
+   * Sets the value of the 'returnReturnCust' field.
+   * Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)
+   * @param value the value to set.
+   */
+  public void setReturnReturnCust(java.lang.Long value) {
+    this.returnReturnCust = value;
+  }
+
+  /**
+   * Gets the value of the 'ttlSalesLift' field.
+   * @return Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)
+   */
+  public java.lang.Double getTtlSalesLift() {
+    return ttlSalesLift;
+  }
+
+  /**
+   * Sets the value of the 'ttlSalesLift' field.
+   * Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)
+   * @param value the value to set.
+   */
+  public void setTtlSalesLift(java.lang.Double value) {
+    this.ttlSalesLift = value;
+  }
+
+  /**
+   * Gets the value of the 'avgSalesLift' field.
+   * @return Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]
+   */
+  public java.lang.Double getAvgSalesLift() {
+    return avgSalesLift;
+  }
+
+  /**
+   * Sets the value of the 'avgSalesLift' field.
+   * Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]
+   * @param value the value to set.
+   */
+  public void setAvgSalesLift(java.lang.Double value) {
+    this.avgSalesLift = value;
+  }
+
+  /**
+   * Gets the value of the 'ttlTxnLift' field.
+   * @return Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)
+   */
+  public java.lang.Double getTtlTxnLift() {
+    return ttlTxnLift;
+  }
+
+  /**
+   * Sets the value of the 'ttlTxnLift' field.
+   * Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)
+   * @param value the value to set.
+   */
+  public void setTtlTxnLift(java.lang.Double value) {
+    this.ttlTxnLift = value;
+  }
+
+  /**
+   * Gets the value of the 'avgTxnLift' field.
+   * @return Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]
+   */
+  public java.lang.Double getAvgTxnLift() {
+    return avgTxnLift;
+  }
+
+  /**
+   * Sets the value of the 'avgTxnLift' field.
+   * Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]
+   * @param value the value to set.
+   */
+  public void setAvgTxnLift(java.lang.Double value) {
+    this.avgTxnLift = value;
+  }
+
+  /**
    * Creates a new TimePeriodData RecordBuilder.
    * @return A new TimePeriodData RecordBuilder
    */
@@ -1296,6 +1641,8 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
 
     /** The Balor time period, calculated ascending */
     private int timePeriod;
+    /** the earliest date for each time period, month will be formatted 'MMM yyyy' and weeks will be formatted 'MM/dd/yyyy', nullable to allow previous schema to appear in topic. */
+    private java.lang.CharSequence anchorDate;
     /** The count of customers that are considered new in the given Balor time period.  To be considered new the cust_id must not appear in the previous 2 cadence periods */
     private long newCustCount;
     /** The number of transactions made by NEW customers in the given Balor time period. */
@@ -1400,6 +1747,34 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
     private double spendBalor;
     /** The retention rate: (Returning in (t))/(new + react + return in (t-1)) */
     private double retention;
+    /** The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100 */
+    private java.lang.Double retentionGrowth;
+    /** Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t) */
+    private java.lang.Double returnNewSales;
+    /** Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t) */
+    private java.lang.Long returnNewTxn;
+    /** Total customer count in (t) that were NEW in (t-1) and RETURNING in (t) */
+    private java.lang.Long returnNewCust;
+    /** Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t) */
+    private java.lang.Double returnReactSales;
+    /** Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t) */
+    private java.lang.Long returnReactTxn;
+    /** Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t) */
+    private java.lang.Long returnReactCust;
+    /** Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t) */
+    private java.lang.Double returnReturnSales;
+    /** Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t) */
+    private java.lang.Long returnReturnTxn;
+    /** Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t) */
+    private java.lang.Long returnReturnCust;
+    /** Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales) */
+    private java.lang.Double ttlSalesLift;
+    /** Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)] */
+    private java.lang.Double avgSalesLift;
+    /** Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn) */
+    private java.lang.Double ttlTxnLift;
+    /** Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)] */
+    private java.lang.Double avgTxnLift;
 
     /** Creates a new Builder */
     private Builder() {
@@ -1416,213 +1791,273 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
         this.timePeriod = data().deepCopy(fields()[0].schema(), other.timePeriod);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.newCustCount)) {
-        this.newCustCount = data().deepCopy(fields()[1].schema(), other.newCustCount);
+      if (isValidValue(fields()[1], other.anchorDate)) {
+        this.anchorDate = data().deepCopy(fields()[1].schema(), other.anchorDate);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.newTxnCount)) {
-        this.newTxnCount = data().deepCopy(fields()[2].schema(), other.newTxnCount);
+      if (isValidValue(fields()[2], other.newCustCount)) {
+        this.newCustCount = data().deepCopy(fields()[2].schema(), other.newCustCount);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.newTxnAmt)) {
-        this.newTxnAmt = data().deepCopy(fields()[3].schema(), other.newTxnAmt);
+      if (isValidValue(fields()[3], other.newTxnCount)) {
+        this.newTxnCount = data().deepCopy(fields()[3].schema(), other.newTxnCount);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.newDiscAmt)) {
-        this.newDiscAmt = data().deepCopy(fields()[4].schema(), other.newDiscAmt);
+      if (isValidValue(fields()[4], other.newTxnAmt)) {
+        this.newTxnAmt = data().deepCopy(fields()[4].schema(), other.newTxnAmt);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.newItemQty)) {
-        this.newItemQty = data().deepCopy(fields()[5].schema(), other.newItemQty);
+      if (isValidValue(fields()[5], other.newDiscAmt)) {
+        this.newDiscAmt = data().deepCopy(fields()[5].schema(), other.newDiscAmt);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.newCustSpendAvg)) {
-        this.newCustSpendAvg = data().deepCopy(fields()[6].schema(), other.newCustSpendAvg);
+      if (isValidValue(fields()[6], other.newItemQty)) {
+        this.newItemQty = data().deepCopy(fields()[6].schema(), other.newItemQty);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.newCustVisitAvg)) {
-        this.newCustVisitAvg = data().deepCopy(fields()[7].schema(), other.newCustVisitAvg);
+      if (isValidValue(fields()[7], other.newCustSpendAvg)) {
+        this.newCustSpendAvg = data().deepCopy(fields()[7].schema(), other.newCustSpendAvg);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.newCustItemAvg)) {
-        this.newCustItemAvg = data().deepCopy(fields()[8].schema(), other.newCustItemAvg);
+      if (isValidValue(fields()[8], other.newCustVisitAvg)) {
+        this.newCustVisitAvg = data().deepCopy(fields()[8].schema(), other.newCustVisitAvg);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.newCustDiscAvg)) {
-        this.newCustDiscAvg = data().deepCopy(fields()[9].schema(), other.newCustDiscAvg);
+      if (isValidValue(fields()[9], other.newCustItemAvg)) {
+        this.newCustItemAvg = data().deepCopy(fields()[9].schema(), other.newCustItemAvg);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.newVisitSpendAvg)) {
-        this.newVisitSpendAvg = data().deepCopy(fields()[10].schema(), other.newVisitSpendAvg);
+      if (isValidValue(fields()[10], other.newCustDiscAvg)) {
+        this.newCustDiscAvg = data().deepCopy(fields()[10].schema(), other.newCustDiscAvg);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.newVisitDiscAvg)) {
-        this.newVisitDiscAvg = data().deepCopy(fields()[11].schema(), other.newVisitDiscAvg);
+      if (isValidValue(fields()[11], other.newVisitSpendAvg)) {
+        this.newVisitSpendAvg = data().deepCopy(fields()[11].schema(), other.newVisitSpendAvg);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.newVisitItemAvg)) {
-        this.newVisitItemAvg = data().deepCopy(fields()[12].schema(), other.newVisitItemAvg);
+      if (isValidValue(fields()[12], other.newVisitDiscAvg)) {
+        this.newVisitDiscAvg = data().deepCopy(fields()[12].schema(), other.newVisitDiscAvg);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.reactCustCount)) {
-        this.reactCustCount = data().deepCopy(fields()[13].schema(), other.reactCustCount);
+      if (isValidValue(fields()[13], other.newVisitItemAvg)) {
+        this.newVisitItemAvg = data().deepCopy(fields()[13].schema(), other.newVisitItemAvg);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.reactTxnCount)) {
-        this.reactTxnCount = data().deepCopy(fields()[14].schema(), other.reactTxnCount);
+      if (isValidValue(fields()[14], other.reactCustCount)) {
+        this.reactCustCount = data().deepCopy(fields()[14].schema(), other.reactCustCount);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.reactTxnAmt)) {
-        this.reactTxnAmt = data().deepCopy(fields()[15].schema(), other.reactTxnAmt);
+      if (isValidValue(fields()[15], other.reactTxnCount)) {
+        this.reactTxnCount = data().deepCopy(fields()[15].schema(), other.reactTxnCount);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.reactDiscAmt)) {
-        this.reactDiscAmt = data().deepCopy(fields()[16].schema(), other.reactDiscAmt);
+      if (isValidValue(fields()[16], other.reactTxnAmt)) {
+        this.reactTxnAmt = data().deepCopy(fields()[16].schema(), other.reactTxnAmt);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.reactItemQty)) {
-        this.reactItemQty = data().deepCopy(fields()[17].schema(), other.reactItemQty);
+      if (isValidValue(fields()[17], other.reactDiscAmt)) {
+        this.reactDiscAmt = data().deepCopy(fields()[17].schema(), other.reactDiscAmt);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.reactCustSpendAvg)) {
-        this.reactCustSpendAvg = data().deepCopy(fields()[18].schema(), other.reactCustSpendAvg);
+      if (isValidValue(fields()[18], other.reactItemQty)) {
+        this.reactItemQty = data().deepCopy(fields()[18].schema(), other.reactItemQty);
         fieldSetFlags()[18] = true;
       }
-      if (isValidValue(fields()[19], other.reactCustVisitAvg)) {
-        this.reactCustVisitAvg = data().deepCopy(fields()[19].schema(), other.reactCustVisitAvg);
+      if (isValidValue(fields()[19], other.reactCustSpendAvg)) {
+        this.reactCustSpendAvg = data().deepCopy(fields()[19].schema(), other.reactCustSpendAvg);
         fieldSetFlags()[19] = true;
       }
-      if (isValidValue(fields()[20], other.reactCustItemAvg)) {
-        this.reactCustItemAvg = data().deepCopy(fields()[20].schema(), other.reactCustItemAvg);
+      if (isValidValue(fields()[20], other.reactCustVisitAvg)) {
+        this.reactCustVisitAvg = data().deepCopy(fields()[20].schema(), other.reactCustVisitAvg);
         fieldSetFlags()[20] = true;
       }
-      if (isValidValue(fields()[21], other.reactCustDiscAvg)) {
-        this.reactCustDiscAvg = data().deepCopy(fields()[21].schema(), other.reactCustDiscAvg);
+      if (isValidValue(fields()[21], other.reactCustItemAvg)) {
+        this.reactCustItemAvg = data().deepCopy(fields()[21].schema(), other.reactCustItemAvg);
         fieldSetFlags()[21] = true;
       }
-      if (isValidValue(fields()[22], other.reactVisitSpendAvg)) {
-        this.reactVisitSpendAvg = data().deepCopy(fields()[22].schema(), other.reactVisitSpendAvg);
+      if (isValidValue(fields()[22], other.reactCustDiscAvg)) {
+        this.reactCustDiscAvg = data().deepCopy(fields()[22].schema(), other.reactCustDiscAvg);
         fieldSetFlags()[22] = true;
       }
-      if (isValidValue(fields()[23], other.reactVisitDiscAvg)) {
-        this.reactVisitDiscAvg = data().deepCopy(fields()[23].schema(), other.reactVisitDiscAvg);
+      if (isValidValue(fields()[23], other.reactVisitSpendAvg)) {
+        this.reactVisitSpendAvg = data().deepCopy(fields()[23].schema(), other.reactVisitSpendAvg);
         fieldSetFlags()[23] = true;
       }
-      if (isValidValue(fields()[24], other.reactVisitItemAvg)) {
-        this.reactVisitItemAvg = data().deepCopy(fields()[24].schema(), other.reactVisitItemAvg);
+      if (isValidValue(fields()[24], other.reactVisitDiscAvg)) {
+        this.reactVisitDiscAvg = data().deepCopy(fields()[24].schema(), other.reactVisitDiscAvg);
         fieldSetFlags()[24] = true;
       }
-      if (isValidValue(fields()[25], other.returnCustCount)) {
-        this.returnCustCount = data().deepCopy(fields()[25].schema(), other.returnCustCount);
+      if (isValidValue(fields()[25], other.reactVisitItemAvg)) {
+        this.reactVisitItemAvg = data().deepCopy(fields()[25].schema(), other.reactVisitItemAvg);
         fieldSetFlags()[25] = true;
       }
-      if (isValidValue(fields()[26], other.returnTxnCount)) {
-        this.returnTxnCount = data().deepCopy(fields()[26].schema(), other.returnTxnCount);
+      if (isValidValue(fields()[26], other.returnCustCount)) {
+        this.returnCustCount = data().deepCopy(fields()[26].schema(), other.returnCustCount);
         fieldSetFlags()[26] = true;
       }
-      if (isValidValue(fields()[27], other.returnTxnAmt)) {
-        this.returnTxnAmt = data().deepCopy(fields()[27].schema(), other.returnTxnAmt);
+      if (isValidValue(fields()[27], other.returnTxnCount)) {
+        this.returnTxnCount = data().deepCopy(fields()[27].schema(), other.returnTxnCount);
         fieldSetFlags()[27] = true;
       }
-      if (isValidValue(fields()[28], other.returnDiscAmt)) {
-        this.returnDiscAmt = data().deepCopy(fields()[28].schema(), other.returnDiscAmt);
+      if (isValidValue(fields()[28], other.returnTxnAmt)) {
+        this.returnTxnAmt = data().deepCopy(fields()[28].schema(), other.returnTxnAmt);
         fieldSetFlags()[28] = true;
       }
-      if (isValidValue(fields()[29], other.returnItemQty)) {
-        this.returnItemQty = data().deepCopy(fields()[29].schema(), other.returnItemQty);
+      if (isValidValue(fields()[29], other.returnDiscAmt)) {
+        this.returnDiscAmt = data().deepCopy(fields()[29].schema(), other.returnDiscAmt);
         fieldSetFlags()[29] = true;
       }
-      if (isValidValue(fields()[30], other.returnCustSpendAvg)) {
-        this.returnCustSpendAvg = data().deepCopy(fields()[30].schema(), other.returnCustSpendAvg);
+      if (isValidValue(fields()[30], other.returnItemQty)) {
+        this.returnItemQty = data().deepCopy(fields()[30].schema(), other.returnItemQty);
         fieldSetFlags()[30] = true;
       }
-      if (isValidValue(fields()[31], other.returnCustVisitAvg)) {
-        this.returnCustVisitAvg = data().deepCopy(fields()[31].schema(), other.returnCustVisitAvg);
+      if (isValidValue(fields()[31], other.returnCustSpendAvg)) {
+        this.returnCustSpendAvg = data().deepCopy(fields()[31].schema(), other.returnCustSpendAvg);
         fieldSetFlags()[31] = true;
       }
-      if (isValidValue(fields()[32], other.returnCustItemAvg)) {
-        this.returnCustItemAvg = data().deepCopy(fields()[32].schema(), other.returnCustItemAvg);
+      if (isValidValue(fields()[32], other.returnCustVisitAvg)) {
+        this.returnCustVisitAvg = data().deepCopy(fields()[32].schema(), other.returnCustVisitAvg);
         fieldSetFlags()[32] = true;
       }
-      if (isValidValue(fields()[33], other.returnCustDiscAvg)) {
-        this.returnCustDiscAvg = data().deepCopy(fields()[33].schema(), other.returnCustDiscAvg);
+      if (isValidValue(fields()[33], other.returnCustItemAvg)) {
+        this.returnCustItemAvg = data().deepCopy(fields()[33].schema(), other.returnCustItemAvg);
         fieldSetFlags()[33] = true;
       }
-      if (isValidValue(fields()[34], other.returnVisitSpendAvg)) {
-        this.returnVisitSpendAvg = data().deepCopy(fields()[34].schema(), other.returnVisitSpendAvg);
+      if (isValidValue(fields()[34], other.returnCustDiscAvg)) {
+        this.returnCustDiscAvg = data().deepCopy(fields()[34].schema(), other.returnCustDiscAvg);
         fieldSetFlags()[34] = true;
       }
-      if (isValidValue(fields()[35], other.returnVisitDiscAvg)) {
-        this.returnVisitDiscAvg = data().deepCopy(fields()[35].schema(), other.returnVisitDiscAvg);
+      if (isValidValue(fields()[35], other.returnVisitSpendAvg)) {
+        this.returnVisitSpendAvg = data().deepCopy(fields()[35].schema(), other.returnVisitSpendAvg);
         fieldSetFlags()[35] = true;
       }
-      if (isValidValue(fields()[36], other.returnVisitItemAvg)) {
-        this.returnVisitItemAvg = data().deepCopy(fields()[36].schema(), other.returnVisitItemAvg);
+      if (isValidValue(fields()[36], other.returnVisitDiscAvg)) {
+        this.returnVisitDiscAvg = data().deepCopy(fields()[36].schema(), other.returnVisitDiscAvg);
         fieldSetFlags()[36] = true;
       }
-      if (isValidValue(fields()[37], other.lapsedCustCount)) {
-        this.lapsedCustCount = data().deepCopy(fields()[37].schema(), other.lapsedCustCount);
+      if (isValidValue(fields()[37], other.returnVisitItemAvg)) {
+        this.returnVisitItemAvg = data().deepCopy(fields()[37].schema(), other.returnVisitItemAvg);
         fieldSetFlags()[37] = true;
       }
-      if (isValidValue(fields()[38], other.lapsedTxnCount)) {
-        this.lapsedTxnCount = data().deepCopy(fields()[38].schema(), other.lapsedTxnCount);
+      if (isValidValue(fields()[38], other.lapsedCustCount)) {
+        this.lapsedCustCount = data().deepCopy(fields()[38].schema(), other.lapsedCustCount);
         fieldSetFlags()[38] = true;
       }
-      if (isValidValue(fields()[39], other.lapsedTxnAmt)) {
-        this.lapsedTxnAmt = data().deepCopy(fields()[39].schema(), other.lapsedTxnAmt);
+      if (isValidValue(fields()[39], other.lapsedTxnCount)) {
+        this.lapsedTxnCount = data().deepCopy(fields()[39].schema(), other.lapsedTxnCount);
         fieldSetFlags()[39] = true;
       }
-      if (isValidValue(fields()[40], other.lapsedDiscAmt)) {
-        this.lapsedDiscAmt = data().deepCopy(fields()[40].schema(), other.lapsedDiscAmt);
+      if (isValidValue(fields()[40], other.lapsedTxnAmt)) {
+        this.lapsedTxnAmt = data().deepCopy(fields()[40].schema(), other.lapsedTxnAmt);
         fieldSetFlags()[40] = true;
       }
-      if (isValidValue(fields()[41], other.lapsedItemQty)) {
-        this.lapsedItemQty = data().deepCopy(fields()[41].schema(), other.lapsedItemQty);
+      if (isValidValue(fields()[41], other.lapsedDiscAmt)) {
+        this.lapsedDiscAmt = data().deepCopy(fields()[41].schema(), other.lapsedDiscAmt);
         fieldSetFlags()[41] = true;
       }
-      if (isValidValue(fields()[42], other.lapsedCustSpendAvg)) {
-        this.lapsedCustSpendAvg = data().deepCopy(fields()[42].schema(), other.lapsedCustSpendAvg);
+      if (isValidValue(fields()[42], other.lapsedItemQty)) {
+        this.lapsedItemQty = data().deepCopy(fields()[42].schema(), other.lapsedItemQty);
         fieldSetFlags()[42] = true;
       }
-      if (isValidValue(fields()[43], other.lapsedCustVisitAvg)) {
-        this.lapsedCustVisitAvg = data().deepCopy(fields()[43].schema(), other.lapsedCustVisitAvg);
+      if (isValidValue(fields()[43], other.lapsedCustSpendAvg)) {
+        this.lapsedCustSpendAvg = data().deepCopy(fields()[43].schema(), other.lapsedCustSpendAvg);
         fieldSetFlags()[43] = true;
       }
-      if (isValidValue(fields()[44], other.lapsedCustItemAvg)) {
-        this.lapsedCustItemAvg = data().deepCopy(fields()[44].schema(), other.lapsedCustItemAvg);
+      if (isValidValue(fields()[44], other.lapsedCustVisitAvg)) {
+        this.lapsedCustVisitAvg = data().deepCopy(fields()[44].schema(), other.lapsedCustVisitAvg);
         fieldSetFlags()[44] = true;
       }
-      if (isValidValue(fields()[45], other.lapsedCustDiscAvg)) {
-        this.lapsedCustDiscAvg = data().deepCopy(fields()[45].schema(), other.lapsedCustDiscAvg);
+      if (isValidValue(fields()[45], other.lapsedCustItemAvg)) {
+        this.lapsedCustItemAvg = data().deepCopy(fields()[45].schema(), other.lapsedCustItemAvg);
         fieldSetFlags()[45] = true;
       }
-      if (isValidValue(fields()[46], other.lapsedVisitSpendAvg)) {
-        this.lapsedVisitSpendAvg = data().deepCopy(fields()[46].schema(), other.lapsedVisitSpendAvg);
+      if (isValidValue(fields()[46], other.lapsedCustDiscAvg)) {
+        this.lapsedCustDiscAvg = data().deepCopy(fields()[46].schema(), other.lapsedCustDiscAvg);
         fieldSetFlags()[46] = true;
       }
-      if (isValidValue(fields()[47], other.lapsedVisitDiscAvg)) {
-        this.lapsedVisitDiscAvg = data().deepCopy(fields()[47].schema(), other.lapsedVisitDiscAvg);
+      if (isValidValue(fields()[47], other.lapsedVisitSpendAvg)) {
+        this.lapsedVisitSpendAvg = data().deepCopy(fields()[47].schema(), other.lapsedVisitSpendAvg);
         fieldSetFlags()[47] = true;
       }
-      if (isValidValue(fields()[48], other.lapsedVisitItemAvg)) {
-        this.lapsedVisitItemAvg = data().deepCopy(fields()[48].schema(), other.lapsedVisitItemAvg);
+      if (isValidValue(fields()[48], other.lapsedVisitDiscAvg)) {
+        this.lapsedVisitDiscAvg = data().deepCopy(fields()[48].schema(), other.lapsedVisitDiscAvg);
         fieldSetFlags()[48] = true;
       }
-      if (isValidValue(fields()[49], other.custBalor)) {
-        this.custBalor = data().deepCopy(fields()[49].schema(), other.custBalor);
+      if (isValidValue(fields()[49], other.lapsedVisitItemAvg)) {
+        this.lapsedVisitItemAvg = data().deepCopy(fields()[49].schema(), other.lapsedVisitItemAvg);
         fieldSetFlags()[49] = true;
       }
-      if (isValidValue(fields()[50], other.txnBalor)) {
-        this.txnBalor = data().deepCopy(fields()[50].schema(), other.txnBalor);
+      if (isValidValue(fields()[50], other.custBalor)) {
+        this.custBalor = data().deepCopy(fields()[50].schema(), other.custBalor);
         fieldSetFlags()[50] = true;
       }
-      if (isValidValue(fields()[51], other.spendBalor)) {
-        this.spendBalor = data().deepCopy(fields()[51].schema(), other.spendBalor);
+      if (isValidValue(fields()[51], other.txnBalor)) {
+        this.txnBalor = data().deepCopy(fields()[51].schema(), other.txnBalor);
         fieldSetFlags()[51] = true;
       }
-      if (isValidValue(fields()[52], other.retention)) {
-        this.retention = data().deepCopy(fields()[52].schema(), other.retention);
+      if (isValidValue(fields()[52], other.spendBalor)) {
+        this.spendBalor = data().deepCopy(fields()[52].schema(), other.spendBalor);
         fieldSetFlags()[52] = true;
+      }
+      if (isValidValue(fields()[53], other.retention)) {
+        this.retention = data().deepCopy(fields()[53].schema(), other.retention);
+        fieldSetFlags()[53] = true;
+      }
+      if (isValidValue(fields()[54], other.retentionGrowth)) {
+        this.retentionGrowth = data().deepCopy(fields()[54].schema(), other.retentionGrowth);
+        fieldSetFlags()[54] = true;
+      }
+      if (isValidValue(fields()[55], other.returnNewSales)) {
+        this.returnNewSales = data().deepCopy(fields()[55].schema(), other.returnNewSales);
+        fieldSetFlags()[55] = true;
+      }
+      if (isValidValue(fields()[56], other.returnNewTxn)) {
+        this.returnNewTxn = data().deepCopy(fields()[56].schema(), other.returnNewTxn);
+        fieldSetFlags()[56] = true;
+      }
+      if (isValidValue(fields()[57], other.returnNewCust)) {
+        this.returnNewCust = data().deepCopy(fields()[57].schema(), other.returnNewCust);
+        fieldSetFlags()[57] = true;
+      }
+      if (isValidValue(fields()[58], other.returnReactSales)) {
+        this.returnReactSales = data().deepCopy(fields()[58].schema(), other.returnReactSales);
+        fieldSetFlags()[58] = true;
+      }
+      if (isValidValue(fields()[59], other.returnReactTxn)) {
+        this.returnReactTxn = data().deepCopy(fields()[59].schema(), other.returnReactTxn);
+        fieldSetFlags()[59] = true;
+      }
+      if (isValidValue(fields()[60], other.returnReactCust)) {
+        this.returnReactCust = data().deepCopy(fields()[60].schema(), other.returnReactCust);
+        fieldSetFlags()[60] = true;
+      }
+      if (isValidValue(fields()[61], other.returnReturnSales)) {
+        this.returnReturnSales = data().deepCopy(fields()[61].schema(), other.returnReturnSales);
+        fieldSetFlags()[61] = true;
+      }
+      if (isValidValue(fields()[62], other.returnReturnTxn)) {
+        this.returnReturnTxn = data().deepCopy(fields()[62].schema(), other.returnReturnTxn);
+        fieldSetFlags()[62] = true;
+      }
+      if (isValidValue(fields()[63], other.returnReturnCust)) {
+        this.returnReturnCust = data().deepCopy(fields()[63].schema(), other.returnReturnCust);
+        fieldSetFlags()[63] = true;
+      }
+      if (isValidValue(fields()[64], other.ttlSalesLift)) {
+        this.ttlSalesLift = data().deepCopy(fields()[64].schema(), other.ttlSalesLift);
+        fieldSetFlags()[64] = true;
+      }
+      if (isValidValue(fields()[65], other.avgSalesLift)) {
+        this.avgSalesLift = data().deepCopy(fields()[65].schema(), other.avgSalesLift);
+        fieldSetFlags()[65] = true;
+      }
+      if (isValidValue(fields()[66], other.ttlTxnLift)) {
+        this.ttlTxnLift = data().deepCopy(fields()[66].schema(), other.ttlTxnLift);
+        fieldSetFlags()[66] = true;
+      }
+      if (isValidValue(fields()[67], other.avgTxnLift)) {
+        this.avgTxnLift = data().deepCopy(fields()[67].schema(), other.avgTxnLift);
+        fieldSetFlags()[67] = true;
       }
     }
 
@@ -1636,213 +2071,273 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
         this.timePeriod = data().deepCopy(fields()[0].schema(), other.timePeriod);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.newCustCount)) {
-        this.newCustCount = data().deepCopy(fields()[1].schema(), other.newCustCount);
+      if (isValidValue(fields()[1], other.anchorDate)) {
+        this.anchorDate = data().deepCopy(fields()[1].schema(), other.anchorDate);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.newTxnCount)) {
-        this.newTxnCount = data().deepCopy(fields()[2].schema(), other.newTxnCount);
+      if (isValidValue(fields()[2], other.newCustCount)) {
+        this.newCustCount = data().deepCopy(fields()[2].schema(), other.newCustCount);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.newTxnAmt)) {
-        this.newTxnAmt = data().deepCopy(fields()[3].schema(), other.newTxnAmt);
+      if (isValidValue(fields()[3], other.newTxnCount)) {
+        this.newTxnCount = data().deepCopy(fields()[3].schema(), other.newTxnCount);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.newDiscAmt)) {
-        this.newDiscAmt = data().deepCopy(fields()[4].schema(), other.newDiscAmt);
+      if (isValidValue(fields()[4], other.newTxnAmt)) {
+        this.newTxnAmt = data().deepCopy(fields()[4].schema(), other.newTxnAmt);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.newItemQty)) {
-        this.newItemQty = data().deepCopy(fields()[5].schema(), other.newItemQty);
+      if (isValidValue(fields()[5], other.newDiscAmt)) {
+        this.newDiscAmt = data().deepCopy(fields()[5].schema(), other.newDiscAmt);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.newCustSpendAvg)) {
-        this.newCustSpendAvg = data().deepCopy(fields()[6].schema(), other.newCustSpendAvg);
+      if (isValidValue(fields()[6], other.newItemQty)) {
+        this.newItemQty = data().deepCopy(fields()[6].schema(), other.newItemQty);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.newCustVisitAvg)) {
-        this.newCustVisitAvg = data().deepCopy(fields()[7].schema(), other.newCustVisitAvg);
+      if (isValidValue(fields()[7], other.newCustSpendAvg)) {
+        this.newCustSpendAvg = data().deepCopy(fields()[7].schema(), other.newCustSpendAvg);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.newCustItemAvg)) {
-        this.newCustItemAvg = data().deepCopy(fields()[8].schema(), other.newCustItemAvg);
+      if (isValidValue(fields()[8], other.newCustVisitAvg)) {
+        this.newCustVisitAvg = data().deepCopy(fields()[8].schema(), other.newCustVisitAvg);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.newCustDiscAvg)) {
-        this.newCustDiscAvg = data().deepCopy(fields()[9].schema(), other.newCustDiscAvg);
+      if (isValidValue(fields()[9], other.newCustItemAvg)) {
+        this.newCustItemAvg = data().deepCopy(fields()[9].schema(), other.newCustItemAvg);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.newVisitSpendAvg)) {
-        this.newVisitSpendAvg = data().deepCopy(fields()[10].schema(), other.newVisitSpendAvg);
+      if (isValidValue(fields()[10], other.newCustDiscAvg)) {
+        this.newCustDiscAvg = data().deepCopy(fields()[10].schema(), other.newCustDiscAvg);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.newVisitDiscAvg)) {
-        this.newVisitDiscAvg = data().deepCopy(fields()[11].schema(), other.newVisitDiscAvg);
+      if (isValidValue(fields()[11], other.newVisitSpendAvg)) {
+        this.newVisitSpendAvg = data().deepCopy(fields()[11].schema(), other.newVisitSpendAvg);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.newVisitItemAvg)) {
-        this.newVisitItemAvg = data().deepCopy(fields()[12].schema(), other.newVisitItemAvg);
+      if (isValidValue(fields()[12], other.newVisitDiscAvg)) {
+        this.newVisitDiscAvg = data().deepCopy(fields()[12].schema(), other.newVisitDiscAvg);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.reactCustCount)) {
-        this.reactCustCount = data().deepCopy(fields()[13].schema(), other.reactCustCount);
+      if (isValidValue(fields()[13], other.newVisitItemAvg)) {
+        this.newVisitItemAvg = data().deepCopy(fields()[13].schema(), other.newVisitItemAvg);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.reactTxnCount)) {
-        this.reactTxnCount = data().deepCopy(fields()[14].schema(), other.reactTxnCount);
+      if (isValidValue(fields()[14], other.reactCustCount)) {
+        this.reactCustCount = data().deepCopy(fields()[14].schema(), other.reactCustCount);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.reactTxnAmt)) {
-        this.reactTxnAmt = data().deepCopy(fields()[15].schema(), other.reactTxnAmt);
+      if (isValidValue(fields()[15], other.reactTxnCount)) {
+        this.reactTxnCount = data().deepCopy(fields()[15].schema(), other.reactTxnCount);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.reactDiscAmt)) {
-        this.reactDiscAmt = data().deepCopy(fields()[16].schema(), other.reactDiscAmt);
+      if (isValidValue(fields()[16], other.reactTxnAmt)) {
+        this.reactTxnAmt = data().deepCopy(fields()[16].schema(), other.reactTxnAmt);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.reactItemQty)) {
-        this.reactItemQty = data().deepCopy(fields()[17].schema(), other.reactItemQty);
+      if (isValidValue(fields()[17], other.reactDiscAmt)) {
+        this.reactDiscAmt = data().deepCopy(fields()[17].schema(), other.reactDiscAmt);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.reactCustSpendAvg)) {
-        this.reactCustSpendAvg = data().deepCopy(fields()[18].schema(), other.reactCustSpendAvg);
+      if (isValidValue(fields()[18], other.reactItemQty)) {
+        this.reactItemQty = data().deepCopy(fields()[18].schema(), other.reactItemQty);
         fieldSetFlags()[18] = true;
       }
-      if (isValidValue(fields()[19], other.reactCustVisitAvg)) {
-        this.reactCustVisitAvg = data().deepCopy(fields()[19].schema(), other.reactCustVisitAvg);
+      if (isValidValue(fields()[19], other.reactCustSpendAvg)) {
+        this.reactCustSpendAvg = data().deepCopy(fields()[19].schema(), other.reactCustSpendAvg);
         fieldSetFlags()[19] = true;
       }
-      if (isValidValue(fields()[20], other.reactCustItemAvg)) {
-        this.reactCustItemAvg = data().deepCopy(fields()[20].schema(), other.reactCustItemAvg);
+      if (isValidValue(fields()[20], other.reactCustVisitAvg)) {
+        this.reactCustVisitAvg = data().deepCopy(fields()[20].schema(), other.reactCustVisitAvg);
         fieldSetFlags()[20] = true;
       }
-      if (isValidValue(fields()[21], other.reactCustDiscAvg)) {
-        this.reactCustDiscAvg = data().deepCopy(fields()[21].schema(), other.reactCustDiscAvg);
+      if (isValidValue(fields()[21], other.reactCustItemAvg)) {
+        this.reactCustItemAvg = data().deepCopy(fields()[21].schema(), other.reactCustItemAvg);
         fieldSetFlags()[21] = true;
       }
-      if (isValidValue(fields()[22], other.reactVisitSpendAvg)) {
-        this.reactVisitSpendAvg = data().deepCopy(fields()[22].schema(), other.reactVisitSpendAvg);
+      if (isValidValue(fields()[22], other.reactCustDiscAvg)) {
+        this.reactCustDiscAvg = data().deepCopy(fields()[22].schema(), other.reactCustDiscAvg);
         fieldSetFlags()[22] = true;
       }
-      if (isValidValue(fields()[23], other.reactVisitDiscAvg)) {
-        this.reactVisitDiscAvg = data().deepCopy(fields()[23].schema(), other.reactVisitDiscAvg);
+      if (isValidValue(fields()[23], other.reactVisitSpendAvg)) {
+        this.reactVisitSpendAvg = data().deepCopy(fields()[23].schema(), other.reactVisitSpendAvg);
         fieldSetFlags()[23] = true;
       }
-      if (isValidValue(fields()[24], other.reactVisitItemAvg)) {
-        this.reactVisitItemAvg = data().deepCopy(fields()[24].schema(), other.reactVisitItemAvg);
+      if (isValidValue(fields()[24], other.reactVisitDiscAvg)) {
+        this.reactVisitDiscAvg = data().deepCopy(fields()[24].schema(), other.reactVisitDiscAvg);
         fieldSetFlags()[24] = true;
       }
-      if (isValidValue(fields()[25], other.returnCustCount)) {
-        this.returnCustCount = data().deepCopy(fields()[25].schema(), other.returnCustCount);
+      if (isValidValue(fields()[25], other.reactVisitItemAvg)) {
+        this.reactVisitItemAvg = data().deepCopy(fields()[25].schema(), other.reactVisitItemAvg);
         fieldSetFlags()[25] = true;
       }
-      if (isValidValue(fields()[26], other.returnTxnCount)) {
-        this.returnTxnCount = data().deepCopy(fields()[26].schema(), other.returnTxnCount);
+      if (isValidValue(fields()[26], other.returnCustCount)) {
+        this.returnCustCount = data().deepCopy(fields()[26].schema(), other.returnCustCount);
         fieldSetFlags()[26] = true;
       }
-      if (isValidValue(fields()[27], other.returnTxnAmt)) {
-        this.returnTxnAmt = data().deepCopy(fields()[27].schema(), other.returnTxnAmt);
+      if (isValidValue(fields()[27], other.returnTxnCount)) {
+        this.returnTxnCount = data().deepCopy(fields()[27].schema(), other.returnTxnCount);
         fieldSetFlags()[27] = true;
       }
-      if (isValidValue(fields()[28], other.returnDiscAmt)) {
-        this.returnDiscAmt = data().deepCopy(fields()[28].schema(), other.returnDiscAmt);
+      if (isValidValue(fields()[28], other.returnTxnAmt)) {
+        this.returnTxnAmt = data().deepCopy(fields()[28].schema(), other.returnTxnAmt);
         fieldSetFlags()[28] = true;
       }
-      if (isValidValue(fields()[29], other.returnItemQty)) {
-        this.returnItemQty = data().deepCopy(fields()[29].schema(), other.returnItemQty);
+      if (isValidValue(fields()[29], other.returnDiscAmt)) {
+        this.returnDiscAmt = data().deepCopy(fields()[29].schema(), other.returnDiscAmt);
         fieldSetFlags()[29] = true;
       }
-      if (isValidValue(fields()[30], other.returnCustSpendAvg)) {
-        this.returnCustSpendAvg = data().deepCopy(fields()[30].schema(), other.returnCustSpendAvg);
+      if (isValidValue(fields()[30], other.returnItemQty)) {
+        this.returnItemQty = data().deepCopy(fields()[30].schema(), other.returnItemQty);
         fieldSetFlags()[30] = true;
       }
-      if (isValidValue(fields()[31], other.returnCustVisitAvg)) {
-        this.returnCustVisitAvg = data().deepCopy(fields()[31].schema(), other.returnCustVisitAvg);
+      if (isValidValue(fields()[31], other.returnCustSpendAvg)) {
+        this.returnCustSpendAvg = data().deepCopy(fields()[31].schema(), other.returnCustSpendAvg);
         fieldSetFlags()[31] = true;
       }
-      if (isValidValue(fields()[32], other.returnCustItemAvg)) {
-        this.returnCustItemAvg = data().deepCopy(fields()[32].schema(), other.returnCustItemAvg);
+      if (isValidValue(fields()[32], other.returnCustVisitAvg)) {
+        this.returnCustVisitAvg = data().deepCopy(fields()[32].schema(), other.returnCustVisitAvg);
         fieldSetFlags()[32] = true;
       }
-      if (isValidValue(fields()[33], other.returnCustDiscAvg)) {
-        this.returnCustDiscAvg = data().deepCopy(fields()[33].schema(), other.returnCustDiscAvg);
+      if (isValidValue(fields()[33], other.returnCustItemAvg)) {
+        this.returnCustItemAvg = data().deepCopy(fields()[33].schema(), other.returnCustItemAvg);
         fieldSetFlags()[33] = true;
       }
-      if (isValidValue(fields()[34], other.returnVisitSpendAvg)) {
-        this.returnVisitSpendAvg = data().deepCopy(fields()[34].schema(), other.returnVisitSpendAvg);
+      if (isValidValue(fields()[34], other.returnCustDiscAvg)) {
+        this.returnCustDiscAvg = data().deepCopy(fields()[34].schema(), other.returnCustDiscAvg);
         fieldSetFlags()[34] = true;
       }
-      if (isValidValue(fields()[35], other.returnVisitDiscAvg)) {
-        this.returnVisitDiscAvg = data().deepCopy(fields()[35].schema(), other.returnVisitDiscAvg);
+      if (isValidValue(fields()[35], other.returnVisitSpendAvg)) {
+        this.returnVisitSpendAvg = data().deepCopy(fields()[35].schema(), other.returnVisitSpendAvg);
         fieldSetFlags()[35] = true;
       }
-      if (isValidValue(fields()[36], other.returnVisitItemAvg)) {
-        this.returnVisitItemAvg = data().deepCopy(fields()[36].schema(), other.returnVisitItemAvg);
+      if (isValidValue(fields()[36], other.returnVisitDiscAvg)) {
+        this.returnVisitDiscAvg = data().deepCopy(fields()[36].schema(), other.returnVisitDiscAvg);
         fieldSetFlags()[36] = true;
       }
-      if (isValidValue(fields()[37], other.lapsedCustCount)) {
-        this.lapsedCustCount = data().deepCopy(fields()[37].schema(), other.lapsedCustCount);
+      if (isValidValue(fields()[37], other.returnVisitItemAvg)) {
+        this.returnVisitItemAvg = data().deepCopy(fields()[37].schema(), other.returnVisitItemAvg);
         fieldSetFlags()[37] = true;
       }
-      if (isValidValue(fields()[38], other.lapsedTxnCount)) {
-        this.lapsedTxnCount = data().deepCopy(fields()[38].schema(), other.lapsedTxnCount);
+      if (isValidValue(fields()[38], other.lapsedCustCount)) {
+        this.lapsedCustCount = data().deepCopy(fields()[38].schema(), other.lapsedCustCount);
         fieldSetFlags()[38] = true;
       }
-      if (isValidValue(fields()[39], other.lapsedTxnAmt)) {
-        this.lapsedTxnAmt = data().deepCopy(fields()[39].schema(), other.lapsedTxnAmt);
+      if (isValidValue(fields()[39], other.lapsedTxnCount)) {
+        this.lapsedTxnCount = data().deepCopy(fields()[39].schema(), other.lapsedTxnCount);
         fieldSetFlags()[39] = true;
       }
-      if (isValidValue(fields()[40], other.lapsedDiscAmt)) {
-        this.lapsedDiscAmt = data().deepCopy(fields()[40].schema(), other.lapsedDiscAmt);
+      if (isValidValue(fields()[40], other.lapsedTxnAmt)) {
+        this.lapsedTxnAmt = data().deepCopy(fields()[40].schema(), other.lapsedTxnAmt);
         fieldSetFlags()[40] = true;
       }
-      if (isValidValue(fields()[41], other.lapsedItemQty)) {
-        this.lapsedItemQty = data().deepCopy(fields()[41].schema(), other.lapsedItemQty);
+      if (isValidValue(fields()[41], other.lapsedDiscAmt)) {
+        this.lapsedDiscAmt = data().deepCopy(fields()[41].schema(), other.lapsedDiscAmt);
         fieldSetFlags()[41] = true;
       }
-      if (isValidValue(fields()[42], other.lapsedCustSpendAvg)) {
-        this.lapsedCustSpendAvg = data().deepCopy(fields()[42].schema(), other.lapsedCustSpendAvg);
+      if (isValidValue(fields()[42], other.lapsedItemQty)) {
+        this.lapsedItemQty = data().deepCopy(fields()[42].schema(), other.lapsedItemQty);
         fieldSetFlags()[42] = true;
       }
-      if (isValidValue(fields()[43], other.lapsedCustVisitAvg)) {
-        this.lapsedCustVisitAvg = data().deepCopy(fields()[43].schema(), other.lapsedCustVisitAvg);
+      if (isValidValue(fields()[43], other.lapsedCustSpendAvg)) {
+        this.lapsedCustSpendAvg = data().deepCopy(fields()[43].schema(), other.lapsedCustSpendAvg);
         fieldSetFlags()[43] = true;
       }
-      if (isValidValue(fields()[44], other.lapsedCustItemAvg)) {
-        this.lapsedCustItemAvg = data().deepCopy(fields()[44].schema(), other.lapsedCustItemAvg);
+      if (isValidValue(fields()[44], other.lapsedCustVisitAvg)) {
+        this.lapsedCustVisitAvg = data().deepCopy(fields()[44].schema(), other.lapsedCustVisitAvg);
         fieldSetFlags()[44] = true;
       }
-      if (isValidValue(fields()[45], other.lapsedCustDiscAvg)) {
-        this.lapsedCustDiscAvg = data().deepCopy(fields()[45].schema(), other.lapsedCustDiscAvg);
+      if (isValidValue(fields()[45], other.lapsedCustItemAvg)) {
+        this.lapsedCustItemAvg = data().deepCopy(fields()[45].schema(), other.lapsedCustItemAvg);
         fieldSetFlags()[45] = true;
       }
-      if (isValidValue(fields()[46], other.lapsedVisitSpendAvg)) {
-        this.lapsedVisitSpendAvg = data().deepCopy(fields()[46].schema(), other.lapsedVisitSpendAvg);
+      if (isValidValue(fields()[46], other.lapsedCustDiscAvg)) {
+        this.lapsedCustDiscAvg = data().deepCopy(fields()[46].schema(), other.lapsedCustDiscAvg);
         fieldSetFlags()[46] = true;
       }
-      if (isValidValue(fields()[47], other.lapsedVisitDiscAvg)) {
-        this.lapsedVisitDiscAvg = data().deepCopy(fields()[47].schema(), other.lapsedVisitDiscAvg);
+      if (isValidValue(fields()[47], other.lapsedVisitSpendAvg)) {
+        this.lapsedVisitSpendAvg = data().deepCopy(fields()[47].schema(), other.lapsedVisitSpendAvg);
         fieldSetFlags()[47] = true;
       }
-      if (isValidValue(fields()[48], other.lapsedVisitItemAvg)) {
-        this.lapsedVisitItemAvg = data().deepCopy(fields()[48].schema(), other.lapsedVisitItemAvg);
+      if (isValidValue(fields()[48], other.lapsedVisitDiscAvg)) {
+        this.lapsedVisitDiscAvg = data().deepCopy(fields()[48].schema(), other.lapsedVisitDiscAvg);
         fieldSetFlags()[48] = true;
       }
-      if (isValidValue(fields()[49], other.custBalor)) {
-        this.custBalor = data().deepCopy(fields()[49].schema(), other.custBalor);
+      if (isValidValue(fields()[49], other.lapsedVisitItemAvg)) {
+        this.lapsedVisitItemAvg = data().deepCopy(fields()[49].schema(), other.lapsedVisitItemAvg);
         fieldSetFlags()[49] = true;
       }
-      if (isValidValue(fields()[50], other.txnBalor)) {
-        this.txnBalor = data().deepCopy(fields()[50].schema(), other.txnBalor);
+      if (isValidValue(fields()[50], other.custBalor)) {
+        this.custBalor = data().deepCopy(fields()[50].schema(), other.custBalor);
         fieldSetFlags()[50] = true;
       }
-      if (isValidValue(fields()[51], other.spendBalor)) {
-        this.spendBalor = data().deepCopy(fields()[51].schema(), other.spendBalor);
+      if (isValidValue(fields()[51], other.txnBalor)) {
+        this.txnBalor = data().deepCopy(fields()[51].schema(), other.txnBalor);
         fieldSetFlags()[51] = true;
       }
-      if (isValidValue(fields()[52], other.retention)) {
-        this.retention = data().deepCopy(fields()[52].schema(), other.retention);
+      if (isValidValue(fields()[52], other.spendBalor)) {
+        this.spendBalor = data().deepCopy(fields()[52].schema(), other.spendBalor);
         fieldSetFlags()[52] = true;
+      }
+      if (isValidValue(fields()[53], other.retention)) {
+        this.retention = data().deepCopy(fields()[53].schema(), other.retention);
+        fieldSetFlags()[53] = true;
+      }
+      if (isValidValue(fields()[54], other.retentionGrowth)) {
+        this.retentionGrowth = data().deepCopy(fields()[54].schema(), other.retentionGrowth);
+        fieldSetFlags()[54] = true;
+      }
+      if (isValidValue(fields()[55], other.returnNewSales)) {
+        this.returnNewSales = data().deepCopy(fields()[55].schema(), other.returnNewSales);
+        fieldSetFlags()[55] = true;
+      }
+      if (isValidValue(fields()[56], other.returnNewTxn)) {
+        this.returnNewTxn = data().deepCopy(fields()[56].schema(), other.returnNewTxn);
+        fieldSetFlags()[56] = true;
+      }
+      if (isValidValue(fields()[57], other.returnNewCust)) {
+        this.returnNewCust = data().deepCopy(fields()[57].schema(), other.returnNewCust);
+        fieldSetFlags()[57] = true;
+      }
+      if (isValidValue(fields()[58], other.returnReactSales)) {
+        this.returnReactSales = data().deepCopy(fields()[58].schema(), other.returnReactSales);
+        fieldSetFlags()[58] = true;
+      }
+      if (isValidValue(fields()[59], other.returnReactTxn)) {
+        this.returnReactTxn = data().deepCopy(fields()[59].schema(), other.returnReactTxn);
+        fieldSetFlags()[59] = true;
+      }
+      if (isValidValue(fields()[60], other.returnReactCust)) {
+        this.returnReactCust = data().deepCopy(fields()[60].schema(), other.returnReactCust);
+        fieldSetFlags()[60] = true;
+      }
+      if (isValidValue(fields()[61], other.returnReturnSales)) {
+        this.returnReturnSales = data().deepCopy(fields()[61].schema(), other.returnReturnSales);
+        fieldSetFlags()[61] = true;
+      }
+      if (isValidValue(fields()[62], other.returnReturnTxn)) {
+        this.returnReturnTxn = data().deepCopy(fields()[62].schema(), other.returnReturnTxn);
+        fieldSetFlags()[62] = true;
+      }
+      if (isValidValue(fields()[63], other.returnReturnCust)) {
+        this.returnReturnCust = data().deepCopy(fields()[63].schema(), other.returnReturnCust);
+        fieldSetFlags()[63] = true;
+      }
+      if (isValidValue(fields()[64], other.ttlSalesLift)) {
+        this.ttlSalesLift = data().deepCopy(fields()[64].schema(), other.ttlSalesLift);
+        fieldSetFlags()[64] = true;
+      }
+      if (isValidValue(fields()[65], other.avgSalesLift)) {
+        this.avgSalesLift = data().deepCopy(fields()[65].schema(), other.avgSalesLift);
+        fieldSetFlags()[65] = true;
+      }
+      if (isValidValue(fields()[66], other.ttlTxnLift)) {
+        this.ttlTxnLift = data().deepCopy(fields()[66].schema(), other.ttlTxnLift);
+        fieldSetFlags()[66] = true;
+      }
+      if (isValidValue(fields()[67], other.avgTxnLift)) {
+        this.avgTxnLift = data().deepCopy(fields()[67].schema(), other.avgTxnLift);
+        fieldSetFlags()[67] = true;
       }
     }
 
@@ -1889,6 +2384,49 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
     }
 
     /**
+      * Gets the value of the 'anchorDate' field.
+      * the earliest date for each time period, month will be formatted 'MMM yyyy' and weeks will be formatted 'MM/dd/yyyy', nullable to allow previous schema to appear in topic.
+      * @return The value.
+      */
+    public java.lang.CharSequence getAnchorDate() {
+      return anchorDate;
+    }
+
+    /**
+      * Sets the value of the 'anchorDate' field.
+      * the earliest date for each time period, month will be formatted 'MMM yyyy' and weeks will be formatted 'MM/dd/yyyy', nullable to allow previous schema to appear in topic.
+      * @param value The value of 'anchorDate'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setAnchorDate(java.lang.CharSequence value) {
+      validate(fields()[1], value);
+      this.anchorDate = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'anchorDate' field has been set.
+      * the earliest date for each time period, month will be formatted 'MMM yyyy' and weeks will be formatted 'MM/dd/yyyy', nullable to allow previous schema to appear in topic.
+      * @return True if the 'anchorDate' field has been set, false otherwise.
+      */
+    public boolean hasAnchorDate() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'anchorDate' field.
+      * the earliest date for each time period, month will be formatted 'MMM yyyy' and weeks will be formatted 'MM/dd/yyyy', nullable to allow previous schema to appear in topic.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearAnchorDate() {
+      anchorDate = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'newCustCount' field.
       * The count of customers that are considered new in the given Balor time period.  To be considered new the cust_id must not appear in the previous 2 cadence periods
       * @return The value.
@@ -1904,9 +2442,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setNewCustCount(long value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.newCustCount = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -1916,7 +2454,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'newCustCount' field has been set, false otherwise.
       */
     public boolean hasNewCustCount() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -1926,7 +2464,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearNewCustCount() {
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -1946,9 +2484,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setNewTxnCount(long value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.newTxnCount = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -1958,7 +2496,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'newTxnCount' field has been set, false otherwise.
       */
     public boolean hasNewTxnCount() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -1968,7 +2506,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearNewTxnCount() {
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -1988,9 +2526,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setNewTxnAmt(double value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.newTxnAmt = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -2000,7 +2538,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'newTxnAmt' field has been set, false otherwise.
       */
     public boolean hasNewTxnAmt() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
 
 
@@ -2010,7 +2548,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearNewTxnAmt() {
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -2030,9 +2568,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setNewDiscAmt(double value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.newDiscAmt = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -2042,7 +2580,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'newDiscAmt' field has been set, false otherwise.
       */
     public boolean hasNewDiscAmt() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
 
 
@@ -2052,7 +2590,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearNewDiscAmt() {
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -2072,9 +2610,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setNewItemQty(long value) {
-      validate(fields()[5], value);
+      validate(fields()[6], value);
       this.newItemQty = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -2084,7 +2622,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'newItemQty' field has been set, false otherwise.
       */
     public boolean hasNewItemQty() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
 
 
@@ -2094,7 +2632,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearNewItemQty() {
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -2114,9 +2652,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setNewCustSpendAvg(double value) {
-      validate(fields()[6], value);
+      validate(fields()[7], value);
       this.newCustSpendAvg = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -2126,7 +2664,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'newCustSpendAvg' field has been set, false otherwise.
       */
     public boolean hasNewCustSpendAvg() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[7];
     }
 
 
@@ -2136,7 +2674,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearNewCustSpendAvg() {
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -2156,9 +2694,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setNewCustVisitAvg(double value) {
-      validate(fields()[7], value);
+      validate(fields()[8], value);
       this.newCustVisitAvg = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[8] = true;
       return this;
     }
 
@@ -2168,7 +2706,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'newCustVisitAvg' field has been set, false otherwise.
       */
     public boolean hasNewCustVisitAvg() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[8];
     }
 
 
@@ -2178,7 +2716,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearNewCustVisitAvg() {
-      fieldSetFlags()[7] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -2198,9 +2736,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setNewCustItemAvg(double value) {
-      validate(fields()[8], value);
+      validate(fields()[9], value);
       this.newCustItemAvg = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
@@ -2210,7 +2748,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'newCustItemAvg' field has been set, false otherwise.
       */
     public boolean hasNewCustItemAvg() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[9];
     }
 
 
@@ -2220,7 +2758,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearNewCustItemAvg() {
-      fieldSetFlags()[8] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -2240,9 +2778,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setNewCustDiscAvg(double value) {
-      validate(fields()[9], value);
+      validate(fields()[10], value);
       this.newCustDiscAvg = value;
-      fieldSetFlags()[9] = true;
+      fieldSetFlags()[10] = true;
       return this;
     }
 
@@ -2252,7 +2790,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'newCustDiscAvg' field has been set, false otherwise.
       */
     public boolean hasNewCustDiscAvg() {
-      return fieldSetFlags()[9];
+      return fieldSetFlags()[10];
     }
 
 
@@ -2262,7 +2800,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearNewCustDiscAvg() {
-      fieldSetFlags()[9] = false;
+      fieldSetFlags()[10] = false;
       return this;
     }
 
@@ -2282,9 +2820,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setNewVisitSpendAvg(double value) {
-      validate(fields()[10], value);
+      validate(fields()[11], value);
       this.newVisitSpendAvg = value;
-      fieldSetFlags()[10] = true;
+      fieldSetFlags()[11] = true;
       return this;
     }
 
@@ -2294,7 +2832,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'newVisitSpendAvg' field has been set, false otherwise.
       */
     public boolean hasNewVisitSpendAvg() {
-      return fieldSetFlags()[10];
+      return fieldSetFlags()[11];
     }
 
 
@@ -2304,7 +2842,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearNewVisitSpendAvg() {
-      fieldSetFlags()[10] = false;
+      fieldSetFlags()[11] = false;
       return this;
     }
 
@@ -2324,9 +2862,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setNewVisitDiscAvg(double value) {
-      validate(fields()[11], value);
+      validate(fields()[12], value);
       this.newVisitDiscAvg = value;
-      fieldSetFlags()[11] = true;
+      fieldSetFlags()[12] = true;
       return this;
     }
 
@@ -2336,7 +2874,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'newVisitDiscAvg' field has been set, false otherwise.
       */
     public boolean hasNewVisitDiscAvg() {
-      return fieldSetFlags()[11];
+      return fieldSetFlags()[12];
     }
 
 
@@ -2346,7 +2884,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearNewVisitDiscAvg() {
-      fieldSetFlags()[11] = false;
+      fieldSetFlags()[12] = false;
       return this;
     }
 
@@ -2366,9 +2904,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setNewVisitItemAvg(double value) {
-      validate(fields()[12], value);
+      validate(fields()[13], value);
       this.newVisitItemAvg = value;
-      fieldSetFlags()[12] = true;
+      fieldSetFlags()[13] = true;
       return this;
     }
 
@@ -2378,7 +2916,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'newVisitItemAvg' field has been set, false otherwise.
       */
     public boolean hasNewVisitItemAvg() {
-      return fieldSetFlags()[12];
+      return fieldSetFlags()[13];
     }
 
 
@@ -2388,7 +2926,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearNewVisitItemAvg() {
-      fieldSetFlags()[12] = false;
+      fieldSetFlags()[13] = false;
       return this;
     }
 
@@ -2408,9 +2946,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReactCustCount(long value) {
-      validate(fields()[13], value);
+      validate(fields()[14], value);
       this.reactCustCount = value;
-      fieldSetFlags()[13] = true;
+      fieldSetFlags()[14] = true;
       return this;
     }
 
@@ -2420,7 +2958,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'reactCustCount' field has been set, false otherwise.
       */
     public boolean hasReactCustCount() {
-      return fieldSetFlags()[13];
+      return fieldSetFlags()[14];
     }
 
 
@@ -2430,7 +2968,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReactCustCount() {
-      fieldSetFlags()[13] = false;
+      fieldSetFlags()[14] = false;
       return this;
     }
 
@@ -2450,9 +2988,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReactTxnCount(long value) {
-      validate(fields()[14], value);
+      validate(fields()[15], value);
       this.reactTxnCount = value;
-      fieldSetFlags()[14] = true;
+      fieldSetFlags()[15] = true;
       return this;
     }
 
@@ -2462,7 +3000,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'reactTxnCount' field has been set, false otherwise.
       */
     public boolean hasReactTxnCount() {
-      return fieldSetFlags()[14];
+      return fieldSetFlags()[15];
     }
 
 
@@ -2472,7 +3010,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReactTxnCount() {
-      fieldSetFlags()[14] = false;
+      fieldSetFlags()[15] = false;
       return this;
     }
 
@@ -2492,9 +3030,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReactTxnAmt(double value) {
-      validate(fields()[15], value);
+      validate(fields()[16], value);
       this.reactTxnAmt = value;
-      fieldSetFlags()[15] = true;
+      fieldSetFlags()[16] = true;
       return this;
     }
 
@@ -2504,7 +3042,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'reactTxnAmt' field has been set, false otherwise.
       */
     public boolean hasReactTxnAmt() {
-      return fieldSetFlags()[15];
+      return fieldSetFlags()[16];
     }
 
 
@@ -2514,7 +3052,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReactTxnAmt() {
-      fieldSetFlags()[15] = false;
+      fieldSetFlags()[16] = false;
       return this;
     }
 
@@ -2534,9 +3072,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReactDiscAmt(double value) {
-      validate(fields()[16], value);
+      validate(fields()[17], value);
       this.reactDiscAmt = value;
-      fieldSetFlags()[16] = true;
+      fieldSetFlags()[17] = true;
       return this;
     }
 
@@ -2546,7 +3084,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'reactDiscAmt' field has been set, false otherwise.
       */
     public boolean hasReactDiscAmt() {
-      return fieldSetFlags()[16];
+      return fieldSetFlags()[17];
     }
 
 
@@ -2556,7 +3094,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReactDiscAmt() {
-      fieldSetFlags()[16] = false;
+      fieldSetFlags()[17] = false;
       return this;
     }
 
@@ -2576,9 +3114,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReactItemQty(long value) {
-      validate(fields()[17], value);
+      validate(fields()[18], value);
       this.reactItemQty = value;
-      fieldSetFlags()[17] = true;
+      fieldSetFlags()[18] = true;
       return this;
     }
 
@@ -2588,7 +3126,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'reactItemQty' field has been set, false otherwise.
       */
     public boolean hasReactItemQty() {
-      return fieldSetFlags()[17];
+      return fieldSetFlags()[18];
     }
 
 
@@ -2598,7 +3136,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReactItemQty() {
-      fieldSetFlags()[17] = false;
+      fieldSetFlags()[18] = false;
       return this;
     }
 
@@ -2618,9 +3156,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReactCustSpendAvg(double value) {
-      validate(fields()[18], value);
+      validate(fields()[19], value);
       this.reactCustSpendAvg = value;
-      fieldSetFlags()[18] = true;
+      fieldSetFlags()[19] = true;
       return this;
     }
 
@@ -2630,7 +3168,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'reactCustSpendAvg' field has been set, false otherwise.
       */
     public boolean hasReactCustSpendAvg() {
-      return fieldSetFlags()[18];
+      return fieldSetFlags()[19];
     }
 
 
@@ -2640,7 +3178,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReactCustSpendAvg() {
-      fieldSetFlags()[18] = false;
+      fieldSetFlags()[19] = false;
       return this;
     }
 
@@ -2660,9 +3198,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReactCustVisitAvg(double value) {
-      validate(fields()[19], value);
+      validate(fields()[20], value);
       this.reactCustVisitAvg = value;
-      fieldSetFlags()[19] = true;
+      fieldSetFlags()[20] = true;
       return this;
     }
 
@@ -2672,7 +3210,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'reactCustVisitAvg' field has been set, false otherwise.
       */
     public boolean hasReactCustVisitAvg() {
-      return fieldSetFlags()[19];
+      return fieldSetFlags()[20];
     }
 
 
@@ -2682,7 +3220,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReactCustVisitAvg() {
-      fieldSetFlags()[19] = false;
+      fieldSetFlags()[20] = false;
       return this;
     }
 
@@ -2702,9 +3240,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReactCustItemAvg(double value) {
-      validate(fields()[20], value);
+      validate(fields()[21], value);
       this.reactCustItemAvg = value;
-      fieldSetFlags()[20] = true;
+      fieldSetFlags()[21] = true;
       return this;
     }
 
@@ -2714,7 +3252,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'reactCustItemAvg' field has been set, false otherwise.
       */
     public boolean hasReactCustItemAvg() {
-      return fieldSetFlags()[20];
+      return fieldSetFlags()[21];
     }
 
 
@@ -2724,7 +3262,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReactCustItemAvg() {
-      fieldSetFlags()[20] = false;
+      fieldSetFlags()[21] = false;
       return this;
     }
 
@@ -2744,9 +3282,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReactCustDiscAvg(double value) {
-      validate(fields()[21], value);
+      validate(fields()[22], value);
       this.reactCustDiscAvg = value;
-      fieldSetFlags()[21] = true;
+      fieldSetFlags()[22] = true;
       return this;
     }
 
@@ -2756,7 +3294,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'reactCustDiscAvg' field has been set, false otherwise.
       */
     public boolean hasReactCustDiscAvg() {
-      return fieldSetFlags()[21];
+      return fieldSetFlags()[22];
     }
 
 
@@ -2766,7 +3304,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReactCustDiscAvg() {
-      fieldSetFlags()[21] = false;
+      fieldSetFlags()[22] = false;
       return this;
     }
 
@@ -2786,9 +3324,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReactVisitSpendAvg(double value) {
-      validate(fields()[22], value);
+      validate(fields()[23], value);
       this.reactVisitSpendAvg = value;
-      fieldSetFlags()[22] = true;
+      fieldSetFlags()[23] = true;
       return this;
     }
 
@@ -2798,7 +3336,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'reactVisitSpendAvg' field has been set, false otherwise.
       */
     public boolean hasReactVisitSpendAvg() {
-      return fieldSetFlags()[22];
+      return fieldSetFlags()[23];
     }
 
 
@@ -2808,7 +3346,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReactVisitSpendAvg() {
-      fieldSetFlags()[22] = false;
+      fieldSetFlags()[23] = false;
       return this;
     }
 
@@ -2828,9 +3366,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReactVisitDiscAvg(double value) {
-      validate(fields()[23], value);
+      validate(fields()[24], value);
       this.reactVisitDiscAvg = value;
-      fieldSetFlags()[23] = true;
+      fieldSetFlags()[24] = true;
       return this;
     }
 
@@ -2840,7 +3378,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'reactVisitDiscAvg' field has been set, false otherwise.
       */
     public boolean hasReactVisitDiscAvg() {
-      return fieldSetFlags()[23];
+      return fieldSetFlags()[24];
     }
 
 
@@ -2850,7 +3388,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReactVisitDiscAvg() {
-      fieldSetFlags()[23] = false;
+      fieldSetFlags()[24] = false;
       return this;
     }
 
@@ -2870,9 +3408,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReactVisitItemAvg(double value) {
-      validate(fields()[24], value);
+      validate(fields()[25], value);
       this.reactVisitItemAvg = value;
-      fieldSetFlags()[24] = true;
+      fieldSetFlags()[25] = true;
       return this;
     }
 
@@ -2882,7 +3420,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'reactVisitItemAvg' field has been set, false otherwise.
       */
     public boolean hasReactVisitItemAvg() {
-      return fieldSetFlags()[24];
+      return fieldSetFlags()[25];
     }
 
 
@@ -2892,7 +3430,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReactVisitItemAvg() {
-      fieldSetFlags()[24] = false;
+      fieldSetFlags()[25] = false;
       return this;
     }
 
@@ -2912,9 +3450,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReturnCustCount(long value) {
-      validate(fields()[25], value);
+      validate(fields()[26], value);
       this.returnCustCount = value;
-      fieldSetFlags()[25] = true;
+      fieldSetFlags()[26] = true;
       return this;
     }
 
@@ -2924,7 +3462,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'returnCustCount' field has been set, false otherwise.
       */
     public boolean hasReturnCustCount() {
-      return fieldSetFlags()[25];
+      return fieldSetFlags()[26];
     }
 
 
@@ -2934,7 +3472,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnCustCount() {
-      fieldSetFlags()[25] = false;
+      fieldSetFlags()[26] = false;
       return this;
     }
 
@@ -2954,9 +3492,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReturnTxnCount(long value) {
-      validate(fields()[26], value);
+      validate(fields()[27], value);
       this.returnTxnCount = value;
-      fieldSetFlags()[26] = true;
+      fieldSetFlags()[27] = true;
       return this;
     }
 
@@ -2966,7 +3504,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'returnTxnCount' field has been set, false otherwise.
       */
     public boolean hasReturnTxnCount() {
-      return fieldSetFlags()[26];
+      return fieldSetFlags()[27];
     }
 
 
@@ -2976,7 +3514,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnTxnCount() {
-      fieldSetFlags()[26] = false;
+      fieldSetFlags()[27] = false;
       return this;
     }
 
@@ -2996,9 +3534,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReturnTxnAmt(double value) {
-      validate(fields()[27], value);
+      validate(fields()[28], value);
       this.returnTxnAmt = value;
-      fieldSetFlags()[27] = true;
+      fieldSetFlags()[28] = true;
       return this;
     }
 
@@ -3008,7 +3546,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'returnTxnAmt' field has been set, false otherwise.
       */
     public boolean hasReturnTxnAmt() {
-      return fieldSetFlags()[27];
+      return fieldSetFlags()[28];
     }
 
 
@@ -3018,7 +3556,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnTxnAmt() {
-      fieldSetFlags()[27] = false;
+      fieldSetFlags()[28] = false;
       return this;
     }
 
@@ -3038,9 +3576,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReturnDiscAmt(double value) {
-      validate(fields()[28], value);
+      validate(fields()[29], value);
       this.returnDiscAmt = value;
-      fieldSetFlags()[28] = true;
+      fieldSetFlags()[29] = true;
       return this;
     }
 
@@ -3050,7 +3588,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'returnDiscAmt' field has been set, false otherwise.
       */
     public boolean hasReturnDiscAmt() {
-      return fieldSetFlags()[28];
+      return fieldSetFlags()[29];
     }
 
 
@@ -3060,7 +3598,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnDiscAmt() {
-      fieldSetFlags()[28] = false;
+      fieldSetFlags()[29] = false;
       return this;
     }
 
@@ -3080,9 +3618,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReturnItemQty(long value) {
-      validate(fields()[29], value);
+      validate(fields()[30], value);
       this.returnItemQty = value;
-      fieldSetFlags()[29] = true;
+      fieldSetFlags()[30] = true;
       return this;
     }
 
@@ -3092,7 +3630,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'returnItemQty' field has been set, false otherwise.
       */
     public boolean hasReturnItemQty() {
-      return fieldSetFlags()[29];
+      return fieldSetFlags()[30];
     }
 
 
@@ -3102,7 +3640,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnItemQty() {
-      fieldSetFlags()[29] = false;
+      fieldSetFlags()[30] = false;
       return this;
     }
 
@@ -3122,9 +3660,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReturnCustSpendAvg(double value) {
-      validate(fields()[30], value);
+      validate(fields()[31], value);
       this.returnCustSpendAvg = value;
-      fieldSetFlags()[30] = true;
+      fieldSetFlags()[31] = true;
       return this;
     }
 
@@ -3134,7 +3672,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'returnCustSpendAvg' field has been set, false otherwise.
       */
     public boolean hasReturnCustSpendAvg() {
-      return fieldSetFlags()[30];
+      return fieldSetFlags()[31];
     }
 
 
@@ -3144,7 +3682,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnCustSpendAvg() {
-      fieldSetFlags()[30] = false;
+      fieldSetFlags()[31] = false;
       return this;
     }
 
@@ -3164,9 +3702,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReturnCustVisitAvg(double value) {
-      validate(fields()[31], value);
+      validate(fields()[32], value);
       this.returnCustVisitAvg = value;
-      fieldSetFlags()[31] = true;
+      fieldSetFlags()[32] = true;
       return this;
     }
 
@@ -3176,7 +3714,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'returnCustVisitAvg' field has been set, false otherwise.
       */
     public boolean hasReturnCustVisitAvg() {
-      return fieldSetFlags()[31];
+      return fieldSetFlags()[32];
     }
 
 
@@ -3186,7 +3724,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnCustVisitAvg() {
-      fieldSetFlags()[31] = false;
+      fieldSetFlags()[32] = false;
       return this;
     }
 
@@ -3206,9 +3744,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReturnCustItemAvg(double value) {
-      validate(fields()[32], value);
+      validate(fields()[33], value);
       this.returnCustItemAvg = value;
-      fieldSetFlags()[32] = true;
+      fieldSetFlags()[33] = true;
       return this;
     }
 
@@ -3218,7 +3756,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'returnCustItemAvg' field has been set, false otherwise.
       */
     public boolean hasReturnCustItemAvg() {
-      return fieldSetFlags()[32];
+      return fieldSetFlags()[33];
     }
 
 
@@ -3228,7 +3766,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnCustItemAvg() {
-      fieldSetFlags()[32] = false;
+      fieldSetFlags()[33] = false;
       return this;
     }
 
@@ -3248,9 +3786,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReturnCustDiscAvg(double value) {
-      validate(fields()[33], value);
+      validate(fields()[34], value);
       this.returnCustDiscAvg = value;
-      fieldSetFlags()[33] = true;
+      fieldSetFlags()[34] = true;
       return this;
     }
 
@@ -3260,7 +3798,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'returnCustDiscAvg' field has been set, false otherwise.
       */
     public boolean hasReturnCustDiscAvg() {
-      return fieldSetFlags()[33];
+      return fieldSetFlags()[34];
     }
 
 
@@ -3270,7 +3808,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnCustDiscAvg() {
-      fieldSetFlags()[33] = false;
+      fieldSetFlags()[34] = false;
       return this;
     }
 
@@ -3290,9 +3828,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReturnVisitSpendAvg(double value) {
-      validate(fields()[34], value);
+      validate(fields()[35], value);
       this.returnVisitSpendAvg = value;
-      fieldSetFlags()[34] = true;
+      fieldSetFlags()[35] = true;
       return this;
     }
 
@@ -3302,7 +3840,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'returnVisitSpendAvg' field has been set, false otherwise.
       */
     public boolean hasReturnVisitSpendAvg() {
-      return fieldSetFlags()[34];
+      return fieldSetFlags()[35];
     }
 
 
@@ -3312,7 +3850,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnVisitSpendAvg() {
-      fieldSetFlags()[34] = false;
+      fieldSetFlags()[35] = false;
       return this;
     }
 
@@ -3332,9 +3870,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReturnVisitDiscAvg(double value) {
-      validate(fields()[35], value);
+      validate(fields()[36], value);
       this.returnVisitDiscAvg = value;
-      fieldSetFlags()[35] = true;
+      fieldSetFlags()[36] = true;
       return this;
     }
 
@@ -3344,7 +3882,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'returnVisitDiscAvg' field has been set, false otherwise.
       */
     public boolean hasReturnVisitDiscAvg() {
-      return fieldSetFlags()[35];
+      return fieldSetFlags()[36];
     }
 
 
@@ -3354,7 +3892,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnVisitDiscAvg() {
-      fieldSetFlags()[35] = false;
+      fieldSetFlags()[36] = false;
       return this;
     }
 
@@ -3374,9 +3912,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setReturnVisitItemAvg(double value) {
-      validate(fields()[36], value);
+      validate(fields()[37], value);
       this.returnVisitItemAvg = value;
-      fieldSetFlags()[36] = true;
+      fieldSetFlags()[37] = true;
       return this;
     }
 
@@ -3386,7 +3924,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'returnVisitItemAvg' field has been set, false otherwise.
       */
     public boolean hasReturnVisitItemAvg() {
-      return fieldSetFlags()[36];
+      return fieldSetFlags()[37];
     }
 
 
@@ -3396,7 +3934,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnVisitItemAvg() {
-      fieldSetFlags()[36] = false;
+      fieldSetFlags()[37] = false;
       return this;
     }
 
@@ -3416,9 +3954,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setLapsedCustCount(long value) {
-      validate(fields()[37], value);
+      validate(fields()[38], value);
       this.lapsedCustCount = value;
-      fieldSetFlags()[37] = true;
+      fieldSetFlags()[38] = true;
       return this;
     }
 
@@ -3428,7 +3966,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'lapsedCustCount' field has been set, false otherwise.
       */
     public boolean hasLapsedCustCount() {
-      return fieldSetFlags()[37];
+      return fieldSetFlags()[38];
     }
 
 
@@ -3438,7 +3976,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearLapsedCustCount() {
-      fieldSetFlags()[37] = false;
+      fieldSetFlags()[38] = false;
       return this;
     }
 
@@ -3458,9 +3996,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setLapsedTxnCount(long value) {
-      validate(fields()[38], value);
+      validate(fields()[39], value);
       this.lapsedTxnCount = value;
-      fieldSetFlags()[38] = true;
+      fieldSetFlags()[39] = true;
       return this;
     }
 
@@ -3470,7 +4008,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'lapsedTxnCount' field has been set, false otherwise.
       */
     public boolean hasLapsedTxnCount() {
-      return fieldSetFlags()[38];
+      return fieldSetFlags()[39];
     }
 
 
@@ -3480,7 +4018,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearLapsedTxnCount() {
-      fieldSetFlags()[38] = false;
+      fieldSetFlags()[39] = false;
       return this;
     }
 
@@ -3500,9 +4038,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setLapsedTxnAmt(double value) {
-      validate(fields()[39], value);
+      validate(fields()[40], value);
       this.lapsedTxnAmt = value;
-      fieldSetFlags()[39] = true;
+      fieldSetFlags()[40] = true;
       return this;
     }
 
@@ -3512,7 +4050,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'lapsedTxnAmt' field has been set, false otherwise.
       */
     public boolean hasLapsedTxnAmt() {
-      return fieldSetFlags()[39];
+      return fieldSetFlags()[40];
     }
 
 
@@ -3522,7 +4060,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearLapsedTxnAmt() {
-      fieldSetFlags()[39] = false;
+      fieldSetFlags()[40] = false;
       return this;
     }
 
@@ -3542,9 +4080,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setLapsedDiscAmt(double value) {
-      validate(fields()[40], value);
+      validate(fields()[41], value);
       this.lapsedDiscAmt = value;
-      fieldSetFlags()[40] = true;
+      fieldSetFlags()[41] = true;
       return this;
     }
 
@@ -3554,7 +4092,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'lapsedDiscAmt' field has been set, false otherwise.
       */
     public boolean hasLapsedDiscAmt() {
-      return fieldSetFlags()[40];
+      return fieldSetFlags()[41];
     }
 
 
@@ -3564,7 +4102,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearLapsedDiscAmt() {
-      fieldSetFlags()[40] = false;
+      fieldSetFlags()[41] = false;
       return this;
     }
 
@@ -3584,9 +4122,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setLapsedItemQty(long value) {
-      validate(fields()[41], value);
+      validate(fields()[42], value);
       this.lapsedItemQty = value;
-      fieldSetFlags()[41] = true;
+      fieldSetFlags()[42] = true;
       return this;
     }
 
@@ -3596,7 +4134,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'lapsedItemQty' field has been set, false otherwise.
       */
     public boolean hasLapsedItemQty() {
-      return fieldSetFlags()[41];
+      return fieldSetFlags()[42];
     }
 
 
@@ -3606,7 +4144,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearLapsedItemQty() {
-      fieldSetFlags()[41] = false;
+      fieldSetFlags()[42] = false;
       return this;
     }
 
@@ -3626,9 +4164,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setLapsedCustSpendAvg(double value) {
-      validate(fields()[42], value);
+      validate(fields()[43], value);
       this.lapsedCustSpendAvg = value;
-      fieldSetFlags()[42] = true;
+      fieldSetFlags()[43] = true;
       return this;
     }
 
@@ -3638,7 +4176,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'lapsedCustSpendAvg' field has been set, false otherwise.
       */
     public boolean hasLapsedCustSpendAvg() {
-      return fieldSetFlags()[42];
+      return fieldSetFlags()[43];
     }
 
 
@@ -3648,7 +4186,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearLapsedCustSpendAvg() {
-      fieldSetFlags()[42] = false;
+      fieldSetFlags()[43] = false;
       return this;
     }
 
@@ -3668,9 +4206,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setLapsedCustVisitAvg(double value) {
-      validate(fields()[43], value);
+      validate(fields()[44], value);
       this.lapsedCustVisitAvg = value;
-      fieldSetFlags()[43] = true;
+      fieldSetFlags()[44] = true;
       return this;
     }
 
@@ -3680,7 +4218,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'lapsedCustVisitAvg' field has been set, false otherwise.
       */
     public boolean hasLapsedCustVisitAvg() {
-      return fieldSetFlags()[43];
+      return fieldSetFlags()[44];
     }
 
 
@@ -3690,7 +4228,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearLapsedCustVisitAvg() {
-      fieldSetFlags()[43] = false;
+      fieldSetFlags()[44] = false;
       return this;
     }
 
@@ -3710,9 +4248,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setLapsedCustItemAvg(double value) {
-      validate(fields()[44], value);
+      validate(fields()[45], value);
       this.lapsedCustItemAvg = value;
-      fieldSetFlags()[44] = true;
+      fieldSetFlags()[45] = true;
       return this;
     }
 
@@ -3722,7 +4260,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'lapsedCustItemAvg' field has been set, false otherwise.
       */
     public boolean hasLapsedCustItemAvg() {
-      return fieldSetFlags()[44];
+      return fieldSetFlags()[45];
     }
 
 
@@ -3732,7 +4270,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearLapsedCustItemAvg() {
-      fieldSetFlags()[44] = false;
+      fieldSetFlags()[45] = false;
       return this;
     }
 
@@ -3752,9 +4290,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setLapsedCustDiscAvg(double value) {
-      validate(fields()[45], value);
+      validate(fields()[46], value);
       this.lapsedCustDiscAvg = value;
-      fieldSetFlags()[45] = true;
+      fieldSetFlags()[46] = true;
       return this;
     }
 
@@ -3764,7 +4302,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'lapsedCustDiscAvg' field has been set, false otherwise.
       */
     public boolean hasLapsedCustDiscAvg() {
-      return fieldSetFlags()[45];
+      return fieldSetFlags()[46];
     }
 
 
@@ -3774,7 +4312,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearLapsedCustDiscAvg() {
-      fieldSetFlags()[45] = false;
+      fieldSetFlags()[46] = false;
       return this;
     }
 
@@ -3794,9 +4332,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setLapsedVisitSpendAvg(double value) {
-      validate(fields()[46], value);
+      validate(fields()[47], value);
       this.lapsedVisitSpendAvg = value;
-      fieldSetFlags()[46] = true;
+      fieldSetFlags()[47] = true;
       return this;
     }
 
@@ -3806,7 +4344,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'lapsedVisitSpendAvg' field has been set, false otherwise.
       */
     public boolean hasLapsedVisitSpendAvg() {
-      return fieldSetFlags()[46];
+      return fieldSetFlags()[47];
     }
 
 
@@ -3816,7 +4354,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearLapsedVisitSpendAvg() {
-      fieldSetFlags()[46] = false;
+      fieldSetFlags()[47] = false;
       return this;
     }
 
@@ -3836,9 +4374,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setLapsedVisitDiscAvg(double value) {
-      validate(fields()[47], value);
+      validate(fields()[48], value);
       this.lapsedVisitDiscAvg = value;
-      fieldSetFlags()[47] = true;
+      fieldSetFlags()[48] = true;
       return this;
     }
 
@@ -3848,7 +4386,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'lapsedVisitDiscAvg' field has been set, false otherwise.
       */
     public boolean hasLapsedVisitDiscAvg() {
-      return fieldSetFlags()[47];
+      return fieldSetFlags()[48];
     }
 
 
@@ -3858,7 +4396,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearLapsedVisitDiscAvg() {
-      fieldSetFlags()[47] = false;
+      fieldSetFlags()[48] = false;
       return this;
     }
 
@@ -3878,9 +4416,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setLapsedVisitItemAvg(double value) {
-      validate(fields()[48], value);
+      validate(fields()[49], value);
       this.lapsedVisitItemAvg = value;
-      fieldSetFlags()[48] = true;
+      fieldSetFlags()[49] = true;
       return this;
     }
 
@@ -3890,7 +4428,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'lapsedVisitItemAvg' field has been set, false otherwise.
       */
     public boolean hasLapsedVisitItemAvg() {
-      return fieldSetFlags()[48];
+      return fieldSetFlags()[49];
     }
 
 
@@ -3900,7 +4438,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearLapsedVisitItemAvg() {
-      fieldSetFlags()[48] = false;
+      fieldSetFlags()[49] = false;
       return this;
     }
 
@@ -3920,9 +4458,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setCustBalor(double value) {
-      validate(fields()[49], value);
+      validate(fields()[50], value);
       this.custBalor = value;
-      fieldSetFlags()[49] = true;
+      fieldSetFlags()[50] = true;
       return this;
     }
 
@@ -3932,7 +4470,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'custBalor' field has been set, false otherwise.
       */
     public boolean hasCustBalor() {
-      return fieldSetFlags()[49];
+      return fieldSetFlags()[50];
     }
 
 
@@ -3942,7 +4480,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearCustBalor() {
-      fieldSetFlags()[49] = false;
+      fieldSetFlags()[50] = false;
       return this;
     }
 
@@ -3962,9 +4500,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setTxnBalor(double value) {
-      validate(fields()[50], value);
+      validate(fields()[51], value);
       this.txnBalor = value;
-      fieldSetFlags()[50] = true;
+      fieldSetFlags()[51] = true;
       return this;
     }
 
@@ -3974,7 +4512,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'txnBalor' field has been set, false otherwise.
       */
     public boolean hasTxnBalor() {
-      return fieldSetFlags()[50];
+      return fieldSetFlags()[51];
     }
 
 
@@ -3984,7 +4522,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearTxnBalor() {
-      fieldSetFlags()[50] = false;
+      fieldSetFlags()[51] = false;
       return this;
     }
 
@@ -4004,9 +4542,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setSpendBalor(double value) {
-      validate(fields()[51], value);
+      validate(fields()[52], value);
       this.spendBalor = value;
-      fieldSetFlags()[51] = true;
+      fieldSetFlags()[52] = true;
       return this;
     }
 
@@ -4016,7 +4554,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'spendBalor' field has been set, false otherwise.
       */
     public boolean hasSpendBalor() {
-      return fieldSetFlags()[51];
+      return fieldSetFlags()[52];
     }
 
 
@@ -4026,7 +4564,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearSpendBalor() {
-      fieldSetFlags()[51] = false;
+      fieldSetFlags()[52] = false;
       return this;
     }
 
@@ -4046,9 +4584,9 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder setRetention(double value) {
-      validate(fields()[52], value);
+      validate(fields()[53], value);
       this.retention = value;
-      fieldSetFlags()[52] = true;
+      fieldSetFlags()[53] = true;
       return this;
     }
 
@@ -4058,7 +4596,7 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'retention' field has been set, false otherwise.
       */
     public boolean hasRetention() {
-      return fieldSetFlags()[52];
+      return fieldSetFlags()[53];
     }
 
 
@@ -4068,7 +4606,609 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       * @return This builder.
       */
     public com.brierley.avro.schemas.TimePeriodData.Builder clearRetention() {
-      fieldSetFlags()[52] = false;
+      fieldSetFlags()[53] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'retentionGrowth' field.
+      * The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100
+      * @return The value.
+      */
+    public java.lang.Double getRetentionGrowth() {
+      return retentionGrowth;
+    }
+
+    /**
+      * Sets the value of the 'retentionGrowth' field.
+      * The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100
+      * @param value The value of 'retentionGrowth'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setRetentionGrowth(java.lang.Double value) {
+      validate(fields()[54], value);
+      this.retentionGrowth = value;
+      fieldSetFlags()[54] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'retentionGrowth' field has been set.
+      * The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100
+      * @return True if the 'retentionGrowth' field has been set, false otherwise.
+      */
+    public boolean hasRetentionGrowth() {
+      return fieldSetFlags()[54];
+    }
+
+
+    /**
+      * Clears the value of the 'retentionGrowth' field.
+      * The retention growth rate from t-1 to t: [(Retention(t) - Retention(t-1)/Retention(t-1)] * 100
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearRetentionGrowth() {
+      retentionGrowth = null;
+      fieldSetFlags()[54] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnNewSales' field.
+      * Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Double getReturnNewSales() {
+      return returnNewSales;
+    }
+
+    /**
+      * Sets the value of the 'returnNewSales' field.
+      * Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnNewSales'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnNewSales(java.lang.Double value) {
+      validate(fields()[55], value);
+      this.returnNewSales = value;
+      fieldSetFlags()[55] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnNewSales' field has been set.
+      * Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+      * @return True if the 'returnNewSales' field has been set, false otherwise.
+      */
+    public boolean hasReturnNewSales() {
+      return fieldSetFlags()[55];
+    }
+
+
+    /**
+      * Clears the value of the 'returnNewSales' field.
+      * Total sales in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnNewSales() {
+      returnNewSales = null;
+      fieldSetFlags()[55] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnNewTxn' field.
+      * Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Long getReturnNewTxn() {
+      return returnNewTxn;
+    }
+
+    /**
+      * Sets the value of the 'returnNewTxn' field.
+      * Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnNewTxn'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnNewTxn(java.lang.Long value) {
+      validate(fields()[56], value);
+      this.returnNewTxn = value;
+      fieldSetFlags()[56] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnNewTxn' field has been set.
+      * Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+      * @return True if the 'returnNewTxn' field has been set, false otherwise.
+      */
+    public boolean hasReturnNewTxn() {
+      return fieldSetFlags()[56];
+    }
+
+
+    /**
+      * Clears the value of the 'returnNewTxn' field.
+      * Total number of transactions in (t) for customers that were NEW in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnNewTxn() {
+      returnNewTxn = null;
+      fieldSetFlags()[56] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnNewCust' field.
+      * Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Long getReturnNewCust() {
+      return returnNewCust;
+    }
+
+    /**
+      * Sets the value of the 'returnNewCust' field.
+      * Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnNewCust'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnNewCust(java.lang.Long value) {
+      validate(fields()[57], value);
+      this.returnNewCust = value;
+      fieldSetFlags()[57] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnNewCust' field has been set.
+      * Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)
+      * @return True if the 'returnNewCust' field has been set, false otherwise.
+      */
+    public boolean hasReturnNewCust() {
+      return fieldSetFlags()[57];
+    }
+
+
+    /**
+      * Clears the value of the 'returnNewCust' field.
+      * Total customer count in (t) that were NEW in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnNewCust() {
+      returnNewCust = null;
+      fieldSetFlags()[57] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnReactSales' field.
+      * Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Double getReturnReactSales() {
+      return returnReactSales;
+    }
+
+    /**
+      * Sets the value of the 'returnReactSales' field.
+      * Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnReactSales'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnReactSales(java.lang.Double value) {
+      validate(fields()[58], value);
+      this.returnReactSales = value;
+      fieldSetFlags()[58] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnReactSales' field has been set.
+      * Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return True if the 'returnReactSales' field has been set, false otherwise.
+      */
+    public boolean hasReturnReactSales() {
+      return fieldSetFlags()[58];
+    }
+
+
+    /**
+      * Clears the value of the 'returnReactSales' field.
+      * Total sales in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnReactSales() {
+      returnReactSales = null;
+      fieldSetFlags()[58] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnReactTxn' field.
+      * Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Long getReturnReactTxn() {
+      return returnReactTxn;
+    }
+
+    /**
+      * Sets the value of the 'returnReactTxn' field.
+      * Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnReactTxn'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnReactTxn(java.lang.Long value) {
+      validate(fields()[59], value);
+      this.returnReactTxn = value;
+      fieldSetFlags()[59] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnReactTxn' field has been set.
+      * Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return True if the 'returnReactTxn' field has been set, false otherwise.
+      */
+    public boolean hasReturnReactTxn() {
+      return fieldSetFlags()[59];
+    }
+
+
+    /**
+      * Clears the value of the 'returnReactTxn' field.
+      * Total number of transactions in (t) for customers that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnReactTxn() {
+      returnReactTxn = null;
+      fieldSetFlags()[59] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnReactCust' field.
+      * Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Long getReturnReactCust() {
+      return returnReactCust;
+    }
+
+    /**
+      * Sets the value of the 'returnReactCust' field.
+      * Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnReactCust'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnReactCust(java.lang.Long value) {
+      validate(fields()[60], value);
+      this.returnReactCust = value;
+      fieldSetFlags()[60] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnReactCust' field has been set.
+      * Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return True if the 'returnReactCust' field has been set, false otherwise.
+      */
+    public boolean hasReturnReactCust() {
+      return fieldSetFlags()[60];
+    }
+
+
+    /**
+      * Clears the value of the 'returnReactCust' field.
+      * Total customers in (t) that were REACTIVATED in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnReactCust() {
+      returnReactCust = null;
+      fieldSetFlags()[60] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnReturnSales' field.
+      * Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Double getReturnReturnSales() {
+      return returnReturnSales;
+    }
+
+    /**
+      * Sets the value of the 'returnReturnSales' field.
+      * Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnReturnSales'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnReturnSales(java.lang.Double value) {
+      validate(fields()[61], value);
+      this.returnReturnSales = value;
+      fieldSetFlags()[61] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnReturnSales' field has been set.
+      * Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+      * @return True if the 'returnReturnSales' field has been set, false otherwise.
+      */
+    public boolean hasReturnReturnSales() {
+      return fieldSetFlags()[61];
+    }
+
+
+    /**
+      * Clears the value of the 'returnReturnSales' field.
+      * Total sales in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnReturnSales() {
+      returnReturnSales = null;
+      fieldSetFlags()[61] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnReturnTxn' field.
+      * Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Long getReturnReturnTxn() {
+      return returnReturnTxn;
+    }
+
+    /**
+      * Sets the value of the 'returnReturnTxn' field.
+      * Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnReturnTxn'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnReturnTxn(java.lang.Long value) {
+      validate(fields()[62], value);
+      this.returnReturnTxn = value;
+      fieldSetFlags()[62] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnReturnTxn' field has been set.
+      * Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+      * @return True if the 'returnReturnTxn' field has been set, false otherwise.
+      */
+    public boolean hasReturnReturnTxn() {
+      return fieldSetFlags()[62];
+    }
+
+
+    /**
+      * Clears the value of the 'returnReturnTxn' field.
+      * Total number of transactions in (t) for customers that were RETURNING in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnReturnTxn() {
+      returnReturnTxn = null;
+      fieldSetFlags()[62] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'returnReturnCust' field.
+      * Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)
+      * @return The value.
+      */
+    public java.lang.Long getReturnReturnCust() {
+      return returnReturnCust;
+    }
+
+    /**
+      * Sets the value of the 'returnReturnCust' field.
+      * Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)
+      * @param value The value of 'returnReturnCust'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setReturnReturnCust(java.lang.Long value) {
+      validate(fields()[63], value);
+      this.returnReturnCust = value;
+      fieldSetFlags()[63] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'returnReturnCust' field has been set.
+      * Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)
+      * @return True if the 'returnReturnCust' field has been set, false otherwise.
+      */
+    public boolean hasReturnReturnCust() {
+      return fieldSetFlags()[63];
+    }
+
+
+    /**
+      * Clears the value of the 'returnReturnCust' field.
+      * Total customers in (t) that were RETURNING in (t-1) and RETURNING in (t)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearReturnReturnCust() {
+      returnReturnCust = null;
+      fieldSetFlags()[63] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'ttlSalesLift' field.
+      * Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)
+      * @return The value.
+      */
+    public java.lang.Double getTtlSalesLift() {
+      return ttlSalesLift;
+    }
+
+    /**
+      * Sets the value of the 'ttlSalesLift' field.
+      * Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)
+      * @param value The value of 'ttlSalesLift'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setTtlSalesLift(java.lang.Double value) {
+      validate(fields()[64], value);
+      this.ttlSalesLift = value;
+      fieldSetFlags()[64] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'ttlSalesLift' field has been set.
+      * Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)
+      * @return True if the 'ttlSalesLift' field has been set, false otherwise.
+      */
+    public boolean hasTtlSalesLift() {
+      return fieldSetFlags()[64];
+    }
+
+
+    /**
+      * Clears the value of the 'ttlSalesLift' field.
+      * Lift based on TOTAL sales: returnTxnAmt/(returnNewSales + returnReactSales + returnReturnSales)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearTtlSalesLift() {
+      ttlSalesLift = null;
+      fieldSetFlags()[64] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'avgSalesLift' field.
+      * Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]
+      * @return The value.
+      */
+    public java.lang.Double getAvgSalesLift() {
+      return avgSalesLift;
+    }
+
+    /**
+      * Sets the value of the 'avgSalesLift' field.
+      * Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]
+      * @param value The value of 'avgSalesLift'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setAvgSalesLift(java.lang.Double value) {
+      validate(fields()[65], value);
+      this.avgSalesLift = value;
+      fieldSetFlags()[65] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'avgSalesLift' field has been set.
+      * Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]
+      * @return True if the 'avgSalesLift' field has been set, false otherwise.
+      */
+    public boolean hasAvgSalesLift() {
+      return fieldSetFlags()[65];
+    }
+
+
+    /**
+      * Clears the value of the 'avgSalesLift' field.
+      * Lift based on AVG sales per cust: (returnTxnAmt/returnCustCount) / [(returnNewSales + returnReactSales + returnReturnSales) / (returnNewCust + returnReactCust + returnReturnCust)]
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearAvgSalesLift() {
+      avgSalesLift = null;
+      fieldSetFlags()[65] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'ttlTxnLift' field.
+      * Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)
+      * @return The value.
+      */
+    public java.lang.Double getTtlTxnLift() {
+      return ttlTxnLift;
+    }
+
+    /**
+      * Sets the value of the 'ttlTxnLift' field.
+      * Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)
+      * @param value The value of 'ttlTxnLift'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setTtlTxnLift(java.lang.Double value) {
+      validate(fields()[66], value);
+      this.ttlTxnLift = value;
+      fieldSetFlags()[66] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'ttlTxnLift' field has been set.
+      * Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)
+      * @return True if the 'ttlTxnLift' field has been set, false otherwise.
+      */
+    public boolean hasTtlTxnLift() {
+      return fieldSetFlags()[66];
+    }
+
+
+    /**
+      * Clears the value of the 'ttlTxnLift' field.
+      * Lift based on TOTAL Txns: returnTxnCount/(returnNewTxn + returnReactTxn + returnReturnTxn)
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearTtlTxnLift() {
+      ttlTxnLift = null;
+      fieldSetFlags()[66] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'avgTxnLift' field.
+      * Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]
+      * @return The value.
+      */
+    public java.lang.Double getAvgTxnLift() {
+      return avgTxnLift;
+    }
+
+    /**
+      * Sets the value of the 'avgTxnLift' field.
+      * Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]
+      * @param value The value of 'avgTxnLift'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder setAvgTxnLift(java.lang.Double value) {
+      validate(fields()[67], value);
+      this.avgTxnLift = value;
+      fieldSetFlags()[67] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'avgTxnLift' field has been set.
+      * Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]
+      * @return True if the 'avgTxnLift' field has been set, false otherwise.
+      */
+    public boolean hasAvgTxnLift() {
+      return fieldSetFlags()[67];
+    }
+
+
+    /**
+      * Clears the value of the 'avgTxnLift' field.
+      * Lift based on AVG Txns per cust: (returnTxnCount/returnCustCount) / [(returnNewTxn + returnReactTxn + returnReturnTxn) / (returnNewCust + returnReactCust + returnReturnCust)]
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.TimePeriodData.Builder clearAvgTxnLift() {
+      avgTxnLift = null;
+      fieldSetFlags()[67] = false;
       return this;
     }
 
@@ -4077,58 +5217,73 @@ public class TimePeriodData extends org.apache.avro.specific.SpecificRecordBase 
       try {
         TimePeriodData record = new TimePeriodData();
         record.timePeriod = fieldSetFlags()[0] ? this.timePeriod : (java.lang.Integer) defaultValue(fields()[0]);
-        record.newCustCount = fieldSetFlags()[1] ? this.newCustCount : (java.lang.Long) defaultValue(fields()[1]);
-        record.newTxnCount = fieldSetFlags()[2] ? this.newTxnCount : (java.lang.Long) defaultValue(fields()[2]);
-        record.newTxnAmt = fieldSetFlags()[3] ? this.newTxnAmt : (java.lang.Double) defaultValue(fields()[3]);
-        record.newDiscAmt = fieldSetFlags()[4] ? this.newDiscAmt : (java.lang.Double) defaultValue(fields()[4]);
-        record.newItemQty = fieldSetFlags()[5] ? this.newItemQty : (java.lang.Long) defaultValue(fields()[5]);
-        record.newCustSpendAvg = fieldSetFlags()[6] ? this.newCustSpendAvg : (java.lang.Double) defaultValue(fields()[6]);
-        record.newCustVisitAvg = fieldSetFlags()[7] ? this.newCustVisitAvg : (java.lang.Double) defaultValue(fields()[7]);
-        record.newCustItemAvg = fieldSetFlags()[8] ? this.newCustItemAvg : (java.lang.Double) defaultValue(fields()[8]);
-        record.newCustDiscAvg = fieldSetFlags()[9] ? this.newCustDiscAvg : (java.lang.Double) defaultValue(fields()[9]);
-        record.newVisitSpendAvg = fieldSetFlags()[10] ? this.newVisitSpendAvg : (java.lang.Double) defaultValue(fields()[10]);
-        record.newVisitDiscAvg = fieldSetFlags()[11] ? this.newVisitDiscAvg : (java.lang.Double) defaultValue(fields()[11]);
-        record.newVisitItemAvg = fieldSetFlags()[12] ? this.newVisitItemAvg : (java.lang.Double) defaultValue(fields()[12]);
-        record.reactCustCount = fieldSetFlags()[13] ? this.reactCustCount : (java.lang.Long) defaultValue(fields()[13]);
-        record.reactTxnCount = fieldSetFlags()[14] ? this.reactTxnCount : (java.lang.Long) defaultValue(fields()[14]);
-        record.reactTxnAmt = fieldSetFlags()[15] ? this.reactTxnAmt : (java.lang.Double) defaultValue(fields()[15]);
-        record.reactDiscAmt = fieldSetFlags()[16] ? this.reactDiscAmt : (java.lang.Double) defaultValue(fields()[16]);
-        record.reactItemQty = fieldSetFlags()[17] ? this.reactItemQty : (java.lang.Long) defaultValue(fields()[17]);
-        record.reactCustSpendAvg = fieldSetFlags()[18] ? this.reactCustSpendAvg : (java.lang.Double) defaultValue(fields()[18]);
-        record.reactCustVisitAvg = fieldSetFlags()[19] ? this.reactCustVisitAvg : (java.lang.Double) defaultValue(fields()[19]);
-        record.reactCustItemAvg = fieldSetFlags()[20] ? this.reactCustItemAvg : (java.lang.Double) defaultValue(fields()[20]);
-        record.reactCustDiscAvg = fieldSetFlags()[21] ? this.reactCustDiscAvg : (java.lang.Double) defaultValue(fields()[21]);
-        record.reactVisitSpendAvg = fieldSetFlags()[22] ? this.reactVisitSpendAvg : (java.lang.Double) defaultValue(fields()[22]);
-        record.reactVisitDiscAvg = fieldSetFlags()[23] ? this.reactVisitDiscAvg : (java.lang.Double) defaultValue(fields()[23]);
-        record.reactVisitItemAvg = fieldSetFlags()[24] ? this.reactVisitItemAvg : (java.lang.Double) defaultValue(fields()[24]);
-        record.returnCustCount = fieldSetFlags()[25] ? this.returnCustCount : (java.lang.Long) defaultValue(fields()[25]);
-        record.returnTxnCount = fieldSetFlags()[26] ? this.returnTxnCount : (java.lang.Long) defaultValue(fields()[26]);
-        record.returnTxnAmt = fieldSetFlags()[27] ? this.returnTxnAmt : (java.lang.Double) defaultValue(fields()[27]);
-        record.returnDiscAmt = fieldSetFlags()[28] ? this.returnDiscAmt : (java.lang.Double) defaultValue(fields()[28]);
-        record.returnItemQty = fieldSetFlags()[29] ? this.returnItemQty : (java.lang.Long) defaultValue(fields()[29]);
-        record.returnCustSpendAvg = fieldSetFlags()[30] ? this.returnCustSpendAvg : (java.lang.Double) defaultValue(fields()[30]);
-        record.returnCustVisitAvg = fieldSetFlags()[31] ? this.returnCustVisitAvg : (java.lang.Double) defaultValue(fields()[31]);
-        record.returnCustItemAvg = fieldSetFlags()[32] ? this.returnCustItemAvg : (java.lang.Double) defaultValue(fields()[32]);
-        record.returnCustDiscAvg = fieldSetFlags()[33] ? this.returnCustDiscAvg : (java.lang.Double) defaultValue(fields()[33]);
-        record.returnVisitSpendAvg = fieldSetFlags()[34] ? this.returnVisitSpendAvg : (java.lang.Double) defaultValue(fields()[34]);
-        record.returnVisitDiscAvg = fieldSetFlags()[35] ? this.returnVisitDiscAvg : (java.lang.Double) defaultValue(fields()[35]);
-        record.returnVisitItemAvg = fieldSetFlags()[36] ? this.returnVisitItemAvg : (java.lang.Double) defaultValue(fields()[36]);
-        record.lapsedCustCount = fieldSetFlags()[37] ? this.lapsedCustCount : (java.lang.Long) defaultValue(fields()[37]);
-        record.lapsedTxnCount = fieldSetFlags()[38] ? this.lapsedTxnCount : (java.lang.Long) defaultValue(fields()[38]);
-        record.lapsedTxnAmt = fieldSetFlags()[39] ? this.lapsedTxnAmt : (java.lang.Double) defaultValue(fields()[39]);
-        record.lapsedDiscAmt = fieldSetFlags()[40] ? this.lapsedDiscAmt : (java.lang.Double) defaultValue(fields()[40]);
-        record.lapsedItemQty = fieldSetFlags()[41] ? this.lapsedItemQty : (java.lang.Long) defaultValue(fields()[41]);
-        record.lapsedCustSpendAvg = fieldSetFlags()[42] ? this.lapsedCustSpendAvg : (java.lang.Double) defaultValue(fields()[42]);
-        record.lapsedCustVisitAvg = fieldSetFlags()[43] ? this.lapsedCustVisitAvg : (java.lang.Double) defaultValue(fields()[43]);
-        record.lapsedCustItemAvg = fieldSetFlags()[44] ? this.lapsedCustItemAvg : (java.lang.Double) defaultValue(fields()[44]);
-        record.lapsedCustDiscAvg = fieldSetFlags()[45] ? this.lapsedCustDiscAvg : (java.lang.Double) defaultValue(fields()[45]);
-        record.lapsedVisitSpendAvg = fieldSetFlags()[46] ? this.lapsedVisitSpendAvg : (java.lang.Double) defaultValue(fields()[46]);
-        record.lapsedVisitDiscAvg = fieldSetFlags()[47] ? this.lapsedVisitDiscAvg : (java.lang.Double) defaultValue(fields()[47]);
-        record.lapsedVisitItemAvg = fieldSetFlags()[48] ? this.lapsedVisitItemAvg : (java.lang.Double) defaultValue(fields()[48]);
-        record.custBalor = fieldSetFlags()[49] ? this.custBalor : (java.lang.Double) defaultValue(fields()[49]);
-        record.txnBalor = fieldSetFlags()[50] ? this.txnBalor : (java.lang.Double) defaultValue(fields()[50]);
-        record.spendBalor = fieldSetFlags()[51] ? this.spendBalor : (java.lang.Double) defaultValue(fields()[51]);
-        record.retention = fieldSetFlags()[52] ? this.retention : (java.lang.Double) defaultValue(fields()[52]);
+        record.anchorDate = fieldSetFlags()[1] ? this.anchorDate : (java.lang.CharSequence) defaultValue(fields()[1]);
+        record.newCustCount = fieldSetFlags()[2] ? this.newCustCount : (java.lang.Long) defaultValue(fields()[2]);
+        record.newTxnCount = fieldSetFlags()[3] ? this.newTxnCount : (java.lang.Long) defaultValue(fields()[3]);
+        record.newTxnAmt = fieldSetFlags()[4] ? this.newTxnAmt : (java.lang.Double) defaultValue(fields()[4]);
+        record.newDiscAmt = fieldSetFlags()[5] ? this.newDiscAmt : (java.lang.Double) defaultValue(fields()[5]);
+        record.newItemQty = fieldSetFlags()[6] ? this.newItemQty : (java.lang.Long) defaultValue(fields()[6]);
+        record.newCustSpendAvg = fieldSetFlags()[7] ? this.newCustSpendAvg : (java.lang.Double) defaultValue(fields()[7]);
+        record.newCustVisitAvg = fieldSetFlags()[8] ? this.newCustVisitAvg : (java.lang.Double) defaultValue(fields()[8]);
+        record.newCustItemAvg = fieldSetFlags()[9] ? this.newCustItemAvg : (java.lang.Double) defaultValue(fields()[9]);
+        record.newCustDiscAvg = fieldSetFlags()[10] ? this.newCustDiscAvg : (java.lang.Double) defaultValue(fields()[10]);
+        record.newVisitSpendAvg = fieldSetFlags()[11] ? this.newVisitSpendAvg : (java.lang.Double) defaultValue(fields()[11]);
+        record.newVisitDiscAvg = fieldSetFlags()[12] ? this.newVisitDiscAvg : (java.lang.Double) defaultValue(fields()[12]);
+        record.newVisitItemAvg = fieldSetFlags()[13] ? this.newVisitItemAvg : (java.lang.Double) defaultValue(fields()[13]);
+        record.reactCustCount = fieldSetFlags()[14] ? this.reactCustCount : (java.lang.Long) defaultValue(fields()[14]);
+        record.reactTxnCount = fieldSetFlags()[15] ? this.reactTxnCount : (java.lang.Long) defaultValue(fields()[15]);
+        record.reactTxnAmt = fieldSetFlags()[16] ? this.reactTxnAmt : (java.lang.Double) defaultValue(fields()[16]);
+        record.reactDiscAmt = fieldSetFlags()[17] ? this.reactDiscAmt : (java.lang.Double) defaultValue(fields()[17]);
+        record.reactItemQty = fieldSetFlags()[18] ? this.reactItemQty : (java.lang.Long) defaultValue(fields()[18]);
+        record.reactCustSpendAvg = fieldSetFlags()[19] ? this.reactCustSpendAvg : (java.lang.Double) defaultValue(fields()[19]);
+        record.reactCustVisitAvg = fieldSetFlags()[20] ? this.reactCustVisitAvg : (java.lang.Double) defaultValue(fields()[20]);
+        record.reactCustItemAvg = fieldSetFlags()[21] ? this.reactCustItemAvg : (java.lang.Double) defaultValue(fields()[21]);
+        record.reactCustDiscAvg = fieldSetFlags()[22] ? this.reactCustDiscAvg : (java.lang.Double) defaultValue(fields()[22]);
+        record.reactVisitSpendAvg = fieldSetFlags()[23] ? this.reactVisitSpendAvg : (java.lang.Double) defaultValue(fields()[23]);
+        record.reactVisitDiscAvg = fieldSetFlags()[24] ? this.reactVisitDiscAvg : (java.lang.Double) defaultValue(fields()[24]);
+        record.reactVisitItemAvg = fieldSetFlags()[25] ? this.reactVisitItemAvg : (java.lang.Double) defaultValue(fields()[25]);
+        record.returnCustCount = fieldSetFlags()[26] ? this.returnCustCount : (java.lang.Long) defaultValue(fields()[26]);
+        record.returnTxnCount = fieldSetFlags()[27] ? this.returnTxnCount : (java.lang.Long) defaultValue(fields()[27]);
+        record.returnTxnAmt = fieldSetFlags()[28] ? this.returnTxnAmt : (java.lang.Double) defaultValue(fields()[28]);
+        record.returnDiscAmt = fieldSetFlags()[29] ? this.returnDiscAmt : (java.lang.Double) defaultValue(fields()[29]);
+        record.returnItemQty = fieldSetFlags()[30] ? this.returnItemQty : (java.lang.Long) defaultValue(fields()[30]);
+        record.returnCustSpendAvg = fieldSetFlags()[31] ? this.returnCustSpendAvg : (java.lang.Double) defaultValue(fields()[31]);
+        record.returnCustVisitAvg = fieldSetFlags()[32] ? this.returnCustVisitAvg : (java.lang.Double) defaultValue(fields()[32]);
+        record.returnCustItemAvg = fieldSetFlags()[33] ? this.returnCustItemAvg : (java.lang.Double) defaultValue(fields()[33]);
+        record.returnCustDiscAvg = fieldSetFlags()[34] ? this.returnCustDiscAvg : (java.lang.Double) defaultValue(fields()[34]);
+        record.returnVisitSpendAvg = fieldSetFlags()[35] ? this.returnVisitSpendAvg : (java.lang.Double) defaultValue(fields()[35]);
+        record.returnVisitDiscAvg = fieldSetFlags()[36] ? this.returnVisitDiscAvg : (java.lang.Double) defaultValue(fields()[36]);
+        record.returnVisitItemAvg = fieldSetFlags()[37] ? this.returnVisitItemAvg : (java.lang.Double) defaultValue(fields()[37]);
+        record.lapsedCustCount = fieldSetFlags()[38] ? this.lapsedCustCount : (java.lang.Long) defaultValue(fields()[38]);
+        record.lapsedTxnCount = fieldSetFlags()[39] ? this.lapsedTxnCount : (java.lang.Long) defaultValue(fields()[39]);
+        record.lapsedTxnAmt = fieldSetFlags()[40] ? this.lapsedTxnAmt : (java.lang.Double) defaultValue(fields()[40]);
+        record.lapsedDiscAmt = fieldSetFlags()[41] ? this.lapsedDiscAmt : (java.lang.Double) defaultValue(fields()[41]);
+        record.lapsedItemQty = fieldSetFlags()[42] ? this.lapsedItemQty : (java.lang.Long) defaultValue(fields()[42]);
+        record.lapsedCustSpendAvg = fieldSetFlags()[43] ? this.lapsedCustSpendAvg : (java.lang.Double) defaultValue(fields()[43]);
+        record.lapsedCustVisitAvg = fieldSetFlags()[44] ? this.lapsedCustVisitAvg : (java.lang.Double) defaultValue(fields()[44]);
+        record.lapsedCustItemAvg = fieldSetFlags()[45] ? this.lapsedCustItemAvg : (java.lang.Double) defaultValue(fields()[45]);
+        record.lapsedCustDiscAvg = fieldSetFlags()[46] ? this.lapsedCustDiscAvg : (java.lang.Double) defaultValue(fields()[46]);
+        record.lapsedVisitSpendAvg = fieldSetFlags()[47] ? this.lapsedVisitSpendAvg : (java.lang.Double) defaultValue(fields()[47]);
+        record.lapsedVisitDiscAvg = fieldSetFlags()[48] ? this.lapsedVisitDiscAvg : (java.lang.Double) defaultValue(fields()[48]);
+        record.lapsedVisitItemAvg = fieldSetFlags()[49] ? this.lapsedVisitItemAvg : (java.lang.Double) defaultValue(fields()[49]);
+        record.custBalor = fieldSetFlags()[50] ? this.custBalor : (java.lang.Double) defaultValue(fields()[50]);
+        record.txnBalor = fieldSetFlags()[51] ? this.txnBalor : (java.lang.Double) defaultValue(fields()[51]);
+        record.spendBalor = fieldSetFlags()[52] ? this.spendBalor : (java.lang.Double) defaultValue(fields()[52]);
+        record.retention = fieldSetFlags()[53] ? this.retention : (java.lang.Double) defaultValue(fields()[53]);
+        record.retentionGrowth = fieldSetFlags()[54] ? this.retentionGrowth : (java.lang.Double) defaultValue(fields()[54]);
+        record.returnNewSales = fieldSetFlags()[55] ? this.returnNewSales : (java.lang.Double) defaultValue(fields()[55]);
+        record.returnNewTxn = fieldSetFlags()[56] ? this.returnNewTxn : (java.lang.Long) defaultValue(fields()[56]);
+        record.returnNewCust = fieldSetFlags()[57] ? this.returnNewCust : (java.lang.Long) defaultValue(fields()[57]);
+        record.returnReactSales = fieldSetFlags()[58] ? this.returnReactSales : (java.lang.Double) defaultValue(fields()[58]);
+        record.returnReactTxn = fieldSetFlags()[59] ? this.returnReactTxn : (java.lang.Long) defaultValue(fields()[59]);
+        record.returnReactCust = fieldSetFlags()[60] ? this.returnReactCust : (java.lang.Long) defaultValue(fields()[60]);
+        record.returnReturnSales = fieldSetFlags()[61] ? this.returnReturnSales : (java.lang.Double) defaultValue(fields()[61]);
+        record.returnReturnTxn = fieldSetFlags()[62] ? this.returnReturnTxn : (java.lang.Long) defaultValue(fields()[62]);
+        record.returnReturnCust = fieldSetFlags()[63] ? this.returnReturnCust : (java.lang.Long) defaultValue(fields()[63]);
+        record.ttlSalesLift = fieldSetFlags()[64] ? this.ttlSalesLift : (java.lang.Double) defaultValue(fields()[64]);
+        record.avgSalesLift = fieldSetFlags()[65] ? this.avgSalesLift : (java.lang.Double) defaultValue(fields()[65]);
+        record.ttlTxnLift = fieldSetFlags()[66] ? this.ttlTxnLift : (java.lang.Double) defaultValue(fields()[66]);
+        record.avgTxnLift = fieldSetFlags()[67] ? this.avgTxnLift : (java.lang.Double) defaultValue(fields()[67]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

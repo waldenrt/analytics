@@ -11,11 +11,13 @@ import org.apache.avro.specific.SpecificData;
 /** each record represents the results of single period of time */
 @org.apache.avro.specific.AvroGenerated
 public class quantilePeriodResults extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 4676519890110969098L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"quantilePeriodResults\",\"namespace\":\"com.brierley.avro.schemas\",\"doc\":\"each record represents the results of single period of time\",\"fields\":[{\"name\":\"timePeriod\",\"type\":\"int\",\"doc\":\"Quantile Period, calculated ascending\"},{\"name\":\"quantile\",\"type\":\"int\",\"doc\":\"Quantile bucket\"},{\"name\":\"totalCount\",\"type\":\"long\",\"doc\":\"Total distinct count of customers/stores in the group determined by the segment above\"},{\"name\":\"totalVisits\",\"type\":\"long\",\"doc\":\"Total number of visits per customer/store determined by the segment\"},{\"name\":\"totalSpend\",\"type\":\"double\",\"doc\":\"Total spend per customer/store determined by the segment\"},{\"name\":\"totalUnits\",\"type\":\"long\",\"doc\":\"Total number of items per customer/store determined by the segment\"},{\"name\":\"totalDisc\",\"type\":\"double\",\"doc\":\"Total discount per customer/store determined by the segment, if discount is not given this will return 0\"},{\"name\":\"avgVisits\",\"type\":\"double\",\"doc\":\"totalVisits/totalCount\"},{\"name\":\"avgSpend\",\"type\":\"double\",\"doc\":\"totalSpend/totalCount\"},{\"name\":\"avgUnits\",\"type\":\"double\",\"doc\":\"totalUnits/totalCount\"},{\"name\":\"avgDisc\",\"type\":\"double\",\"doc\":\"totalDisc/totalCount, if discount was not given this will return 0\"},{\"name\":\"avgVisitSpend\",\"type\":\"double\",\"doc\":\"totalSpend/totalVisits\"},{\"name\":\"avgVisitUnits\",\"type\":\"double\",\"doc\":\"totalUnits/totalVisits\"},{\"name\":\"avgVisitDisc\",\"type\":\"double\",\"doc\":\"totalDisc/totalVisits\"},{\"name\":\"avgRecency\",\"type\":[\"null\",\"double\"],\"doc\":\"average days of last visit from max date in dataset, CUSTOMER dimension only\"},{\"name\":\"avgItemSales\",\"type\":[\"null\",\"double\"],\"doc\":\"totalSpend/totalUnits, CUSTOMER dimension only\"},{\"name\":\"avgItemDisc\",\"type\":[\"null\",\"double\"],\"doc\":\"totalDisc/totalUnits, CUSTOMER dimension only\"},{\"name\":\"totalCust\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of customers for STORE dimension only\"},{\"name\":\"avgStoreCust\",\"type\":[\"null\",\"double\"],\"doc\":\"totalCust/totalCount, STORE dimension only\"},{\"name\":\"avgCustSales\",\"type\":[\"null\",\"double\"],\"doc\":\"totalSpend/totalCust, STORE dimension only\"},{\"name\":\"avgCustVisits\",\"type\":[\"null\",\"double\"],\"doc\":\"totalVisits/totalCust, STORE dimension only\"},{\"name\":\"avgCustUnits\",\"type\":[\"null\",\"double\"],\"doc\":\"totalUnits/totalCust, STORE dimension only\"}]}");
+  private static final long serialVersionUID = -7214473412611432622L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"quantilePeriodResults\",\"namespace\":\"com.brierley.avro.schemas\",\"doc\":\"each record represents the results of single period of time\",\"fields\":[{\"name\":\"timePeriod\",\"type\":\"int\",\"doc\":\"Quantile Period, calculated ascending\"},{\"name\":\"anchorDate\",\"type\":\"string\",\"doc\":\"The first date of the TimePeriod, formatted 'MMM yyyy'\"},{\"name\":\"quantile\",\"type\":\"int\",\"doc\":\"Quantile bucket\"},{\"name\":\"totalCount\",\"type\":\"long\",\"doc\":\"Total distinct count of customers/stores in the group determined by the segment above\"},{\"name\":\"totalVisits\",\"type\":\"long\",\"doc\":\"Total number of visits per customer/store determined by the segment\"},{\"name\":\"totalSpend\",\"type\":\"double\",\"doc\":\"Total spend per customer/store determined by the segment\"},{\"name\":\"totalUnits\",\"type\":\"long\",\"doc\":\"Total number of items per customer/store determined by the segment\"},{\"name\":\"totalDisc\",\"type\":\"double\",\"doc\":\"Total discount per customer/store determined by the segment, if discount is not given this will return 0\"},{\"name\":\"avgVisits\",\"type\":\"double\",\"doc\":\"totalVisits/totalCount\"},{\"name\":\"avgSpend\",\"type\":\"double\",\"doc\":\"totalSpend/totalCount\"},{\"name\":\"avgUnits\",\"type\":\"double\",\"doc\":\"totalUnits/totalCount\"},{\"name\":\"avgDisc\",\"type\":\"double\",\"doc\":\"totalDisc/totalCount, if discount was not given this will return 0\"},{\"name\":\"avgVisitSpend\",\"type\":\"double\",\"doc\":\"totalSpend/totalVisits\"},{\"name\":\"avgVisitUnits\",\"type\":\"double\",\"doc\":\"totalUnits/totalVisits\"},{\"name\":\"avgVisitDisc\",\"type\":\"double\",\"doc\":\"totalDisc/totalVisits\"},{\"name\":\"avgRecency\",\"type\":[\"null\",\"double\"],\"doc\":\"average days of last visit from max date in dataset, CUSTOMER dimension only\"},{\"name\":\"avgItemSales\",\"type\":[\"null\",\"double\"],\"doc\":\"totalSpend/totalUnits, CUSTOMER dimension only\"},{\"name\":\"avgItemDisc\",\"type\":[\"null\",\"double\"],\"doc\":\"totalDisc/totalUnits, CUSTOMER dimension only\"},{\"name\":\"totalCust\",\"type\":[\"null\",\"long\"],\"doc\":\"Total number of customers for STORE dimension only\"},{\"name\":\"avgStoreCust\",\"type\":[\"null\",\"double\"],\"doc\":\"totalCust/totalCount, STORE dimension only\"},{\"name\":\"avgCustSales\",\"type\":[\"null\",\"double\"],\"doc\":\"totalSpend/totalCust, STORE dimension only\"},{\"name\":\"avgCustVisits\",\"type\":[\"null\",\"double\"],\"doc\":\"totalVisits/totalCust, STORE dimension only\"},{\"name\":\"avgCustUnits\",\"type\":[\"null\",\"double\"],\"doc\":\"totalUnits/totalCust, STORE dimension only\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** Quantile Period, calculated ascending */
   @Deprecated public int timePeriod;
+  /** The first date of the TimePeriod, formatted 'MMM yyyy' */
+  @Deprecated public java.lang.CharSequence anchorDate;
   /** Quantile bucket */
   @Deprecated public int quantile;
   /** Total distinct count of customers/stores in the group determined by the segment above */
@@ -69,6 +71,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
   /**
    * All-args constructor.
    * @param timePeriod Quantile Period, calculated ascending
+   * @param anchorDate The first date of the TimePeriod, formatted 'MMM yyyy'
    * @param quantile Quantile bucket
    * @param totalCount Total distinct count of customers/stores in the group determined by the segment above
    * @param totalVisits Total number of visits per customer/store determined by the segment
@@ -91,8 +94,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
    * @param avgCustVisits totalVisits/totalCust, STORE dimension only
    * @param avgCustUnits totalUnits/totalCust, STORE dimension only
    */
-  public quantilePeriodResults(java.lang.Integer timePeriod, java.lang.Integer quantile, java.lang.Long totalCount, java.lang.Long totalVisits, java.lang.Double totalSpend, java.lang.Long totalUnits, java.lang.Double totalDisc, java.lang.Double avgVisits, java.lang.Double avgSpend, java.lang.Double avgUnits, java.lang.Double avgDisc, java.lang.Double avgVisitSpend, java.lang.Double avgVisitUnits, java.lang.Double avgVisitDisc, java.lang.Double avgRecency, java.lang.Double avgItemSales, java.lang.Double avgItemDisc, java.lang.Long totalCust, java.lang.Double avgStoreCust, java.lang.Double avgCustSales, java.lang.Double avgCustVisits, java.lang.Double avgCustUnits) {
+  public quantilePeriodResults(java.lang.Integer timePeriod, java.lang.CharSequence anchorDate, java.lang.Integer quantile, java.lang.Long totalCount, java.lang.Long totalVisits, java.lang.Double totalSpend, java.lang.Long totalUnits, java.lang.Double totalDisc, java.lang.Double avgVisits, java.lang.Double avgSpend, java.lang.Double avgUnits, java.lang.Double avgDisc, java.lang.Double avgVisitSpend, java.lang.Double avgVisitUnits, java.lang.Double avgVisitDisc, java.lang.Double avgRecency, java.lang.Double avgItemSales, java.lang.Double avgItemDisc, java.lang.Long totalCust, java.lang.Double avgStoreCust, java.lang.Double avgCustSales, java.lang.Double avgCustVisits, java.lang.Double avgCustUnits) {
     this.timePeriod = timePeriod;
+    this.anchorDate = anchorDate;
     this.quantile = quantile;
     this.totalCount = totalCount;
     this.totalVisits = totalVisits;
@@ -121,27 +125,28 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return timePeriod;
-    case 1: return quantile;
-    case 2: return totalCount;
-    case 3: return totalVisits;
-    case 4: return totalSpend;
-    case 5: return totalUnits;
-    case 6: return totalDisc;
-    case 7: return avgVisits;
-    case 8: return avgSpend;
-    case 9: return avgUnits;
-    case 10: return avgDisc;
-    case 11: return avgVisitSpend;
-    case 12: return avgVisitUnits;
-    case 13: return avgVisitDisc;
-    case 14: return avgRecency;
-    case 15: return avgItemSales;
-    case 16: return avgItemDisc;
-    case 17: return totalCust;
-    case 18: return avgStoreCust;
-    case 19: return avgCustSales;
-    case 20: return avgCustVisits;
-    case 21: return avgCustUnits;
+    case 1: return anchorDate;
+    case 2: return quantile;
+    case 3: return totalCount;
+    case 4: return totalVisits;
+    case 5: return totalSpend;
+    case 6: return totalUnits;
+    case 7: return totalDisc;
+    case 8: return avgVisits;
+    case 9: return avgSpend;
+    case 10: return avgUnits;
+    case 11: return avgDisc;
+    case 12: return avgVisitSpend;
+    case 13: return avgVisitUnits;
+    case 14: return avgVisitDisc;
+    case 15: return avgRecency;
+    case 16: return avgItemSales;
+    case 17: return avgItemDisc;
+    case 18: return totalCust;
+    case 19: return avgStoreCust;
+    case 20: return avgCustSales;
+    case 21: return avgCustVisits;
+    case 22: return avgCustUnits;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -151,27 +156,28 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: timePeriod = (java.lang.Integer)value$; break;
-    case 1: quantile = (java.lang.Integer)value$; break;
-    case 2: totalCount = (java.lang.Long)value$; break;
-    case 3: totalVisits = (java.lang.Long)value$; break;
-    case 4: totalSpend = (java.lang.Double)value$; break;
-    case 5: totalUnits = (java.lang.Long)value$; break;
-    case 6: totalDisc = (java.lang.Double)value$; break;
-    case 7: avgVisits = (java.lang.Double)value$; break;
-    case 8: avgSpend = (java.lang.Double)value$; break;
-    case 9: avgUnits = (java.lang.Double)value$; break;
-    case 10: avgDisc = (java.lang.Double)value$; break;
-    case 11: avgVisitSpend = (java.lang.Double)value$; break;
-    case 12: avgVisitUnits = (java.lang.Double)value$; break;
-    case 13: avgVisitDisc = (java.lang.Double)value$; break;
-    case 14: avgRecency = (java.lang.Double)value$; break;
-    case 15: avgItemSales = (java.lang.Double)value$; break;
-    case 16: avgItemDisc = (java.lang.Double)value$; break;
-    case 17: totalCust = (java.lang.Long)value$; break;
-    case 18: avgStoreCust = (java.lang.Double)value$; break;
-    case 19: avgCustSales = (java.lang.Double)value$; break;
-    case 20: avgCustVisits = (java.lang.Double)value$; break;
-    case 21: avgCustUnits = (java.lang.Double)value$; break;
+    case 1: anchorDate = (java.lang.CharSequence)value$; break;
+    case 2: quantile = (java.lang.Integer)value$; break;
+    case 3: totalCount = (java.lang.Long)value$; break;
+    case 4: totalVisits = (java.lang.Long)value$; break;
+    case 5: totalSpend = (java.lang.Double)value$; break;
+    case 6: totalUnits = (java.lang.Long)value$; break;
+    case 7: totalDisc = (java.lang.Double)value$; break;
+    case 8: avgVisits = (java.lang.Double)value$; break;
+    case 9: avgSpend = (java.lang.Double)value$; break;
+    case 10: avgUnits = (java.lang.Double)value$; break;
+    case 11: avgDisc = (java.lang.Double)value$; break;
+    case 12: avgVisitSpend = (java.lang.Double)value$; break;
+    case 13: avgVisitUnits = (java.lang.Double)value$; break;
+    case 14: avgVisitDisc = (java.lang.Double)value$; break;
+    case 15: avgRecency = (java.lang.Double)value$; break;
+    case 16: avgItemSales = (java.lang.Double)value$; break;
+    case 17: avgItemDisc = (java.lang.Double)value$; break;
+    case 18: totalCust = (java.lang.Long)value$; break;
+    case 19: avgStoreCust = (java.lang.Double)value$; break;
+    case 20: avgCustSales = (java.lang.Double)value$; break;
+    case 21: avgCustVisits = (java.lang.Double)value$; break;
+    case 22: avgCustUnits = (java.lang.Double)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -191,6 +197,23 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
    */
   public void setTimePeriod(java.lang.Integer value) {
     this.timePeriod = value;
+  }
+
+  /**
+   * Gets the value of the 'anchorDate' field.
+   * @return The first date of the TimePeriod, formatted 'MMM yyyy'
+   */
+  public java.lang.CharSequence getAnchorDate() {
+    return anchorDate;
+  }
+
+  /**
+   * Sets the value of the 'anchorDate' field.
+   * The first date of the TimePeriod, formatted 'MMM yyyy'
+   * @param value the value to set.
+   */
+  public void setAnchorDate(java.lang.CharSequence value) {
+    this.anchorDate = value;
   }
 
   /**
@@ -584,6 +607,8 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
 
     /** Quantile Period, calculated ascending */
     private int timePeriod;
+    /** The first date of the TimePeriod, formatted 'MMM yyyy' */
+    private java.lang.CharSequence anchorDate;
     /** Quantile bucket */
     private int quantile;
     /** Total distinct count of customers/stores in the group determined by the segment above */
@@ -642,89 +667,93 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
         this.timePeriod = data().deepCopy(fields()[0].schema(), other.timePeriod);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.quantile)) {
-        this.quantile = data().deepCopy(fields()[1].schema(), other.quantile);
+      if (isValidValue(fields()[1], other.anchorDate)) {
+        this.anchorDate = data().deepCopy(fields()[1].schema(), other.anchorDate);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.totalCount)) {
-        this.totalCount = data().deepCopy(fields()[2].schema(), other.totalCount);
+      if (isValidValue(fields()[2], other.quantile)) {
+        this.quantile = data().deepCopy(fields()[2].schema(), other.quantile);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.totalVisits)) {
-        this.totalVisits = data().deepCopy(fields()[3].schema(), other.totalVisits);
+      if (isValidValue(fields()[3], other.totalCount)) {
+        this.totalCount = data().deepCopy(fields()[3].schema(), other.totalCount);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.totalSpend)) {
-        this.totalSpend = data().deepCopy(fields()[4].schema(), other.totalSpend);
+      if (isValidValue(fields()[4], other.totalVisits)) {
+        this.totalVisits = data().deepCopy(fields()[4].schema(), other.totalVisits);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.totalUnits)) {
-        this.totalUnits = data().deepCopy(fields()[5].schema(), other.totalUnits);
+      if (isValidValue(fields()[5], other.totalSpend)) {
+        this.totalSpend = data().deepCopy(fields()[5].schema(), other.totalSpend);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.totalDisc)) {
-        this.totalDisc = data().deepCopy(fields()[6].schema(), other.totalDisc);
+      if (isValidValue(fields()[6], other.totalUnits)) {
+        this.totalUnits = data().deepCopy(fields()[6].schema(), other.totalUnits);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.avgVisits)) {
-        this.avgVisits = data().deepCopy(fields()[7].schema(), other.avgVisits);
+      if (isValidValue(fields()[7], other.totalDisc)) {
+        this.totalDisc = data().deepCopy(fields()[7].schema(), other.totalDisc);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.avgSpend)) {
-        this.avgSpend = data().deepCopy(fields()[8].schema(), other.avgSpend);
+      if (isValidValue(fields()[8], other.avgVisits)) {
+        this.avgVisits = data().deepCopy(fields()[8].schema(), other.avgVisits);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.avgUnits)) {
-        this.avgUnits = data().deepCopy(fields()[9].schema(), other.avgUnits);
+      if (isValidValue(fields()[9], other.avgSpend)) {
+        this.avgSpend = data().deepCopy(fields()[9].schema(), other.avgSpend);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.avgDisc)) {
-        this.avgDisc = data().deepCopy(fields()[10].schema(), other.avgDisc);
+      if (isValidValue(fields()[10], other.avgUnits)) {
+        this.avgUnits = data().deepCopy(fields()[10].schema(), other.avgUnits);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.avgVisitSpend)) {
-        this.avgVisitSpend = data().deepCopy(fields()[11].schema(), other.avgVisitSpend);
+      if (isValidValue(fields()[11], other.avgDisc)) {
+        this.avgDisc = data().deepCopy(fields()[11].schema(), other.avgDisc);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.avgVisitUnits)) {
-        this.avgVisitUnits = data().deepCopy(fields()[12].schema(), other.avgVisitUnits);
+      if (isValidValue(fields()[12], other.avgVisitSpend)) {
+        this.avgVisitSpend = data().deepCopy(fields()[12].schema(), other.avgVisitSpend);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.avgVisitDisc)) {
-        this.avgVisitDisc = data().deepCopy(fields()[13].schema(), other.avgVisitDisc);
+      if (isValidValue(fields()[13], other.avgVisitUnits)) {
+        this.avgVisitUnits = data().deepCopy(fields()[13].schema(), other.avgVisitUnits);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.avgRecency)) {
-        this.avgRecency = data().deepCopy(fields()[14].schema(), other.avgRecency);
+      if (isValidValue(fields()[14], other.avgVisitDisc)) {
+        this.avgVisitDisc = data().deepCopy(fields()[14].schema(), other.avgVisitDisc);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.avgItemSales)) {
-        this.avgItemSales = data().deepCopy(fields()[15].schema(), other.avgItemSales);
+      if (isValidValue(fields()[15], other.avgRecency)) {
+        this.avgRecency = data().deepCopy(fields()[15].schema(), other.avgRecency);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.avgItemDisc)) {
-        this.avgItemDisc = data().deepCopy(fields()[16].schema(), other.avgItemDisc);
+      if (isValidValue(fields()[16], other.avgItemSales)) {
+        this.avgItemSales = data().deepCopy(fields()[16].schema(), other.avgItemSales);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.totalCust)) {
-        this.totalCust = data().deepCopy(fields()[17].schema(), other.totalCust);
+      if (isValidValue(fields()[17], other.avgItemDisc)) {
+        this.avgItemDisc = data().deepCopy(fields()[17].schema(), other.avgItemDisc);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.avgStoreCust)) {
-        this.avgStoreCust = data().deepCopy(fields()[18].schema(), other.avgStoreCust);
+      if (isValidValue(fields()[18], other.totalCust)) {
+        this.totalCust = data().deepCopy(fields()[18].schema(), other.totalCust);
         fieldSetFlags()[18] = true;
       }
-      if (isValidValue(fields()[19], other.avgCustSales)) {
-        this.avgCustSales = data().deepCopy(fields()[19].schema(), other.avgCustSales);
+      if (isValidValue(fields()[19], other.avgStoreCust)) {
+        this.avgStoreCust = data().deepCopy(fields()[19].schema(), other.avgStoreCust);
         fieldSetFlags()[19] = true;
       }
-      if (isValidValue(fields()[20], other.avgCustVisits)) {
-        this.avgCustVisits = data().deepCopy(fields()[20].schema(), other.avgCustVisits);
+      if (isValidValue(fields()[20], other.avgCustSales)) {
+        this.avgCustSales = data().deepCopy(fields()[20].schema(), other.avgCustSales);
         fieldSetFlags()[20] = true;
       }
-      if (isValidValue(fields()[21], other.avgCustUnits)) {
-        this.avgCustUnits = data().deepCopy(fields()[21].schema(), other.avgCustUnits);
+      if (isValidValue(fields()[21], other.avgCustVisits)) {
+        this.avgCustVisits = data().deepCopy(fields()[21].schema(), other.avgCustVisits);
         fieldSetFlags()[21] = true;
+      }
+      if (isValidValue(fields()[22], other.avgCustUnits)) {
+        this.avgCustUnits = data().deepCopy(fields()[22].schema(), other.avgCustUnits);
+        fieldSetFlags()[22] = true;
       }
     }
 
@@ -738,89 +767,93 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
         this.timePeriod = data().deepCopy(fields()[0].schema(), other.timePeriod);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.quantile)) {
-        this.quantile = data().deepCopy(fields()[1].schema(), other.quantile);
+      if (isValidValue(fields()[1], other.anchorDate)) {
+        this.anchorDate = data().deepCopy(fields()[1].schema(), other.anchorDate);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.totalCount)) {
-        this.totalCount = data().deepCopy(fields()[2].schema(), other.totalCount);
+      if (isValidValue(fields()[2], other.quantile)) {
+        this.quantile = data().deepCopy(fields()[2].schema(), other.quantile);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.totalVisits)) {
-        this.totalVisits = data().deepCopy(fields()[3].schema(), other.totalVisits);
+      if (isValidValue(fields()[3], other.totalCount)) {
+        this.totalCount = data().deepCopy(fields()[3].schema(), other.totalCount);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.totalSpend)) {
-        this.totalSpend = data().deepCopy(fields()[4].schema(), other.totalSpend);
+      if (isValidValue(fields()[4], other.totalVisits)) {
+        this.totalVisits = data().deepCopy(fields()[4].schema(), other.totalVisits);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.totalUnits)) {
-        this.totalUnits = data().deepCopy(fields()[5].schema(), other.totalUnits);
+      if (isValidValue(fields()[5], other.totalSpend)) {
+        this.totalSpend = data().deepCopy(fields()[5].schema(), other.totalSpend);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.totalDisc)) {
-        this.totalDisc = data().deepCopy(fields()[6].schema(), other.totalDisc);
+      if (isValidValue(fields()[6], other.totalUnits)) {
+        this.totalUnits = data().deepCopy(fields()[6].schema(), other.totalUnits);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.avgVisits)) {
-        this.avgVisits = data().deepCopy(fields()[7].schema(), other.avgVisits);
+      if (isValidValue(fields()[7], other.totalDisc)) {
+        this.totalDisc = data().deepCopy(fields()[7].schema(), other.totalDisc);
         fieldSetFlags()[7] = true;
       }
-      if (isValidValue(fields()[8], other.avgSpend)) {
-        this.avgSpend = data().deepCopy(fields()[8].schema(), other.avgSpend);
+      if (isValidValue(fields()[8], other.avgVisits)) {
+        this.avgVisits = data().deepCopy(fields()[8].schema(), other.avgVisits);
         fieldSetFlags()[8] = true;
       }
-      if (isValidValue(fields()[9], other.avgUnits)) {
-        this.avgUnits = data().deepCopy(fields()[9].schema(), other.avgUnits);
+      if (isValidValue(fields()[9], other.avgSpend)) {
+        this.avgSpend = data().deepCopy(fields()[9].schema(), other.avgSpend);
         fieldSetFlags()[9] = true;
       }
-      if (isValidValue(fields()[10], other.avgDisc)) {
-        this.avgDisc = data().deepCopy(fields()[10].schema(), other.avgDisc);
+      if (isValidValue(fields()[10], other.avgUnits)) {
+        this.avgUnits = data().deepCopy(fields()[10].schema(), other.avgUnits);
         fieldSetFlags()[10] = true;
       }
-      if (isValidValue(fields()[11], other.avgVisitSpend)) {
-        this.avgVisitSpend = data().deepCopy(fields()[11].schema(), other.avgVisitSpend);
+      if (isValidValue(fields()[11], other.avgDisc)) {
+        this.avgDisc = data().deepCopy(fields()[11].schema(), other.avgDisc);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.avgVisitUnits)) {
-        this.avgVisitUnits = data().deepCopy(fields()[12].schema(), other.avgVisitUnits);
+      if (isValidValue(fields()[12], other.avgVisitSpend)) {
+        this.avgVisitSpend = data().deepCopy(fields()[12].schema(), other.avgVisitSpend);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.avgVisitDisc)) {
-        this.avgVisitDisc = data().deepCopy(fields()[13].schema(), other.avgVisitDisc);
+      if (isValidValue(fields()[13], other.avgVisitUnits)) {
+        this.avgVisitUnits = data().deepCopy(fields()[13].schema(), other.avgVisitUnits);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.avgRecency)) {
-        this.avgRecency = data().deepCopy(fields()[14].schema(), other.avgRecency);
+      if (isValidValue(fields()[14], other.avgVisitDisc)) {
+        this.avgVisitDisc = data().deepCopy(fields()[14].schema(), other.avgVisitDisc);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.avgItemSales)) {
-        this.avgItemSales = data().deepCopy(fields()[15].schema(), other.avgItemSales);
+      if (isValidValue(fields()[15], other.avgRecency)) {
+        this.avgRecency = data().deepCopy(fields()[15].schema(), other.avgRecency);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.avgItemDisc)) {
-        this.avgItemDisc = data().deepCopy(fields()[16].schema(), other.avgItemDisc);
+      if (isValidValue(fields()[16], other.avgItemSales)) {
+        this.avgItemSales = data().deepCopy(fields()[16].schema(), other.avgItemSales);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.totalCust)) {
-        this.totalCust = data().deepCopy(fields()[17].schema(), other.totalCust);
+      if (isValidValue(fields()[17], other.avgItemDisc)) {
+        this.avgItemDisc = data().deepCopy(fields()[17].schema(), other.avgItemDisc);
         fieldSetFlags()[17] = true;
       }
-      if (isValidValue(fields()[18], other.avgStoreCust)) {
-        this.avgStoreCust = data().deepCopy(fields()[18].schema(), other.avgStoreCust);
+      if (isValidValue(fields()[18], other.totalCust)) {
+        this.totalCust = data().deepCopy(fields()[18].schema(), other.totalCust);
         fieldSetFlags()[18] = true;
       }
-      if (isValidValue(fields()[19], other.avgCustSales)) {
-        this.avgCustSales = data().deepCopy(fields()[19].schema(), other.avgCustSales);
+      if (isValidValue(fields()[19], other.avgStoreCust)) {
+        this.avgStoreCust = data().deepCopy(fields()[19].schema(), other.avgStoreCust);
         fieldSetFlags()[19] = true;
       }
-      if (isValidValue(fields()[20], other.avgCustVisits)) {
-        this.avgCustVisits = data().deepCopy(fields()[20].schema(), other.avgCustVisits);
+      if (isValidValue(fields()[20], other.avgCustSales)) {
+        this.avgCustSales = data().deepCopy(fields()[20].schema(), other.avgCustSales);
         fieldSetFlags()[20] = true;
       }
-      if (isValidValue(fields()[21], other.avgCustUnits)) {
-        this.avgCustUnits = data().deepCopy(fields()[21].schema(), other.avgCustUnits);
+      if (isValidValue(fields()[21], other.avgCustVisits)) {
+        this.avgCustVisits = data().deepCopy(fields()[21].schema(), other.avgCustVisits);
         fieldSetFlags()[21] = true;
+      }
+      if (isValidValue(fields()[22], other.avgCustUnits)) {
+        this.avgCustUnits = data().deepCopy(fields()[22].schema(), other.avgCustUnits);
+        fieldSetFlags()[22] = true;
       }
     }
 
@@ -867,6 +900,49 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
     }
 
     /**
+      * Gets the value of the 'anchorDate' field.
+      * The first date of the TimePeriod, formatted 'MMM yyyy'
+      * @return The value.
+      */
+    public java.lang.CharSequence getAnchorDate() {
+      return anchorDate;
+    }
+
+    /**
+      * Sets the value of the 'anchorDate' field.
+      * The first date of the TimePeriod, formatted 'MMM yyyy'
+      * @param value The value of 'anchorDate'.
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.quantilePeriodResults.Builder setAnchorDate(java.lang.CharSequence value) {
+      validate(fields()[1], value);
+      this.anchorDate = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'anchorDate' field has been set.
+      * The first date of the TimePeriod, formatted 'MMM yyyy'
+      * @return True if the 'anchorDate' field has been set, false otherwise.
+      */
+    public boolean hasAnchorDate() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'anchorDate' field.
+      * The first date of the TimePeriod, formatted 'MMM yyyy'
+      * @return This builder.
+      */
+    public com.brierley.avro.schemas.quantilePeriodResults.Builder clearAnchorDate() {
+      anchorDate = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'quantile' field.
       * Quantile bucket
       * @return The value.
@@ -882,9 +958,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setQuantile(int value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.quantile = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -894,7 +970,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'quantile' field has been set, false otherwise.
       */
     public boolean hasQuantile() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -904,7 +980,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearQuantile() {
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -924,9 +1000,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setTotalCount(long value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.totalCount = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -936,7 +1012,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'totalCount' field has been set, false otherwise.
       */
     public boolean hasTotalCount() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -946,7 +1022,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearTotalCount() {
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -966,9 +1042,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setTotalVisits(long value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.totalVisits = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -978,7 +1054,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'totalVisits' field has been set, false otherwise.
       */
     public boolean hasTotalVisits() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
 
 
@@ -988,7 +1064,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearTotalVisits() {
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -1008,9 +1084,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setTotalSpend(double value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.totalSpend = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -1020,7 +1096,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'totalSpend' field has been set, false otherwise.
       */
     public boolean hasTotalSpend() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
 
 
@@ -1030,7 +1106,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearTotalSpend() {
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -1050,9 +1126,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setTotalUnits(long value) {
-      validate(fields()[5], value);
+      validate(fields()[6], value);
       this.totalUnits = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -1062,7 +1138,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'totalUnits' field has been set, false otherwise.
       */
     public boolean hasTotalUnits() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[6];
     }
 
 
@@ -1072,7 +1148,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearTotalUnits() {
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -1092,9 +1168,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setTotalDisc(double value) {
-      validate(fields()[6], value);
+      validate(fields()[7], value);
       this.totalDisc = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -1104,7 +1180,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'totalDisc' field has been set, false otherwise.
       */
     public boolean hasTotalDisc() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[7];
     }
 
 
@@ -1114,7 +1190,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearTotalDisc() {
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -1134,9 +1210,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setAvgVisits(double value) {
-      validate(fields()[7], value);
+      validate(fields()[8], value);
       this.avgVisits = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[8] = true;
       return this;
     }
 
@@ -1146,7 +1222,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'avgVisits' field has been set, false otherwise.
       */
     public boolean hasAvgVisits() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[8];
     }
 
 
@@ -1156,7 +1232,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearAvgVisits() {
-      fieldSetFlags()[7] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -1176,9 +1252,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setAvgSpend(double value) {
-      validate(fields()[8], value);
+      validate(fields()[9], value);
       this.avgSpend = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
@@ -1188,7 +1264,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'avgSpend' field has been set, false otherwise.
       */
     public boolean hasAvgSpend() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[9];
     }
 
 
@@ -1198,7 +1274,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearAvgSpend() {
-      fieldSetFlags()[8] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -1218,9 +1294,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setAvgUnits(double value) {
-      validate(fields()[9], value);
+      validate(fields()[10], value);
       this.avgUnits = value;
-      fieldSetFlags()[9] = true;
+      fieldSetFlags()[10] = true;
       return this;
     }
 
@@ -1230,7 +1306,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'avgUnits' field has been set, false otherwise.
       */
     public boolean hasAvgUnits() {
-      return fieldSetFlags()[9];
+      return fieldSetFlags()[10];
     }
 
 
@@ -1240,7 +1316,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearAvgUnits() {
-      fieldSetFlags()[9] = false;
+      fieldSetFlags()[10] = false;
       return this;
     }
 
@@ -1260,9 +1336,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setAvgDisc(double value) {
-      validate(fields()[10], value);
+      validate(fields()[11], value);
       this.avgDisc = value;
-      fieldSetFlags()[10] = true;
+      fieldSetFlags()[11] = true;
       return this;
     }
 
@@ -1272,7 +1348,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'avgDisc' field has been set, false otherwise.
       */
     public boolean hasAvgDisc() {
-      return fieldSetFlags()[10];
+      return fieldSetFlags()[11];
     }
 
 
@@ -1282,7 +1358,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearAvgDisc() {
-      fieldSetFlags()[10] = false;
+      fieldSetFlags()[11] = false;
       return this;
     }
 
@@ -1302,9 +1378,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setAvgVisitSpend(double value) {
-      validate(fields()[11], value);
+      validate(fields()[12], value);
       this.avgVisitSpend = value;
-      fieldSetFlags()[11] = true;
+      fieldSetFlags()[12] = true;
       return this;
     }
 
@@ -1314,7 +1390,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'avgVisitSpend' field has been set, false otherwise.
       */
     public boolean hasAvgVisitSpend() {
-      return fieldSetFlags()[11];
+      return fieldSetFlags()[12];
     }
 
 
@@ -1324,7 +1400,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearAvgVisitSpend() {
-      fieldSetFlags()[11] = false;
+      fieldSetFlags()[12] = false;
       return this;
     }
 
@@ -1344,9 +1420,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setAvgVisitUnits(double value) {
-      validate(fields()[12], value);
+      validate(fields()[13], value);
       this.avgVisitUnits = value;
-      fieldSetFlags()[12] = true;
+      fieldSetFlags()[13] = true;
       return this;
     }
 
@@ -1356,7 +1432,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'avgVisitUnits' field has been set, false otherwise.
       */
     public boolean hasAvgVisitUnits() {
-      return fieldSetFlags()[12];
+      return fieldSetFlags()[13];
     }
 
 
@@ -1366,7 +1442,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearAvgVisitUnits() {
-      fieldSetFlags()[12] = false;
+      fieldSetFlags()[13] = false;
       return this;
     }
 
@@ -1386,9 +1462,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setAvgVisitDisc(double value) {
-      validate(fields()[13], value);
+      validate(fields()[14], value);
       this.avgVisitDisc = value;
-      fieldSetFlags()[13] = true;
+      fieldSetFlags()[14] = true;
       return this;
     }
 
@@ -1398,7 +1474,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'avgVisitDisc' field has been set, false otherwise.
       */
     public boolean hasAvgVisitDisc() {
-      return fieldSetFlags()[13];
+      return fieldSetFlags()[14];
     }
 
 
@@ -1408,7 +1484,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearAvgVisitDisc() {
-      fieldSetFlags()[13] = false;
+      fieldSetFlags()[14] = false;
       return this;
     }
 
@@ -1428,9 +1504,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setAvgRecency(java.lang.Double value) {
-      validate(fields()[14], value);
+      validate(fields()[15], value);
       this.avgRecency = value;
-      fieldSetFlags()[14] = true;
+      fieldSetFlags()[15] = true;
       return this;
     }
 
@@ -1440,7 +1516,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'avgRecency' field has been set, false otherwise.
       */
     public boolean hasAvgRecency() {
-      return fieldSetFlags()[14];
+      return fieldSetFlags()[15];
     }
 
 
@@ -1451,7 +1527,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearAvgRecency() {
       avgRecency = null;
-      fieldSetFlags()[14] = false;
+      fieldSetFlags()[15] = false;
       return this;
     }
 
@@ -1471,9 +1547,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setAvgItemSales(java.lang.Double value) {
-      validate(fields()[15], value);
+      validate(fields()[16], value);
       this.avgItemSales = value;
-      fieldSetFlags()[15] = true;
+      fieldSetFlags()[16] = true;
       return this;
     }
 
@@ -1483,7 +1559,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'avgItemSales' field has been set, false otherwise.
       */
     public boolean hasAvgItemSales() {
-      return fieldSetFlags()[15];
+      return fieldSetFlags()[16];
     }
 
 
@@ -1494,7 +1570,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearAvgItemSales() {
       avgItemSales = null;
-      fieldSetFlags()[15] = false;
+      fieldSetFlags()[16] = false;
       return this;
     }
 
@@ -1514,9 +1590,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setAvgItemDisc(java.lang.Double value) {
-      validate(fields()[16], value);
+      validate(fields()[17], value);
       this.avgItemDisc = value;
-      fieldSetFlags()[16] = true;
+      fieldSetFlags()[17] = true;
       return this;
     }
 
@@ -1526,7 +1602,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'avgItemDisc' field has been set, false otherwise.
       */
     public boolean hasAvgItemDisc() {
-      return fieldSetFlags()[16];
+      return fieldSetFlags()[17];
     }
 
 
@@ -1537,7 +1613,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearAvgItemDisc() {
       avgItemDisc = null;
-      fieldSetFlags()[16] = false;
+      fieldSetFlags()[17] = false;
       return this;
     }
 
@@ -1557,9 +1633,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setTotalCust(java.lang.Long value) {
-      validate(fields()[17], value);
+      validate(fields()[18], value);
       this.totalCust = value;
-      fieldSetFlags()[17] = true;
+      fieldSetFlags()[18] = true;
       return this;
     }
 
@@ -1569,7 +1645,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'totalCust' field has been set, false otherwise.
       */
     public boolean hasTotalCust() {
-      return fieldSetFlags()[17];
+      return fieldSetFlags()[18];
     }
 
 
@@ -1580,7 +1656,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearTotalCust() {
       totalCust = null;
-      fieldSetFlags()[17] = false;
+      fieldSetFlags()[18] = false;
       return this;
     }
 
@@ -1600,9 +1676,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setAvgStoreCust(java.lang.Double value) {
-      validate(fields()[18], value);
+      validate(fields()[19], value);
       this.avgStoreCust = value;
-      fieldSetFlags()[18] = true;
+      fieldSetFlags()[19] = true;
       return this;
     }
 
@@ -1612,7 +1688,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'avgStoreCust' field has been set, false otherwise.
       */
     public boolean hasAvgStoreCust() {
-      return fieldSetFlags()[18];
+      return fieldSetFlags()[19];
     }
 
 
@@ -1623,7 +1699,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearAvgStoreCust() {
       avgStoreCust = null;
-      fieldSetFlags()[18] = false;
+      fieldSetFlags()[19] = false;
       return this;
     }
 
@@ -1643,9 +1719,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setAvgCustSales(java.lang.Double value) {
-      validate(fields()[19], value);
+      validate(fields()[20], value);
       this.avgCustSales = value;
-      fieldSetFlags()[19] = true;
+      fieldSetFlags()[20] = true;
       return this;
     }
 
@@ -1655,7 +1731,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'avgCustSales' field has been set, false otherwise.
       */
     public boolean hasAvgCustSales() {
-      return fieldSetFlags()[19];
+      return fieldSetFlags()[20];
     }
 
 
@@ -1666,7 +1742,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearAvgCustSales() {
       avgCustSales = null;
-      fieldSetFlags()[19] = false;
+      fieldSetFlags()[20] = false;
       return this;
     }
 
@@ -1686,9 +1762,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setAvgCustVisits(java.lang.Double value) {
-      validate(fields()[20], value);
+      validate(fields()[21], value);
       this.avgCustVisits = value;
-      fieldSetFlags()[20] = true;
+      fieldSetFlags()[21] = true;
       return this;
     }
 
@@ -1698,7 +1774,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'avgCustVisits' field has been set, false otherwise.
       */
     public boolean hasAvgCustVisits() {
-      return fieldSetFlags()[20];
+      return fieldSetFlags()[21];
     }
 
 
@@ -1709,7 +1785,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearAvgCustVisits() {
       avgCustVisits = null;
-      fieldSetFlags()[20] = false;
+      fieldSetFlags()[21] = false;
       return this;
     }
 
@@ -1729,9 +1805,9 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder setAvgCustUnits(java.lang.Double value) {
-      validate(fields()[21], value);
+      validate(fields()[22], value);
       this.avgCustUnits = value;
-      fieldSetFlags()[21] = true;
+      fieldSetFlags()[22] = true;
       return this;
     }
 
@@ -1741,7 +1817,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       * @return True if the 'avgCustUnits' field has been set, false otherwise.
       */
     public boolean hasAvgCustUnits() {
-      return fieldSetFlags()[21];
+      return fieldSetFlags()[22];
     }
 
 
@@ -1752,7 +1828,7 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       */
     public com.brierley.avro.schemas.quantilePeriodResults.Builder clearAvgCustUnits() {
       avgCustUnits = null;
-      fieldSetFlags()[21] = false;
+      fieldSetFlags()[22] = false;
       return this;
     }
 
@@ -1761,27 +1837,28 @@ public class quantilePeriodResults extends org.apache.avro.specific.SpecificReco
       try {
         quantilePeriodResults record = new quantilePeriodResults();
         record.timePeriod = fieldSetFlags()[0] ? this.timePeriod : (java.lang.Integer) defaultValue(fields()[0]);
-        record.quantile = fieldSetFlags()[1] ? this.quantile : (java.lang.Integer) defaultValue(fields()[1]);
-        record.totalCount = fieldSetFlags()[2] ? this.totalCount : (java.lang.Long) defaultValue(fields()[2]);
-        record.totalVisits = fieldSetFlags()[3] ? this.totalVisits : (java.lang.Long) defaultValue(fields()[3]);
-        record.totalSpend = fieldSetFlags()[4] ? this.totalSpend : (java.lang.Double) defaultValue(fields()[4]);
-        record.totalUnits = fieldSetFlags()[5] ? this.totalUnits : (java.lang.Long) defaultValue(fields()[5]);
-        record.totalDisc = fieldSetFlags()[6] ? this.totalDisc : (java.lang.Double) defaultValue(fields()[6]);
-        record.avgVisits = fieldSetFlags()[7] ? this.avgVisits : (java.lang.Double) defaultValue(fields()[7]);
-        record.avgSpend = fieldSetFlags()[8] ? this.avgSpend : (java.lang.Double) defaultValue(fields()[8]);
-        record.avgUnits = fieldSetFlags()[9] ? this.avgUnits : (java.lang.Double) defaultValue(fields()[9]);
-        record.avgDisc = fieldSetFlags()[10] ? this.avgDisc : (java.lang.Double) defaultValue(fields()[10]);
-        record.avgVisitSpend = fieldSetFlags()[11] ? this.avgVisitSpend : (java.lang.Double) defaultValue(fields()[11]);
-        record.avgVisitUnits = fieldSetFlags()[12] ? this.avgVisitUnits : (java.lang.Double) defaultValue(fields()[12]);
-        record.avgVisitDisc = fieldSetFlags()[13] ? this.avgVisitDisc : (java.lang.Double) defaultValue(fields()[13]);
-        record.avgRecency = fieldSetFlags()[14] ? this.avgRecency : (java.lang.Double) defaultValue(fields()[14]);
-        record.avgItemSales = fieldSetFlags()[15] ? this.avgItemSales : (java.lang.Double) defaultValue(fields()[15]);
-        record.avgItemDisc = fieldSetFlags()[16] ? this.avgItemDisc : (java.lang.Double) defaultValue(fields()[16]);
-        record.totalCust = fieldSetFlags()[17] ? this.totalCust : (java.lang.Long) defaultValue(fields()[17]);
-        record.avgStoreCust = fieldSetFlags()[18] ? this.avgStoreCust : (java.lang.Double) defaultValue(fields()[18]);
-        record.avgCustSales = fieldSetFlags()[19] ? this.avgCustSales : (java.lang.Double) defaultValue(fields()[19]);
-        record.avgCustVisits = fieldSetFlags()[20] ? this.avgCustVisits : (java.lang.Double) defaultValue(fields()[20]);
-        record.avgCustUnits = fieldSetFlags()[21] ? this.avgCustUnits : (java.lang.Double) defaultValue(fields()[21]);
+        record.anchorDate = fieldSetFlags()[1] ? this.anchorDate : (java.lang.CharSequence) defaultValue(fields()[1]);
+        record.quantile = fieldSetFlags()[2] ? this.quantile : (java.lang.Integer) defaultValue(fields()[2]);
+        record.totalCount = fieldSetFlags()[3] ? this.totalCount : (java.lang.Long) defaultValue(fields()[3]);
+        record.totalVisits = fieldSetFlags()[4] ? this.totalVisits : (java.lang.Long) defaultValue(fields()[4]);
+        record.totalSpend = fieldSetFlags()[5] ? this.totalSpend : (java.lang.Double) defaultValue(fields()[5]);
+        record.totalUnits = fieldSetFlags()[6] ? this.totalUnits : (java.lang.Long) defaultValue(fields()[6]);
+        record.totalDisc = fieldSetFlags()[7] ? this.totalDisc : (java.lang.Double) defaultValue(fields()[7]);
+        record.avgVisits = fieldSetFlags()[8] ? this.avgVisits : (java.lang.Double) defaultValue(fields()[8]);
+        record.avgSpend = fieldSetFlags()[9] ? this.avgSpend : (java.lang.Double) defaultValue(fields()[9]);
+        record.avgUnits = fieldSetFlags()[10] ? this.avgUnits : (java.lang.Double) defaultValue(fields()[10]);
+        record.avgDisc = fieldSetFlags()[11] ? this.avgDisc : (java.lang.Double) defaultValue(fields()[11]);
+        record.avgVisitSpend = fieldSetFlags()[12] ? this.avgVisitSpend : (java.lang.Double) defaultValue(fields()[12]);
+        record.avgVisitUnits = fieldSetFlags()[13] ? this.avgVisitUnits : (java.lang.Double) defaultValue(fields()[13]);
+        record.avgVisitDisc = fieldSetFlags()[14] ? this.avgVisitDisc : (java.lang.Double) defaultValue(fields()[14]);
+        record.avgRecency = fieldSetFlags()[15] ? this.avgRecency : (java.lang.Double) defaultValue(fields()[15]);
+        record.avgItemSales = fieldSetFlags()[16] ? this.avgItemSales : (java.lang.Double) defaultValue(fields()[16]);
+        record.avgItemDisc = fieldSetFlags()[17] ? this.avgItemDisc : (java.lang.Double) defaultValue(fields()[17]);
+        record.totalCust = fieldSetFlags()[18] ? this.totalCust : (java.lang.Long) defaultValue(fields()[18]);
+        record.avgStoreCust = fieldSetFlags()[19] ? this.avgStoreCust : (java.lang.Double) defaultValue(fields()[19]);
+        record.avgCustSales = fieldSetFlags()[20] ? this.avgCustSales : (java.lang.Double) defaultValue(fields()[20]);
+        record.avgCustVisits = fieldSetFlags()[21] ? this.avgCustVisits : (java.lang.Double) defaultValue(fields()[21]);
+        record.avgCustUnits = fieldSetFlags()[22] ? this.avgCustUnits : (java.lang.Double) defaultValue(fields()[22]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

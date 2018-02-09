@@ -69,6 +69,10 @@
 		 			 "type": "int",
 		 			 "doc" : "Quantile Period, calculated ascending"},
 
+					{"name": "anchorDate",
+					 "type": "string",
+					 "doc" : "The first date of the TimePeriod, formatted 'MMM yyyy'"},
+
 		 			{"name": "quantile",
 		 			 "type": "int",
 		 			 "doc" : "Quantile bucket"},
@@ -165,6 +169,10 @@
 		 			 "type": "int",
 		 			 "doc" : "Quantile Period, calculated ascending"},
 
+					{"name": "anchorDate",
+					 "type": "string",
+					 "doc" : "The first date of the TimePeriod, formatted 'MMM yyyy'"},
+
 		 			{"name": "quantile",
 		 			 "type": "int",
 		 			 "doc" : "Quantile bucket"},
@@ -194,6 +202,10 @@
 					{"name": "timePeriod",
 					 "type": "int",
 					 "doc" : "Current Time period"},
+
+					{"name": "anchorDate",
+					 "type": "string",
+					 "doc" : "The first date of the TimePeriod, formatted 'MMM yyyy'"},
 
 					{"name": "migrationData",
 					 "type": {"type": "array",

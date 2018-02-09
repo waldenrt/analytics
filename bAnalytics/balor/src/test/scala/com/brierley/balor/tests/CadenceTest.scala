@@ -852,6 +852,8 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
 
       val freqTable = CadenceCalcs.createFreqTable(noZeros, OneWeek) getOrElse noZeros
 
+      freqTable.show()
+
       val trueTable = sc.parallelize(List(
         Row(2, 1.toLong, 1.toLong),
         Row(4, 2.toLong, 3.toLong),
@@ -886,6 +888,8 @@ class CadenceTest extends FunSuite with DataFrameSuiteBase {
     new FreqTableData {
 
       val freqTable = CadenceCalcs.createFreqTable(lots, TwoMonths) getOrElse noZeros
+
+      freqTable.show()
 
       val trueTable = sc.parallelize(List(
         Row(1, 13.toLong, 13.toLong),
