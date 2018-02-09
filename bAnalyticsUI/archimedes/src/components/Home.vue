@@ -6,7 +6,7 @@
         <div class="marT_img">
           <!-- Image Row -->
           <v-layout wrap row class="accent elevation-1 pa-3 ma-0 bg_hero">
-              <v-flex xs8 sm10>
+              <v-flex xs8 sm9>
                 <div>
                   <h4 class="white--text text-xs-left pb-0 mb-0">Welcome to Archimedes</h4>
                   <h5 class="white--text text-xs-left pb-0 mb-0 grey--text lighten-2">UserName</h5>
@@ -15,14 +15,14 @@
                   <v-btn outline class="white--text ma-0">Power User</v-btn>
                 </div>
               </v-flex>
-              <v-flex xs4 sm2 class="date_border1">
+              <v-flex xs4 sm3 class="date_border1">
                 <v-layout wrap row fill-height class="date_border2">
                   <!--date-->
                   <v-flex xs12 class="primary card_crnr">
                     <div class="wrap1 text-xs-center">
                       <div class="wrap2 text-xs-center">
-                        <v-icon x-large class="white--text">date_range</v-icon>
-                        <div class="white--text">{{ new Date().getMonth() }} {{ new Date().getDate() }}, {{ new Date().getFullYear() }}</div>
+                        <v-icon x-large class="white--text pb-2">date_range</v-icon>
+                        <h6 class="white--text mb-0">{{ this.monthArray[new Date().getMonth()] }} {{ new Date().getDate() }}, {{ new Date().getFullYear() }}</h6>
                       </div>
                     </div>
                   </v-flex>
@@ -119,6 +119,7 @@ export default {
   name: 'home',
   data () {
     return {
+      monthArray: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
       cardItems: [
         {
           title: 'BALOR',
