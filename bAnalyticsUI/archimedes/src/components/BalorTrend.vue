@@ -1,37 +1,255 @@
 <template>
-  <div class='balorSegmentTrend'>
-    <h1>{{ msg }}</h1>
+  <v-container fluid class="balorTrend pl-3 pr-3">
 
-    <div style='width:75%;'>
-      <input type='checkbox' id='allTrends' checked='true' @change="allUpdate()">All Trendlines
-      <input type='checkbox' id='custTrend' @change="singleUpdate()">Customer Trendline
-      <input type='checkbox' id='txnTrend' @change="singleUpdate()">Transaction Trendline
-      <input type='checkbox' id='spendTrend' @change="singleUpdate()">Spend Trendline
-      <balor-trend-line :chart-data="trendLine"></balor-trend-line>
+    <!-- =====ROW1===== -->
+    <v-layout row wrap class="pa-0 mb-0">
+      <!-- BALOR Trendline -->
+      <v-flex xs12 sm8 md9 lg10>
+        <v-card class="white">
+          <v-card-title primary-title class="primary">
+            <h6 class="white--text text-xs-left mb-0">BALOR Period Trendline</h6>
+          </v-card-title>
+          <v-layout row wrap>
+            <!--slider-->
+            <v-flex xs12>
+              <v-layout row wrap class="mt-2 mb-3 pl-4 pr-4">
+                <v-flex xs12>
+                  <div id="ratioSlide" class="noUiSlider" ref="mySlider"></div>
+                </v-flex>
+              </v-layout>
+            </v-flex>
+            <!--//slider-->
+          </v-layout>
+          <!--trendlines-->
+          <v-layout row wrap class="mb-3 pa-3">
+            <v-flex xs12 fill-height>
+              <balor-trend-line :chart-data="trendLine" class="line_chart"></balor-trend-line>
+            </v-flex>
+          </v-layout>
+          <!--//trendlines-->
+        </v-card>
+      </v-flex>
+      <!--// BALOR Trendline -->
+      <!-- BALOR Summary -->
+      <v-flex xs12 sm4 md3 lg2>
+        <v-layout row wrap>
+          <v-flex xs12 class="pb-3">
+            <div class="white elevation-1">
+            <v-card class="white elevation-0">
+              <v-card-title primary-title class="primary white--text">
+                <h6 class="text-xs-left mb-0 white--text truncate1">BALOR Summary</h6>
+              </v-card-title>
+              <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-1 pr-1 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0 text-xs-center">Min. Date</p>
+                    <h6 class="mb-0 text-xs-center">{{ this.sumItems.minDateBalor }}</h6>
+                  </div>
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-1 pr-1 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0 text-xs-center">Max. Date</p>
+                    <h6 class="mb-0 text-xs-center">{{ this.sumItems.maxDateBalor }}</h6>
+                  </div>
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-1 pr-1 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0 text-xs-center">Customer Base:</p>
+                    <h6 class="mb-0 text-xs-center">{{ this.sumItems.totalCusts }}</h6>
+                  </div>
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-1 pr-1 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0 text-xs-center">% Customer - 1 Purchase:</p>
+                    <h6 class="mb-0 text-xs-center">{{ this.sumItems.percentCust }}</h6>
+                  </div>
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-1 pr-1 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0 text-xs-center">Transactions:</p>
+                    <h6 class="mb-0 text-xs-center">{{ this.sumItems.numRecords }}</h6>
+                  </div>
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-1 pr-1 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0 text-xs-center">Purchase Cadence - <br />80th Percentile:</p>
+                    <h6 class="mb-0 text-xs-center">{{ this.sumItems.normalizedCadence }}</h6>
+                  </div>
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-1 pr-1 pt-2 pb-2">
+                    <p class="body-1 pa-0 mb-0 text-xs-center">Time Periods:</p>
+                    <h6 class="mb-0 text-xs-center">{{ this.sumItems.timePeriods }}</h6>
+                  </div>
+              </div>
+            </v-card>
+            </div>
+          </v-flex>
+        </v-layout>
+      </v-flex>
+      <!--// BALOR Summary -->
+    </v-layout>
+    <!-- //=====ROW1===== -->
 
-      <div class="sliders" id="ratioSlide" ref="mySlider"></div>
-    </div>
-    <br>
-    <br>
-    <div style="width:25%;">
-      <balor-trend-line :chart-data='ratioLine'></balor-trend-line>
-      <pie-charts :chart-data='custData'></pie-charts>
-      <pie-charts :chart-data='txnData'></pie-charts>
-      <pie-charts :chart-data='spendData'></pie-charts>
-    </div>
-    <br>
+    <!-- =====ROW2===== -->
+    <v-layout row wrap class="mb-3">
+      <!-- PieCharts & Ratio Lines -->
+      <v-flex xs12 sm8 md9 lg10 fill-height>
+        <v-card class="white">
 
-    <br>
-    <div style='width:20%;'>
-      BALOR Composition and Metrics for Period:
-      <v-select v-model="tp"
-                v-bind:items="tpArray"
-                label="Select Time Period"
-                v-on:input="setTP()">
-      </v-select>
+          <!-- SELECTION ROW -->
+          <v-layout row wrap>
+            <v-flex xs12>
+              <v-card class="pa-0 ma-0 grey lighten-2">
+                <v-card-title primary-title class="primary">
+                  <h6 class="white--text text-xs-left mb-0">BALOR Composition and Metrics for Period:</h6>
+                </v-card-title>
+                <v-layout row wrap>
+                  <!--Dropdown1-->
+                  <v-flex xs12>
+                    <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
+                      <v-layout row wrap>
+                        <v-flex xs12>
+                          <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                            Time Period:
+                          </div>
+                        </v-flex>
+                        <v-flex xs12>
+                          <v-select v-model="tp"
+                                    v-bind:items="tpArray"
+                                    label="Select Time Period"
+                                    single-line
+                                    v-on:input="setTP()"
+                                    style="width:175px;"
+                                    class="pl-1 pt-1 mt-1 mb-2 white elevation-1"
+                                    hide-details
+                                    id="selection">
+                          </v-select>
+                        </v-flex>
+                      </v-layout>
+                    </v-card>
+                  </v-flex>
+                  <!--//Dropdown1-->
+                </v-layout>
+              </v-card>
+            </v-flex>
+            <!--selection-->
+            <!--//selection-->
+          </v-layout>
+          <!-- //SELECTION ROW -->
+          <v-layout row>
+            <v-flex xs12 class="pie_ratio_height">
 
-    </div>
-  </div>
+              <!-- LEGEND -->
+              <v-layout row wrap>
+                <v-flex xs12>
+                  <v-card flat class="white pa-3">
+                    <div class="legend legend_color1"></div>
+                    <div class="inliner padR5">Lapsed</div>
+                    <div class="legend legend_color2"></div>
+                    <div class="inliner padR5">New</div>
+                    <div class="legend legend_color3"></div>
+                    <div class="inliner padR5">Returning</div>
+                    <div class="legend legend_color4"></div>
+                    <div class="inliner padR5">Reactivated</div>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+              <!-- //LEGEND -->
+              <!--PIE CHARTS ROW-->
+              <v-layout row wrap>
+              <!--Pie Charts-->
+                <v-flex xs12 sm6 md3 lg3>
+                  <v-card flat class="white pa-3">
+                    <pie-charts class="white pie_chart1" :chart-data='custData' :width="250" :height="250" ></pie-charts>
+                    <div primary-title class="primary--text text-xs-center pa-2">Customers</div>
+                  </v-card>
+                </v-flex>
+                <v-flex xs12 sm6 md3 lg3>
+                  <v-card flat class="white pa-3">
+                    <pie-charts class="white pie_chart1" :chart-data='txnData' :width="250" :height="250"></pie-charts>
+                    <div primary-title class="primary--text text-xs-center pa-2">Transactions</div>
+                  </v-card>
+                </v-flex>
+                <v-flex xs12 sm6 md3 lg3>
+                  <v-card flat class="white pa-3">
+                    <pie-charts class="white pie_chart1" :chart-data='spendData' :width="250" :height="250"></pie-charts>
+                    <div primary-title class="primary--text text-xs-center pa-2">Sales</div>
+                  </v-card>
+                </v-flex>
+                <!--//Pie Charts-->
+                <!--Ratio Lines-->
+                <v-flex xs12 sm6 md3 lg3>
+                  <v-card flat class="white pt-4 pl-2 pr-4 pb-3">
+                    <balor-trend-line class="white ratio_line" :chart-data='ratioLine' :width="250" :height="250"></balor-trend-line>
+                  </v-card>
+                </v-flex>
+                <!--//Ratio Lines-->
+              </v-layout>
+              <!--//PIE CHARTS ROW-->
+            </v-flex>
+          </v-layout>
+        </v-card>
+      </v-flex>
+      <!-- //PieCharts & Ratio Lines -->
+      <!-- Retention Summary -->
+      <v-flex xs12 sm4 md3 lg2>
+        <v-layout row wrap>
+          <v-flex xs12 class="pb-3">
+            <v-card class="white ret_sum_height">
+              <v-card-title primary-title class="primary white--text">
+                <h6 class="text-xs-left mb-0 white--text truncate1">Rentention Summary</h6>
+              </v-card-title>
+              <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
+                  <!-- data_row -->
+                  <div class="panel_body mt-1 pl-3 pt-2 pb-2" v-for="item in retentionItems" v-bind:key="item.name">
+                    <p class="body-1 pa-0 mb-0 text-xs-center">{{ item.name }}:</p>
+                    <h6 class="mb-0 text-xs-center">{{ item.vals }}</h6>
+                  </div>
+              </div>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-flex>
+      <!--// Retention Summary -->
+    </v-layout>
+    <!-- //=====ROW2===== -->
+    <!-- =====ROW3===== -->
+    <v-layout row wrap class="mb-5">
+      <v-flex xs12 fill-height class="mb-3">
+        <v-card class="white">
+          <v-layout row wrap>
+            <v-flex xs12>
+              <v-card-title primary-title class="white">
+                <h6 class="primary--text text-xs-left mb-0">BALOR Trend Raw Data</h6>
+              </v-card-title>
+              <v-data-table
+                  v-bind:headers="headers"
+                  :items="items1"
+                  hide-actions
+                  class="elevation-1"
+              >
+                <template slot="items" scope="props">
+                  <td>{{ props.item.timePeriod }}</td>
+                  <td class="text-xs-right">{{ props.item.custBalor }}</td>
+                  <td class="text-xs-right">{{ props.item.spendBalor }}</td>
+                  <td class="text-xs-right">{{ props.item.txnBalor }}</td>
+                  <td class="text-xs-right">{{ props.item.newCustCount }}</td>
+                  <td class="text-xs-right">{{ props.item.newTxnAmt }}</td>
+                  <td class="text-xs-right">{{ props.item.newTxnCount }}</td>
+                  <td class="text-xs-right">{{ props.item.reactCustCount }}</td>
+                  <td class="text-xs-right">{{ props.item.reactTxnAmt }}</td>
+                  <td class="text-xs-right">{{ props.item.reactTxnCount }}</td>
+                  <td class="text-xs-right">{{ props.item.returnCustCount }}</td>
+                  <td class="text-xs-right">{{ props.item.returnTxnAmt }}</td>
+                  <td class="text-xs-right">{{ props.item.returnTxnCount }}</td>
+                  <td class="text-xs-right">{{ props.item.lapsedCustCount }}</td>
+                  <td class="text-xs-right">{{ props.item.lapsedTxnAmt }}</td>
+                  <td class="text-xs-right">{{ props.item.lapsedTxnCount }}</td>
+                </template>
+              </v-data-table>
+            </v-flex>
+          </v-layout>
+        </v-card>
+      </v-flex>
+    </v-layout>
+    <!-- //=====ROW3===== -->
+
+  </v-container>
 
 
 </template>
@@ -40,211 +258,53 @@
   import BalorTrendLine from './balorCharts/BalorTrendLine.js'
   import PieCharts from './balorCharts/PieCharts.js'
   import noUiSlider from 'noUiSlider'
+  import {summary} from './javascript/balor.service'
+
+  var numeral = require('numeral')
 
   export default {
-    name: 'balorSegmentTrend',
+    name: 'balorTrend',
     components: {
       BalorTrendLine,
       PieCharts
     },
     data () {
       return {
-        msg: 'Balor Trend Charts will go here!',
+        headers: [
+          {
+            text: 'Time Period',
+            left: true,
+            sortable: true,
+            value: 'timePeriod'
+          },
+          {text: 'Customer BALOR Ratio', value: 'custBalor'},
+          {text: 'Spend BALOR Ratio', value: 'spendBalor'},
+          {text: 'Txn BALOR Ratio', value: 'txnBalor'},
+          {text: 'New Cust Count', value: 'newCustCount'},
+          {text: 'New Total Sales', value: 'newTxnAmt'},
+          {text: 'New Txn Count', value: 'newTxnCount'},
+          {text: 'Reactivated Cust Count', value: 'reactCustCount'},
+          {text: 'Reactivated Total Sales', value: 'reactTxnAmt'},
+          {text: 'Reactivated Txn Count', value: 'reactTxnCount'},
+          {text: 'Returning Cust Count', value: 'returnCustCount'},
+          {text: 'Returning Total Sales', value: 'returnTxnAmt'},
+          {text: 'Returning Txn Count', value: 'returnTxnCount'},
+          {text: 'Lapsed Cust Count', value: 'lapsedCustCount'},
+          {text: 'Lapsed Total Sales', value: 'lapsedTxnAmt'},
+          {text: 'Lapsed Txn Count', value: 'lapsedTxnCount'}
+        ],
+        retentionItems: [],
+        sumItems: {},
+        msg: 'BALOR Trend Charts will go here!',
         custData: null,
         txnData: null,
         spendData: null,
         ratioLine: null,
-        incomingJson: {
-          'responseCode': 0,
-          'isError': 'false',
-          'httpStatusCode': 200,
-          'data': {
-            'normalizedCadence': 1.0,
-            'singleVisit': 1,
-            'totalCust': 1,
-            'maxDateBalor': '2016-12-31',
-            'numRecords': 2702629,
-            'timePeriods': [{
-              'lapsedTxnCount': 92230,
-              'newCustCount': 69506,
-              'reactTxnCount': 39050,
-              'newTxnCount': 116307,
-              'txnBalor': 1.684451913694026,
-              'returnTxnAmount': 4716953.0,
-              'reactCustCount': 17966,
-              'spendBalor': 2.107847534662702,
-              'timePeriod': 1,
-              'reactTxnAmount': 1033399.0,
-              'returnCustCount': 69462,
-              'custBalor': 1.508397999655113,
-              'lapsedCustCount': 57990,
-              'lapsedTxnAmount': 2175970.0,
-              'newTxnAmt': 3553214.0,
-              'returnTxnCount': 215602
-            }, {
-              'lapsedTxnCount': 77938,
-              'newCustCount': 61236,
-              'reactTxnCount': 36643,
-              'newTxnCount': 100160,
-              'txnBalor': 1.7552798378198056,
-              'returnTxnAmount': 2991339.0,
-              'reactCustCount': 17432,
-              'spendBalor': 1.5643779808631946,
-              'timePeriod': 2,
-              'reactTxnAmount': 842324.0,
-              'returnCustCount': 48784,
-              'custBalor': 1.5794567028730901,
-              'lapsedCustCount': 49807,
-              'lapsedTxnAmount': 2192947.0,
-              'newTxnAmt': 2588274.0,
-              'returnTxnCount': 144387
-            }, {
-              'lapsedTxnCount': 85303,
-              'newCustCount': 41723,
-              'reactTxnCount': 27621,
-              'newTxnCount': 63081,
-              'txnBalor': 1.0632920295886428,
-              'returnTxnAmount': 2437061.0,
-              'reactCustCount': 15016,
-              'spendBalor': 1.0520229762587552,
-              'timePeriod': 3,
-              'reactTxnAmount': 724850.0,
-              'returnCustCount': 41852,
-              'custBalor': 1.0629859302695919,
-              'lapsedCustCount': 53377,
-              'lapsedTxnAmount': 2549066.0,
-              'newTxnAmt': 1956826.0,
-              'returnTxnCount': 109455
-            }, {
-              'lapsedTxnCount': 88456,
-              'newCustCount': 40499,
-              'reactTxnCount': 28337,
-              'newTxnCount': 61986,
-              'txnBalor': 1.0211065388441711,
-              'returnTxnAmount': 2623998.0,
-              'reactCustCount': 14838,
-              'spendBalor': 1.3453899282385546,
-              'timePeriod': 4,
-              'reactTxnAmount': 845628.0,
-              'returnCustCount': 39892,
-              'custBalor': 0.9886197162968521,
-              'lapsedCustCount': 55974,
-              'lapsedTxnAmount': 2241733.0,
-              'newTxnAmt': 2170377.0,
-              'returnTxnCount': 104411
-            }, {
-              'lapsedTxnCount': 92734,
-              'newCustCount': 39288,
-              'reactTxnCount': 28749,
-              'newTxnCount': 58170,
-              'txnBalor': 0.9372937649621498,
-              'returnTxnAmount': 2093211.0,
-              'reactCustCount': 15697,
-              'spendBalor': 1.1416113309970697,
-              'timePeriod': 5,
-              'reactTxnAmount': 733655.0,
-              'returnCustCount': 40881,
-              'custBalor': 0.9591299190622383,
-              'lapsedCustCount': 57328,
-              'lapsedTxnAmount': 2257736.0,
-              'newTxnAmt': 1843802.0,
-              'returnTxnCount': 103120
-            }, {
-              'lapsedTxnCount': 100803,
-              'newCustCount': 39702,
-              'reactTxnCount': 27053,
-              'newTxnCount': 60239,
-              'txnBalor': 0.8659662906857931,
-              'returnTxnAmount': 2084852.0,
-              'reactCustCount': 14945,
-              'spendBalor': 1.047200847460415,
-              'timePeriod': 6,
-              'reactTxnAmount': 683061.0,
-              'returnCustCount': 43562,
-              'custBalor': 0.9053962257898835,
-              'lapsedCustCount': 60357,
-              'lapsedTxnAmount': 2431736.0,
-              'newTxnAmt': 1863455.0,
-              'returnTxnCount': 111003
-            }, {
-              'lapsedTxnCount': 97086,
-              'newCustCount': 41056,
-              'reactTxnCount': 26735,
-              'newTxnCount': 63154,
-              'txnBalor': 0.9258698473518324,
-              'returnTxnAmount': 2477227.0,
-              'reactCustCount': 14347,
-              'spendBalor': 0.9483848897077092,
-              'timePeriod': 7,
-              'reactTxnAmount': 616520.0,
-              'returnCustCount': 48516,
-              'custBalor': 0.905322156314852,
-              'lapsedCustCount': 61197,
-              'lapsedTxnAmount': 2616230.0,
-              'newTxnAmt': 1864673.0,
-              'returnTxnCount': 131028
-            }, {
-              'lapsedTxnCount': 88212,
-              'newCustCount': 47370,
-              'reactTxnCount': 31164,
-              'newTxnCount': 72332,
-              'txnBalor': 1.1732644084705028,
-              'returnTxnAmount': 2646692.0,
-              'reactCustCount': 16662,
-              'spendBalor': 1.2618917303311943,
-              'timePeriod': 8,
-              'reactTxnAmount': 854868.0,
-              'returnCustCount': 45681,
-              'custBalor': 1.1417363550452009,
-              'lapsedCustCount': 56083,
-              'lapsedTxnAmount': 2497597.0,
-              'newTxnAmt': 2296829.0,
-              'returnTxnCount': 122000
-            }, {
-              'lapsedTxnCount': 96699,
-              'newCustCount': 44833,
-              'reactTxnCount': 26956,
-              'newTxnCount': 68335,
-              'txnBalor': 0.9854393530439819,
-              'returnTxnAmount': 2518094.0,
-              'reactCustCount': 14333,
-              'spendBalor': 1.0379567379694452,
-              'timePeriod': 9,
-              'reactTxnAmount': 763353.0,
-              'returnCustCount': 42598,
-              'custBalor': 0.9843773396556027,
-              'lapsedCustCount': 60105,
-              'lapsedTxnAmount': 2864498.0,
-              'newTxnAmt': 2209872.0,
-              'returnTxnCount': 111083
-            }, {
-              'lapsedTxnCount': 88676,
-              'newCustCount': 45153,
-              'reactTxnCount': 32013,
-              'newTxnCount': 68897,
-              'txnBalor': 1.137962921196265,
-              'returnTxnAmount': 2600382.0,
-              'reactCustCount': 16647,
-              'spendBalor': 1.1262522030538704,
-              'timePeriod': 10,
-              'reactTxnAmount': 838657.0,
-              'returnCustCount': 40903,
-              'custBalor': 1.0770303241547579,
-              'lapsedCustCount': 57380,
-              'lapsedTxnAmount': 2780799.0,
-              'newTxnAmt': 2293224.0,
-              'returnTxnCount': 110152
-            }],
-            'minDateBalor': '2016-01-01'
-          },
-          'errors': '',
-          'moreInfo': '',
-          'userMessage': 'Cowboys',
-          'developerMessage': ''
-        },
+        incomingJson: {},
         custBalorArray: [],
         txnBalorArray: [],
         spendBalorArray: [],
+        dateArray: [],
         tpArray: [],
         custTrendData: {
           labels: this.tpArray,
@@ -290,6 +350,7 @@
           max: 10 // this.tpArray.length}
         },
         Slider: null,
+        mySlider: {},
         tp: 1,
         trendLine: this.allTrendData
       }
@@ -297,39 +358,108 @@
     computed: {
       jsonMsg: function () {
         return this.incomingJson.data
+      },
+      jobId: function () {
+        return this.$store.state.jobKey
+      },
+      jobApp: function () {
+        return this.$store.state.jobApp
+      },
+      items1: function () {
+        var formatArray = []
+        for (let i = 0; i < this.incomingJson.data.timePeriods.length; i++) {
+          formatArray.push({
+            'timePeriod': numeral(this.incomingJson.data.timePeriods[i].timePeriod).format(),
+            'custBalor': numeral(this.incomingJson.data.timePeriods[i].custBalor).format('0.00'),
+            'spendBalor': numeral(this.incomingJson.data.timePeriods[i].spendBalor).format('0.00'),
+            'txnBalor': numeral(this.incomingJson.data.timePeriods[i].txnBalor).format('0.00'),
+            'newCustCount': numeral(this.incomingJson.data.timePeriods[i].newCustCount).format(),
+            'newTxnAmt': numeral(this.incomingJson.data.timePeriods[i].newTxnAmt).format('$0,0.00'),
+            'newTxnCount': numeral(this.incomingJson.data.timePeriods[i].newTxnCount).format(),
+            'reactCustCount': numeral(this.incomingJson.data.timePeriods[i].reactCustCount).format(),
+            'reactTxnAmt': numeral(this.incomingJson.data.timePeriods[i].reactTxnAmt).format('$0,0.00'),
+            'reactTxnCount': numeral(this.incomingJson.data.timePeriods[i].reactTxnCount).format(),
+            'returnCustCount': numeral(this.incomingJson.data.timePeriods[i].returnCustCount).format(),
+            'returnTxnAmt': numeral(this.incomingJson.data.timePeriods[i].returnTxnAmt).format('$0,0.00'),
+            'returnTxnCount': numeral(this.incomingJson.data.timePeriods[i].returnTxnCount).format(),
+            'lapsedCustCount': numeral(this.incomingJson.data.timePeriods[i].lapsedCustCount).format(),
+            'lapsedTxnAmt': numeral(this.incomingJson.data.timePeriods[i].lapsedTxnAmt).format('$0,0.00'),
+            'lapsedTxnCount': numeral(this.incomingJson.data.timePeriods[i].lapsedTxnCount).format()
+          })
+        }
+        return formatArray
+      }
+    },
+    updated () {
+      if (document.getElementsByClassName('noUi-target').length === 0) {
+        this.createSlider()
       }
     },
     mounted () {
-      this.createPies()
-      this.createLines()
-      this.createSlider()
-
-      // this.createTrend()
+      if (this.jobApp === 'Balor' || this.jobApp === 'balor') {
+        this.$store.commit('switchApp', {module: 'BALOR'})
+        this.getResults()
+      } else {
+        alert('Please select a BALOR job from Job History')
+        this.$router.push('/Balor/')
+      }
     },
     methods: {
+      getResults () {
+        summary(this.jobId)
+          .catch(err => {
+            alert('Could not get Trend results. ' + err.message.toString())
+          })
+          .then((response) => {
+            this.incomingJson = response.data
+            console.log(this.incomingJson)
+            this.createPies()
+            this.createRetentionItems()
+            this.createLines()
+            this.createBalSumItems()
+          })
+      },
+      createBalSumItems () {
+        this.sumItems = {
+          'minDateBalor': this.jsonMsg.minDateBalor,
+          'maxDateBalor': this.jsonMsg.maxDateBalor,
+          'totalCusts': numeral(this.jsonMsg.totalCusts).format('0,0'),
+          'singleVisit': this.jsonMsg.singleVisit,
+          'percentCust': numeral(this.jsonMsg.singleVisit / this.jsonMsg.totalCusts).format('0.00%'),
+          'numRecords': numeral(this.jsonMsg.numRecords).format('0,0'),
+          'normalizedCadence': this.jsonMsg.normalizedCadence,
+          'timePeriods': this.jsonMsg.timePeriods.length
+        }
+      },
       createLines () {
+        console.log('this.items1')
+        console.log(this.items1)
+
         var tempCust = []
         var tempTxn = []
         var tempSpend = []
         var tempTP = []
+        var tempDate = []
 
         for (var i = 0; i < this.jsonMsg.timePeriods.length; i++) {
-          tempCust.push(this.jsonMsg.timePeriods[i].custBalor)
-          tempTxn.push(this.jsonMsg.timePeriods[i].txnBalor)
-          tempSpend.push(this.jsonMsg.timePeriods[i].spendBalor)
+          tempCust.push(this.jsonMsg.timePeriods[i].custBalor.toFixed(2))
+          tempTxn.push(this.jsonMsg.timePeriods[i].txnBalor.toFixed(2))
+          tempSpend.push(this.jsonMsg.timePeriods[i].spendBalor.toFixed(2))
           tempTP.push(this.jsonMsg.timePeriods[i].timePeriod)
+          tempDate.push(this.jsonMsg.timePeriods[i].anchorDate.substring(1, this.jsonMsg.timePeriods[i].anchorDate.length - 1))
         }
 
         this.custBalorArray = tempCust
         this.txnBalorArray = tempTxn
         this.spendBalorArray = tempSpend
         this.tpArray = tempTP
+        this.dateArray = tempDate
 
         this.ratioLine = {
           labels: ['Customer', 'Transaction', 'Sales'],
           datasets: [
             {
-              label: 'Balor Ratios',
+              label: 'BALOR Ratios',
               data: [
                 this.custBalorArray[this.tp],
                 this.txnBalorArray[this.tp],
@@ -343,7 +473,7 @@
         }
 
         this.trendLine = {
-          labels: this.tpArray,
+          labels: this.dateArray,
           datasets: [
             {
               label: 'Customer',
@@ -370,59 +500,54 @@
         }
       },
       slideUpdateTrends () {
-        var vals = this.slider.noUiSlider.get()
-        var min = parseInt(vals[0])
+        var vals = this.Slider.noUiSlider.get()
+        var min = parseInt(vals[0]) - 1
         var max = parseInt(vals[1])
-        console.log('min value: ' + min + ' and max value: ' + max)
-        var allChbx = document.getElementById('allTrends')
-        var custChbx = document.getElementById('custTrend')
-        var txnChbx = document.getElementById('txnTrend')
-        var spendChbx = document.getElementById('spendTrend')
 
         var newData = {}
         newData.labels = this.tpArray
         newData.datasets = []
 
-        if (allChbx.checked) {
-          newData.datasets.push(this.custTrendData.datasets)
-          newData.datasets.push(this.txnTrendData.datasets)
-          newData.datasets.push(this.spendTrendData.datasets)
+        this.trendLine = {
+          labels: this.tpArray.slice(min, max),
+          datasets: [
+            {
+              label: 'Customer',
+              data: this.custBalorArray.slice(min, max),
+              fill: false,
+              lineTension: 0,
+              backgroundColor: '#8EAC1D',
+              borderColor: '#8EAC1D'
+            }, {
+              label: 'Transaction',
+              fill: false,
+              data: this.txnBalorArray.slice(min, max),
+              lineTension: 0,
+              backgroundColor: '#F7970E',
+              borderColor: '#F7970E'
+            }, {
+              label: 'Spend',
+              fill: false,
+              data: this.spendBalorArray.slice(min, max),
+              lineTension: 0,
+              backgroundColor: '#0087AA',
+              borderColor: '#0087AA'
+            }]
         }
-        if (custChbx.checked) {
-          newData.datasets.push(this.custTrendData.datasets)
-        }
-        if (txnChbx.checked) {
-          newData.datasets.push(this.txnTrendData.datasets)
-        }
-        if (spendChbx.checked) {
-          newData.datasets.push(this.spendTrendData.datasets)
-        }
-
-        var d = {}
-        d.labels = this.tpArray.slice(min, max)
-        d.datasets = []
-        for (var i in newData.datasets) {
-          var nD = newData.datasets[i]
-          nD.data = nD[0].data.slice(min, max)
-          nD.lineTension = nD[0].lineTension
-          nD.backgroundColor = nD[0].backgroundColor
-          nD.borderColor = nD[0].borderColor
-          nD.label = nD[0].label
-          d.datasets.push(nD)
-        }
-        window.trendLine.data.labels = d.labels
-        window.trendLine.data.datasets = d.datasets
-        window.trendLine.update()
       },
-      singleUpdate () {
-        document.getElementById('allTrends').checked = false
-        this.slideUpdateTrends()
-      },
-      allUpdate () {
-        document.getElementById('custTrend').checked = false
-        document.getElementById('txnTrend').checked = false
-        document.getElementById('spendTrend').checked = false
-        this.slideUpdateTrends()
+      createRetentionItems () {
+        var ttlSales = this.jsonMsg.timePeriods[this.tp - 1].retention.returnNewSales + this.jsonMsg.timePeriods[this.tp - 1].retention.returnReactSales +
+          this.jsonMsg.timePeriods[this.tp - 1].retention.returnReturnSales
+        var ttlTxns = this.jsonMsg.timePeriods[this.tp - 1].retention.returnNewTxn + this.jsonMsg.timePeriods[this.tp - 1].retention.returnReactTxn +
+          this.jsonMsg.timePeriods[this.tp - 1].retention.returnReturnTxn
+        this.retentionItems = [
+          {name: 'Retention', vals: numeral(this.jsonMsg.timePeriods[this.tp - 1].retention.retention).format('0.00') + '%'},
+          {name: 'Retention Growth', vals: numeral(this.jsonMsg.timePeriods[this.tp - 1].retention.retentionGrowth).format('0.00') + '%'},
+          {name: 'Retention Sales Lift', vals: numeral(this.jsonMsg.timePeriods[this.tp - 1].retention.ttlSalesLift).format('0.00')},
+          {name: 'Retained Customer Sales from Prior Period', vals: numeral(ttlSales).format('$0,0.00')},
+          {name: 'Retention Transaction Lift', vals: numeral(this.jsonMsg.timePeriods[this.tp - 1].retention.ttlTxnLift).format('0.00')},
+          {name: 'Retained Customer Txns from Prior Period', vals: numeral(ttlTxns).format('0,0')}
+        ]
       },
       createPies () {
         var tp = 0
@@ -473,9 +598,9 @@
         this.spendData = {
           datasets: [{
             data: [
-              this.jsonMsg.timePeriods[tp].newTxnAmt,
-              this.jsonMsg.timePeriods[tp].returnTxnAmount,
-              this.jsonMsg.timePeriods[tp].reactTxnAmount],
+              this.jsonMsg.timePeriods[tp].newTxnAmt.toFixed(2),
+              this.jsonMsg.timePeriods[tp].returnTxnAmt.toFixed(2),
+              this.jsonMsg.timePeriods[tp].reactTxnAmt.toFixed(2)],
             backgroundColor: [
               '#8EAC1D',
               '#F7970E',
@@ -491,17 +616,27 @@
         }
       },
       createSlider () {
-        var slider = document.getElementById('ratioSlide')
-
-        noUiSlider.create(slider, {
-          start: [0, 10], // this.tpArray.length],
+        this.Slider = document.getElementById('ratioSlide')
+        this.Slider.style.height = '12px'
+        this.Slider.style.margin = '5px'
+        noUiSlider.create(this.Slider, {
+          start: [1, this.tpArray.length],
+          margin: 1, // Handles must be at least 1 apart
+          tooltips: false,
           connect: true,
           step: 1,
-          range: {'min': 0, 'max': 10} // this.tpArray.length}
+          range: {'min': 1, 'max': this.tpArray.length},
+          pips: { // Show a scale with the slider
+            mode: 'steps',
+            stepped: true,
+            density: 10
+          }
         })
-        // this.slider.noUiSlider.on('change', this.slideUpdateTrends)
+        this.Slider.noUiSlider.on('change', this.slideUpdateTrends)
       },
       setTP () {
+        this.createRetentionItems()
+
         this.custData = {
           datasets: [{
             data: [
@@ -548,9 +683,9 @@
         this.spendData = {
           datasets: [{
             data: [
-              this.jsonMsg.timePeriods[this.tp - 1].newTxnAmt,
-              this.jsonMsg.timePeriods[this.tp - 1].returnTxnAmount,
-              this.jsonMsg.timePeriods[this.tp - 1].reactTxnAmount],
+              this.jsonMsg.timePeriods[this.tp - 1].newTxnAmt.toFixed(2),
+              this.jsonMsg.timePeriods[this.tp - 1].returnTxnAmt.toFixed(2),
+              this.jsonMsg.timePeriods[this.tp - 1].reactTxnAmt.toFixed(2)],
             backgroundColor: [
               '#8EAC1D',
               '#F7970E',
@@ -569,7 +704,7 @@
           labels: ['Customer', 'Transaction', 'Sales'],
           datasets: [
             {
-              label: 'Balor Ratios',
+              label: 'BALOR Ratios',
               data: [
                 this.custBalorArray[this.tp - 1],
                 this.txnBalorArray[this.tp - 1],
@@ -589,5 +724,132 @@
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
+  .inliner {
+    display: inline-block;
+  }
 
+  .sum_brd1 {
+    border-right: 7px solid #D63809;
+  }
+
+  .sum_brd2 {
+    border-right: 7px solid #f7970e;
+  }
+
+  .summary td:last-child {
+    margin-left: 5px;
+    text-align: right;
+  }
+
+  .line_chart {
+    position: relative;
+    margin: 0 auto;
+    height: 396px !important;
+  }
+
+  .pie_ratio_height {
+    height:372px !important;
+  }
+
+  .ret_sum_height {
+    height:500px !important;
+  }
+
+  .pie_chart1 {
+    position: relative;
+    margin: 0 auto;
+    /*height: 100px !important;*/
+  }
+
+  .ratio_line {
+    position: relative;
+    margin: 0 auto;
+    /*height: 20vw !important;*/
+  }
+
+  .left_float {
+    float: left;
+  }
+
+  .right_float {
+    float: right;
+  }
+
+  .legend {
+    display: inline-block;
+    width: 38px;
+    height: 12px;
+    margin-right: 5px;
+  }
+
+  .legend_color1 {
+    background-color: #D63809;
+  }
+
+  .legend_color2 {
+    background-color: #8EAC1D;
+  }
+
+  .legend_color3 {
+    background-color: #F7970E;
+  }
+
+  .legend_color4 {
+    background-color: #0087AA;
+  }
+
+  .padR5 {
+    padding-right: 5px;
+  }
+
+  .tabs__item {
+    padding: 0 !important;
+  }
+
+  .tabs__container a {
+    padding: 0;
+  }
+
+  .panel {
+    overflow: auto;
+  }
+
+  .panel .panel_body {
+    border: 1px solid #E6EAEE;
+    background-color: #FFFFFF;
+    border-left: 3px solid #8EAC1D;
+    /*border-left: 3px solid #0087aa;*/
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+  }
+
+  .panel .panel_body p, .panel .panel_body h6 {
+    color:#354052;
+  }
+
+  .truncate1 {
+    width: 207px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  /* Smartphones (portrait and landscape) ----------- */
+  @media only screen and (min-device-width: 481px) and (max-device-width: 960px) {
+    /* Styles */
+    .pie_ratio_height {
+      height:auto !important;
+    }
+    .ret_sum_height {
+      height:820px !important;
+    }
+  }
+
+  /* Smartphones (portrait and landscape) ----------- */
+  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    /* Styles */
+
+    .padT15_mob {
+      padding-top: 15px;
+    }
+  }
 </style>

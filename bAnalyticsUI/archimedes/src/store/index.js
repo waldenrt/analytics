@@ -1,15 +1,37 @@
 // first stab at creating a store...
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedStore from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
-const state = {
-  appmodule: 'Balor'
-}
-
 const store = new Vuex.Store({
-  state
+  plugins: [createPersistedStore({
+    paths: ['jobKey', 'loggedIn', 'user', 'client', 'powerUser', 'jobApp']
+  })],
+  state: {
+    appmodule: 'Balor',
+    jobKey: 'test',
+    loggedIn: 'true',
+    user: 'Admin',
+    client: 'BPDemo',
+    powerUser: false,
+    jobApp: 'None'
+  },
+  mutations: {
+    switchApp (state, app) {
+      state.appmodule = app.module
+    },
+    setJobKey (state, job) {
+      state.jobKey = job.jobid
+      state.jobApp = job.app
+    }
+  },
+  actions: {
+    setJobKey ({commit}, job) {
+      commit('setJobKey', job)
+    }
+  }
 })
 
 export default store
