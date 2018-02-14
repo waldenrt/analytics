@@ -4,7 +4,7 @@
     <!-- =====ROW1===== -->
     <v-layout row wrap class="pa-0 mb-0">
       <!-- BALOR Trendline -->
-      <v-flex xs12 sm8 md9 lg10>
+      <v-flex xs12 sm8 md9 lg10 class="mb-3">
         <v-card class="white">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">BALOR Period Trendline</h6>
@@ -31,9 +31,9 @@
       </v-flex>
       <!--// BALOR Trendline -->
       <!-- BALOR Summary -->
-      <v-flex xs12 sm4 md3 lg2>
+      <v-flex xs12 sm4 md3 lg2 class="mb-3">
         <v-layout row wrap>
-          <v-flex xs12 class="pb-3">
+          <v-flex xs12>
             <div class="white elevation-1">
             <v-card class="white elevation-0">
               <v-card-title primary-title class="primary white--text">
@@ -86,9 +86,9 @@
     <!-- //=====ROW1===== -->
 
     <!-- =====ROW2===== -->
-    <v-layout row wrap class="mb-3">
+    <v-layout row wrap>
       <!-- PieCharts & Ratio Lines -->
-      <v-flex xs12 sm8 md9 lg10 fill-height>
+      <v-flex xs12 sm8 md9 lg10 class="mb-3">
         <v-card class="white">
 
           <!-- SELECTION ROW -->
@@ -187,9 +187,9 @@
       </v-flex>
       <!-- //PieCharts & Ratio Lines -->
       <!-- Retention Summary -->
-      <v-flex xs12 sm4 md3 lg2>
+      <v-flex xs12 sm4 md3 lg2 class="mb-3">
         <v-layout row wrap>
-          <v-flex xs12 class="pb-3">
+          <v-flex xs12>
             <v-card class="white ret_sum_height">
               <v-card-title primary-title class="primary white--text">
                 <h6 class="text-xs-left mb-0 white--text truncate1">Rentention Summary</h6>
@@ -214,32 +214,32 @@
         <v-card class="white">
           <v-layout row wrap>
             <v-flex xs12>
-              <v-card-title primary-title class="white">
-                <h6 class="primary--text text-xs-left mb-0">BALOR Trend Raw Data</h6>
+              <v-card-title primary-title class="info">
+                <h6 class="white--text text-xs-left mb-0">BALOR Trend Raw Data</h6>
               </v-card-title>
               <v-data-table
                   v-bind:headers="headers"
                   :items="items1"
                   hide-actions
-                  class="elevation-1"
+                  class="elevation-1 grey lighten-2"
               >
                 <template slot="items" scope="props">
-                  <td>{{ props.item.timePeriod }}</td>
-                  <td class="text-xs-right">{{ props.item.custBalor }}</td>
-                  <td class="text-xs-right">{{ props.item.spendBalor }}</td>
-                  <td class="text-xs-right">{{ props.item.txnBalor }}</td>
-                  <td class="text-xs-right">{{ props.item.newCustCount }}</td>
-                  <td class="text-xs-right">{{ props.item.newTxnAmt }}</td>
-                  <td class="text-xs-right">{{ props.item.newTxnCount }}</td>
-                  <td class="text-xs-right">{{ props.item.reactCustCount }}</td>
-                  <td class="text-xs-right">{{ props.item.reactTxnAmt }}</td>
-                  <td class="text-xs-right">{{ props.item.reactTxnCount }}</td>
-                  <td class="text-xs-right">{{ props.item.returnCustCount }}</td>
-                  <td class="text-xs-right">{{ props.item.returnTxnAmt }}</td>
-                  <td class="text-xs-right">{{ props.item.returnTxnCount }}</td>
-                  <td class="text-xs-right">{{ props.item.lapsedCustCount }}</td>
-                  <td class="text-xs-right">{{ props.item.lapsedTxnAmt }}</td>
-                  <td class="text-xs-right">{{ props.item.lapsedTxnCount }}</td>
+                  <td class="white">{{ props.item.timePeriod }}</td>
+                  <td class="white text-xs-right">{{ props.item.custBalor }}</td>
+                  <td class="white text-xs-right">{{ props.item.spendBalor }}</td>
+                  <td class="white text-xs-right">{{ props.item.txnBalor }}</td>
+                  <td class="white text-xs-right">{{ props.item.newCustCount }}</td>
+                  <td class="white text-xs-right">{{ props.item.newTxnAmt }}</td>
+                  <td class="white text-xs-right">{{ props.item.newTxnCount }}</td>
+                  <td class="white text-xs-right">{{ props.item.reactCustCount }}</td>
+                  <td class="white text-xs-right">{{ props.item.reactTxnAmt }}</td>
+                  <td class="white text-xs-right">{{ props.item.reactTxnCount }}</td>
+                  <td class="white text-xs-right">{{ props.item.returnCustCount }}</td>
+                  <td class="white text-xs-right">{{ props.item.returnTxnAmt }}</td>
+                  <td class="white text-xs-right">{{ props.item.returnTxnCount }}</td>
+                  <td class="white text-xs-right">{{ props.item.lapsedCustCount }}</td>
+                  <td class="white text-xs-right">{{ props.item.lapsedTxnAmt }}</td>
+                  <td class="white text-xs-right">{{ props.item.lapsedTxnCount }}</td>
                 </template>
               </v-data-table>
             </v-flex>
@@ -834,7 +834,7 @@
     text-overflow: ellipsis;
   }
   /* Smartphones (portrait and landscape) ----------- */
-  @media only screen and (min-device-width: 481px) and (max-device-width: 960px) {
+  @media only screen and (min-width: 481px) and (max-width: 960px) {
     /* Styles */
     .pie_ratio_height {
       height:auto !important;
@@ -845,9 +845,14 @@
   }
 
   /* Smartphones (portrait and landscape) ----------- */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  @media only screen and (min-width: 320px) and (max-width: 480px) {
     /* Styles */
-
+    .pie_ratio_height {
+      height:auto !important;
+    }
+    .ret_sum_height {
+      height:auto !important;
+    }
     .padT15_mob {
       padding-top: 15px;
     }
