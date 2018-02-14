@@ -9,8 +9,12 @@
         <v-flex xs12 fill-height>
         <v-card class="white">
           <v-card-title primary-title class="primary">
-            <h6 v-if="cadWeeks" class="white--text text-xs-left mb-0 truncate1">Cadence Raw Data (Weeks)</h6>
-            <h6 v-else class="white--text text-xs-left mb-0 truncate1">Cadence Raw Data (Days)</h6>
+            <div class="truncate1">
+              <h6 v-if="cadWeeks" class="white--text text-xs-left mb-0">Cadence Raw Data <span class="body-1">(Weeks)</span></h6>
+              <h6 v-else class="white--text text-xs-left mb-0">Cadence Raw Data <span class="body-1">(Days)</span></h6>
+            </div>
+            <v-spacer></v-spacer>
+            <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
           </v-card-title>
           <v-divider class="primary pb-0 pl-3 pr-3"></v-divider>
             <div class="constrainer">
@@ -49,9 +53,11 @@
       <v-flex xs12 sm12 md6 lg7 order-xs1 order-md2 fill-height>
         <v-card fill-height class="white pa-0" style="height:100%">
           <v-card-title primary-title class="primary">
-            <h6 class="white--text text-xs-left mb-0">Purchase Cadence Distribution</h6>
+              <h6 class="white--text text-xs-left mb-0">Purchase Cadence Distribution</h6>
+            <v-spacer></v-spacer>
+            <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
           </v-card-title>
-          <v-layout row wrap class="mb-3 pa-3">
+          <v-layout row wrap class="mb-3 pl-2 pr-2 pb-2 pt-2">
             <v-flex xs12 fill-height>
               <!--Chart-->
                 <annotated-bar-chart
@@ -72,7 +78,11 @@
             <div class="white elevation-1">
             <v-card class="white elevation-0">
               <v-card-title primary-title class="primary white--text">
-                <h6 class="text-xs-left mb-0 white--text">Cadence Summary</h6>
+                <div class="truncate1">
+                  <h6 class="text-xs-left mb-0 white--text">Cadence Summary</h6>
+                </div>
+                <v-spacer></v-spacer>
+                <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
               </v-card-title>
               <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
                   <!-- cadence_sum_items -->
@@ -359,7 +369,7 @@
   .bar_chart {
     position: relative !important;
     margin: 0 auto !important;
-    height: 499px !important;
+    height: 515px !important;
     width: 100% !important;
   }
 

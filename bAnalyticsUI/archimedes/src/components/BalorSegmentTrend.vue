@@ -7,6 +7,8 @@
         <v-card class="white">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Segment Trends</h6>
+            <v-spacer></v-spacer>
+            <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
           </v-card-title>
           <!-- dropdown_row [a] -->
           <v-card-row class="grey lighten-2">
@@ -155,6 +157,8 @@
         <v-card class="white">
         <v-card-title primary-title class="primary">
           <h6 class="white--text text-xs-left mb-0">Segment Profiles</h6>
+          <v-spacer></v-spacer>
+          <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
         </v-card-title>
         <!-- dropdown_row [a] -->
         <v-card-row class="grey lighten-2">

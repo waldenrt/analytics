@@ -8,6 +8,12 @@
         <v-card class="white">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">BALOR Period Trendline</h6>
+            <v-spacer></v-spacer>
+            <v-btn
+                icon slot="activator"
+                class="success--text">
+                <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
           <v-layout row wrap>
             <!--slider-->
@@ -38,6 +44,8 @@
             <v-card class="white elevation-0">
               <v-card-title primary-title class="primary white--text">
                 <h6 class="text-xs-left mb-0 white--text truncate1">BALOR Summary</h6>
+                <v-spacer></v-spacer>
+                <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
               </v-card-title>
               <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
                   <!-- data_row -->
@@ -97,6 +105,8 @@
               <v-card class="pa-0 ma-0 grey lighten-2">
                 <v-card-title primary-title class="primary">
                   <h6 class="white--text text-xs-left mb-0">BALOR Composition and Metrics for Period:</h6>
+                  <v-spacer></v-spacer>
+                  <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
                 </v-card-title>
                 <v-layout row wrap>
                   <!--Dropdown1-->
@@ -193,6 +203,8 @@
             <v-card class="white ret_sum_height">
               <v-card-title primary-title class="primary white--text">
                 <h6 class="text-xs-left mb-0 white--text truncate1">Rentention Summary</h6>
+                <v-spacer></v-spacer>
+                <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
               </v-card-title>
               <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
                   <!-- data_row -->
@@ -216,6 +228,8 @@
             <v-flex xs12>
               <v-card-title primary-title class="info">
                 <h6 class="white--text text-xs-left mb-0">BALOR Trend Raw Data</h6>
+                <v-spacer></v-spacer>
+                <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
               </v-card-title>
               <v-data-table
                   v-bind:headers="headers"

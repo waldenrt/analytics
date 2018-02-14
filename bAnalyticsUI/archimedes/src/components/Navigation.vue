@@ -3,6 +3,7 @@
     <v-app id="navigation" left-fixed-sidebar top-toolbar sidebar-under-toolbar>
 
       <!-- =====slideout nav===== -->
+      <!-- +++ left_drawer +++ -->
       <v-navigation-drawer fill-height temporary clipped class="accent" v-model="showmenu">
         <v-list class="pa-0">
           <!--Dashboard-->
@@ -29,6 +30,21 @@
           <!--//ModuleNav-->
         </v-list>
       </v-navigation-drawer>
+      <!-- +++ right_drawer +++ -->
+      <v-navigation-drawer right temporary v-model="showmenuRight">
+          <v-list dense>
+            <v-list-item>
+              <v-list-tile>
+                <v-list-tile-action>
+                  <v-icon>exit_to_app</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>Open Temporary Drawer</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list-item>
+          </v-list>
+        </v-navigation-drawer>
       <!-- //=====slideout nav===== -->
 
       <!-- =====top nav===== -->
@@ -90,6 +106,15 @@
               </v-list-item>
             </v-list>
           </v-menu>
+          <v-btn
+              outline
+              icon
+              x-large
+              class="success--text info"
+              v-tooltip:bottom="{ html: 'Global Help' }"
+              success @click.native.stop="showmenuRight = !showmenuRight">
+            <v-icon>help_outline</v-icon>
+          </v-btn>
         </v-toolbar-items>
       </v-toolbar>
       <!-- //=====top nav===== -->
@@ -119,6 +144,7 @@
       return {
         activeClient: null,
         showmenu: false,
+        showmenuRight: false,
         showBalor: 1,
         clients: [
           {text: 'Wendy\'s', icon: 'account_box', link: ''},

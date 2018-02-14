@@ -1037,6 +1037,7 @@
     margin: 0 auto;
     height:430px !important;
   }
+  .quant_prod_table1 th, .quant_prod_table1 td {vertical-align: top;}
   .prod_chart {
     position: relative !important;
     margin: 0 auto !important;

@@ -189,10 +189,9 @@
       <v-flex xs12 md6 class="mb-3">
       <!--table-->
         <v-card class="white w_100">
-          <v-card-title primary-title class="white">
-            <h6 class="text-xs-center mb-0 primary--text">Period-over-Period Retention Rate</h6>
+          <v-card-title primary-title class="info">
+            <h6 class="text-xs-center mb-0 white--text">Period-over-Period Retention Rate</h6>
           </v-card-title>
-          <v-divider class="primary pb-0"></v-divider>
               <div style="width:100%;" class="pb-3">
                 <table cellpadding="0" cellspacing="0" width="100%" class="ret_table">
                   <tr class="grey lighten-2 elevation-1">
@@ -238,8 +237,8 @@
             <v-layout row wrap class="pt-0 mt-0">
               <v-flex xs12 class="pa-0 ma-0">
                 <v-card class="pa-0 ma-0 grey lighten-2">
-                  <v-card-title primary-title class="white">
-                    <h6 class="primary--text text-xs-left mb-0">Post Period [Quantile] Composition</h6>
+                  <v-card-title primary-title class="info">
+                    <h6 class="white--text text-xs-left mb-0">Post Period [Quantile] Composition</h6>
                   </v-card-title>
                   <v-layout row wrap>
                     <!--Dropdown1-->
@@ -630,7 +629,7 @@
     background-color:#e7eeda;
   }
 
-  .mob_break2 {
+  .mob_break1, .mob_break2 {
     display:none;
   }
 
@@ -649,7 +648,7 @@
     }
   }
   /* Smartphones (portrait and landscape) ----------- */
-  @media only screen and (min-device-width: 481px) and (max-device-width: 960px) {
+  @media only screen and (min-width: 481px) and (max-width: 960px) {
     /* Styles */
     .mob_break1 {
       display:block;
@@ -660,7 +659,7 @@
   }
 
   /* Smartphones (portrait and landscape) ----------- */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  @media only screen and (min-width: 320px) and (max-width: 480px) {
     /* Styles */
     .mob_break1 {
       display:none;
@@ -670,7 +669,7 @@
     }
   }
   /* Smartphones (portrait and landscape) ----------- */
-  @media only screen and (min-device-width: 100px) and (max-device-width: 320px) {
+  @media only screen and (min-width: 100px) and (max-width: 320px) {
     /* Styles */
     .scrolltable {
       width: 320px !important;
@@ -681,7 +680,7 @@
     }
   }
   /* Smartphones (portrait and landscape) ----------- */
-  @media only screen and (min-device-width: 321px) and (max-device-width: 375px) {
+  @media only screen and (min-width: 321px) and (max-width: 375px) {
     /* Styles */
     .scrolltable {
       width: 375px !important;
@@ -689,7 +688,7 @@
     }
   }
   /* Smartphones (portrait and landscape) ----------- */
-  @media only screen and (min-device-width: 376px) and (max-device-width: 425px) {
+  @media only screen and (min-width: 376px) and (max-width: 425px) {
     /* Styles */
     .scrolltable {
       width: 425px !important;
