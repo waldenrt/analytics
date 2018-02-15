@@ -10,8 +10,9 @@
             <h6 class="white--text text-xs-left mb-0">BALOR Period Trendline</h6>
             <v-spacer></v-spacer>
             <v-btn
+                v-on:click.native="getHelpSection()"
                 icon slot="activator"
-                class="success--text">
+                class="success--text" style="height:auto !important;">
                 <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
             </v-btn>
           </v-card-title>
@@ -43,7 +44,7 @@
             <div class="white elevation-1">
             <v-card class="white elevation-0">
               <v-card-title primary-title class="primary white--text">
-                <h6 class="text-xs-left mb-0 white--text truncate1">BALOR Summary</h6>
+                <h6 class="text-xs-left mb-0 white--text ">BALOR Summary</h6>
                 <v-spacer></v-spacer>
                 <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
               </v-card-title>
@@ -419,6 +420,9 @@
       }
     },
     methods: {
+      getHelpSection: function () {
+        console.log(this.$router.app)
+      },
       getResults () {
         summary(this.jobId)
           .catch(err => {

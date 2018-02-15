@@ -31,18 +31,19 @@
         </v-list>
       </v-navigation-drawer>
       <!-- +++ right_drawer +++ -->
-      <v-navigation-drawer right temporary v-model="showmenuRight">
+      <v-navigation-drawer right temporary class="success" v-model="showmenuRight">
           <v-list dense>
-            <v-list-item>
-              <v-list-tile>
-                <v-list-tile-action>
-                  <v-icon>exit_to_app</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title>Open Temporary Drawer</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list-item>
+            <v-list-tile-title class="text-xs-center">
+              <h6 class="white--text text-xs-center mb-0 pt-2 pb-3">Help</h6>
+            </v-list-tile-title>
+            <v-expansion-panel>
+              <v-expansion-panel-content v-for="(item,i) in 5" :key="i">
+                <div slot="header">Item</div>
+                <v-card>
+                  <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
+                </v-card>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
           </v-list>
         </v-navigation-drawer>
       <!-- //=====slideout nav===== -->
@@ -107,6 +108,7 @@
             </v-list>
           </v-menu>
           <v-btn
+              ref="globalHelp"
               outline
               icon
               x-large
@@ -170,6 +172,9 @@
         ],
         userInfo: [
           {firstName: 'FirstName', lastName: 'LastName', email: 'someone@juju.com', iconClass: 'info'}
+        ],
+        helpList: [
+          {appMod: 'Balor'}
         ]
       }
     },
