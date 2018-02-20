@@ -30,22 +30,6 @@
           <!--//ModuleNav-->
         </v-list>
       </v-navigation-drawer>
-      <!-- +++ right_drawer +++ -->
-      <v-navigation-drawer right temporary class="success" v-model="showmenuRight">
-          <v-list dense>
-            <v-list-tile-title class="text-xs-center">
-              <h6 class="white--text text-xs-center mb-0 pt-2 pb-3">Help</h6>
-            </v-list-tile-title>
-            <v-expansion-panel>
-              <v-expansion-panel-content v-for="(item,i) in 5" :key="i">
-                <div slot="header">Item</div>
-                <v-card>
-                  <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
-                </v-card>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-list>
-        </v-navigation-drawer>
       <!-- //=====slideout nav===== -->
 
       <!-- =====top nav===== -->
@@ -107,16 +91,6 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-btn
-              ref="globalHelp"
-              outline
-              icon
-              x-large
-              class="success--text info"
-              v-tooltip:bottom="{ html: 'Global Help' }"
-              success @click.native.stop="showmenuRight = !showmenuRight">
-            <v-icon>help_outline</v-icon>
-          </v-btn>
         </v-toolbar-items>
       </v-toolbar>
       <!-- //=====top nav===== -->
@@ -146,16 +120,15 @@
       return {
         activeClient: null,
         showmenu: false,
-        showmenuRight: false,
         showBalor: 1,
         clients: [
           {text: 'Wendy\'s', icon: 'account_box', link: ''},
           {text: 'Hertz', icon: 'account_circle', link: ''}
         ],
         modules: [
+          {name: 'Core Lifecycle', active: false, icon: 'label', link: '/Lifecycle'},
           {name: 'BALOR', active: true, icon: 'label', link: '/Balor'},
           {name: 'Pareto', active: false, icon: 'label', link: '/Pareto'},
-          {name: 'Core Lifecycle', active: false, icon: 'label', link: '/Lifecycle'},
           {name: 'b-Relevant', active: false, icon: 'label', link: '/bRelevant'},
           {name: 'History', active: false, icon: 'history', link: '/JobHistory'},
           {name: 'Settings', active: false, icon: 'settings', link: '/Settings'},

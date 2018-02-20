@@ -1,11 +1,10 @@
 <template>
-  <v-card
-      height="415px"
-  >
     <v-navigation-drawer
-        class="pb-0"
-        permanent
-        absolute
+        ref="helpNav"
+        class="pb-0 success"
+        right
+        temporary
+        v-model="showmenuRight"
         height="100%"
         light
     >
@@ -70,12 +69,30 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-  </v-card>
+
+
+    <!-- +++ right_drawer +++
+    <v-navigation-drawer right temporary class="success" v-model="showmenuRight">
+        <v-list dense>
+          <v-list-tile-title class="text-xs-center">
+            <h6 class="white--text text-xs-center mb-0 pt-2 pb-3">Help</h6>
+          </v-list-tile-title>
+          <v-expansion-panel>
+            <v-expansion-panel-content v-for="(item,i) in 5" :key="i">
+              <div slot="header">Item</div>
+              <v-card>
+                <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
+              </v-card>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-list>
+      </v-navigation-drawer>-->
 </template>
 
 <script>
   export default {
     data: () => ({
+      showmenuRight: false,
       items: [
         {icon: 'contacts', text: 'Contacts'},
         {icon: 'history', text: 'Frequently contacted'},

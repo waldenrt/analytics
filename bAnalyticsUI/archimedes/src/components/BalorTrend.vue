@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="balorTrend pl-3 pr-3">
-
     <!-- =====ROW1===== -->
+    <SideNav ref="helpNav"></SideNav>
     <v-layout row wrap class="pa-0 mb-0">
       <!-- BALOR Trendline -->
       <v-flex xs12 sm8 md9 lg10 class="mb-3">
@@ -10,7 +10,7 @@
             <h6 class="white--text text-xs-left mb-0">BALOR Period Trendline</h6>
             <v-spacer></v-spacer>
             <v-btn
-                v-on:click.native="getHelpSection()"
+                @click.native="getHelpSection()"
                 icon slot="activator"
                 class="success--text" style="height:auto !important;">
                 <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
@@ -43,10 +43,25 @@
           <v-flex xs12>
             <div class="white elevation-1">
             <v-card class="white elevation-0">
-              <v-card-title primary-title class="primary white--text">
+              <v-card-title primary-title class="primary">
                 <h6 class="text-xs-left mb-0 white--text ">BALOR Summary</h6>
                 <v-spacer></v-spacer>
-                <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
+                <v-dialog v-model="dialog2" style="height:auto !important;line-height:24px;">
+                  <v-btn
+                      v-on:click.native=""
+                      icon slot="activator"
+                      class="success--text" style="height:auto !important;">
+                      <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
+                  </v-btn>
+                  <v-card>
+                    <v-card-row class="pa-2 info">
+                      <div class="body-2 mb-0 white--text">Help - BALOR Summary</div>
+                    </v-card-row>
+                    <v-card-row class="pa-2">
+                      <div class="body-1 accent--text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla a risus ut nulla tincidunt sodales.</div>
+                    </v-card-row>
+                  </v-card>
+                </v-dialog>
               </v-card-title>
               <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
                   <!-- data_row -->
@@ -107,7 +122,12 @@
                 <v-card-title primary-title class="primary">
                   <h6 class="white--text text-xs-left mb-0">BALOR Composition and Metrics for Period:</h6>
                   <v-spacer></v-spacer>
-                  <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
+                  <v-btn
+                      v-on:click.native="getHelpSection()"
+                      icon slot="activator"
+                      class="success--text" style="height:auto !important;">
+                      <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
+                  </v-btn>
                 </v-card-title>
                 <v-layout row wrap>
                   <!--Dropdown1-->
@@ -149,8 +169,6 @@
               <v-layout row wrap>
                 <v-flex xs12>
                   <v-card flat class="white pa-3">
-                    <div class="legend legend_color1"></div>
-                    <div class="inliner padR5">Lapsed</div>
                     <div class="legend legend_color2"></div>
                     <div class="inliner padR5">New</div>
                     <div class="legend legend_color3"></div>
@@ -263,7 +281,6 @@
       </v-flex>
     </v-layout>
     <!-- //=====ROW3===== -->
-
   </v-container>
 
 
@@ -274,6 +291,7 @@
   import PieCharts from './balorCharts/PieCharts.js'
   import noUiSlider from 'noUiSlider'
   import {summary} from './javascript/balor.service'
+  import SideNav from './SideNav.vue'
 
   var numeral = require('numeral')
 
@@ -281,10 +299,12 @@
     name: 'balorTrend',
     components: {
       BalorTrendLine,
-      PieCharts
+      PieCharts,
+      SideNav
     },
     data () {
       return {
+        sideNavData: SideNav.data,
         headers: [
           {
             text: 'Time Period',
@@ -367,7 +387,8 @@
         Slider: null,
         mySlider: {},
         tp: 1,
-        trendLine: this.allTrendData
+        trendLine: this.allTrendData,
+        dialog2: false
       }
     },
     computed: {
@@ -421,7 +442,9 @@
     },
     methods: {
       getHelpSection: function () {
-        console.log(this.$router.app)
+        console.log(this.$refs)
+        var hpNv = this.$refs.helpNav.$refs.helpNav
+        hpNv.value = !hpNv.value
       },
       getResults () {
         summary(this.jobId)
@@ -561,9 +584,9 @@
         this.retentionItems = [
           {name: 'Retention', vals: numeral(this.jsonMsg.timePeriods[this.tp - 1].retention.retention).format('0.00') + '%'},
           {name: 'Retention Growth', vals: numeral(this.jsonMsg.timePeriods[this.tp - 1].retention.retentionGrowth).format('0.00') + '%'},
-          {name: 'Retention Sales Lift', vals: numeral(this.jsonMsg.timePeriods[this.tp - 1].retention.ttlSalesLift).format('0.00')},
+          {name: 'Retention Sales Lift', vals: numeral((this.jsonMsg.timePeriods[this.tp - 1].retention.ttlSalesLift) / 100).format('0.00')},
           {name: 'Retained Customer Sales from Prior Period', vals: numeral(ttlSales).format('$0,0.00')},
-          {name: 'Retention Transaction Lift', vals: numeral(this.jsonMsg.timePeriods[this.tp - 1].retention.ttlTxnLift).format('0.00')},
+          {name: 'Retention Transaction Lift', vals: numeral((this.jsonMsg.timePeriods[this.tp - 1].retention.ttlTxnLift) / 100).format('0.00')},
           {name: 'Retained Customer Txns from Prior Period', vals: numeral(ttlTxns).format('0,0')}
         ]
       },
@@ -573,12 +596,10 @@
         this.custData = {
           datasets: [{
             data: [
-              this.jsonMsg.timePeriods[tp].lapsedCustCount,
               this.jsonMsg.timePeriods[tp].newCustCount,
               this.jsonMsg.timePeriods[tp].returnCustCount,
               this.jsonMsg.timePeriods[tp].reactCustCount],
             backgroundColor: [
-              '#D63A09',
               '#8EAC1D',
               '#F7970E',
               '#0087AA'
@@ -586,7 +607,6 @@
             label: 'Customers'
           }],
           labels: [
-            'Lapsed',
             'New',
             'Returning',
             'Reactivated'
@@ -658,12 +678,10 @@
         this.custData = {
           datasets: [{
             data: [
-              this.jsonMsg.timePeriods[this.tp - 1].lapsedCustCount,
               this.jsonMsg.timePeriods[this.tp - 1].newCustCount,
               this.jsonMsg.timePeriods[this.tp - 1].returnCustCount,
               this.jsonMsg.timePeriods[this.tp - 1].reactCustCount],
             backgroundColor: [
-              '#D63A09',
               '#8EAC1D',
               '#F7970E',
               '#0087AA'
@@ -671,7 +689,6 @@
             label: 'Customers'
           }],
           labels: [
-            'Lapsed',
             'New',
             'Returning',
             'Reactivated'
@@ -798,10 +815,6 @@
     width: 38px;
     height: 12px;
     margin-right: 5px;
-  }
-
-  .legend_color1 {
-    background-color: #D63809;
   }
 
   .legend_color2 {
