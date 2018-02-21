@@ -166,7 +166,7 @@
                     class="scaling-svg"
                     viewBox="0 10 1050 1000">
                     <text class="y_axis1 subheading" x="-56%" y="-7" fill="rgba(53,64,82,0.87)">Prior Period Segment</text>
-                    <text class="y_axis2 subheading" x="45%" y="-1057" fill="rgba(53,64,82,0.87)">Post Period Segment</text>
+                    <text class="y_axis2 subheading" x="42%" y="-1057" fill="rgba(53,64,82,0.87)">Post Period Segment</text>
                     <text class="x_axis subheading" x="33%" y="1000" fill="rgba(53,64,82,0.87)">Period-over-Period Customer Migration across Segments</text>
                   </svg>
               </div>

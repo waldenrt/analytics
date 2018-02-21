@@ -12,8 +12,9 @@
             <v-btn
                 @click.native="getHelpSection()"
                 icon slot="activator"
-                class="success--text" style="height:auto !important;">
-                <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
             </v-btn>
           </v-card-title>
           <v-layout row wrap>
@@ -46,22 +47,13 @@
               <v-card-title primary-title class="primary">
                 <h6 class="text-xs-left mb-0 white--text ">BALOR Summary</h6>
                 <v-spacer></v-spacer>
-                <v-dialog v-model="dialog2" style="height:auto !important;line-height:24px;">
-                  <v-btn
-                      v-on:click.native=""
-                      icon slot="activator"
-                      class="success--text" style="height:auto !important;">
+                <v-btn
+                    @click.native="getHelpSection()"
+                    icon slot="activator"
+                    class="success--text"
+                    style="height:auto !important;">
                       <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
-                  </v-btn>
-                  <v-card>
-                    <v-card-row class="pa-2 info">
-                      <div class="body-2 mb-0 white--text">Help - BALOR Summary</div>
-                    </v-card-row>
-                    <v-card-row class="pa-2">
-                      <div class="body-1 accent--text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla a risus ut nulla tincidunt sodales.</div>
-                    </v-card-row>
-                  </v-card>
-                </v-dialog>
+                </v-btn>
               </v-card-title>
               <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
                   <!-- data_row -->
@@ -223,7 +215,13 @@
               <v-card-title primary-title class="primary white--text">
                 <h6 class="text-xs-left mb-0 white--text truncate1">Rentention Summary</h6>
                 <v-spacer></v-spacer>
-                <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
+                <v-btn
+                    @click.native="getHelpSection()"
+                    icon slot="activator"
+                    class="success--text"
+                    style="height:auto !important;">
+                      <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
+                </v-btn>
               </v-card-title>
               <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
                   <!-- data_row -->
@@ -248,7 +246,13 @@
               <v-card-title primary-title class="info">
                 <h6 class="white--text text-xs-left mb-0">BALOR Trend Raw Data</h6>
                 <v-spacer></v-spacer>
-                <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
+                <v-btn
+                    @click.native="getHelpSection()"
+                    icon slot="activator"
+                    class="success--text"
+                    style="height:auto !important;">
+                      <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
+                </v-btn>
               </v-card-title>
               <v-data-table
                   v-bind:headers="headers"
@@ -387,8 +391,7 @@
         Slider: null,
         mySlider: {},
         tp: 1,
-        trendLine: this.allTrendData,
-        dialog2: false
+        trendLine: this.allTrendData
       }
     },
     computed: {
@@ -443,8 +446,8 @@
     methods: {
       getHelpSection: function () {
         console.log(this.$refs)
-        var hpNv = this.$refs.helpNav.$refs.helpNav
-        hpNv.value = !hpNv.value
+        var hpNav = this.$refs.helpNav.$refs.helpNav
+        hpNav.value = !hpNav.value
       },
       getResults () {
         summary(this.jobId)
@@ -759,17 +762,11 @@
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-  .inliner {
-    display: inline-block;
-  }
+  .inliner {display: inline-block;}
 
-  .sum_brd1 {
-    border-right: 7px solid #D63809;
-  }
+  .sum_brd1 {border-right: 7px solid #D63809;}
 
-  .sum_brd2 {
-    border-right: 7px solid #f7970e;
-  }
+  .sum_brd2 {border-right: 7px solid #f7970e;}
 
   .summary td:last-child {
     margin-left: 5px;
@@ -782,13 +779,9 @@
     height: 396px !important;
   }
 
-  .pie_ratio_height {
-    height:372px !important;
-  }
+  .pie_ratio_height {height:372px !important;}
 
-  .ret_sum_height {
-    height:500px !important;
-  }
+  .ret_sum_height {height:505px !important;}
 
   .pie_chart1 {
     position: relative;
@@ -802,13 +795,9 @@
     /*height: 20vw !important;*/
   }
 
-  .left_float {
-    float: left;
-  }
+  .left_float {float: left;}
 
-  .right_float {
-    float: right;
-  }
+  .right_float {float: right;}
 
   .legend {
     display: inline-block;
@@ -817,33 +806,19 @@
     margin-right: 5px;
   }
 
-  .legend_color2 {
-    background-color: #8EAC1D;
-  }
+  .legend_color2 {background-color: #8EAC1D;}
 
-  .legend_color3 {
-    background-color: #F7970E;
-  }
+  .legend_color3 {background-color: #F7970E;}
 
-  .legend_color4 {
-    background-color: #0087AA;
-  }
+  .legend_color4 {background-color: #0087AA;}
 
-  .padR5 {
-    padding-right: 5px;
-  }
+  .padR5 {padding-right: 5px;}
 
-  .tabs__item {
-    padding: 0 !important;
-  }
+  .tabs__item {padding: 0 !important;}
 
-  .tabs__container a {
-    padding: 0;
-  }
+  .tabs__container a {padding: 0;}
 
-  .panel {
-    overflow: auto;
-  }
+  .panel {overflow: auto;}
 
   .panel .panel_body {
     border: 1px solid #E6EAEE;
@@ -867,25 +842,15 @@
   /* Smartphones (portrait and landscape) ----------- */
   @media only screen and (min-width: 481px) and (max-width: 960px) {
     /* Styles */
-    .pie_ratio_height {
-      height:auto !important;
-    }
-    .ret_sum_height {
-      height:820px !important;
-    }
+    .pie_ratio_height {height:auto !important;}
+    .ret_sum_height {height:820px !important;}
   }
 
   /* Smartphones (portrait and landscape) ----------- */
   @media only screen and (min-width: 320px) and (max-width: 480px) {
     /* Styles */
-    .pie_ratio_height {
-      height:auto !important;
-    }
-    .ret_sum_height {
-      height:auto !important;
-    }
-    .padT15_mob {
-      padding-top: 15px;
-    }
+    .pie_ratio_height {height:auto !important;}
+    .ret_sum_height {height:auto !important;}
+    .padT15_mob {padding-top: 15px;}
   }
 </style>
