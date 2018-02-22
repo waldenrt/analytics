@@ -1,11 +1,20 @@
 <template>
-  <v-container fluid class="quantileProducts pl-3 pr-3 mb-3">
+  <v-container fluid class="lifecycleMigration pl-3 pr-3 mb-3">
     <!-- =====ROW1===== -->
+    <HelpNavLifecycle ref="helpNav"></HelpNavLifecycle>
     <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Period-over-Period Segment Migration</h6>
+            <v-spacer></v-spacer>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
@@ -182,8 +191,16 @@
               <!--table-row-->
               <v-layout wrap row>
                 <v-card class="white w_100">
-                  <v-card-title primary-title class="white">
-                    <h6 class="primary--text text-xs-center mb-0">Prior Period Segment Retention Rate</h6>
+                  <v-card-title primary-title class="info white--text">
+                    <h6 class="white--text text-xs-center mb-0">Prior Period Segment Retention Rate</h6>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        @click.native="getHelpSection()"
+                        icon slot="activator"
+                        class="success--text"
+                        style="height:auto !important;">
+                          <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+                    </v-btn>
                   </v-card-title>
                   <v-divider class="primary pb-0"></v-divider>
                   <v-flex xs12 fill-height>
@@ -232,8 +249,16 @@
                     <v-layout row wrap class="pt-0 mt-0">
                       <v-flex xs12 class="pa-0 ma-0">
                         <v-card class="pa-0 ma-0 grey lighten-2">
-                          <v-card-title primary-title class="white">
-                            <h6 class="primary--text text-xs-left mb-0">Post Period Segment Composition</h6>
+                          <v-card-title primary-title class="info">
+                            <h6 class="white--text text-xs-left mb-0">Post Period Segment Composition</h6>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                @click.native="getHelpSection()"
+                                icon slot="activator"
+                                class="success--text"
+                                style="height:auto !important;">
+                                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+                            </v-btn>
                           </v-card-title>
                           <v-layout row wrap>
                             <!--Dropdown1-->
@@ -299,6 +324,7 @@
   import * as d3 from 'd3'
   import {sankey, sankeyLinkHorizontal} from 'd3-sankey'
   import BarChart from './balorCharts/BarChart'
+  import HelpNavLifecycle from './HelpNavLifecycle.vue'
 
   // [JF] initiates numeral.js library in this vue component. must use together with numeral() or numeral().format()
   var numeral = require('numeral')
@@ -306,7 +332,8 @@
   export default {
     name: 'lifecycleMigration',
     components: {
-      BarChart
+      BarChart,
+      HelpNavLifecycle
     },
     data () {
       return {
@@ -372,6 +399,10 @@
       }
     },
     methods: {
+      getHelpSection: function () {
+        var hpNav = this.$refs.helpNav.$refs.helpNav
+        hpNav.value = !hpNav.value
+      },
       getResults () {
         migration(this.jobId)
           .catch(err => {

@@ -1,11 +1,20 @@
 <template>
   <v-container fluid class="quantileProducts pl-3 pr-3 mb-3">
     <!-- =====ROW1===== -->
+    <HelpNavQuantile ref="helpNav"></HelpNavQuantile>
     <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Purchased Products Analysis per Quantile</h6>
+            <v-spacer></v-spacer>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
@@ -206,6 +215,7 @@
 <script>
   import {quantProd} from './javascript/quantile.service'
   import StackedBar from './quantileCharts/StackedBar'
+  import HelpNavQuantile from './HelpNavQuantile.vue'
 
   // [JF] initiates numeral.js library in this vue component. must use together with numeral() or numeral().format()
   var numeral = require('numeral')
@@ -213,7 +223,8 @@
   export default {
     name: 'quantProducts',
     components: {
-      StackedBar
+      StackedBar,
+      HelpNavQuantile
     },
     data () {
       return {
@@ -284,6 +295,10 @@
       }
     },
     methods: {
+      getHelpSection: function () {
+        var hpNav = this.$refs.helpNav.$refs.helpNav
+        hpNav.value = !hpNav.value
+      },
       getResults () {
         quantProd(this.jobId)
           .catch(err => {

@@ -1,11 +1,20 @@
 <template>
-  <v-container fluid class="quantileSummary pl-3 pr-3 mb-3">
+  <v-container fluid class="lifecycleSummary pl-3 pr-3 mb-3">
     <!-- =====ROW1===== -->
+    <HelpNavLifecycle ref="helpNav"></HelpNavLifecycle>
     <v-layout row wrap class="pt-0 mt-0 mb-3">
       <v-flex xs12>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Segment Summary</h6>
+            <v-spacer></v-spacer>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
@@ -196,6 +205,7 @@
 <script>
   import {summary} from './javascript/lifecycle.service'
   import DoughnutChart from './lifecycleCharts/doughnutChart'
+  import HelpNavLifecycle from './HelpNavLifecycle.vue'
 
   // [JF] initiates numeral.js library in this vue component. must use together with numeral() or numeral().format()
   var numeral = require('numeral')
@@ -203,7 +213,8 @@
   export default {
     name: 'lifecycleSummary',
     components: {
-      DoughnutChart
+      DoughnutChart,
+      HelpNavLifecycle
     },
     data () {
       return {
@@ -272,6 +283,10 @@
       }
     },
     methods: {
+      getHelpSection: function () {
+        var hpNav = this.$refs.helpNav.$refs.helpNav
+        hpNav.value = !hpNav.value
+      },
       getResults () {
         summary(this.jobId)
           .catch(err => {

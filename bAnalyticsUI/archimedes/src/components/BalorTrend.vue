@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="balorTrend pl-3 pr-3">
     <!-- =====ROW1===== -->
-    <SideNav ref="helpNav"></SideNav>
+    <HelpNavBalor ref="helpNav"></HelpNavBalor>
     <v-layout row wrap class="pa-0 mb-0">
       <!-- BALOR Trendline -->
       <v-flex xs12 sm8 md9 lg10 class="mb-3">
@@ -14,7 +14,7 @@
                 icon slot="activator"
                 class="success--text"
                 style="height:auto !important;">
-                  <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
             </v-btn>
           </v-card-title>
           <v-layout row wrap>
@@ -45,15 +45,8 @@
             <div class="white elevation-1">
             <v-card class="white elevation-0">
               <v-card-title primary-title class="primary">
-                <h6 class="text-xs-left mb-0 white--text ">BALOR Summary</h6>
+                <h6 class="text-xs-left mb-0 white--text">BALOR Summary</h6>
                 <v-spacer></v-spacer>
-                <v-btn
-                    @click.native="getHelpSection()"
-                    icon slot="activator"
-                    class="success--text"
-                    style="height:auto !important;">
-                      <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
-                </v-btn>
               </v-card-title>
               <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
                   <!-- data_row -->
@@ -118,7 +111,7 @@
                       v-on:click.native="getHelpSection()"
                       icon slot="activator"
                       class="success--text" style="height:auto !important;">
-                      <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
+                      <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
                   </v-btn>
                 </v-card-title>
                 <v-layout row wrap>
@@ -220,7 +213,7 @@
                     icon slot="activator"
                     class="success--text"
                     style="height:auto !important;">
-                      <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
+                      <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
                 </v-btn>
               </v-card-title>
               <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
@@ -246,13 +239,6 @@
               <v-card-title primary-title class="info">
                 <h6 class="white--text text-xs-left mb-0">BALOR Trend Raw Data</h6>
                 <v-spacer></v-spacer>
-                <v-btn
-                    @click.native="getHelpSection()"
-                    icon slot="activator"
-                    class="success--text"
-                    style="height:auto !important;">
-                      <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
-                </v-btn>
               </v-card-title>
               <v-data-table
                   v-bind:headers="headers"
@@ -295,7 +281,7 @@
   import PieCharts from './balorCharts/PieCharts.js'
   import noUiSlider from 'noUiSlider'
   import {summary} from './javascript/balor.service'
-  import SideNav from './SideNav.vue'
+  import HelpNavBalor from './HelpNavBalor.vue'
 
   var numeral = require('numeral')
 
@@ -304,11 +290,11 @@
     components: {
       BalorTrendLine,
       PieCharts,
-      SideNav
+      HelpNavBalor
     },
     data () {
       return {
-        sideNavData: SideNav.data,
+        HelpNavBalorData: HelpNavBalor.data,
         headers: [
           {
             text: 'Time Period',
@@ -445,7 +431,6 @@
     },
     methods: {
       getHelpSection: function () {
-        console.log(this.$refs)
         var hpNav = this.$refs.helpNav.$refs.helpNav
         hpNav.value = !hpNav.value
       },
@@ -781,7 +766,7 @@
 
   .pie_ratio_height {height:372px !important;}
 
-  .ret_sum_height {height:505px !important;}
+  .ret_sum_height {height:501px !important;}
 
   .pie_chart1 {
     position: relative;

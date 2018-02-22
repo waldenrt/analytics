@@ -22,10 +22,11 @@
     -webkit-box-orient: vertical;
     max-height: 36px;
   }
-  .custom_input{
+  .custom_input {
     border-radius:4px;
     background-color:#F5F8FA !important;
     border:1px solid #DFE3E9 !important;
   }
   html {background-color:#eff3f6;}
+  .icon_help {line-height: 20px !important;}
 </style>

@@ -1,11 +1,20 @@
 <template>
   <v-container fluid class="quantileMigration pl-3 pr-3 mb-3">
     <!-- =====ROW1===== -->
+    <HelpNavQuantile ref="helpNav"></HelpNavQuantile>
     <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Customer Pareto Migration</h6>
+            <v-spacer></v-spacer>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
@@ -191,6 +200,14 @@
         <v-card class="white w_100">
           <v-card-title primary-title class="info">
             <h6 class="text-xs-center mb-0 white--text">Period-over-Period Retention Rate</h6>
+            <v-spacer></v-spacer>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
               <div style="width:100%;" class="pb-3">
                 <table cellpadding="0" cellspacing="0" width="100%" class="ret_table">
@@ -239,6 +256,14 @@
                 <v-card class="pa-0 ma-0 grey lighten-2">
                   <v-card-title primary-title class="info">
                     <h6 class="white--text text-xs-left mb-0">Post Period [Quantile] Composition</h6>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        @click.native="getHelpSection()"
+                        icon slot="activator"
+                        class="success--text"
+                        style="height:auto !important;">
+                          <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+                    </v-btn>
                   </v-card-title>
                   <v-layout row wrap>
                     <!--Dropdown1-->
@@ -289,6 +314,7 @@
 <script>
   import BarChart from './balorCharts/BarChart'
   import {quantMig} from './javascript/quantile.service'
+  import HelpNavQuantile from './HelpNavQuantile.vue'
 
   // [JF] initiates numeral.js library in this vue component. must use together with numeral() or numeral().format()
   var numeral = require('numeral')
@@ -296,7 +322,8 @@
   export default {
     name: 'quantMigration',
     components: {
-      BarChart
+      BarChart,
+      HelpNavQuantile
     },
     data () {
       return {
@@ -383,6 +410,10 @@
     //  this.createTblColor()
     },
     methods: {
+      getHelpSection: function () {
+        var hpNav = this.$refs.helpNav.$refs.helpNav
+        hpNav.value = !hpNav.value
+      },
       getResults () {
         quantMig(this.jobId)
           .catch(err => {

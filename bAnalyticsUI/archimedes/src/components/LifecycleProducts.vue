@@ -1,11 +1,20 @@
 <template>
-  <v-container fluid class="quantileProducts pl-3 pr-3 mb-3">
+  <v-container fluid class="lifecycleProducts pl-3 pr-3 mb-3">
     <!-- =====ROW1===== -->
+    <HelpNavLifecycle ref="helpNav"></HelpNavLifecycle>
     <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Product Index</h6>
+            <v-spacer></v-spacer>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
@@ -208,12 +217,14 @@
   import {product} from './javascript/lifecycle.service'
   import HorizontalChart from './balorCharts/HorizontalChart'
   import prodIndexChart from './lifecycleCharts/prodIndexChart'
+  import HelpNavLifecycle from './HelpNavLifecycle.vue'
 
   export default {
     name: 'lifecycleProducts',
     components: {
       HorizontalChart,
-      prodIndexChart
+      prodIndexChart,
+      HelpNavLifecycle
     },
     data () {
       return {
@@ -318,6 +329,10 @@
       this.prodCount
     },
     methods: {
+      getHelpSection: function () {
+        var hpNav = this.$refs.helpNav.$refs.helpNav
+        hpNav.value = !hpNav.value
+      },
       getResults () {
         product(this.jobId)
           .catch(err => {

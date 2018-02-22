@@ -1,6 +1,7 @@
-<template>
+HelpNavBalor<template>
   <v-container fluid class="cadence pl-3 pr-3">
     <!-- =====ROW1===== -->
+    <HelpNavBalor ref="helpNav"></HelpNavBalor>
     <v-layout row wrap class="mb-4">
       <!--+++++col1+++++-->
       <v-flex xs12 sm6 md3 lg3 order-xs2 order-md1 fill-height>
@@ -14,7 +15,13 @@
               <h6 v-else class="white--text text-xs-left mb-0">Cadence Raw Data <span class="body-1">(Days)</span></h6>
             </div>
             <v-spacer></v-spacer>
-            <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
           <v-divider class="primary pb-0 pl-3 pr-3"></v-divider>
             <div class="constrainer">
@@ -55,7 +62,13 @@
           <v-card-title primary-title class="primary">
               <h6 class="white--text text-xs-left mb-0">Purchase Cadence Distribution</h6>
             <v-spacer></v-spacer>
-            <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
           <v-layout row wrap class="mb-3 pl-2 pr-2 pb-2 pt-2">
             <v-flex xs12 fill-height>
@@ -82,7 +95,13 @@
                   <h6 class="text-xs-left mb-0 white--text">Cadence Summary</h6>
                 </div>
                 <v-spacer></v-spacer>
-                <v-icon class="pa-0 ma-0 white--text">help_outline</v-icon>
+                <v-btn
+                    @click.native="getHelpSection()"
+                    icon slot="activator"
+                    class="success--text"
+                    style="height:auto !important;">
+                      <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+                </v-btn>
               </v-card-title>
               <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
                   <!-- cadence_sum_items -->
@@ -107,13 +126,15 @@
 <script>
   import AnnotatedBarChart from './balorCharts/AnnotatedBarChart'
   import {cadence} from './javascript/balor.service'
+  import HelpNavBalor from './HelpNavBalor.vue'
 
   var numeral = require('numeral')
 
   export default {
     name: 'cadence',
     components: {
-      AnnotatedBarChart
+      AnnotatedBarChart,
+      HelpNavBalor
     },
     data () {
       return {
@@ -159,6 +180,10 @@
       }
     },
     methods: {
+      getHelpSection: function () {
+        var hpNav = this.$refs.helpNav.$refs.helpNav
+        hpNav.value = !hpNav.value
+      },
       getResults () {
         cadence(this.jobId)
           .then((response) => {
