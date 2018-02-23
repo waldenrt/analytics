@@ -130,7 +130,6 @@
                                     label="Select Time Period"
                                     single-line
                                     v-on:input="setTP()"
-                                    style="width:175px;"
                                     class="pl-1 pt-1 mt-1 mb-2 white elevation-1"
                                     hide-details
                                     id="selection">
@@ -272,8 +271,6 @@
     </v-layout>
     <!-- //=====ROW3===== -->
   </v-container>
-
-
 </template>
 
 <script>

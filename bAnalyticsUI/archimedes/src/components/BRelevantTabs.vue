@@ -3,15 +3,18 @@
 <v-card class="white pa-3">
     <v-layout row wrap>
       <v-flex xs12 s3 md3 class="text-xs-center">
-          <v-btn success large router to="/BRelevant/NewBRelevant" class="white--text text-xs-left marTB8">+ NEW BRELEVANT INPUT</v-btn>
+          <v-btn
+              success
+              large
+              router to="/BRelevant/NewBRelevant"
+              class="white--text text-xs-left marTB8">+ NEW BRELEVANT INPUT</v-btn>
       </v-flex>
       <v-flex xs12 s9 md9>
-        <v-tabs id="mobile-tabs-3" grow light style="z-index: 1 !important;">
+        <v-tabs id="mobile-tabs-3" grow light>
           <v-tabs-bar slot="activators">
             <v-tabs-slider></v-tabs-slider>
-            <v-tabs-item router to="/BRelevant/NewBRelevant">Input</v-tabs-item>
-            <v-tabs-item router to="/BRelevant/Products">Products</v-tabs-item>
-            <v-tabs-item router to="/BRelevant/Customer">Customer</v-tabs-item>
+            <v-tabs-item ripple router to="/BRelevant/Summary">Summary</v-tabs-item>
+            <v-tabs-item ripple router to="/BRelevant/Details">Details</v-tabs-item>
             <v-tabs-item ripple router to="/BRelevant">
               <v-icon class="white--text text-xs-center">history</v-icon>
             </v-tabs-item>
