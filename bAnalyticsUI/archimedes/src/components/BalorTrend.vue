@@ -131,6 +131,7 @@
                                     single-line
                                     v-on:input="setTP()"
                                     class="pl-1 pt-1 mt-1 mb-2 white elevation-1"
+                                    style="width:175px;"
                                     hide-details
                                     id="selection">
                           </v-select>

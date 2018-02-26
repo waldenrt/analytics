@@ -143,7 +143,7 @@
         profile: [
           {name: 'Profile', icon: 'person', link: '#/Home'},
           {name: 'Settings', icon: 'settings', link: '#/Settings'},
-          {name: 'Feeback', icon: 'feedback', link: '#/Feedback'},
+          {name: 'Feedback', icon: 'feedback', link: '#/Feedback'},
           {name: 'Help', icon: 'help', link: '#/Help'},
           {name: 'Logout', icon: 'exit_to_app', link: '#/Logout'}
         ],

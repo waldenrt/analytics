@@ -18,7 +18,7 @@
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
-            <v-flex xs6 sm4>
+            <v-flex xs6 sm4 md2>
               <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
@@ -275,10 +275,10 @@
                               Select Post Period Segment for Analysis:
                             </div>
                           </v-flex>
-                          <v-flex xs12>
+                          <v-flex xs12 md6 lg4>
                               <v-select v-bind:items="quantArray"
                                         v-model="quantileSelect"
-                                        label="Select Quantile\"
+                                        label="Select Quantile"
                                         single-line
                                         bottom
                                         hide-details

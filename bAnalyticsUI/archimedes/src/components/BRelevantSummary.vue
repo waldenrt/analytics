@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="balorTrend pl-3 pr-3">
+  <v-container fluid class="bRelevantSummary pl-3 pr-3">
     <!-- =====ROW1===== -->
     <HelpNavBRelevant ref="helpNav"></HelpNavBRelevant>
     <!-- =====ROW1===== -->
@@ -225,7 +225,7 @@
                             single-line
                             bottom
                             hide-details
-                            v-on:input="selectMetric()"
+                            v-on:input="selectProdPurch()"
                             class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                         </v-select>
                     </v-flex>
@@ -244,14 +244,14 @@
                     </v-flex>
                     <v-flex xs12>
                         <v-select
-                                v-bind:items="segments"
-                                 v-model="segSelect"
+                                v-bind:items="prodRecArray"
+                                 v-model="prodRecSelect"
                                  label="Select Segment"
                                  multiple
                                  single-line
                                  bottom
                                  hide-details
-                                 v-on:input="selectAvg()"
+                                 v-on:input="selectProdRec()"
                                  class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
                         </v-select>
                     </v-flex>
@@ -286,8 +286,9 @@
     },
     data () {
       return {
-        tpArray: [1, 2, 3, 4],
         tp: 1,
+        tpArray: [1, 2, 3, 4],
+        segSelect: ['All'],
         segments: [
           'All',
           'Lapsed',
@@ -295,15 +296,20 @@
           'Returning',
           'Reactivated'
         ],
-        segSelect: ['All'],
+        metricSelect: 'Spend',
         metrics: [
           'Spend',
           'Units',
           'Visits'
         ],
-        metricSelect: 'Spend',
         prodPurchSelect: 'All',
         prodPurchArray: [
+          'Item2',
+          'Item3',
+          'Item4'
+        ],
+        prodRecSelect: ['All'],
+        prodRecArray: [
           'Item2',
           'Item3',
           'Item4'
