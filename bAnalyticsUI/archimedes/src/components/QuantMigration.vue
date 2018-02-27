@@ -355,7 +355,38 @@
         sumItems: [],
         sumItemsArray: [],
         quantbars: {},
-        tableBGcolor: {}
+        barBGcolors: {
+          colors1: [
+            'rgb(182, 201, 182)', 'rgb(145, 229, 129)', 'rgb(129, 225, 110)', 'rgb(113, 221, 91)', 'rgb(96, 217, 72)', 'rgb(80, 213, 54)', 'rgb(69, 201, 42)', 'rgb(62, 183, 38)', 'rgb(56, 164, 34)', 'rgb(49, 145, 30)'
+          ],
+          colors2: [
+            'rgb(255, 150, 150)', 'rgb(182, 201, 182)', 'rgb(145, 229, 129)', 'rgb(129, 225, 110)', 'rgb(113, 221, 91)', 'rgb(96, 217, 72)', 'rgb(80, 213, 54)', 'rgb(69, 201, 42)', 'rgb(62, 183, 38)', 'rgb(56, 164, 34)'
+          ],
+          colors3: [
+            'rgb(255, 122, 122)', 'rgb(255, 150, 150)', 'rgb(182, 201, 182)', 'rgb(145, 229, 129)', 'rgb(129, 225, 110)', 'rgb(113, 221, 91)', 'rgb(96, 217, 72)', 'rgb(80, 213, 54)', 'rgb(69, 201, 42)', 'rgb(62, 183, 38)'
+          ],
+          colors4: [
+            'rgb(255, 93, 93)', 'rgb(255, 122, 122)', 'rgb(255, 150, 150)', 'rgb(182, 201, 182)', 'rgb(145, 229, 129)', 'rgb(129, 225, 110)', 'rgb(113, 221, 91)', 'rgb(96, 217, 72)', 'rgb(80, 213, 54)', 'rgb(69, 201, 42)'
+          ],
+          colors5: [
+            'rgb(255, 65, 65)', 'rgb(255, 93, 93)', 'rgb(255, 122, 122)', 'rgb(255, 150, 150)', 'rgb(182, 201, 182)', 'rgb(145, 229, 129)', 'rgb(129, 225, 110)', 'rgb(113, 221, 91)', 'rgb(96, 217, 72)', 'rgb(80, 213, 54)'
+          ],
+          colors6: [
+            'rgb(255, 36, 36)', 'rgb(255, 65, 65)', 'rgb(255, 93, 93)', 'rgb(255, 122, 122)', 'rgb(255, 150, 150)', 'rgb(182, 201, 182)', 'rgb(145, 229, 129)', 'rgb(129, 225, 110)', 'rgb(113, 221, 91)', 'rgb(96, 217, 72)'
+          ],
+          colors7: [
+            'rgb(255, 8, 8)', 'rgb(255, 36, 36)', 'rgb(255, 65, 65)', 'rgb(255, 93, 93)', 'rgb(255, 122, 122)', 'rgb(255, 150, 150)', 'rgb(182, 201, 182)', 'rgb(145, 229, 129)', 'rgb(129, 225, 110)', 'rgb(113, 221, 91)'
+          ],
+          colors8: [
+            'rgb(236, 0, 0)', 'rgb(255, 8, 8)', 'rgb(255, 36, 36)', 'rgb(255, 65, 65)', 'rgb(255, 93, 93)', 'rgb(255, 122, 122)', 'rgb(255, 150, 150)', 'rgb(182, 201, 182)', 'rgb(145, 229, 129)', 'rgb(129, 225, 110)'
+          ],
+          colors9: [
+            'rgb(207, 0, 0)', 'rgb(236, 0, 0)', 'rgb(255, 8, 8)', 'rgb(255, 36, 36)', 'rgb(255, 65, 65)', 'rgb(255, 93, 93)', 'rgb(255, 122, 122)', 'rgb(255, 150, 150)', 'rgb(182, 201, 182)', 'rgb(145, 229, 129)'
+          ],
+          colors10: [
+            'rgb(179, 0, 0)', 'rgb(207, 0, 0)', 'rgb(236, 0, 0)', 'rgb(255, 8, 8)', 'rgb(255, 36, 36)', 'rgb(255, 65, 65)', 'rgb(255, 93, 93)', 'rgb(255, 122, 122)', 'rgb(255, 150, 150)', 'rgb(182, 201, 182)'
+          ]
+        }
       }
     },
     computed: {
@@ -592,6 +623,29 @@
       },
 
       selectQuantile () {
+        // changes the post period quant comp bars when time period is selected [JF]
+        var barColorArray = []
+        if (this.quantileSelect === 1) {
+          barColorArray = this.barBGcolors.colors1
+        } else if (this.quantileSelect === 2) {
+          barColorArray = this.barBGcolors.colors2
+        } else if (this.quantileSelect === 3) {
+          barColorArray = this.barBGcolors.colors3
+        } else if (this.quantileSelect === 4) {
+          barColorArray = this.barBGcolors.colors4
+        } else if (this.quantileSelect === 5) {
+          barColorArray = this.barBGcolors.colors5
+        } else if (this.quantileSelect === 6) {
+          barColorArray = this.barBGcolors.colors6
+        } else if (this.quantileSelect === 7) {
+          barColorArray = this.barBGcolors.colors7
+        } else if (this.quantileSelect === 8) {
+          barColorArray = this.barBGcolors.colors8
+        } else if (this.quantileSelect === 9) {
+          barColorArray = this.barBGcolors.colors9
+        } else if (this.quantileSelect === 10) {
+          barColorArray = this.barBGcolors.colors10
+        }
         var keyArray = ['key1', 'key2', 'key3', 'key4', 'key5', 'key6', 'key7', 'key8', 'key9', 'key10']
         this.quantbars = {
           labels: this.quantArray,
@@ -608,7 +662,7 @@
               this.quantMigItems[this.tpSelect - 1][8][keyArray[this.quantileSelect - 1]],
               this.quantMigItems[this.tpSelect - 1][9][keyArray[this.quantileSelect - 1]]
             ],
-            backgroundColor: '#F7970E'
+            backgroundColor: barColorArray
           }]
         }
       }
