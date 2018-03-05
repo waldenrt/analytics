@@ -177,19 +177,19 @@
     <!-- =====ROW3===== -->
     <v-layout wrap row>
       <v-flex xs12>
-        <v-card class="white" style="width:100%;">
+        <v-card class="info" style="width:100%;">
         <v-layout wrap row>
           <!--+++++col1+++++-->
           <v-flex xs4 class="pt-0 mt-0">
-            <v-card class="pl-3 pr-3 pt-1 pb-1 elevation-0 white">
-              <div class="title primary--text text-xs-center pa-1">Overall Metrics Time Period {{ this.tpSelect }}</div>
+            <v-card class="pl-3 pr-3 pt-3 pb-3 elevation-0 info">
+              <div class="title white--text text-xs-center">Overall Metrics Time Period {{ this.tpSelect }}</div>
             </v-card>
           </v-flex>
           <!--//+++++col1+++++-->
           <!--+++++col2+++++-->
           <v-flex xs8 class="pt-0 mt-0">
-            <v-card class="pl-3 pr-3 pt-1 pb-1 elevation-0 white">
-              <div class="title primary--text text-xs-center pa-1">Segment Metrics for Time Period {{ this.tpSelect }}</div>
+            <v-card class="pl-3 pr-3 pt-3 pb-3 elevation-0 info">
+              <div class="title white--text text-xs-center">Segment Metrics for Time Period {{ this.tpSelect }}</div>
             </v-card>
           </v-flex>
           <!--//+++++col2+++++-->

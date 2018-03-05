@@ -151,7 +151,7 @@
               <!-- 2 groups - MEDIAN - 50% each -->
               <template v-if="tableMigItems.length === 2">
                 <tr v-for="(item, index) in tableMigItems" v-bind:key="item.text" class="tRow">
-                  <td class="text-xs-center" v-text="item.from"></td>
+                  <td class="text-xs-center" v-text="item.from" :width="64"></td>
                   <td class="text-xs-center" :style="createTblColor[index][0]" v-text="item.key1"></td>
                   <td class="text-xs-center" :style="createTblColor[index][1]" v-text="item.key2"></td>
                 </tr>
@@ -159,7 +159,7 @@
               <!-- 4 groups - QUARTILES - 25% each -->
               <template v-if="tableMigItems.length === 4">
                 <tr v-for="(item, index) in tableMigItems" v-bind:key="item.text" class="tRow">
-                  <td class="text-xs-center" v-text="item.from"></td>
+                  <td class="text-xs-center" v-text="item.from" :width="64"></td>
                   <td class="text-xs-center" :style="createTblColor[index][0]" v-text="item.key1"></td>
                   <td class="text-xs-center" :style="createTblColor[index][1]" v-text="item.key2"></td>
                   <td class="text-xs-center" :style="createTblColor[index][2]" v-text="item.key3"></td>
@@ -169,7 +169,7 @@
               <!-- 5 groups - QUINTILES - 20% each -->
               <template v-if="tableMigItems.length === 5">
                 <tr v-for="(item, index) in tableMigItems" v-bind:key="item.text" class="tRow">
-                  <td class="text-xs-center" v-text="item.from"></td>
+                  <td class="text-xs-center" v-text="item.from" :width="64"></td>
                   <td class="text-xs-center" :style="createTblColor[index][0]" v-text="item.key1"></td>
                   <td class="text-xs-center" :style="createTblColor[index][1]" v-text="item.key2"></td>
                   <td class="text-xs-center" :style="createTblColor[index][2]" v-text="item.key3"></td>
@@ -180,7 +180,7 @@
               <!-- 10 groups - DECILES - 10% each -->
               <template v-if="tableMigItems.length === 10">
                 <tr v-for="(item, index) in tableMigItems" v-bind:key="item.text" class="tRow">
-                  <td class="text-xs-center" v-text="item.from"></td>
+                  <td class="text-xs-center" v-text="item.from" :width="64"></td>
                   <td class="text-xs-center" :style="createTblColor[index][0]" v-text="item.key1"></td>
                   <td class="text-xs-center" :style="createTblColor[index][1]" v-text="item.key2"></td>
                   <td class="text-xs-center" :style="createTblColor[index][2]" v-text="item.key3"></td>
@@ -196,7 +196,7 @@
               <!-- 20 groups - VENTILES - 5% each -->
               <template v-if="tableMigItems.length === 20">
                 <tr v-for="(item, index) in tableMigItems" v-bind:key="item.text" class="tRow">
-                  <td class="text-xs-center" v-text="item.from"></td>
+                  <td class="text-xs-center" v-text="item.from" :width="64"></td>
                   <td class="text-xs-center" :style="createTblColor[index][0]" v-text="item.key1"></td>
                   <td class="text-xs-center" :style="createTblColor[index][1]" v-text="item.key2"></td>
                   <td class="text-xs-center" :style="createTblColor[index][2]" v-text="item.key3"></td>
@@ -242,9 +242,9 @@
                   <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
             </v-btn>
           </v-card-title>
-              <div style="width:100%;" class="pb-3">
+              <div style="width:100%;" class="mb-3">
                 <table cellpadding="0" cellspacing="0" width="100%" class="ret_table">
-                  <tr class="grey lighten-2 elevation-1">
+                  <tr class="grey lighten-2 elevation-1" :height="75">
                     <td class="pt-1 pb-1 grey lighten-2 primary--text">Quantile</td>
                     <!--<td class="pt-1 pb-1">Prior Customers</td>-->
                     <td class="pt-1 pb-1 grey lighten-2 primary--text">Retained<br />Customers</td>
@@ -691,20 +691,77 @@
       selectView () {
         if (this.viewType === 'Counts') {
           var tempFormatted = []
-          for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
-            tempFormatted.push({
-              'from': this.quantMigItems[this.tpSelect - 1][i].from,
-              'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
-              'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
-              'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
-              'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0'),
-              'key5': numeral(this.quantMigItems[this.tpSelect - 1][i].key5).format('0,0'),
-              'key6': numeral(this.quantMigItems[this.tpSelect - 1][i].key6).format('0,0'),
-              'key7': numeral(this.quantMigItems[this.tpSelect - 1][i].key7).format('0,0'),
-              'key8': numeral(this.quantMigItems[this.tpSelect - 1][i].key8).format('0,0'),
-              'key9': numeral(this.quantMigItems[this.tpSelect - 1][i].key9).format('0,0'),
-              'key10': numeral(this.quantMigItems[this.tpSelect - 1][i].key10).format('0,0')
-            })
+          if (this.tableMigItems.length === 10) {
+            for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+              tempFormatted.push({
+                'from': this.quantMigItems[this.tpSelect - 1][i].from,
+                'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+                'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
+                'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
+                'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0'),
+                'key5': numeral(this.quantMigItems[this.tpSelect - 1][i].key5).format('0,0'),
+                'key6': numeral(this.quantMigItems[this.tpSelect - 1][i].key6).format('0,0'),
+                'key7': numeral(this.quantMigItems[this.tpSelect - 1][i].key7).format('0,0'),
+                'key8': numeral(this.quantMigItems[this.tpSelect - 1][i].key8).format('0,0'),
+                'key9': numeral(this.quantMigItems[this.tpSelect - 1][i].key9).format('0,0'),
+                'key10': numeral(this.quantMigItems[this.tpSelect - 1][i].key10).format('0,0')
+              })
+            }
+          } else if (this.tableMigItems.length === 2) {
+            for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+              tempFormatted.push({
+                'from': this.quantMigItems[this.tpSelect - 1][i].from,
+                'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+                'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0')
+              })
+            }
+          } else if (this.tableMigItems.length === 4) {
+            for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+              tempFormatted.push({
+                'from': this.quantMigItems[this.tpSelect - 1][i].from,
+                'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+                'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
+                'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
+                'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0')
+              })
+            }
+          } else if (this.tableMigItems.length === 5) {
+            for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+              tempFormatted.push({
+                'from': this.quantMigItems[this.tpSelect - 1][i].from,
+                'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+                'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
+                'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
+                'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0'),
+                'key5': numeral(this.quantMigItems[this.tpSelect - 1][i].key5).format('0,0')
+              })
+            }
+          } else if (this.tableMigItems.length === 20) {
+            for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+              tempFormatted.push({
+                'from': this.quantMigItems[this.tpSelect - 1][i].from,
+                'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+                'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
+                'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
+                'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0'),
+                'key5': numeral(this.quantMigItems[this.tpSelect - 1][i].key5).format('0,0'),
+                'key6': numeral(this.quantMigItems[this.tpSelect - 1][i].key6).format('0,0'),
+                'key7': numeral(this.quantMigItems[this.tpSelect - 1][i].key7).format('0,0'),
+                'key8': numeral(this.quantMigItems[this.tpSelect - 1][i].key8).format('0,0'),
+                'key9': numeral(this.quantMigItems[this.tpSelect - 1][i].key9).format('0,0'),
+                'key10': numeral(this.quantMigItems[this.tpSelect - 1][i].key10).format('0,0'),
+                'key11': numeral(this.quantMigItems[this.tpSelect - 1][i].key11).format('0,0'),
+                'key12': numeral(this.quantMigItems[this.tpSelect - 1][i].key12).format('0,0'),
+                'key13': numeral(this.quantMigItems[this.tpSelect - 1][i].key13).format('0,0'),
+                'key14': numeral(this.quantMigItems[this.tpSelect - 1][i].key14).format('0,0'),
+                'key15': numeral(this.quantMigItems[this.tpSelect - 1][i].key15).format('0,0'),
+                'key16': numeral(this.quantMigItems[this.tpSelect - 1][i].key16).format('0,0'),
+                'key17': numeral(this.quantMigItems[this.tpSelect - 1][i].key17).format('0,0'),
+                'key18': numeral(this.quantMigItems[this.tpSelect - 1][i].key18).format('0,0'),
+                'key19': numeral(this.quantMigItems[this.tpSelect - 1][i].key19).format('0,0'),
+                'key20': numeral(this.quantMigItems[this.tpSelect - 1][i].key20).format('0,0')
+              })
+            }
           }
           this.tableMigItems = tempFormatted
         } else if (this.viewType === 'Percentages') {
@@ -764,7 +821,7 @@
 <style scoped>
   .mob_break {display: none;}
   .card_width { width:100% !important; }
-  .ret_table {height:360px !important; text-align:center;}
+  .ret_table {height:378px !important; text-align:center;}
   .pareto_chart2 {
     position:relative !important;
     margin:0 auto !important;
@@ -788,6 +845,8 @@
   .quantTbl thead td {background-color:#ffeaeb;}
   .quantTbl thead td:first-child {background-color:inherit;}
   .quantTbl .tRow td:first-child {background-color:#e7eeda;}
+
+  .ret_table tr:hover {background-color:#eee;}
 
   .mob_break1, .mob_break2 {display:none;}
 

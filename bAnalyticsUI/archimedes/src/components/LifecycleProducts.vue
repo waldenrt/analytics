@@ -5,7 +5,7 @@
     <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
         <v-card class="pa-0 ma-0 grey lighten-2">
-          <v-card-title primary-title class="primary">
+          <v-card-title primary-title class="info">
             <h6 class="white--text text-xs-left mb-0">Product Index</h6>
             <v-spacer></v-spacer>
             <v-btn
@@ -176,8 +176,10 @@
     <v-layout wrap row class="mt-3">
       <!--+++++col1+++++-->
       <v-flex xs12 sm4>
-        <v-card class="white pl-3 pr-3 pt-1 pb-1">
-          <h6 class="primary--text text-xs-center pa-1 mb-0 subhead">Overall Product Share</h6>
+        <v-card class="white pb-1">
+          <v-card-title primary-title class="info">
+            <h6 class="white--text text-xs-center pa-1 mb-0 subhead">Overall Product Share</h6>
+          </v-card-title>
           <div class="prod_share_container scroller">
             <horizontal-chart :chart-data="overallBars" :options="overallOpts" :style="prodCount"></horizontal-chart>
           </div>
@@ -186,9 +188,11 @@
       <!--//+++++col1+++++-->
       <!--+++++col2+++++-->
       <v-flex xs12 sm8>
-        <v-card class="white pl-3 pr-3 pt-1 pb-1">
-          <h6 class="primary--text text-xs-center pa-1 mb-0">Product Index by Segment</h6>
-          <v-layout wrap row class="padT">
+        <v-card class="white pb-1">
+          <v-card-title primary-title class="info">
+            <h6 class="white--text text-xs-center pa-1 mb-0">Product Index by Segment</h6>
+          </v-card-title>
+          <v-layout wrap row class="padT pl-3 pr-3">
             <div v-show="showBest" class="seg_sect" :style="segCount">
               <prod-index-chart :width="segChart" :chart-data="bestBars" :style="prodCount"></prod-index-chart>
             </div>

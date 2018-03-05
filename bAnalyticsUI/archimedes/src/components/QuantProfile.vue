@@ -110,10 +110,12 @@
     <!-- //=====ROW2===== -->
     <!-- =====ROW3===== -->
     <v-layout wrap row>
-      <v-flex xs12 class="pt-0 mt-0">
-        <v-card class="white pa-1 mob_padLR_0">
-          <div class="title primary--text text-xs-center pa-1 mb-2">Quantile Pareto Analysis</div>
-          <v-layout row wrap class="mb-2 mob_marB_0">
+      <v-flex xs12 class="pt-0 mt-3">
+        <v-card class="white mob_padLR_0">
+          <v-card-title primary-title class="primary">
+            <h6 class="white--text text-xs-left mb-0">Quantile Pareto Analysis</h6>
+          </v-card-title>
+          <v-layout row wrap class="mt-2 mb-3 mob_marB_0">
             <v-flex xs12 fill-height>
               <pareto-chart :chart-data="paretoData" :options="paretoOptions" class="pareto_chart1"></pareto-chart>
             </v-flex>
@@ -125,8 +127,10 @@
     <!-- =====ROW4===== -->
     <v-layout wrap row>
       <v-flex xs12>
-        <v-card class="white pl-3 pr-3 pt-1 pb-1">
-          <div class="title primary--text text-xs-center pa-1">Quantile Purchase Profiles</div>
+        <v-card class="white">
+          <v-card-title primary-title class="primary">
+            <h6 class="white--text text-xs-left mb-0">Quantile Purchase Profiles</h6>
+          </v-card-title>
           <v-data-table v-if="dimension === 'customer'"
               v-bind:headers="custHeaders"
               :items="custItems"
