@@ -40,6 +40,7 @@ import NewBRelevant from '@/components/NewBRelevant'
 import BRelevantResults from '@/components/BRelevantResults'
 import BRelevantDetails from '@/components/BRelevantDetails'
 import BRelevantSummary from '@/components/BRelevantSummary'
+import BRelevantHistory from '@/components/BRelevantHistory'
 
 Vue.use(Router)
 
@@ -212,8 +213,8 @@ export default new Router({
           children: [
             {
               path: '/',
-              name: 'bHistory',
-              component: JobHistory
+              name: 'BRelevantHistory',
+              component: BRelevantHistory
             },
             {
               path: 'NewBRelevant',
