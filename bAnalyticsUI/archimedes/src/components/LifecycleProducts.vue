@@ -178,7 +178,7 @@
       <v-flex xs12 sm4>
         <v-card class="white pb-1">
           <v-card-title primary-title class="info">
-            <h6 class="white--text text-xs-center pa-1 mb-0 subhead">Overall Product Share</h6>
+            <h6 class="white--text text-xs-center mb-0 subhead">Overall Product Share</h6>
           </v-card-title>
           <div class="prod_share_container scroller">
             <horizontal-chart :chart-data="overallBars" :options="overallOpts" :style="prodCount"></horizontal-chart>
@@ -190,7 +190,7 @@
       <v-flex xs12 sm8>
         <v-card class="white pb-1">
           <v-card-title primary-title class="info">
-            <h6 class="white--text text-xs-center pa-1 mb-0">Product Index by Segment</h6>
+            <h6 class="white--text text-xs-center mb-0">Product Index by Segment</h6>
           </v-card-title>
           <v-layout wrap row class="padT pl-3 pr-3">
             <div v-show="showBest" class="seg_sect" :style="segCount">

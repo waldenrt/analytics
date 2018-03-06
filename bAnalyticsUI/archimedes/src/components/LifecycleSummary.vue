@@ -242,13 +242,14 @@
         tpSelect: 1,
         tpArray: [],
         tableHeaders: [
-          {text: '', value: 'avgName'},
+          {text: '', value: 'avgName', left: true, sortable: true},
           {text: 'Overall', value: 'overallAvg'},
           {text: 'Best in Class', value: 'bestAvg'},
           {text: 'Rising Stars', value: 'risingAvg'},
           {text: 'Middle of the Road', value: 'middleAvg'},
           {text: 'Lapsing', value: 'lapsingAvg'},
-          {text: 'Deeply Lapsed', value: 'deeplyAvg'}],
+          {text: 'Deeply Lapsed', value: 'deeplyAvg'}
+        ],
         tableData: [],
         tpDataArray: [],
         bestCust: {},

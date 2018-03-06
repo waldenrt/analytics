@@ -207,11 +207,7 @@
         visitPerArrayCurr: [],
         paretoData: {},
         custHeaders: [
-          {
-            text: 'Quantiles',
-            align: 'left',
-            value: 'quantile'
-          },
+          {text: 'Quantiles', value: 'quantile', left: true, sortable: true},
           {text: 'avgSpendMember($)', value: 'avgCustSales'},
           {text: 'avgSpendVisit($)', value: 'avgVisitSpend'},
           {text: 'avgSpendItem($)', value: 'avgItemSales'},
@@ -220,11 +216,7 @@
           {text: 'avgVisitMember', value: 'avgCustVisits'}
         ],
         storeHeaders: [
-          {
-            text: 'Quantiles',
-            align: 'left',
-            value: 'quantile'
-          },
+          {text: 'Quantiles', value: 'quantile', left: true, sortable: true},
           {text: 'avgSpendMember($)', value: 'avgCustSales'},
           {text: 'avgUnitsMember', value: 'avgCustUnits'},
           {text: 'avgVisitMember', value: 'avgCustVisits'},

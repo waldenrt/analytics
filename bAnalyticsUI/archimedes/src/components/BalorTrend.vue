@@ -244,25 +244,25 @@
                   v-bind:headers="headers"
                   :items="items1"
                   hide-actions
-                  class="elevation-1 grey lighten-2"
+                  class="elevation-1"
               >
                 <template slot="items" scope="props">
-                  <td class="white">{{ props.item.timePeriod }}</td>
-                  <td class="white text-xs-right">{{ props.item.custBalor }}</td>
-                  <td class="white text-xs-right">{{ props.item.spendBalor }}</td>
-                  <td class="white text-xs-right">{{ props.item.txnBalor }}</td>
-                  <td class="white text-xs-right">{{ props.item.newCustCount }}</td>
-                  <td class="white text-xs-right">{{ props.item.newTxnAmt }}</td>
-                  <td class="white text-xs-right">{{ props.item.newTxnCount }}</td>
-                  <td class="white text-xs-right">{{ props.item.reactCustCount }}</td>
-                  <td class="white text-xs-right">{{ props.item.reactTxnAmt }}</td>
-                  <td class="white text-xs-right">{{ props.item.reactTxnCount }}</td>
-                  <td class="white text-xs-right">{{ props.item.returnCustCount }}</td>
-                  <td class="white text-xs-right">{{ props.item.returnTxnAmt }}</td>
-                  <td class="white text-xs-right">{{ props.item.returnTxnCount }}</td>
-                  <td class="white text-xs-right">{{ props.item.lapsedCustCount }}</td>
-                  <td class="white text-xs-right">{{ props.item.lapsedTxnAmt }}</td>
-                  <td class="white text-xs-right">{{ props.item.lapsedTxnCount }}</td>
+                  <td class="">{{ props.item.timePeriod }}</td>
+                  <td class=" text-xs-right">{{ props.item.custBalor }}</td>
+                  <td class=" text-xs-right">{{ props.item.spendBalor }}</td>
+                  <td class=" text-xs-right">{{ props.item.txnBalor }}</td>
+                  <td class=" text-xs-right">{{ props.item.newCustCount }}</td>
+                  <td class=" text-xs-right">{{ props.item.newTxnAmt }}</td>
+                  <td class=" text-xs-right">{{ props.item.newTxnCount }}</td>
+                  <td class=" text-xs-right">{{ props.item.reactCustCount }}</td>
+                  <td class=" text-xs-right">{{ props.item.reactTxnAmt }}</td>
+                  <td class=" text-xs-right">{{ props.item.reactTxnCount }}</td>
+                  <td class=" text-xs-right">{{ props.item.returnCustCount }}</td>
+                  <td class=" text-xs-right">{{ props.item.returnTxnAmt }}</td>
+                  <td class=" text-xs-right">{{ props.item.returnTxnCount }}</td>
+                  <td class=" text-xs-right">{{ props.item.lapsedCustCount }}</td>
+                  <td class=" text-xs-right">{{ props.item.lapsedTxnAmt }}</td>
+                  <td class=" text-xs-right">{{ props.item.lapsedTxnCount }}</td>
                 </template>
               </v-data-table>
             </v-flex>
@@ -294,12 +294,7 @@
       return {
         HelpNavBalorData: HelpNavBalor.data,
         headers: [
-          {
-            text: 'Time Period',
-            left: true,
-            sortable: true,
-            value: 'timePeriod'
-          },
+          {text: 'Time Period', value: 'timePeriod', left: true, sortable: true},
           {text: 'Customer BALOR Ratio', value: 'custBalor'},
           {text: 'Spend BALOR Ratio', value: 'spendBalor'},
           {text: 'Txn BALOR Ratio', value: 'txnBalor'},

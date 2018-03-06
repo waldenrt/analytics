@@ -172,15 +172,15 @@
     </v-layout>
     <!-- //=====ROW2===== -->
     <!-- =====ROW3===== -->
-    <v-layout wrap row class="mt-3">
+    <v-layout wrap row>
       <!--+++++col_1+++++-->
-      <v-flex xs4 md3 fill-height>
+      <v-flex xs12 sm4 md3 fill-height class="mt-3">
         <v-card class="white">
           <!--Total Spend Table-->
           <table cellpadding="0" cellspacing="0" width="100%" class="quant_prod_table1">
-            <tr style="height:60px;">
-              <th class="pa-2 info white--text">Quantiles</th>
-              <th class="pa-2 info white--text">Top Products<br/>Total Spend</th>
+            <tr style="height:52px;">
+              <th class="info white--text">Quantiles</th>
+              <th class="info white--text">Top Products<br/>Total Spend</th>
             </tr>
             <tr v-for="item in custItems" v-bind:key="item.Quantile">
               <td class="pa-2">
@@ -196,9 +196,9 @@
       </v-flex>
       <!--//+++++col_1+++++-->
       <!--+++++col_2+++++-->
-      <v-flex xs8 md9 fill-height>
+      <v-flex xs12 sm8 md9 fill-height class="mt-3">
         <v-card fill-height class="white mb-1" style="height:100%">
-          <div class="info white--text text-xs-center pt-3 pb-3 subhead" style="height:60px;">Products</div>
+          <div class="info white--text text-xs-center pt-3 subhead" style="height:52px;">Products</div>
           <v-layout row wrap class="mb-1 pa-1">
             <v-flex xs12 fill-height>
               <stacked-bar :chart-data="barData" :options="barOptions" class="prod_chart"></stacked-bar>
@@ -1032,15 +1032,20 @@
 
 <style scoped>
   .progress_bar {
-    width: 100%;
-    height: 30px;
-    display: inline-block;
-    background-color: red;
-    margin-top: 68px;
+    width:100%;
+    height:30px;
+    display:inline-block;
+    background-color:red;
+    margin-top:68px;
   }
   .subhead {line-height:21px; font-weight:bold;}
   .prod_container {width:100% !important; height:400px;}
-  .quant_prod_table1 {position:relative; margin:0 auto; height:457px !important; margin-right:0;}
+  .quant_prod_table1 {
+    position:relative;
+    margin:0 auto;
+    height:449px !important;
+    margin-right:0;
+  }
   .quant_prod_table1 th, .quant_prod_table1 td {vertical-align:middle;}
   .quant_prod_table1 td {vertical-align:middle;}
   .quant_prod_table1 tr:hover {background-color:#eee;}

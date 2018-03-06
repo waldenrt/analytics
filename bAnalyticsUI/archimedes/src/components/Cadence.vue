@@ -26,7 +26,7 @@ HelpNavBalor<template>
           <v-divider class="primary pb-0 pl-3 pr-3"></v-divider>
             <div class="constrainer">
               <div class="scrolltable">
-                <div class="tbl_header grey lighten-2 pt-2 pb-2 elevation-1">
+                <div class="tbl_header grey lighten-2 pt-2 pb-2">
                 <table cellpadding="0" cellspacing="0">
                     <thead>
                       <tr>

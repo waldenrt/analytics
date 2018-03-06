@@ -35,13 +35,42 @@
               <div class="xs12 pb-3">
                 <label class="body-2">Select file for analysis</label>
                 <div class="file">
-                  <v-dialog v-model="dialog" width="550px">
+                  <!-- sample_file_image_dialog -->
+                  <v-dialog v-model="dialog1" width="550px">
                     <div slot="activator">
-                      <div style="display:inline-block;"><v-icon class="warning--text" slot="activator">note</v-icon></div>
+                      <div class="file">
+                        <div style="display:inline-block;"
+                        v-tooltip:right="{ html: 'Sample File Image' }">
+                          <v-icon class="warning--text" slot="activator">note</v-icon></div>
+                      </div>
                     </div>
                     <v-card>
-                      <img src="../assets/images/lifecycle_file_img.png" width="100%" height="100%" class="file_sample">
+                      <img src="../assets/images/balor_file_img.png" width="100%" height="100%" class="file_sample">
                     </v-card>
+                  </v-dialog>
+                  <!-- file_browser_dialog -->
+                  <v-dialog v-model="dialog2" fullscreen transition="dialog-bottom-transition" :overlay=false>
+                    <div slot="activator">
+                      <div class="file">
+                        <div style="display:inline-block;"
+                        v-tooltip:right="{ html: 'File browser' }">
+                          <v-icon class="success--text" slot="activator">attachment</v-icon></div>
+                      </div>
+                    </div>
+                    <!-- file_browser_component -->
+                    <v-card>
+                      <v-toolbar dark class="primary">
+                        <v-btn light icon @click.native="dialog2 = false" dark>
+                          <v-icon>close</v-icon>
+                        </v-btn>
+                        <v-toolbar-title>File Browser</v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <v-toolbar-items>
+                          <v-btn light flat @click.native="dialog2 = false">Save</v-btn>
+                        </v-toolbar-items>
+                      </v-toolbar>
+                    </v-card>
+                    <!-- //file_browser_component -->
                   </v-dialog>
                 </div>
                 <v-layout xs12 class="pad_LR12">
@@ -172,7 +201,8 @@
           {text: '6 months', value: '6'},
           {text: '12 months', value: '12'}
         ],
-        dialog: false,
+        dialog1: false,
+        dialog2: false,
         valid: true,
         uploadedFile: '',
         uploadFieldName: '',
