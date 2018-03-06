@@ -342,22 +342,13 @@ HelpNavBalor<template>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .sum_brd1 {
-    border-right: 7px solid #D63809;
-  }
+  .sum_brd1 {border-right:7px solid #D63809;}
 
-  .summary td:last-child {
-    margin-left: 5px;
-    text-align: right;
-  }
+  .summary td:last-child {margin-left:5px; text-align:right;}
 
-  .cad_sum div {
-    margin: 0 auto;
-  }
+  .cad_sum div {margin:0 auto;}
 
-  .card_height {
-    min-height: 165px;
-  }
+  .card_height {min-height:165px;}
 
   .card_pad {
     padding-top: 20px;
@@ -415,8 +406,9 @@ HelpNavBalor<template>
     -webkit-flex-direction: column;
   }
   .scrolltable .tbl_header table, .scrolltable .tbl_body table {
-    width:90%;
+    width:100%;
     margin:0 auto;
+    margin-right:0;
   }
   .scrolltable > .tbl_body {
     width: -webkit-fit-content;
@@ -427,6 +419,7 @@ HelpNavBalor<template>
     flex: 1;
     -webkit-flex: 1;
   }
+  .scrolltable tr:hover {background-color:#eee;}
 
   .panel {
     height: 530px;

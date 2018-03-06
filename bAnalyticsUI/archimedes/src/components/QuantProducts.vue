@@ -1040,7 +1040,7 @@
   }
   .subhead {line-height:21px; font-weight:bold;}
   .prod_container {width:100% !important; height:400px;}
-  .quant_prod_table1 {position:relative; margin:0 auto; height:457px !important;}
+  .quant_prod_table1 {position:relative; margin:0 auto; height:457px !important; margin-right:0;}
   .quant_prod_table1 th, .quant_prod_table1 td {vertical-align:middle;}
   .quant_prod_table1 td {vertical-align:middle;}
   .quant_prod_table1 tr:hover {background-color:#eee;}

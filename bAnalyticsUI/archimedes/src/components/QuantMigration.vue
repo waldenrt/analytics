@@ -207,16 +207,16 @@
                   <td class="text-xs-center" :style="createTblColor[index][7]" v-text="item.key8"></td>
                   <td class="text-xs-center" :style="createTblColor[index][8]" v-text="item.key9"></td>
                   <td class="text-xs-center" :style="createTblColor[index][9]" v-text="item.key10"></td>
-                  <td class="text-xs-center" :style="createTblColor[index][0]" v-text="item.key11"></td>
-                  <td class="text-xs-center" :style="createTblColor[index][1]" v-text="item.key12"></td>
-                  <td class="text-xs-center" :style="createTblColor[index][2]" v-text="item.key13"></td>
-                  <td class="text-xs-center" :style="createTblColor[index][3]" v-text="item.key14"></td>
-                  <td class="text-xs-center" :style="createTblColor[index][4]" v-text="item.key15"></td>
-                  <td class="text-xs-center" :style="createTblColor[index][5]" v-text="item.key16"></td>
-                  <td class="text-xs-center" :style="createTblColor[index][6]" v-text="item.key17"></td>
-                  <td class="text-xs-center" :style="createTblColor[index][7]" v-text="item.key18"></td>
-                  <td class="text-xs-center" :style="createTblColor[index][8]" v-text="item.key19"></td>
-                  <td class="text-xs-center" :style="createTblColor[index][9]" v-text="item.key20"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][10]" v-text="item.key11"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][11]" v-text="item.key12"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][12]" v-text="item.key13"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][13]" v-text="item.key14"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][14]" v-text="item.key15"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][15]" v-text="item.key16"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][16]" v-text="item.key17"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][17]" v-text="item.key18"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][18]" v-text="item.key19"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][19]" v-text="item.key20"></td>
                 </tr>
               </template>
             </tbody>
@@ -841,7 +841,7 @@
     z-index:1;
   }
   .quantTbl {width:100%; margin:0 auto;}
-  .quantTbl td {padding:20px; font-weight:bold;}
+  .quantTbl td {padding:5px; font-weight:bold;}
   .quantTbl thead td {background-color:#ffeaeb;}
   .quantTbl thead td:first-child {background-color:inherit;}
   .quantTbl .tRow td:first-child {background-color:#e7eeda;}
