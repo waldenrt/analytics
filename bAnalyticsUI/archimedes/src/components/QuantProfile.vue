@@ -1,11 +1,20 @@
 <template>
   <v-container fluid class="quantileSummary pl-3 pr-3 mb-3">
     <!-- =====ROW1===== -->
+    <HelpNavQuantile ref="helpNav"></HelpNavQuantile>
     <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Customer Pareto Analysis</h6>
+            <v-spacer></v-spacer>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
@@ -101,10 +110,12 @@
     <!-- //=====ROW2===== -->
     <!-- =====ROW3===== -->
     <v-layout wrap row>
-      <v-flex xs12 class="pt-0 mt-0">
-        <v-card class="white pa-1 mob_padLR_0">
-          <div class="title primary--text text-xs-center pa-1 mb-2">Quantile Pareto Analysis</div>
-          <v-layout row wrap class="mb-2 mob_marB_0">
+      <v-flex xs12 class="pt-0 mt-3">
+        <v-card class="white mob_padLR_0">
+          <v-card-title primary-title class="primary">
+            <h6 class="white--text text-xs-left mb-0">Quantile Pareto Analysis</h6>
+          </v-card-title>
+          <v-layout row wrap class="mt-2 mb-3 mob_marB_0">
             <v-flex xs12 fill-height>
               <pareto-chart :chart-data="paretoData" :options="paretoOptions" class="pareto_chart1"></pareto-chart>
             </v-flex>
@@ -116,8 +127,10 @@
     <!-- =====ROW4===== -->
     <v-layout wrap row>
       <v-flex xs12>
-        <v-card class="white pl-3 pr-3 pt-1 pb-1">
-          <div class="title primary--text text-xs-center pa-1">Quantile Purchase Profiles</div>
+        <v-card class="white">
+          <v-card-title primary-title class="primary">
+            <h6 class="white--text text-xs-left mb-0">Quantile Purchase Profiles</h6>
+          </v-card-title>
           <v-data-table v-if="dimension === 'customer'"
               v-bind:headers="custHeaders"
               :items="custItems"
@@ -159,6 +172,7 @@
 <script>
   import ParetoChart from './balorCharts/ParetoChart'
   import {quantSum} from './javascript/quantile.service'
+  import HelpNavQuantile from './HelpNavQuantile.vue'
 
   // [JF] initiates numeral.js library in this vue component. must use together with numeral() or numeral().format()
   var numeral = require('numeral')
@@ -275,7 +289,8 @@
       }
     },
     components: {
-      ParetoChart
+      ParetoChart,
+      HelpNavQuantile
     },
     mounted () {
       if (this.jobApp === 'Pareto' || this.jobApp === 'pareto') {
@@ -287,6 +302,10 @@
       }
     },
     methods: {
+      getHelpSection: function () {
+        var hpNav = this.$refs.helpNav.$refs.helpNav
+        hpNav.value = !hpNav.value
+      },
       getResults () {
         quantSum(this.jobId)
           .catch(err => {

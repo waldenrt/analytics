@@ -122,6 +122,12 @@ export default {
       monthArray: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
       cardItems: [
         {
+          title: 'Core Lifecycle',
+          titleColor: 'error',
+          description: 'Brierley+Partner’s propriety customer lifecycle segmentation provides you with visibility into the similarities and differences across customers at different lifecycle phases. Compare core Loyalty KPIs across segments, and view trends in lifecycle migration by defining time period subsets within your data. A product index analysis then profiles purchase behavior across segments and time, identifying which products resonate the most within segments and which segments to target for promotional activities.',
+          inputLink: '/Lifecycle/NewLifecycle'
+        },
+        {
           title: 'BALOR',
           titleColor: 'primary',
           description: 'Visualize the purchase cadence of your customer base and identify the net effects of customer acquisition or retention activities against attrition. With this strategic analysis of customer purchase behavior, you can analyze trends in core Loyalty KPIs and quantify the incremental value of customer retention to your bottom line.',
@@ -132,12 +138,6 @@ export default {
           titleColor: 'success',
           description: 'Define and analyze value-groups of customers (or stores) across operational metrics and compare the contribution per group relative to the whole. Select time period subsets for analysis in order to see how your customers (or stores) migrate through value-groups over time. And with product profiling, get the data you need to compare the top and bottom products across each value-group and construct strategies for converting low-value customers into high-value customers.',
           inputLink: '/Pareto/NewPareto'
-        },
-        {
-          title: 'Core Lifecycle',
-          titleColor: 'error',
-          description: 'Brierley+Partner’s propriety customer lifecycle segmentation provides you with visibility into the similarities and differences across customers at different lifecycle phases. Compare core Loyalty KPIs across segments, and view trends in lifecycle migration by defining time period subsets within your data. A product index analysis then profiles purchase behavior across segments and time, identifying which products resonate the most within segments and which segments to target for promotional activities.',
-          inputLink: '/Lifecycle/NewLifecycle'
         },
         {
           title: 'b-Relevant',
@@ -154,9 +154,9 @@ export default {
         { name: 'Data360', site: 'http://www.brierley.com/technology-products/brierley-data360' }
       ],
       historyItems: [
+        { name: 'Core Lifecycle Job History', histLink: '#/Lifecycle' },
         { name: 'BALOR Job History', histLink: '#/Balor' },
         { name: 'Pareto Job History', histLink: '#/Pareto' },
-        { name: 'Core Lifecycle Job History', histLink: '#/Lifecycle' },
         { name: 'b-Relevant Job History', histLink: '#/bRelevant/NewBRelevant' }
       ]
     }

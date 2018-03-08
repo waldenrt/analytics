@@ -1,11 +1,20 @@
 <template>
   <v-container fluid class="quantileProducts pl-3 pr-3 mb-3">
     <!-- =====ROW1===== -->
+    <HelpNavQuantile ref="helpNav"></HelpNavQuantile>
     <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Purchased Products Analysis per Quantile</h6>
+            <v-spacer></v-spacer>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
@@ -166,12 +175,12 @@
     <v-layout wrap row class="mt-3">
       <!--+++++col_1+++++-->
       <v-flex xs4 md3 fill-height>
-        <v-card class="white pl-1 pr-1 pt-1 pb-1">
+        <v-card class="white">
           <!--Total Spend Table-->
           <table cellpadding="0" cellspacing="0" width="100%" class="quant_prod_table1">
-            <tr>
-              <th class="pa-2 primary--text">Quantiles</th>
-              <th class="pa-2 primary--text">Top Products<br/>Total Spend</th>
+            <tr style="height:60px;">
+              <th class="pa-2 info white--text">Quantiles</th>
+              <th class="pa-2 info white--text">Top Products<br/>Total Spend</th>
             </tr>
             <tr v-for="item in custItems" v-bind:key="item.Quantile">
               <td class="pa-2">
@@ -188,8 +197,8 @@
       <!--//+++++col_1+++++-->
       <!--+++++col_2+++++-->
       <v-flex xs8 md9 fill-height>
-        <v-card fill-height class="white pl-1 pr-2 pt-1 pb-1" style="height:100%">
-          <div class="primary--text text-xs-center pa-1 subhead">Products</div>
+        <v-card fill-height class="white mb-1" style="height:100%">
+          <div class="info white--text text-xs-center pt-3 pb-3 subhead" style="height:60px;">Products</div>
           <v-layout row wrap class="mb-1 pa-1">
             <v-flex xs12 fill-height>
               <stacked-bar :chart-data="barData" :options="barOptions" class="prod_chart"></stacked-bar>
@@ -206,6 +215,7 @@
 <script>
   import {quantProd} from './javascript/quantile.service'
   import StackedBar from './quantileCharts/StackedBar'
+  import HelpNavQuantile from './HelpNavQuantile.vue'
 
   // [JF] initiates numeral.js library in this vue component. must use together with numeral() or numeral().format()
   var numeral = require('numeral')
@@ -213,7 +223,8 @@
   export default {
     name: 'quantProducts',
     components: {
-      StackedBar
+      StackedBar,
+      HelpNavQuantile
     },
     data () {
       return {
@@ -284,6 +295,10 @@
       }
     },
     methods: {
+      getHelpSection: function () {
+        var hpNav = this.$refs.helpNav.$refs.helpNav
+        hpNav.value = !hpNav.value
+      },
       getResults () {
         quantProd(this.jobId)
           .catch(err => {
@@ -1023,23 +1038,11 @@
     background-color: red;
     margin-top: 68px;
   }
-
-  .subhead {
-    line-height: 21px;
-    font-weight: bold;
-  }
-  .prod_container {
-    width:100% !important;
-    height: 400px;
-  }
-  .quant_prod_table1 {
-    position: relative;
-    margin: 0 auto;
-    height:430px !important;
-  }
-  .prod_chart {
-    position: relative !important;
-    margin: 0 auto !important;
-    height: 389px !important;
-  }
+  .subhead {line-height:21px; font-weight:bold;}
+  .prod_container {width:100% !important; height:400px;}
+  .quant_prod_table1 {position:relative; margin:0 auto; height:457px !important; margin-right:0;}
+  .quant_prod_table1 th, .quant_prod_table1 td {vertical-align:middle;}
+  .quant_prod_table1 td {vertical-align:middle;}
+  .quant_prod_table1 tr:hover {background-color:#eee;}
+  .prod_chart {position:relative !important; margin:0 auto !important; height:389px !important;}
 </style>

@@ -3,14 +3,17 @@
     <v-app id="navigation" left-fixed-sidebar top-toolbar sidebar-under-toolbar>
 
       <!-- =====slideout nav===== -->
+      <!-- +++ left_drawer +++ -->
       <v-navigation-drawer fill-height temporary clipped class="accent" v-model="showmenu">
         <v-list class="pa-0">
           <!--Dashboard-->
           <v-list-item>
             <v-list-tile ripple class="white">
-              <v-icon class="primary--text pr-3">dashboard</v-icon>
               <v-list-tile-title class="primary--text">
-                <router-link to="/Home" tag="span" style="cursor:pointer;">Dashboard</router-link>
+                <router-link to="/Home" tag="span" class="nav_link">
+                    <v-icon class="primary--text pr-3">dashboard</v-icon>
+                    Dashboard
+                </router-link>
               </v-list-tile-title>
             </v-list-tile>
           </v-list-item>
@@ -19,9 +22,11 @@
           <!--ModuleNav-->
           <v-list-item v-for="module in modules" :value="module.active" :key="module.name">
             <v-list-tile ripple>
-              <v-icon class="white--text pr-3">{{ module.icon }}</v-icon>
               <v-list-tile-title>
-                <router-link :to="module.link" tag="span" style="cursor:pointer;" class="white--text">{{ module.name }}</router-link>
+                  <router-link :to="module.link" tag="span" class="nav_link white--text">
+                    <v-icon class="white--text pr-3">{{ module.icon }}</v-icon>
+                    {{ module.name }}
+                  </router-link>
               </v-list-tile-title>
             </v-list-tile>
             <v-divider></v-divider>
@@ -125,9 +130,9 @@
           {text: 'Hertz', icon: 'account_circle', link: ''}
         ],
         modules: [
+          {name: 'Core Lifecycle', active: false, icon: 'label', link: '/Lifecycle'},
           {name: 'BALOR', active: true, icon: 'label', link: '/Balor'},
           {name: 'Pareto', active: false, icon: 'label', link: '/Pareto'},
-          {name: 'Core Lifecycle', active: false, icon: 'label', link: '/Lifecycle'},
           {name: 'b-Relevant', active: false, icon: 'label', link: '/bRelevant'},
           {name: 'History', active: false, icon: 'history', link: '/JobHistory'},
           {name: 'Settings', active: false, icon: 'settings', link: '/Settings'},
@@ -138,12 +143,15 @@
         profile: [
           {name: 'Profile', icon: 'person', link: '#/Home'},
           {name: 'Settings', icon: 'settings', link: '#/Settings'},
-          {name: 'Feeback', icon: 'feedback', link: '#/Feedback'},
+          {name: 'Feedback', icon: 'feedback', link: '#/Feedback'},
           {name: 'Help', icon: 'help', link: '#/Help'},
           {name: 'Logout', icon: 'exit_to_app', link: '#/Logout'}
         ],
         userInfo: [
           {firstName: 'FirstName', lastName: 'LastName', email: 'someone@juju.com', iconClass: 'info'}
+        ],
+        helpList: [
+          {appMod: 'Balor'}
         ]
       }
     },
@@ -159,7 +167,7 @@
 <style lang="stylus">
   #navigation {height: 100%;}
   .content {
-    flex: 1 0 auto;
+    flex:1 0 auto;
     height:100%;
     padding:0;
     margin:0;
@@ -173,12 +181,16 @@
   .application--footer-fixed.application--toolbar > aside.navigation-drawer.navigation-drawer--clipped  {max-height:calc(100vh - 55px) !important;}
 
   .bg_avatar {
-    border-radius: 30px;
+    border-radius:30px;
     border:1px solid #000000;
   }
   .drop_arrow2{
     position:relative;
     left:270px;
+  }
+  .nav_link{
+    cursor:pointer;
+    display:block;
   }
   @media (max-width: 550px) {
     body {font-size: 12px;}

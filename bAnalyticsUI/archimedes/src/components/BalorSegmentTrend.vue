@@ -2,11 +2,20 @@
   <v-container fluid class="balorSegmentTrend pl-3 pr-3">
 
     <!-- =====ROW1===== -->
+    <HelpNavBalor ref="helpNav"></HelpNavBalor>
     <v-layout row wrap class="pt-0 mb-3">
       <v-flex xs12>
         <v-card class="white">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Segment Trends</h6>
+            <v-spacer></v-spacer>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
           <!-- dropdown_row [a] -->
           <v-card-row class="grey lighten-2">
@@ -155,6 +164,14 @@
         <v-card class="white">
         <v-card-title primary-title class="primary">
           <h6 class="white--text text-xs-left mb-0">Segment Profiles</h6>
+          <v-spacer></v-spacer>
+          <v-btn
+              @click.native="getHelpSection()"
+              icon slot="activator"
+              class="success--text"
+              style="height:auto !important;">
+                <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+          </v-btn>
         </v-card-title>
         <!-- dropdown_row [a] -->
         <v-card-row class="grey lighten-2">
@@ -230,13 +247,15 @@
   import BarChart from './balorCharts/BarChart'
   import ParetoChart from './balorCharts/ParetoChart'
   import {segment} from './javascript/balor.service'
+  import HelpNavBalor from './HelpNavBalor.vue'
 
   export default {
     name: 'balorSegmentTrend',
     components: {
       BarChart,
       HorizontalChart,
-      ParetoChart
+      ParetoChart,
+      HelpNavBalor
     },
     data () {
       return {
@@ -424,6 +443,10 @@
       }
     },
     methods: {
+      getHelpSection: function () {
+        var hpNav = this.$refs.helpNav.$refs.helpNav
+        hpNav.value = !hpNav.value
+      },
       getResults () {
         segment(this.jobId)
           .catch(err => {

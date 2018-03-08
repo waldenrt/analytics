@@ -1,11 +1,20 @@
 <template>
-  <v-container fluid class="quantileSummary pl-3 pr-3 mb-3">
+  <v-container fluid class="lifecycleSummary pl-3 pr-3 mb-3">
     <!-- =====ROW1===== -->
+    <HelpNavLifecycle ref="helpNav"></HelpNavLifecycle>
     <v-layout row wrap class="pt-0 mt-0 mb-3">
       <v-flex xs12>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Segment Summary</h6>
+            <v-spacer></v-spacer>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
@@ -77,69 +86,89 @@
     </v-layout>
     <!-- //=====ROW1===== -->
     <!-- =====ROW2===== -->
-    <v-layout wrap row class="mb-3">
+    <v-layout wrap row>
       <!--+++++col1+++++-->
-      <v-flex xs12 md5 class="pt-0 mt-0">
-        <v-card class="white pl-3 pr-3 pt-1 pb-1 card_height">
-          <div class="title primary--text text-xs-center pa-1 mb-2">Aggregate Metrics for Time Period {{ this.tpSelect }}
+      <v-flex xs12 md5 class="pt-0 mt-0 mb-3">
+          <v-card-title primary-title class="primary">
+            <h6 class="white--text text-xs-left mb-0">Aggregate Metrics for Time Period {{ this.tpSelect }}</h6>
+          </v-card-title>
+          <div class="grid-container white elevation-1">
+            <!--card1-->
+            <div class="grid-item item1 tile_odd">
+              <div class="tbl">
+                <div class="tbl_row white--text subheading">
+                    <div class="tbl_cell cell1 pl-2 pr-2">Total Customers </div>
+                    <div class="tbl_cell cell2 pl-2 pr-2">{{ this.metricsItems.totalCusts }}</div>
+                </div>
+              </div>
+            </div>
+            <!--card2-->
+            <div class="grid-item item2 tile_even">
+              <div class="tbl">
+                <div class="tbl_row white--text subheading">
+                    <div class="tbl_cell cell1 pl-2 pr-2">Total Visits </div>
+                    <div class="tbl_cell cell2 pl-2 pr-2">{{ this.metricsItems.totalCusts }}</div>
+                </div>
+              </div>
+            </div>
+            <!--card3-->
+            <div class="grid-item item3 tile_odd">
+              <div class="tbl">
+                <div class="tbl_row white--text subheading">
+                    <div class="tbl_cell cell1 pl-2 pr-2">Total Spend </div>
+                    <div class="tbl_cell cell2 pl-2 pr-2">{{ this.metricsItems.totalCusts }}</div>
+                </div>
+              </div>
+            </div>
+            <!--card4-->
+            <div class="grid-item item4 tile_even">
+              <div class="tbl">
+                <div class="tbl_row white--text subheading">
+                    <div class="tbl_cell cell1 pl-2 pr-2">Total Units </div>
+                    <div class="tbl_cell cell2 pl-2 pr-2">{{ this.metricsItems.totalCusts }}</div>
+                </div>
+              </div>
+            </div>
           </div>
-          <v-card class="mb-2 height_bars1 tile_odd">
-            <v-card-text class="white--text height_bars2">
-              <div class="subheading">Total Customers <span>{{ this.metricsItems.totalCusts }}</span></div>
-            </v-card-text>
-          </v-card>
-          <v-card class="mb-2 height_bars1 tile_even" >
-            <v-card-text class="white--text height_bars2">
-              <div class="subheading">Total Visits <span>{{ this.metricsItems.totalVisits }}</span></div>
-            </v-card-text>
-          </v-card>
-          <v-card class="mb-2 height_bars1 tile_odd">
-            <v-card-text class="white--text height_bars2">
-              <div class="subheading">Total Spend <span>{{ this.metricsItems.totalSpend }}</span></div>
-            </v-card-text>
-          </v-card>
-          <v-card class="mb-2 height_bars1 tile_even">
-            <v-card-text class="white--text height_bars2">
-              <div class="subheading">Total Units <span>{{ this.metricsItems.totalUnits }}</span></div>
-            </v-card-text>
-          </v-card>
-        </v-card>
+
       </v-flex>
       <!--//+++++col1+++++-->
       <!--+++++col2+++++-->
-      <v-flex xs12 md7 class="pt-0 mt-0">
-        <v-card class="white pl-3 pr-3 pt-1 pb-3">
-          <div class="title primary--text text-xs-center pa-1 mb-2">Segment Percent of Total Aggregate Metrics for Time Period {{ this.tpSelect
-            }}
+      <v-flex xs12 md7 class="pt-0 mt-0 mb-3">
+        <v-card class="white pa-0">
+          <v-card-title primary-title class="primary">
+            <h6 class="white--text text-xs-left mb-0">Segment Percent of Total Aggregate Metrics for Time Period {{ this.tpSelect }}</h6>
+          </v-card-title>
+          <div class="pa-3" style="height:100%;">
+            <v-layout row>
+              <div class="doughnuts"><doughnut-chart :chart-data="bestCust" :width="100" :height="100"></doughnut-chart></div>
+              <div class="doughnuts"><doughnut-chart :chart-data="risingCust" :width="100" :height="100"></doughnut-chart></div>
+              <div class="doughnuts"><doughnut-chart :chart-data="middleCust" :width="100" :height="100"></doughnut-chart></div>
+              <div class="doughnuts"><doughnut-chart :chart-data="lapsingCust" :width="100" :height="100"></doughnut-chart></div>
+              <div class="doughnuts"><doughnut-chart :chart-data="deeplyCust" :width="100" :height="100"></doughnut-chart></div>
+            </v-layout>
+            <v-layout row>
+              <div class="doughnuts"><doughnut-chart :chart-data="bestVisits" :width="100" :height="100"></doughnut-chart></div>
+              <div class="doughnuts"><doughnut-chart :chart-data="risingVisits" :width="100" :height="100"></doughnut-chart></div>
+              <div class="doughnuts"><doughnut-chart :chart-data="middleVisits" :width="100" :height="100"></doughnut-chart></div>
+              <div class="doughnuts"><doughnut-chart :chart-data="lapsingVisits" :width="100" :height="100"></doughnut-chart></div>
+              <div class="doughnuts"><doughnut-chart :chart-data="deeplyVisits" :width="100" :height="100"></doughnut-chart></div>
+            </v-layout>
+            <v-layout row>
+              <div class="doughnuts"><doughnut-chart :chart-data="bestSpend" :width="100" :height="100"></doughnut-chart></div>
+              <div class="doughnuts"><doughnut-chart :chart-data="risingSpend" :width="100" :height="100"></doughnut-chart></div>
+              <div class="doughnuts"><doughnut-chart :chart-data="middleSpend" :width="100" :height="100"></doughnut-chart></div>
+              <div class="doughnuts"><doughnut-chart :chart-data="lapsingSpend" :width="100" :height="100"></doughnut-chart></div>
+              <div class="doughnuts"><doughnut-chart :chart-data="deeplySpend" :width="100" :height="100"></doughnut-chart></div>
+            </v-layout>
+            <v-layout row>
+              <div class="doughnuts"><doughnut-chart :chart-data="bestUnits" :width="100" :height="100"></doughnut-chart></div>
+              <div class="doughnuts"><doughnut-chart :chart-data="risingUnits" :width="100" :height="100"></doughnut-chart></div>
+              <div class="doughnuts"><doughnut-chart :chart-data="middleUnits" :width="100" :height="100"></doughnut-chart></div>
+              <div class="doughnuts"><doughnut-chart :chart-data="lapsingUnits" :width="100" :height="100"></doughnut-chart></div>
+              <div class="doughnuts"><doughnut-chart :chart-data="deeplyUnits" :width="100" :height="100"></doughnut-chart></div>
+            </v-layout>
           </div>
-          <v-layout row>
-            <div class="doughnuts"><doughnut-chart :chart-data="bestCust" :width="100" :height="100"></doughnut-chart></div>
-            <div class="doughnuts"><doughnut-chart :chart-data="risingCust" :width="100" :height="100"></doughnut-chart></div>
-            <div class="doughnuts"><doughnut-chart :chart-data="middleCust" :width="100" :height="100"></doughnut-chart></div>
-            <div class="doughnuts"><doughnut-chart :chart-data="lapsingCust" :width="100" :height="100"></doughnut-chart></div>
-            <div class="doughnuts"><doughnut-chart :chart-data="deeplyCust" :width="100" :height="100"></doughnut-chart></div>
-          </v-layout>
-          <v-layout row>
-            <div class="doughnuts"><doughnut-chart :chart-data="bestVisits" :width="100" :height="100"></doughnut-chart></div>
-            <div class="doughnuts"><doughnut-chart :chart-data="risingVisits" :width="100" :height="100"></doughnut-chart></div>
-            <div class="doughnuts"><doughnut-chart :chart-data="middleVisits" :width="100" :height="100"></doughnut-chart></div>
-            <div class="doughnuts"><doughnut-chart :chart-data="lapsingVisits" :width="100" :height="100"></doughnut-chart></div>
-            <div class="doughnuts"><doughnut-chart :chart-data="deeplyVisits" :width="100" :height="100"></doughnut-chart></div>
-          </v-layout>
-          <v-layout row>
-            <div class="doughnuts"><doughnut-chart :chart-data="bestSpend" :width="100" :height="100"></doughnut-chart></div>
-            <div class="doughnuts"><doughnut-chart :chart-data="risingSpend" :width="100" :height="100"></doughnut-chart></div>
-            <div class="doughnuts"><doughnut-chart :chart-data="middleSpend" :width="100" :height="100"></doughnut-chart></div>
-            <div class="doughnuts"><doughnut-chart :chart-data="lapsingSpend" :width="100" :height="100"></doughnut-chart></div>
-            <div class="doughnuts"><doughnut-chart :chart-data="deeplySpend" :width="100" :height="100"></doughnut-chart></div>
-          </v-layout>
-          <v-layout row>
-            <div class="doughnuts"><doughnut-chart :chart-data="bestUnits" :width="100" :height="100"></doughnut-chart></div>
-            <div class="doughnuts"><doughnut-chart :chart-data="risingUnits" :width="100" :height="100"></doughnut-chart></div>
-            <div class="doughnuts"><doughnut-chart :chart-data="middleUnits" :width="100" :height="100"></doughnut-chart></div>
-            <div class="doughnuts"><doughnut-chart :chart-data="lapsingUnits" :width="100" :height="100"></doughnut-chart></div>
-            <div class="doughnuts"><doughnut-chart :chart-data="deeplyUnits" :width="100" :height="100"></doughnut-chart></div>
-          </v-layout>
         </v-card>
       </v-flex>
       <!--//+++++col2+++++-->
@@ -148,19 +177,19 @@
     <!-- =====ROW3===== -->
     <v-layout wrap row>
       <v-flex xs12>
-        <v-card class="white" style="width:100%;">
+        <v-card class="info" style="width:100%;">
         <v-layout wrap row>
           <!--+++++col1+++++-->
           <v-flex xs4 class="pt-0 mt-0">
-            <v-card class="pl-3 pr-3 pt-1 pb-1 elevation-0 white">
-              <div class="title primary--text text-xs-center pa-1">Overall Metrics Time Period {{ this.tpSelect }}</div>
+            <v-card class="pl-3 pr-3 pt-3 pb-3 elevation-0 info">
+              <div class="title white--text text-xs-center">Overall Metrics Time Period {{ this.tpSelect }}</div>
             </v-card>
           </v-flex>
           <!--//+++++col1+++++-->
           <!--+++++col2+++++-->
           <v-flex xs8 class="pt-0 mt-0">
-            <v-card class="pl-3 pr-3 pt-1 pb-1 elevation-0 white">
-              <div class="title primary--text text-xs-center pa-1">Segment Metrics for Time Period {{ this.tpSelect }}</div>
+            <v-card class="pl-3 pr-3 pt-3 pb-3 elevation-0 info">
+              <div class="title white--text text-xs-center">Segment Metrics for Time Period {{ this.tpSelect }}</div>
             </v-card>
           </v-flex>
           <!--//+++++col2+++++-->
@@ -196,6 +225,7 @@
 <script>
   import {summary} from './javascript/lifecycle.service'
   import DoughnutChart from './lifecycleCharts/doughnutChart'
+  import HelpNavLifecycle from './HelpNavLifecycle.vue'
 
   // [JF] initiates numeral.js library in this vue component. must use together with numeral() or numeral().format()
   var numeral = require('numeral')
@@ -203,7 +233,8 @@
   export default {
     name: 'lifecycleSummary',
     components: {
-      DoughnutChart
+      DoughnutChart,
+      HelpNavLifecycle
     },
     data () {
       return {
@@ -272,6 +303,10 @@
       }
     },
     methods: {
+      getHelpSection: function () {
+        var hpNav = this.$refs.helpNav.$refs.helpNav
+        hpNav.value = !hpNav.value
+      },
       getResults () {
         summary(this.jobId)
           .catch(err => {
@@ -620,22 +655,49 @@
 </script>
 
 <style scoped>
-.inliner {
-  display: inline-block;
+.grid-container {
+  display:grid;
+  grid-gap:10px;
+  background-color:#2196F3;
+  padding:10px;
+  min-height:432px !important;
 }
+.item1 {grid-column:1 / 1; grid-row:1;}
+.item2 {grid-column:1 / 1; grid-row:2;}
+.item3 {grid-column:1 / 1; grid-row:3;}
+.item4 {grid-column:1 / 1; grid-row:4;}
+.tbl {
+  display:table;
+  width:100%;
+  height:100%;
+}
+.tbl_row {display:table-row;}
+.tbl_cell {
+  display:table-cell;
+  vertical-align:middle;
+  font-weight:bold;
+}
+.cell1 {text-align:left;}
+.cell2 {text-align:right;}
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-width: 481px) and (max-width: 960px) {
+  /* Styles */
+  .card_container {height:auto;}
+}
+.inliner {display:inline-block;}
 
 .legend {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  margin-right: 5px;
+  display:inline-block;
+  width:12px;
+  height:12px;
+  margin-right:5px;
 }
 
 .legend_contain {
-  display: inline-block;
-  line-height: 26px;
-  min-height: 34px;
-  padding: 4px 8px 4px 8px;
+  display:inline-block;
+  line-height:26px;
+  min-height:34px;
+  padding:4px 8px 4px 8px;
   margin:0 0 8px 0;
 }
 
@@ -644,11 +706,6 @@
   position:relative;
   margin:0 auto;
 }
-.card_height {height:100% !important;}
-.height_bars1 {height:21% !important;}
-.height_bars2 {height:100% !important; display:table;}
-.height_bars2 div {display:table-cell; vertical-align: middle !important;font-weight: bold;}
-.height_bars2 span {float:right;}
-.tile_odd {background-color: #848C98 !important;}
+.tile_odd {background-color:#848C98 !important;}
 .tile_even {background-color:#005E76 !important;}
 </style>
