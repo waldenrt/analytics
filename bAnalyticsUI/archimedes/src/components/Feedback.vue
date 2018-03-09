@@ -7,9 +7,11 @@
           <!-- Hero Row -->
           <v-layout wrap row class="accent elevation-1 pa-3 ma-0 bg_hero">
               <v-flex xs12>
-                <div>
-                  <h3 class="white--text text-xs-center pb-0 mb-0">Feedback</h3>
-                  <!--<h5 class="white--text text-xs-center pb-0 mb-0">Have a Question?</h5>-->
+                <div class="contain">
+                  <div>
+                    <h3 class="white--text text-xs-center pb-0 mb-0">Feedback</h3>
+                    <!--<h5 class="grey--text text-xs-center pb-0 mb-0">subhead</h5>-->
+                  </div>
                 </div>
               </v-flex>
           </v-layout>
@@ -60,4 +62,13 @@ export default {
 .wrap1 { display: table; width: 100%; height: 100%; }
 .wrap2 { display: table-cell; vertical-align: middle; margin:0 auto; }
 .bg_hero { min-height: 200px; }
+.bg_hero .contain {
+  display:table;
+  margin:0 auto;
+  height:100%;
+}
+.bg_hero .contain div {
+  display:table-cell;
+  vertical-align: middle;
+}
 </style>

@@ -58,17 +58,40 @@
                       </div>
                     </div>
                     <!-- file_browser_component -->
-                    <v-card>
+                    <v-card class="white">
                       <v-toolbar dark class="primary">
                         <v-btn light icon @click.native="dialog2 = false" dark>
                           <v-icon>close</v-icon>
                         </v-btn>
-                        <v-toolbar-title>File Browser</v-toolbar-title>
+                        <v-toolbar-title>File Browser - {{client_name}}</v-toolbar-title>
                         <v-spacer></v-spacer>
                         <v-toolbar-items>
                           <v-btn light flat @click.native="dialog2 = false">Save</v-btn>
                         </v-toolbar-items>
                       </v-toolbar>
+                      <v-list two-line>
+                        <v-card-row>
+                          <v-card-title>
+                            {{ inserted_file }}
+                            <!-- need to fix this [JF] -->
+                            <input type="text" v-model="inserted_file" />
+                          </v-card-title>
+                        </v-card-row>
+                        <template v-for="item in file_items">
+                          <v-subheader v-if="item.header" v-text="item.header"></v-subheader>
+                          <v-divider v-else-if="item.divider" v-bind:inset="item.inset"></v-divider>
+                          <v-list-tile avatar v-else v-bind:key="item.filename" @click.native="browser_file_selected">
+                            <v-list-tile-avatar>
+                              <v-icon>subdirectory_arrow_right</v-icon>
+                            </v-list-tile-avatar>
+                            <v-list-tile-content>
+                              <v-list-tile-title style="display:inline-block;" v-html="item.filename"></v-list-tile-title>
+                              <v-list-tile-sub-title v-html="item.created"></v-list-tile-sub-title>
+                            </v-list-tile-content>
+                            <v-icon>chevron_right</v-icon>
+                          </v-list-tile>
+                        </template>
+                      </v-list>
                     </v-card>
                     <!-- //file_browser_component -->
                   </v-dialog>
@@ -142,10 +165,33 @@
 <script>
   import {upload} from './javascript/file-upload.service'
   import {submitJob} from './javascript/job.service'
+  import fileBrowser from './FileBrowser.vue'
 
   export default {
+    components: {
+      fileBrowser
+    },
     data () {
       return {
+        client_name: 'Default Client Name', // will be moved to fileBrowser.vue
+        file_items: [
+          { header: 'Select a File' },
+          {
+            filename: 'File 1',
+            created: '01/01/2018'
+          },
+          { divider: true, inset: true },
+          {
+            filename: 'File 2',
+            created: '01/02/2018'
+          },
+          { divider: true, inset: true },
+          {
+            filename: 'File 3',
+            created: '01/03/2018'
+          }
+        ],
+        inserted_file: '',
         job_balor: '',
         select_balor: '',
         input_balor: '',
@@ -178,6 +224,9 @@
       }
     },
     methods: {
+      browser_file_selected () {
+        console.log('Something happened')
+      },
       fileUpload (fieldName, fileNames) {
         this.uploadInProgress = true
         const formData = new FormData()
