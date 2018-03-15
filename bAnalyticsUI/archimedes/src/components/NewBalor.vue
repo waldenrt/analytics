@@ -69,27 +69,34 @@
                           <v-btn light flat @click.native="dialog2 = false">Save</v-btn>
                         </v-toolbar-items>
                       </v-toolbar>
-                      <v-list two-line>
-                        <v-card-row>
+                      <v-list two-line dense>
                           <v-card-title>
-                            {{ inserted_file }}
-                            <!-- need to fix this [JF] -->
-                            <input type="text" v-model="inserted_file" />
+                            Selected: {{ inserted_file }}
                           </v-card-title>
-                        </v-card-row>
                         <template v-for="item in file_items">
                           <v-subheader v-if="item.header" v-text="item.header"></v-subheader>
                           <v-divider v-else-if="item.divider" v-bind:inset="item.inset"></v-divider>
-                          <v-list-tile avatar v-else v-bind:key="item.filename" @click.native="browser_file_selected">
+
+                          <v-list-tile v-else
+                              avatar
+                              ripple
+                              @click.native="browser_file_selected($event)"
+                              :value="item.value"
+                              v-bind:key="item.filename">
                             <v-list-tile-avatar>
                               <v-icon>subdirectory_arrow_right</v-icon>
                             </v-list-tile-avatar>
                             <v-list-tile-content>
-                              <v-list-tile-title style="display:inline-block;" v-html="item.filename"></v-list-tile-title>
+                              <v-list-tile-title
+                                  style="display:inline-block;"
+                                  v-html="item.filename"></v-list-tile-title>
                               <v-list-tile-sub-title v-html="item.created"></v-list-tile-sub-title>
                             </v-list-tile-content>
-                            <v-icon>chevron_right</v-icon>
+                            <v-list-tile-action>
+                              <v-icon v-bind:class="[item.active ? 'teal--text' : 'grey--text']">chevron_right</v-icon>
+                            </v-list-tile-action>
                           </v-list-tile>
+
                         </template>
                       </v-list>
                     </v-card>
@@ -178,7 +185,9 @@
           { header: 'Select a File' },
           {
             filename: 'File 1',
-            created: '01/01/2018'
+            created: '01/01/2018',
+            value: 'FileValue1',
+            active: true
           },
           { divider: true, inset: true },
           {
@@ -191,7 +200,7 @@
             created: '01/03/2018'
           }
         ],
-        inserted_file: '',
+        inserted_file: 'initial', // fileBrowser
         job_balor: '',
         select_balor: '',
         input_balor: '',
@@ -224,8 +233,10 @@
       }
     },
     methods: {
-      browser_file_selected () {
+      browser_file_selected (e) {
         console.log('Something happened')
+        this.inserted_file = e.path[0].innerHTML
+        console.log(e.path[0].innerHTML)
       },
       fileUpload (fieldName, fileNames) {
         this.uploadInProgress = true
