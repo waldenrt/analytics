@@ -54,7 +54,8 @@
                       <div class="file">
                         <div style="display:inline-block;"
                         v-tooltip:right="{ html: 'File browser' }">
-                          <v-icon class="success--text" slot="activator">attachment</v-icon></div>
+                          <v-icon class="success--text" slot="activator">attachment</v-icon>
+                        </div>
                       </div>
                     </div>
                     <!-- file_browser_component -->
@@ -71,37 +72,37 @@
                       </v-toolbar>
                       <v-list two-line dense>
                           <v-card-title>
-                            Selected: {{ inserted_file }}
+                            Selected: {{ selected_file }}
                           </v-card-title>
-                        <template v-for="item in file_items">
-                          <v-subheader v-if="item.header" v-text="item.header"></v-subheader>
-                          <v-divider v-else-if="item.divider" v-bind:inset="item.inset"></v-divider>
+                          <template>
+                            <v-container fluid>
+                              <v-layout row wrap>
+                                <v-flex xs12 md6>
+                                  <v-subheader>Select a File</v-subheader>
+                                  <v-card class="elevation-0">
+                                    <v-card-text>
+                                      <v-radio-group name="file_browser" v-model="column" column>
+                                        <v-radio
+                                            v-for="item in file_items2"
+                                            :name="item.filename"
+                                            :label="item.filename"
+                                            :value="item.value"
+                                            v-model="selected_file"
+                                            hide-details
+                                            @click.native="browser_file_selected($event)"></v-radio>
+                                      </v-radio-group>
+                                    </v-card-text>
+                                  </v-card>
+                                </v-flex>
+                              </v-layout>
+                            </v-container>
+                          </template>
 
-                          <v-list-tile v-else
-                              avatar
-                              ripple
-                              @click.native="browser_file_selected($event)"
-                              :value="item.value"
-                              v-bind:key="item.filename">
-                            <v-list-tile-avatar>
-                              <v-icon>subdirectory_arrow_right</v-icon>
-                            </v-list-tile-avatar>
-                            <v-list-tile-content>
-                              <v-list-tile-title
-                                  style="display:inline-block;"
-                                  v-html="item.filename"></v-list-tile-title>
-                              <v-list-tile-sub-title v-html="item.created"></v-list-tile-sub-title>
-                            </v-list-tile-content>
-                            <v-list-tile-action>
-                              <v-icon v-bind:class="[item.active ? 'teal--text' : 'grey--text']">chevron_right</v-icon>
-                            </v-list-tile-action>
-                          </v-list-tile>
-
-                        </template>
                       </v-list>
                     </v-card>
                     <!-- //file_browser_component -->
                   </v-dialog>
+                  <!-- //file_browser_dialog -->
 
                   <v-layout xs12 class="pad_LR12">
                     <form enctype="multipart/form-data" style="width:100%;">
@@ -181,26 +182,17 @@
     data () {
       return {
         client_name: 'Default Client Name', // will be moved to fileBrowser.vue
-        file_items: [
-          { header: 'Select a File' },
-          {
-            filename: 'File 1',
-            created: '01/01/2018',
-            value: 'FileValue1',
-            active: true
-          },
-          { divider: true, inset: true },
-          {
-            filename: 'File 2',
-            created: '01/02/2018'
-          },
-          { divider: true, inset: true },
-          {
-            filename: 'File 3',
-            created: '01/03/2018'
-          }
+        file_items2: [ // fileBrowser
+          { filename: 'File#1', value: 'value1', model: 'model_01' },
+          { filename: 'File#2', value: 'value2', model: 'model_02' },
+          { filename: 'File#3', value: 'value3', model: 'model_03' },
+          { filename: 'File#4', value: 'value4', model: 'model_04' }
         ],
+        column: null,
         inserted_file: 'initial', // fileBrowser
+        radio1: '', // fileBrowser
+        radio2: '', // fileBrowser
+        selected_file: '',
         job_balor: '',
         select_balor: '',
         input_balor: '',
@@ -233,10 +225,10 @@
       }
     },
     methods: {
-      browser_file_selected (e) {
+      browser_file_selected (e) { // fileBrowser
         console.log('Something happened')
         this.inserted_file = e.path[0].innerHTML
-        console.log(e.path[0].innerHTML)
+        console.log(e.path[0].innerText)
       },
       fileUpload (fieldName, fileNames) {
         this.uploadInProgress = true
