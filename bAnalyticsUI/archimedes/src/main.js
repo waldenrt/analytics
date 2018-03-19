@@ -6,12 +6,14 @@ import router from './router'
 import Vuetify from 'vuetify'
 import VeeValidate from 'vee-validate'
 import store from './store'
+import ReadMore from 'vue-read-more'
 
 Vue.config.productionTip = false
 Vue.use(Vuetify)
 Vue.use(VeeValidate, {
   errorBagName: 'vErrors'
 })
+Vue.use(ReadMore)
 
 /* eslint-disable no-new */
 new Vue({

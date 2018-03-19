@@ -1,4 +1,4 @@
-HelpNavBalor<template>
+<template>
   <v-container fluid class="cadence pl-3 pr-3">
     <!-- =====ROW1===== -->
     <HelpNavBalor ref="helpNav"></HelpNavBalor>
