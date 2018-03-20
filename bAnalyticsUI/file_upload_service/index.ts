@@ -49,6 +49,27 @@ app.post('/file_upload', upload.single('file'), async (req, res) => {
     }
 })
 
+app.get('/hdfsFileList/:client', async (req, res) => {
+	try {		
+		var client = req.params.client
+		hdfs.readdir('/user/admin', function(err,files) {
+		if (err==null) {
+			var filteredList = files.filter(function (el) {
+				return (el.type === "FILE");
+			});
+			var fileName = filteredList.map(function(f) { return f.pathSuffix });
+			console.log(fileName);
+			res.send({success:"true", fileNames: fileName});
+		} else {
+			res.send({success:"false", errMsg: err})
+		}
+		})
+	}
+	catch (err) {
+		res.sendStatus(400);
+	}
+})
+
 app.listen(3000, function () {
     console.log('listening on port 3000!');
 });
