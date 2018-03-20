@@ -46,7 +46,7 @@
                 <h5 class="grey--text">App <span class="primary--text">Modules</span></h5>
               </v-flex>
               <v-flex xs12 sm6 md3 class="pl-1 pr-1 pb-3" v-for="(item, index) in cardItems" :key="item.title">
-                <v-card class="white card_crnr">
+                <v-card class="white mod_cards">
                   <v-card-row :class="item.titleColor">
                     <v-card-title class="pa-0 ma-0">
                       <div class="subheading pa-3 white--text">
@@ -55,16 +55,8 @@
                     </v-card-title>
                   </v-card-row>
                   <v-card-text class="module_card_txt pl-3 pr-3 pt-3">
-                    <p v-readMore:300="item.description" class="mb-0 subheading" v-html="item.description"></p>
-                    <!--<p v-if="item.showHide" class="mb-0 subheading mod_contain1" v-html="item.description"></p>
-                    <p v-else class="mb-0 subheading mod_contain2" v-html="item.description"></p>-->
+                    <p class="mb-0 subheading" v-html="item.description"></p>
                   </v-card-text>
-                  <!--<v-card-row class="pa-3">
-                    <a @click="[item.showHide = !item.showHide]">
-                      <span v-if="item.showHide">Show More</span>
-                      <span v-else>Show Less</span>
-                    </a>
-                  </v-card-row>-->
                   <v-divider></v-divider>
                   <v-card-row class="pa-3">
                     <v-btn icon router :to="item.histLink" :class="item.titleColor" class="white--text ma-0">
@@ -121,32 +113,28 @@ export default {
           titleColor: 'error',
           description: 'Brierley+Partner’s propriety customer lifecycle segmentation provides you with visibility into the similarities and differences across customers at different lifecycle phases. Compare core Loyalty KPIs across segments, and view trends in lifecycle migration by defining time period subsets within your data. A product index analysis then profiles purchase behavior across segments and time, identifying which products resonate the most within segments and which segments to target for promotional activities.',
           inputLink: '/Lifecycle/NewLifecycle',
-          histLink: '/Lifecycle',
-          showHide: { height: '240px', overflow: 'hidden' }
+          histLink: '/Lifecycle'
         },
         {
           title: 'BALOR',
           titleColor: 'primary',
           description: 'Visualize the purchase cadence of your customer base and identify the net effects of customer acquisition or retention activities against attrition. With this strategic analysis of customer purchase behavior, you can analyze trends in core Loyalty KPIs and quantify the incremental value of customer retention to your bottom line.',
           inputLink: '/Balor/NewBalor',
-          histLink: '/Balor',
-          showHide: { height: '240px', overflow: 'hidden' }
+          histLink: '/Balor'
         },
         {
           title: 'Pareto',
           titleColor: 'success',
           description: 'Define and analyze value-groups of customers (or stores) across operational metrics and compare the contribution per group relative to the whole. Select time period subsets for analysis in order to see how your customers (or stores) migrate through value-groups over time. And with product profiling, get the data you need to compare the top and bottom products across each value-group and construct strategies for converting low-value customers into high-value customers.',
           inputLink: '/Pareto/NewPareto',
-          histLink: '/Pareto',
-          showHide: { height: '240px', overflow: 'hidden' }
+          histLink: '/Pareto'
         },
         {
           title: 'b-Relevant',
           titleColor: 'accent',
           description: 'Bring an empirical approach to product bundling and recommendations through Brierley+Partner’s b-Relevant engine. Identify which products are expected to yield the best results for cross-sell and up-sell campaigns throughout the year or during a specific season. For a more targeted approach, mine your historic data to issue personalized recommendations for all customers based upon a product recently purchased or currently in the cart. Realize a lift in sales by curating the product discovery process for your customers.',
           inputLink: '/bRelevant/NewBRelevant',
-          histLink: '/bRelevant/NewBRelevant',
-          showHide: { height: '240px', overflow: 'hidden' }
+          histLink: '/bRelevant/NewBRelevant'
         }
       ],
       linkItems: [
@@ -155,14 +143,7 @@ export default {
         { name: 'Survey Module', site: 'http://www.brierley.com/technology-products/brierley-survey' },
         { name: 'Digital Messaging Suite', site: 'http://www.brierley.com/technology-products/brierley-digital-messaging-suite' },
         { name: 'Data360', site: 'http://www.brierley.com/technology-products/brierley-data360' }
-      ],
-      ex11: true
-    }
-  },
-  methods: {
-    show_more_less: function () {
-      console.log('something happened')
-      console.log(this.readPlus)
+      ]
     }
   },
   mounted () {
@@ -174,11 +155,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .marT_img {margin-top:59px; width:100%;}
-/*.card_crnr {border-top-right-radius: 20px;border-bottom-left-radius: 20px;}*/
 .wrap1 {display:table; width:100%; height:100%;}
 .wrap2 {display:table-cell; vertical-align:middle; margin:0 auto;}
-.module_card_txt {/* min-height:300px; */}
-.module_card_txt a {cursor: pointer;}
+.module_card_txt {height:300px;overflow-y: scroll;}
+.module_card_txt a {cursor:pointer;}
 .mod_contain1 {height:240px; overflow:hidden;}
 .mod_contain2 {height:auto; overflow:visible;}
 .date_border1 {border:5px solid #ffffff;}
@@ -208,13 +188,13 @@ export default {
   height: 100%;
 }*/
 /* Tablets (portrait and landscape) ----------- */
-@media only screen and (min-device-width: 481px) and (max-device-width: 960px) {
+@media only screen and (min-width: 481px) and (max-width: 960px) {
   /* Styles */
   .module_card_txt {min-height:260px !important;}
   .misc_card_txt {min-height:155px !important;}
 }
 /* Smartphones (portrait and landscape) ----------- */
-@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+@media only screen and (min-width: 320px) and (max-width: 480px) {
   /* Styles */
   .mob_break1 {display:none;}
   .mob_break2 {display:none;}

@@ -105,7 +105,7 @@
             <v-flex xs12>
               <v-card class="pa-0 ma-0 grey lighten-2">
                 <v-card-title primary-title class="primary">
-                  <h6 class="white--text text-xs-left mb-0">BALOR Composition and Metrics for Period:</h6>
+                  <h6 class="white--text text-xs-left mb-0">BALOR Composition and Metrics per Period:</h6>
                   <v-spacer></v-spacer>
                   <v-btn
                       v-on:click.native="getHelpSection()"
@@ -297,19 +297,19 @@
           {text: 'Time Period', value: 'timePeriod', left: true, sortable: true},
           {text: 'Customer BALOR Ratio', value: 'custBalor'},
           {text: 'Spend BALOR Ratio', value: 'spendBalor'},
-          {text: 'Txn BALOR Ratio', value: 'txnBalor'},
-          {text: 'New Cust Count', value: 'newCustCount'},
-          {text: 'New Total Sales', value: 'newTxnAmt'},
-          {text: 'New Txn Count', value: 'newTxnCount'},
-          {text: 'Reactivated Cust Count', value: 'reactCustCount'},
-          {text: 'Reactivated Total Sales', value: 'reactTxnAmt'},
-          {text: 'Reactivated Txn Count', value: 'reactTxnCount'},
-          {text: 'Returning Cust Count', value: 'returnCustCount'},
-          {text: 'Returning Total Sales', value: 'returnTxnAmt'},
-          {text: 'Returning Txn Count', value: 'returnTxnCount'},
-          {text: 'Lapsed Cust Count', value: 'lapsedCustCount'},
-          {text: 'Lapsed Total Sales', value: 'lapsedTxnAmt'},
-          {text: 'Lapsed Txn Count', value: 'lapsedTxnCount'}
+          {text: 'Transaction BALOR Ratio', value: 'txnBalor'},
+          {text: 'New Customer Count', value: 'newCustCount'},
+          {text: 'New Total Spend', value: 'newTxnAmt'},
+          {text: 'New Transaction Count', value: 'newTxnCount'},
+          {text: 'Reactivated Customer Count', value: 'reactCustCount'},
+          {text: 'Reactivated Total Spend', value: 'reactTxnAmt'},
+          {text: 'Reactivated Transaction Count', value: 'reactTxnCount'},
+          {text: 'Returning Customer Count', value: 'returnCustCount'},
+          {text: 'Returning Total Spend', value: 'returnTxnAmt'},
+          {text: 'Returning Transaction Count', value: 'returnTxnCount'},
+          {text: 'Lapsed Customer Count', value: 'lapsedCustCount'},
+          {text: 'Lapsed Total Spend', value: 'lapsedTxnAmt'},
+          {text: 'Lapsed Transaction Count', value: 'lapsedTxnCount'}
         ],
         retentionItems: [],
         sumItems: {},

@@ -232,7 +232,7 @@
       <!--table-->
         <v-card class="white w_100">
           <v-card-title primary-title class="info">
-            <h6 class="text-xs-center mb-0 white--text">Period-over-Period Retention Rate</h6>
+            <h6 class="text-xs-center mb-0 white--text">Quantile Retention Rate <span class="body-1">(Period over Period)</span></h6>
             <v-spacer></v-spacer>
             <v-btn
                 @click.native="getHelpSection()"
@@ -288,7 +288,7 @@
               <v-flex xs12 class="pa-0 ma-0">
                 <v-card class="pa-0 ma-0 grey lighten-2">
                   <v-card-title primary-title class="info">
-                    <h6 class="white--text text-xs-left mb-0">Post Period [Quantile] Composition</h6>
+                    <h6 class="white--text text-xs-left mb-0">Post Period Quantile Composition <span class="body-1">(Period over Period)</span></h6>
                     <v-spacer></v-spacer>
                     <v-btn
                         @click.native="getHelpSection()"

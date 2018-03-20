@@ -208,23 +208,23 @@
         paretoData: {},
         custHeaders: [
           {text: 'Quantiles', value: 'quantile', left: true, sortable: true},
-          {text: 'avgSpendMember($)', value: 'avgCustSales'},
-          {text: 'avgSpendVisit($)', value: 'avgVisitSpend'},
-          {text: 'avgSpendItem($)', value: 'avgItemSales'},
-          {text: 'avgUnitsMember', value: 'avgCustUnits'},
-          {text: 'avgUnitsVisit', value: 'avgVisitUnits'},
-          {text: 'avgVisitMember', value: 'avgCustVisits'}
+          {text: 'Spend per Member($)', value: 'avgCustSales'},
+          {text: 'Spend per Visit($)', value: 'avgVisitSpend'},
+          {text: 'Spend per Item($)', value: 'avgItemSales'},
+          {text: 'Units per Member', value: 'avgCustUnits'},
+          {text: 'Units per Visit', value: 'avgVisitUnits'},
+          {text: 'Visit per Member', value: 'avgCustVisits'}
         ],
         storeHeaders: [
           {text: 'Quantiles', value: 'quantile', left: true, sortable: true},
-          {text: 'avgSpendMember($)', value: 'avgCustSales'},
-          {text: 'avgUnitsMember', value: 'avgCustUnits'},
-          {text: 'avgVisitMember', value: 'avgCustVisits'},
-          {text: 'avgStoreSpendVisit($)', value: 'avgStoreVisitSpend'},
-          {text: 'avgStoreUnitsVisit($)', value: 'avgStoreVisitUnits'},
-          {text: 'avgStoreSales($)', value: 'avgStoreSales'},
-          {text: 'avgStoreCust', value: 'avgStoreCust'},
-          {text: 'avgStoreUnits', value: 'avgStoreUnits'}
+          {text: 'Spend per Member($)', value: 'avgCustSales'},
+          {text: 'Units per Member', value: 'avgCustUnits'},
+          {text: 'Visit per Member', value: 'avgCustVisits'},
+          {text: 'Spend per Visit($)', value: 'avgStoreVisitSpend'},
+          {text: 'Units per Visit($)', value: 'avgStoreVisitUnits'},
+          {text: 'Spend per Store($)', value: 'avgStoreSales'},
+          {text: 'Cust per Store', value: 'avgStoreCust'},
+          {text: 'Units per Store', value: 'avgStoreUnits'}
         ],
         custItems: [],
         groupName: 'Quantile'

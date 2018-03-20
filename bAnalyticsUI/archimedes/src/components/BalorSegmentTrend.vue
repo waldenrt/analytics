@@ -264,23 +264,23 @@
           'Customer', 'Visits', 'Spend', 'Discount'
         ],
         custDim: [
-          'Avg Spend per Customer',
-          'Avg Items per Customer',
-          'Avg Discount per Customer',
-          'Avg Transactions per Customer'
+          'Spend per Customer',
+          'Items per Customer',
+          'Discount per Customer',
+          'Transactions per Customer'
         ],
         visitDim: [
-          'Avg Spend per Basket',
-          'Avg Items per Basket',
-          'Avg Discount per Basket'
+          'Spend per Basket',
+          'Items per Basket',
+          'Discount per Basket'
         ],
         spendDim: [
-          'Avg Spend per Customer',
-          'Avg Spend per Basket'
+          'Spend per Customer',
+          'Spend per Basket'
         ],
         discDim: [
-          'Avg Discount per Customer',
-          'Avg Discount per Basket'
+          'Discount per Customer',
+          'Discount per Basket'
         ],
         segments: [
           'All',
@@ -290,7 +290,7 @@
           'Reactivated'
         ],
         dimensionSelect: 'Customer',
-        avgSelect: 'Avg Spend per Customer',
+        avgSelect: 'Spend per Customer',
         tpSelect: 1,
         tpAvgSelect: 'Spend per Customer',
         segSelect: ['All'],
@@ -688,7 +688,7 @@
           datasets: [
             {
               data: [this.avgLapCustSpend[this.tpSelect - 1], this.avgNewCustSpend[this.tpSelect - 1], this.avgReactCustSpend[this.tpSelect - 1], this.avgRetCustSpend[this.tpSelect - 1]],
-              label: 'Avg Spend Per Customer',
+              label: 'Spend Per Customer',
               backgroundColor: ['#D63A09', '#8EAC1D', '#0087AA', '#F7970E']
             }
           ]
@@ -697,7 +697,7 @@
 
       selectDimension () {
         if (this.dimensionSelect === 'Customer') {
-          this.avgSelect = 'Avg Spend per Customer'
+          this.avgSelect = 'Spend per Customer'
           this.totalBars = {
             labels: this.dateArray,
             datasets: []
@@ -818,7 +818,7 @@
             }
           }
         } else if (this.dimensionSelect === 'Visits') {
-          this.avgSelect = 'Avg Spend per Basket'
+          this.avgSelect = 'Spend per Basket'
           this.totalBars = {
             labels: this.dateArray,
             datasets: []
@@ -939,7 +939,7 @@
             }
           }
         } else if (this.dimensionSelect === 'Spend') {
-          this.avgSelect = 'Avg Spend per Customer'
+          this.avgSelect = 'Spend per Customer'
           this.totalBars = {labels: this.dateArray, datasets: []}
           if (this.segSelect.includes('All')) {
             this.totalBars.datasets.push(
@@ -1056,7 +1056,7 @@
             }
           }
         } else if (this.dimensionSelect === 'Discount') {
-          this.avgSelect = 'Avg Discount per Customer'
+          this.avgSelect = 'Discount per Customer'
           this.totalBars = {labels: this.dateArray, datasets: []}
           if (this.segSelect.includes('All')) {
             this.totalBars.datasets.push(
@@ -1176,7 +1176,7 @@
       },
 
       selectAvg () {
-        if (this.dimensionSelect === 'Customer' && this.avgSelect === 'Avg Spend per Customer') {
+        if (this.dimensionSelect === 'Customer' && this.avgSelect === 'Spend per Customer') {
           this.totalBars = {
             labels: this.dateArray,
             datasets: []
@@ -1296,7 +1296,7 @@
               )
             }
           }
-        } else if (this.dimensionSelect === 'Customer' && this.avgSelect === 'Avg Items per Customer') {
+        } else if (this.dimensionSelect === 'Customer' && this.avgSelect === 'Items per Customer') {
           this.totalBars = {
             labels: this.dateArray,
             datasets: []
@@ -1416,7 +1416,7 @@
               )
             }
           }
-        } else if (this.dimensionSelect === 'Customer' && this.avgSelect === 'Avg Discount per Customer') {
+        } else if (this.dimensionSelect === 'Customer' && this.avgSelect === 'Discount per Customer') {
           this.totalBars = {
             labels: this.dateArray,
             datasets: []
@@ -1536,7 +1536,7 @@
               )
             }
           }
-        } else if (this.dimensionSelect === 'Customer' && this.avgSelect === 'Avg Transactions per Customer') {
+        } else if (this.dimensionSelect === 'Customer' && this.avgSelect === 'Transactions per Customer') {
           this.totalBars = {
             labels: this.dateArray,
             datasets: []
@@ -1656,7 +1656,7 @@
               )
             }
           }
-        } else if (this.dimensionSelect === 'Visits' && this.avgSelect === 'Avg Spend per Basket') {
+        } else if (this.dimensionSelect === 'Visits' && this.avgSelect === 'Spend per Basket') {
           this.totalBars = {
             labels: this.dateArray,
             datasets: []
@@ -1776,7 +1776,7 @@
               )
             }
           }
-        } else if (this.dimensionSelect === 'Visits' && this.avgSelect === 'Avg Items per Basket') {
+        } else if (this.dimensionSelect === 'Visits' && this.avgSelect === 'Items per Basket') {
           this.totalBars = {
             labels: this.dateArray,
             datasets: []
@@ -1896,7 +1896,7 @@
               )
             }
           }
-        } else if (this.dimensionSelect === 'Visits' && this.avgSelect === 'Avg Discount per Basket') {
+        } else if (this.dimensionSelect === 'Visits' && this.avgSelect === 'Discount per Basket') {
           this.totalBars = {
             labels: this.dateArray,
             datasets: []
@@ -2016,7 +2016,7 @@
               )
             }
           }
-        } else if (this.dimensionSelect === 'Spend' && this.avgSelect === 'Avg Spend per Customer') {
+        } else if (this.dimensionSelect === 'Spend' && this.avgSelect === 'Spend per Customer') {
           this.totalBars = {
             labels: this.dateArray,
             datasets: []
@@ -2136,7 +2136,7 @@
               )
             }
           }
-        } else if (this.dimensionSelect === 'Spend' && this.avgSelect === 'Avg Spend per Basket') {
+        } else if (this.dimensionSelect === 'Spend' && this.avgSelect === 'Spend per Basket') {
           this.totalBars = {
             labels: this.dateArray,
             datasets: []
@@ -2256,7 +2256,7 @@
               )
             }
           }
-        } else if (this.dimensionSelect === 'Discount' && this.avgSelect === 'Avg Discount per Customer') {
+        } else if (this.dimensionSelect === 'Discount' && this.avgSelect === 'Discount per Customer') {
           this.totalBars = {
             labels: this.dateArray,
             datasets: []
@@ -2376,7 +2376,7 @@
               )
             }
           }
-        } else if (this.dimensionSelect === 'Discount' && this.avgSelect === 'Avg Discount per Basket') {
+        } else if (this.dimensionSelect === 'Discount' && this.avgSelect === 'Discount per Basket') {
           this.totalBars = {
             labels: this.dateArray,
             datasets: []
@@ -2507,7 +2507,7 @@
             datasets: [
               {
                 data: [this.avgLapCustSpend[this.tpSelect - 1], this.avgNewCustSpend[this.tpSelect - 1], this.avgReactCustSpend[this.tpSelect - 1], this.avgRetCustSpend[this.tpSelect - 1]],
-                label: 'Avg Spend Per Customer',
+                label: 'Spend Per Customer',
                 backgroundColor: ['#D63A09', '#8EAC1D', '#0087AA', '#F7970E']
               }
             ]
@@ -2519,7 +2519,7 @@
             datasets: [
               {
                 data: [this.avgLapCustItems[this.tpSelect - 1], this.avgNewCustItems[this.tpSelect - 1], this.avgReactCustItems[this.tpSelect - 1], this.avgRetCustItems[this.tpSelect - 1]],
-                label: 'Avg Items Per Customer',
+                label: 'Items Per Customer',
                 backgroundColor: ['#D63A09', '#8EAC1D', '#0087AA', '#F7970E']
               }
             ]
@@ -2531,7 +2531,7 @@
             datasets: [
               {
                 data: [this.avgLapCustDisc[this.tpSelect - 1], this.avgNewCustDisc[this.tpSelect - 1], this.avgReactCustDisc[this.tpSelect - 1], this.avgRetCustDisc[this.tpSelect - 1]],
-                label: 'Avg Discount Per Customer',
+                label: 'Discount Per Customer',
                 backgroundColor: ['#D63A09', '#8EAC1D', '#0087AA', '#F7970E']
               }
             ]
@@ -2543,7 +2543,7 @@
             datasets: [
               {
                 data: [this.avgLapCustTxn[this.tpSelect - 1], this.avgNewCustTxn[this.tpSelect - 1], this.avgReactCustTxn[this.tpSelect - 1], this.avgRetCustTxn[this.tpSelect - 1]],
-                label: 'Avg Transactions Per Customer',
+                label: 'Transactions Per Customer',
                 backgroundColor: ['#D63A09', '#8EAC1D', '#0087AA', '#F7970E']
               }
             ]
@@ -2555,7 +2555,7 @@
             datasets: [
               {
                 data: [this.avgLapVisitSpend[this.tpSelect - 1], this.avgNewVisitSpend[this.tpSelect - 1], this.avgReactVisitSpend[this.tpSelect - 1], this.avgRetVisitSpend[this.tpSelect - 1]],
-                label: 'Avg Spend Per Visit',
+                label: 'Spend Per Visit',
                 backgroundColor: ['#D63A09', '#8EAC1D', '#0087AA', '#F7970E']
               }
             ]
@@ -2567,7 +2567,7 @@
             datasets: [
               {
                 data: [this.avgLapVisitItems[this.tpSelect - 1], this.avgNewVisitItems[this.tpSelect - 1], this.avgReactVisitItems[this.tpSelect - 1], this.avgRetVisitItems[this.tpSelect - 1]],
-                label: 'Avg Items Per Visit',
+                label: 'Items Per Visit',
                 backgroundColor: ['#D63A09', '#8EAC1D', '#0087AA', '#F7970E']
               }
             ]
@@ -2579,7 +2579,7 @@
             datasets: [
               {
                 data: [this.avgLapVisitDisc[this.tpSelect - 1], this.avgNewVisitDisc[this.tpSelect - 1], this.avgReactVisitDisc[this.tpSelect - 1], this.avgRetVisitDisc[this.tpSelect - 1]],
-                label: 'Avg Discount Per Visit',
+                label: 'Discount Per Visit',
                 backgroundColor: ['#D63A09', '#8EAC1D', '#0087AA', '#F7970E']
               }
             ]

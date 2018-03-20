@@ -181,16 +181,16 @@
         <v-layout wrap row>
           <!--+++++col1+++++-->
           <v-flex xs4 class="pt-0 mt-0">
-            <v-card class="pl-3 pr-3 pt-3 pb-3 elevation-0 info">
-              <div class="title white--text text-xs-center">Overall Metrics Time Period {{ this.tpSelect }}</div>
-            </v-card>
+            <v-card-title primary-title class="primary">
+              <h6 class="white--text text-xs-center mb-0" style="Margin:0 auto !important;">Overall Metrics Time Period {{ this.tpSelect }}</h6>
+            </v-card-title>
           </v-flex>
           <!--//+++++col1+++++-->
           <!--+++++col2+++++-->
           <v-flex xs8 class="pt-0 mt-0">
-            <v-card class="pl-3 pr-3 pt-3 pb-3 elevation-0 info">
-              <div class="title white--text text-xs-center">Segment Metrics for Time Period {{ this.tpSelect }}</div>
-            </v-card>
+            <v-card-title primary-title class="primary">
+              <h6 class="white--text text-xs-center mb-0" style="Margin:0 auto !important;">Segment Metrics for Time Period {{ this.tpSelect }}</h6>
+            </v-card-title>
           </v-flex>
           <!--//+++++col2+++++-->
         </v-layout>
@@ -209,11 +209,11 @@
           <template slot="items" scope="props">
             <td>{{ props.item.avgName }}</td>
             <td class="text-xs-right">{{ props.item.overallAvg }}</td>
-            <td class="text-xs-right">{{ props.item.bestAvg }}</td>
-            <td class="text-xs-right">{{ props.item.risingAvg }}</td>
-            <td class="text-xs-right">{{ props.item.middleAvg }}</td>
-            <td class="text-xs-right">{{ props.item.lapsingAvg }}</td>
-            <td class="text-xs-right">{{ props.item.deeplyAvg }}</td>
+            <td class="text-xs-right accent white--text">{{ props.item.bestAvg }}</td>
+            <td class="text-xs-right success white--text">{{ props.item.risingAvg }}</td>
+            <td class="text-xs-right info white--text">{{ props.item.middleAvg }}</td>
+            <td class="text-xs-right warning white--text">{{ props.item.lapsingAvg }}</td>
+            <td class="text-xs-right error white--text">{{ props.item.deeplyAvg }}</td>
           </template>
         </v-data-table>
         </v-card>
@@ -328,7 +328,7 @@
 
         var tempTpArray = []
         var tempTableData = []
-        var tableRows = ['AvgRecencyCust', 'AvgFrequencyCust', 'AvgSpendCust', 'AvgItemsCust', 'AvgSpendVisit']
+        var tableRows = ['Recency per Cust', 'Transactions per Customer', 'Spend per Cust', 'Items per Cust', 'Spend per Visit']
 
         for (let i = 0; i < this.jsonMsg.timePeriods.length; i++) {
           tempTpArray.push(this.jsonMsg.timePeriods[i].timePeriod)
