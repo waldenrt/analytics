@@ -33,6 +33,7 @@ object BalorApp {
 
     val cols = orgFile.columns
 
+    // DISC_AMT and ITEM_QTY are optional, if not included add with 0 values so future calcs don't error out
     if (cols.contains("DISC_AMT") && cols.contains("ITEM_QTY")) {
       orgFile
         .select("CUST_ID", "TXN_ID", "TXN_DATE", "TXN_AMT", "DISC_AMT", "ITEM_QTY")
@@ -62,6 +63,7 @@ object BalorApp {
 
   def calcTimePeriod(dateDF: DataFrame, cadence: CadenceValues): Try[DataFrame] = Try {
 
+    //Week and 2 week cadence values calculate time period using days
     def weekTimePeriod(dateDF: DataFrame): DataFrame = {
       dateDF
         .select("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT", "Date", "max(Date)")
@@ -74,6 +76,7 @@ object BalorApp {
     def monthTimePeriod(trimDF: DataFrame): DataFrame = {
       val maxDateDF = trimDF.select(max("Date"), min("Date"))
 
+      // months_between function does not work around end of months, if its not an end month date it subtracts 30, does not work for Feb
       val monthTrimDF = trimDF
         .select("CUST_ID", "TXN_ID", "TXN_DATE", "ITEM_QTY", "TXN_AMT", "DISC_AMT", "Date")
         .withColumn("max(Date)", lit(maxDateDF.select("max(Date)").first().getDate(0)))
@@ -92,6 +95,7 @@ object BalorApp {
         .select("CUST_ID", "TXN_ID", "TXN_AMT", "ITEM_QTY", "DISC_AMT", "Date", "TimePeriod", "StartDate")
     }
 
+    //trim DF and then calc time periods
     val timePeriodDF = cadence match {
       case OneWeek => weekTimePeriod(DateUtils.trimWeeks(dateDF, cadence.periodDivisor))
       case TwoWeeks => weekTimePeriod(DateUtils.trimWeeks(dateDF, cadence.periodDivisor))
@@ -149,11 +153,13 @@ object BalorApp {
       .withColumnRenamed("LapsedTimePeriod", "TimePeriod")
       .select("TimePeriod", "Label", "CUST_ID", "TXN_COUNT", "TXN_AMT", "DISC_AMT", "ITEM_QTY")
 
+    //union lapsed as they do not exist in the timeperiod they are labeled lapsed
     val completeDF = labelDF
       .unionAll(lapsedDF)
       .sort("TimePeriod")
       .na.fill(0)
 
+    // add anchor date of time period back on to DF
     val joinedDF = completeDF.join(startDate, Seq("TimePeriod"))
 
     joinedDF.persist(StorageLevel.MEMORY_AND_DISK)
@@ -168,6 +174,7 @@ object BalorApp {
       .partitionBy("CUST_ID")
       .orderBy("TimePeriod")
 
+    // carery prev timeperiod forward, drop any rows from 1st time period and those that carried a lapsed label forward
     val retDF = labelDF
       .withColumn("PrevLabel", lead(("Label"), 1).over(prevWindow))
       .withColumn("PrevTxnCount", lead("TXN_COUNT", 1).over(prevWindow))
@@ -175,6 +182,7 @@ object BalorApp {
       .filter(col("Label") === "Returning" && col("PrevLabel") != "Lapsed")
       .filter(col("TimePeriod") < (maxTP - 1))
 
+    //calculate stats based on what they were in the previous period
     val pivotRetDF = retDF
       .groupBy("TimePeriod")
       .pivot("PrevLabel", Seq("New", "Reactivated", "Returning"))
@@ -198,12 +206,14 @@ object BalorApp {
     val maxTP = labelDF
       .select(max("TimePeriod")).head().getInt(0)
 
+    //calculate stats based on current time period
     val pivotDF = labelDF
       .filter(labelDF("TimePeriod") < (maxTP - 1))
       .groupBy("TimePeriod", "StartDate")
       .pivot("Label", Seq("New", "Reactivated", "Returning", "Lapsed"))
       .agg(count("CUST_ID"), sum("TXN_COUNT"), sum("TXN_AMT"), sum("DISC_AMT"), sum("ITEM_QTY"))
 
+    // rename for ease of use in future calcs
     pivotDF
       .withColumnRenamed("New_count(CUST_ID)", "newCustCount")
       .withColumnRenamed("New_sum(TXN_COUNT)", "newTxnCount")
@@ -265,8 +275,10 @@ object BalorApp {
     val countRetDF = avgDF.join(retDF, Seq("TimePeriod"), "left_outer")
       .na.fill(0)
 
+    //wide but short dataframe
     val segWindow = Window.orderBy("TimePeriod")
 
+    //calc balor ratios and retention values
     val balorDF = countRetDF
       .withColumn("custBalor", balorCount(countRetDF("newCustCount"), countRetDF("reactCustCount"),
         countRetDF("lapsedCustCount")))
@@ -397,10 +409,12 @@ object BalorApp {
       tempList.add(tpd)
     }
 
+    // flip the time periods so that 1 is the oldest time period and n is the newest data
     val flipTP = balorDF
       .withColumn("TPRank", dense_rank().over(Window.orderBy(col("TimePeriod").desc)))
       .sort(col("TPRank"))
 
+    //select columns specifically so that they are mapped correctly, future additions can be added to the end and easily mapped to avro
     val orderedDF = flipTP
       .withColumn("cadence", lit(cadence.index))
       .withColumn("formatDate", stringDate(balorDF("StartDate"), col("cadence")))

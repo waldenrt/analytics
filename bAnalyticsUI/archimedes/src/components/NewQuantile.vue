@@ -267,7 +267,7 @@
         job_pareto: '',
         select_delimiter: '',
         select_tp: '',
-        select_paretoValue: {text: 'Decile (groups of 10%)', value: '.1'},
+        select_paretoValue: {},
         numProds: '',
         product1: '',
         product2: '',
@@ -352,7 +352,7 @@
           'delimiter': this.select_delimiter,
           'args': [
             {'name': 'timePeriod', 'value': this.select_tp},
-            {'name': 'quantValue', 'value': this.select_paretoValue.value},
+            {'name': 'quantValue', 'value': this.select_paretoValue},
             {'name': 'numProds', 'value': this.numProds},
             {'name': 'dimension', 'value': this.dim_radio},
             {'name': 'productColumns', 'value': prodColumns}

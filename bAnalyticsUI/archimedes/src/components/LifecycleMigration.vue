@@ -1,11 +1,20 @@
 <template>
-  <v-container fluid class="quantileProducts pl-3 pr-3 mb-3">
+  <v-container fluid class="lifecycleMigration pl-3 pr-3 mb-3">
     <!-- =====ROW1===== -->
+    <HelpNavLifecycle ref="helpNav"></HelpNavLifecycle>
     <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Period-over-Period Segment Migration</h6>
+            <v-spacer></v-spacer>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
@@ -14,7 +23,7 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                      Prior Period<br/> for Analysis:
+                      Prior Period Analysis:
                     </div>
                   </v-flex>
                   <v-flex xs12>
@@ -97,7 +106,7 @@
                   <!-- LEGEND -->
                   <v-flex xs12 class="pl-0 pr-0">
                     <div class="primary--text text-xs-left pl-0 pr-0 pb-1 pt-2">
-                      Legend:<br/><br/>
+                      Legend:
                     </div>
                     <div class="legend_contain white elevation-1">
                       <div class="inliner">
@@ -145,150 +154,169 @@
     <!-- //=====ROW2===== -->
     <!-- =====ROW3===== -->
     <v-layout wrap row>
-      <v-flex xs12 class="pt-0 mt-0">
-        <v-card class="white pa-3">
-          <v-layout wrap row>
+      <!--+++++col1+++++-->
+      <v-flex xs12 sm12 md8 class="mt-3">
+        <v-card class="white w_100">
+          <v-card-title primary-title class="info white--text">
+            <h6 class="white--text text-xs-center mb-0">Sankey Diagram</h6>
+          </v-card-title>
+          <!-- SANKEY CHART -->
+          <v-card-row class="pl-2 pr-2">
+            <!--<div v-show="showSankey" class="y_axis1 text-xs-center caption">
+              y-axis1
+            </div>-->
+            <div
+              v-show="showSankey"
+              class="scaling-svg-container mt-2"
+              style="padding-bottom: 92% /* 100% * 55/60 */">
+                <svg
+                  width="1060"
+                  height="1000"
+                  id="sankeySvg"
+                  class="scaling-svg"
+                  viewBox="0 10 1050 1000">
+                  <text class="y_axis1 subheading" x="-56%" y="-7" fill="rgba(53,64,82,0.87)">Prior Period Segment</text>
+                  <text class="y_axis2 subheading" x="42%" y="-1057" fill="rgba(53,64,82,0.87)">Post Period Segment</text>
+                  <text class="x_axis subheading" x="33%" y="1000" fill="rgba(53,64,82,0.87)">Period-over-Period Customer Migration across Segments</text>
+                </svg>
+            </div>
+            <div v-show="showError">
+              I need something to go here that explains that the last timePeriod does not have migration data due to it being the baseline for all migrations.
+            </div>
+          </v-card-row>
+          <!-- //SANKEY CHART -->
+        </v-card>
+      </v-flex>
+      <!--//+++++col1+++++-->
 
-            <!--+++++col1+++++-->
-            <v-flex xs12 sm12 md8>
-              <!-- SANKEY CHART -->
-              <!--<div v-show="showSankey" class="y_axis1 text-xs-center caption">
-                y-axis1
-              </div>-->
-              <div
-                v-show="showSankey"
-                class="scaling-svg-container"
-                style="padding-bottom: 92% /* 100% * 55/60 */">
-                  <svg
-                    width="1060"
-                    height="1000"
-                    id="sankeySvg"
-                    class="scaling-svg"
-                    viewBox="0 10 1050 1000">
-                    <text class="y_axis1 subheading" x="-56%" y="-7" fill="rgba(53,64,82,0.87)">Prior Period Segment</text>
-                    <text class="y_axis2 subheading" x="45%" y="-1057" fill="rgba(53,64,82,0.87)">Post Period Segment</text>
-                    <text class="x_axis subheading" x="33%" y="1000" fill="rgba(53,64,82,0.87)">Period-over-Period Customer Migration across Segments</text>
-                  </svg>
-              </div>
-              <div v-show="showError">
-                I need something to go here that explains that the last timePeriod does not have migration data due to it being the baseline for all migrations.
-              </div>
-              <!-- //SANKEY CHART -->
-            </v-flex>
-            <!--//+++++col1+++++-->
-
-            <!--+++++col2+++++-->
-            <v-flex xs12 sm12 md4 class="pr-4">
-              <!--table-row-->
-              <v-layout wrap row>
-                <v-card class="white w_100">
-                  <v-card-title primary-title class="white">
-                    <h6 class="primary--text text-xs-center mb-0">Prior Period Segment Retention Rate</h6>
-                  </v-card-title>
-                  <v-divider class="primary pb-0"></v-divider>
-                  <v-flex xs12 fill-height>
-                    <v-layout row wrap>
-                      <v-flex xs12 class="pt-0 mt-0">
-                        <v-card class="accent mt-2 mb-2 height_bars1">
-                          <v-card-text class="accent white--text height_bars2">
-                            <div class="subheading">Best in Class <span>{{ bestRet }}</span>
-                            </div>
-                          </v-card-text>
-                        </v-card>
-                        <v-card class="success mb-2 height_bars1">
-                          <v-card-text class="success white--text height_bars2">
-                            <div class="subheading">Rising Stars <span>{{ risingRet }}</span>
-                            </div>
-                          </v-card-text>
-                        </v-card>
-                        <v-card class="info mb-2 height_bars1">
-                          <v-card-text class="info white--text height_bars2">
-                            <div class="subheading">Middle of the Road <span>{{ middleRet }}</span>
-                            </div>
-                          </v-card-text>
-                        </v-card>
-                        <v-card class="warning mb-2 height_bars1">
-                          <v-card-text class="warning white--text height_bars2">
-                            <div class="subheading">Lapsing <span>{{ lapsingRet }}</span></div>
-                          </v-card-text>
-                        </v-card>
-                        <v-card class="error mb-2 height_bars1">
-                          <v-card-text class="error white--text height_bars2">
-                            <div class="subheading">Deeply Lapsed <span>{{ deeplyRet }}</span>
-                            </div>
-                          </v-card-text>
-                        </v-card>
-                      </v-flex>
-                    </v-layout>
-                  </v-flex>
-                </v-card>
+      <!--+++++col2+++++-->
+      <v-flex xs12 sm12 md4 class="mt-3 pr-4">
+        <!--table-row-->
+        <v-layout wrap row>
+          <v-card class="white w_100">
+            <v-card-title primary-title class="info white--text">
+              <h6 class="white--text text-xs-center mb-0">Prior Period Segment Retention Rate</h6>
+              <v-spacer></v-spacer>
+              <v-btn
+                  @click.native="getHelpSection()"
+                  icon slot="activator"
+                  class="success--text"
+                  style="height:auto !important;">
+                    <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+              </v-btn>
+            </v-card-title>
+            <v-divider class="primary pb-0"></v-divider>
+            <v-flex xs12 fill-height>
+              <v-layout row wrap>
+                <v-flex xs12 class="pt-0 mt-0">
+                  <v-card class="accent mt-2 mb-2 height_bars1">
+                    <v-card-text class="accent white--text height_bars2">
+                      <div class="subheading">Best in Class <span>{{ bestRet }}</span>
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                  <v-card class="success mb-2 height_bars1">
+                    <v-card-text class="success white--text height_bars2">
+                      <div class="subheading">Rising Stars <span>{{ risingRet }}</span>
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                  <v-card class="info mb-2 height_bars1">
+                    <v-card-text class="info white--text height_bars2">
+                      <div class="subheading">Middle of the Road <span>{{ middleRet }}</span>
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                  <v-card class="warning mb-2 height_bars1">
+                    <v-card-text class="warning white--text height_bars2">
+                      <div class="subheading">Lapsing <span>{{ lapsingRet }}</span></div>
+                    </v-card-text>
+                  </v-card>
+                  <v-card class="error mb-2 height_bars1">
+                    <v-card-text class="error white--text height_bars2">
+                      <div class="subheading">Deeply Lapsed <span>{{ deeplyRet }}</span>
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
               </v-layout>
-              <!--//table-row-->
-              <!--chart-row-->
-              <v-layout wrap row>
-                <v-card class="white mt-3 pa-0 w_100">
-                  <v-flex xs12 fill-height>
-                    <!-- =====ROW1===== -->
-                    <v-layout row wrap class="pt-0 mt-0">
-                      <v-flex xs12 class="pa-0 ma-0">
-                        <v-card class="pa-0 ma-0 grey lighten-2">
-                          <v-card-title primary-title class="white">
-                            <h6 class="primary--text text-xs-left mb-0">Post Period Segment Composition</h6>
-                          </v-card-title>
+            </v-flex>
+          </v-card>
+        </v-layout>
+        <!--//table-row-->
+        <!--chart-row-->
+        <v-layout wrap row>
+          <v-card class="white mt-3 pa-0 w_100">
+            <v-flex xs12 fill-height>
+              <!-- =====ROW1===== -->
+              <v-layout row wrap class="pt-0 mt-0">
+                <v-flex xs12 class="pa-0 ma-0">
+                  <v-card class="pa-0 ma-0 grey lighten-2">
+                    <v-card-title primary-title class="info">
+                      <h6 class="white--text text-xs-left mb-0">Post Period Segment Composition</h6>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                          @click.native="getHelpSection()"
+                          icon slot="activator"
+                          class="success--text"
+                          style="height:auto !important;">
+                            <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+                      </v-btn>
+                    </v-card-title>
+                    <v-layout row wrap>
+                      <!--Dropdown1-->
+                      <v-flex xs12>
+                        <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
                           <v-layout row wrap>
-                            <!--Dropdown1-->
                             <v-flex xs12>
-                              <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
-                                <v-layout row wrap>
-                                  <v-flex xs12>
-                                    <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
-                                      Select Post Period Segment:
-                                    </div>
-                                  </v-flex>
-                                  <v-flex xs12 sm7>
-                                      <v-select v-bind:items="segments"
-                                                v-model="postSegComp"
-                                                label="Select Segments"
-                                                single-line
-                                                bottom
-                                                hide-details
-                                                v-on:input="selPostPeriodComp()"
-                                                class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
-                                      </v-select>
-                                  </v-flex>
-                                  <v-flex xs12 sm5>
-                                    <v-checkbox
-                                      label="Show new"
-                                      v-model="showNew"
-                                      class="primary--text pt-2 pb-1 pl-0 pr-0 ma-0"
-                                      hide-details
-                                      @change="selPostPeriodComp()"></v-checkbox>
-                                  </v-flex>
-                                </v-layout>
-                              </v-card>
+                              <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                                Select Post Period Segment:
+                              </div>
                             </v-flex>
-                            <!--//Dropdown1-->
+                            <v-flex xs12 sm7>
+                                <v-select v-bind:items="segments"
+                                          v-model="postSegComp"
+                                          label="Select Segments"
+                                          single-line
+                                          bottom
+                                          hide-details
+                                          v-on:input="selPostPeriodComp()"
+                                          class="pl-1 pr-1 mt-1 mb-2 white elevation-1">
+                                </v-select>
+                            </v-flex>
+                            <v-flex xs12 sm5>
+                              <v-checkbox
+                                label="Show new"
+                                v-model="showNew"
+                                class="primary--text pt-2 pb-1 pl-0 pr-0 ma-0"
+                                hide-details
+                                @change="selPostPeriodComp()"></v-checkbox>
+                            </v-flex>
                           </v-layout>
                         </v-card>
                       </v-flex>
+                      <!--//Dropdown1-->
                     </v-layout>
-                    <!-- //=====ROW1===== -->
-                    <!-- =====ROW2===== -->
-                    <v-layout row wrap class="mb-3 pt-3">
-                      <v-flex xs12 fill-height>
-                        <bar-chart :chart-data="barData" class="lifecycle_chart1"></bar-chart>
-                      </v-flex>
-                    </v-layout>
-                    <!-- //=====ROW2===== -->
-                  </v-flex>
-                </v-card>
+                  </v-card>
+                </v-flex>
               </v-layout>
-              <!--//chart-row-->
+              <!-- //=====ROW1===== -->
+              <!-- =====ROW2===== -->
+              <v-layout row wrap class="mb-3 pt-3">
+                <v-flex xs12 fill-height>
+                  <bar-chart :chart-data="barData" class="lifecycle_chart1"></bar-chart>
+                </v-flex>
+              </v-layout>
+              <!-- //=====ROW2===== -->
             </v-flex>
-            <!--//+++++col2+++++-->
-          </v-layout>
-        </v-card>
+          </v-card>
+        </v-layout>
+        <!--//chart-row-->
       </v-flex>
+      <!--//+++++col2+++++-->
+
+
+
     </v-layout>
     <!-- //=====ROW3===== -->
   </v-container>
@@ -299,6 +327,7 @@
   import * as d3 from 'd3'
   import {sankey, sankeyLinkHorizontal} from 'd3-sankey'
   import BarChart from './balorCharts/BarChart'
+  import HelpNavLifecycle from './HelpNavLifecycle.vue'
 
   // [JF] initiates numeral.js library in this vue component. must use together with numeral() or numeral().format()
   var numeral = require('numeral')
@@ -306,7 +335,8 @@
   export default {
     name: 'lifecycleMigration',
     components: {
-      BarChart
+      BarChart,
+      HelpNavLifecycle
     },
     data () {
       return {
@@ -372,6 +402,10 @@
       }
     },
     methods: {
+      getHelpSection: function () {
+        var hpNav = this.$refs.helpNav.$refs.helpNav
+        hpNav.value = !hpNav.value
+      },
       getResults () {
         migration(this.jobId)
           .catch(err => {

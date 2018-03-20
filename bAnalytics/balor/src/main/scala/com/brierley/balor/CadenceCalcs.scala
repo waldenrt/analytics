@@ -80,6 +80,7 @@ object CadenceCalcs {
 
     val query = s"select percentile(Cadence, $percentile) as 80th from validTxns"
 
+    //drop transactions from first day in file as they all have cadence = 0
     val validTxns = minDate
       .filter(minDate("Date") > minDate("MinDate"))
       .select("Cadence")
@@ -103,11 +104,12 @@ object CadenceCalcs {
   }
 
   def calcNumTimePeriods(cadenceValue: CadenceValues, dateDF: DataFrame): Try[Int] = Try {
-
+    // using whole months only if calculated cadence is at least 31 days.  Months start at 1 and end at 30/31, half months are dropped
     if (cadenceValue >= OneMonth) {
       val trimDF = DateUtils.trimToWholeMonth(dateDF)
       if (trimDF.count() == 0) return Try(0)
 
+      // months_between works here since it is the end of a month to the beginning of a month
       val minMaxMonthsDF = trimDF
         .select(min("Date"), max("Date"))
         .withColumn("Months", months_between(col("max(Date)"), col("min(Date)")))
@@ -122,7 +124,7 @@ object CadenceCalcs {
         case SixMonths => return Try(difference / 6 + 1)
         case OneYear => return Try(difference / 12 + 1)
       }
-    } else {
+    } else { // if cadence is weeks, calculate days in file, no trimming is done
       val minMaxDate = dateDF.select(min("Date"), max("Date"))
       val difference = minMaxDate
         .select(datediff(minMaxDate("max(Date)"), minMaxDate("min(Date)")))
@@ -138,13 +140,14 @@ object CadenceCalcs {
 
   def createFreqTable(cadenceDF: DataFrame, cadenceValue: CadenceValues): Try[DataFrame] = Try {
 
+    // keep returned values as days
     if (cadenceValue < TwoMonths) {
       val freqDF = cadenceDF
         .select("Cadence")
         .groupBy("Cadence")
         .agg(count(cadenceDF("Cadence")).as("Frequency"))
 
-      //no window partition will bring everything back to driver, at this point there will be a max of 31 rows so it should be fine
+      //no window partition will bring everything back to driver, at this point there will be a max of 31 rows
       val cadenceWindow = Window.orderBy("Cadence")
 
       val runningTotal = sum("Frequency").over(cadenceWindow).as("CumFrequency")
@@ -152,7 +155,7 @@ object CadenceCalcs {
         .select(freqDF("*"), runningTotal).orderBy("Cadence")
       (cumFreqDF)
     }
-
+    // bin returned values by weeks, reduces the number of rows returned
     else {
       val binDF = cadenceDF
         .select("*")
@@ -176,6 +179,7 @@ object CadenceCalcs {
   def createCadenceAvro(jobKey: String, numRecords: Long, singleVisit: Long, totalCust: Long, rawCadence: Double, normalCadence: String,
                         numTimePeriods: Int, percentile: Double, minMaxDF: DataFrame, freqTable: DataFrame): Try[Cadence] = Try {
 
+    // set all the high level summary stats
     val cadAvro = new Cadence()
     cadAvro.setJobKey(jobKey)
     cadAvro.setNumRecords(numRecords)
@@ -204,6 +208,7 @@ object CadenceCalcs {
 
     val tempList = new java.util.ArrayList[FreqRow]
 
+    // create the freqTable array in the avro message
     def mapFreqRow(freqRow: Row): Unit = {
       val freq = new FreqRow()
       freq.setCadence(freqRow.getInt(0))
@@ -213,6 +218,7 @@ object CadenceCalcs {
       tempList.add(freq)
     }
 
+    // collect is necassary to produce only a single avro message
     freqTable.collect().foreach(f => mapFreqRow(f))
     cadAvro.setFreqTable(tempList)
 
