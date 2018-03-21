@@ -10,6 +10,7 @@ import Help from '@/components/Help'
 import Nav from '@/components/Navigation'
 import PasswordReset from '@/components/PasswordReset'
 import PasswordResetConfirm from '@/components/PasswordResetConfirm'
+import FileBrowser from '@/components/FileBrowser'
 
 import Balor from '@/components/Balor'
 import NewBalor from '@/components/NewBalor'
@@ -95,6 +96,11 @@ export default new Router({
           path: 'Feedback',
           name: 'Feedback',
           component: Feedback
+        },
+        {
+          path: 'Filebrowser',
+          name: 'FileBrowser',
+          component: FileBrowser
         },
         {
           path: 'Balor',
