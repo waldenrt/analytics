@@ -207,13 +207,13 @@
             :items="tableData"
             hide-actions>
           <template slot="items" scope="props">
-            <td>{{ props.item.avgName }}</td>
-            <td class="text-xs-right">{{ props.item.overallAvg }}</td>
-            <td class="text-xs-right accent white--text">{{ props.item.bestAvg }}</td>
-            <td class="text-xs-right success white--text">{{ props.item.risingAvg }}</td>
-            <td class="text-xs-right info white--text">{{ props.item.middleAvg }}</td>
-            <td class="text-xs-right warning white--text">{{ props.item.lapsingAvg }}</td>
-            <td class="text-xs-right error white--text">{{ props.item.deeplyAvg }}</td>
+            <td class="pr-1">{{ props.item.avgName }}</td>
+            <td width="13%" class="text-xs-right">{{ props.item.overallAvg }}</td>
+            <td width="13%" class="subheading text-xs-right accent white--text">{{ props.item.bestAvg }}</td>
+            <td width="13%" class="subheading text-xs-right success white--text">{{ props.item.risingAvg }}</td>
+            <td width="13%" class="subheading text-xs-right info white--text">{{ props.item.middleAvg }}</td>
+            <td width="13%" class="subheading text-xs-right warning white--text">{{ props.item.lapsingAvg }}</td>
+            <td width="13%" class="subheading text-xs-right error white--text">{{ props.item.deeplyAvg }}</td>
           </template>
         </v-data-table>
         </v-card>

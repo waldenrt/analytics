@@ -48,61 +48,6 @@
                       <img src="../assets/images/balor_file_img.png" width="100%" height="100%" class="file_sample">
                     </v-card>
                   </v-dialog>
-                  <!-- file_browser_dialog -->
-                  <v-dialog v-model="dialog2" fullscreen transition="dialog-bottom-transition" :overlay=false>
-                    <div slot="activator">
-                      <div class="file">
-                        <div style="display:inline-block;"
-                        v-tooltip:right="{ html: 'File browser' }">
-                          <v-icon class="success--text" slot="activator">attachment</v-icon>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- file_browser_component -->
-                    <v-card class="white">
-                      <v-toolbar dark class="primary">
-                        <v-btn light icon @click.native="dialog2 = false" dark>
-                          <v-icon>close</v-icon>
-                        </v-btn>
-                        <v-toolbar-title>File Browser - {{client_name}}</v-toolbar-title>
-                        <v-spacer></v-spacer>
-                        <v-toolbar-items>
-                          <v-btn light flat @click.native="dialog2 = false">Save</v-btn>
-                        </v-toolbar-items>
-                      </v-toolbar>
-                      <v-list two-line dense>
-                          <v-card-title>
-                            Selected: {{ selected_file }}
-                          </v-card-title>
-                          <template>
-                            <v-container fluid>
-                              <v-layout row wrap>
-                                <v-flex xs12 md6>
-                                  <v-subheader>Select a File</v-subheader>
-                                  <v-card class="elevation-0">
-                                    <v-card-text>
-                                      <v-radio-group name="file_browser" v-model="column" column>
-                                        <v-radio
-                                            v-for="item in file_items2"
-                                            :name="item.filename"
-                                            :label="item.filename"
-                                            :value="item.value"
-                                            v-model="selected_file"
-                                            hide-details
-                                            @click.native="browser_file_selected($event)"></v-radio>
-                                      </v-radio-group>
-                                    </v-card-text>
-                                  </v-card>
-                                </v-flex>
-                              </v-layout>
-                            </v-container>
-                          </template>
-
-                      </v-list>
-                    </v-card>
-                    <!-- //file_browser_component -->
-                  </v-dialog>
-                  <!-- //file_browser_dialog -->
 
                   <v-layout xs12 class="pad_LR12">
                     <form enctype="multipart/form-data" style="width:100%;">
