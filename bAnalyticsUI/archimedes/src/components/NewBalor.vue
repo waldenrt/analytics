@@ -170,11 +170,6 @@
       }
     },
     methods: {
-      browser_file_selected (e) { // fileBrowser
-        console.log('Something happened')
-        this.inserted_file = e.path[0].innerHTML
-        console.log(e.path[0].innerText)
-      },
       fileUpload (fieldName, fileNames) {
         this.uploadInProgress = true
         const formData = new FormData()
