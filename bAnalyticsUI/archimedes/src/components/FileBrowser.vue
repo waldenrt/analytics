@@ -54,42 +54,64 @@
 </template>
 
 <script>
-export default {
-  name: 'fileBrowser',
-  data () {
-    return {
-      selected_file: '',
-      client_name: 'Client Name Goes Here',
-      dialog2: '',
-      file_items: [
-        {filename: 'File1', value: 'value1'},
-        {filename: 'File2', value: 'value2'},
-        {filename: 'File3', value: 'value3'},
-        {filename: 'File4', value: 'value4'},
-        {filename: 'File5', value: 'value5'}
-      ]
-    }
-  },
-  mounted () {
-    this.$store.commit('switchApp', {module: 'File Browser'})
-  },
-  methods: {
-    browser_file_selected () { // fileBrowser
-      console.log(this.selected_file)
-    }
-  },
-  computed: {
-    valid_select: function () {
-      var val = null
-      if (this.selected_file === '') {
-        val = true
-      } else {
-        val = false
+  import {fileList} from './javascript/file-upload.service'
+
+  export default {
+    name: 'fileBrowser',
+    data () {
+      return {
+        incomingJson: {},
+        selected_file: '',
+        client_name: 'Client Name Goes Here',
+        dialog2: '',
+        file_items: [
+          {filename: 'File1', value: 'value1'},
+          {filename: 'File2', value: 'value2'},
+          {filename: 'File3', value: 'value3'},
+          {filename: 'File4', value: 'value4'},
+          {filename: 'File5', value: 'value5'}
+        ]
       }
-      return val
+    },
+    computed: {
+      valid_select: function () {
+        var val = null
+        if (this.selected_file === '') {
+          val = true
+        } else {
+          val = false
+        }
+        return val
+      },
+      jsonMsg: function () {
+        return this.incomingJson.data
+      }
+    },
+    mounted () {
+      this.$store.commit('switchApp', {module: 'File Browser'})
+      this.getResults()
+    },
+    methods: {
+      getResults () {
+        fileList()
+          .then((response) => {
+            console.log('We have a response: ', response)
+            // this.incomingJson = response.data
+            // this.parseJson()
+          })
+          .catch(err => {
+            alert('Could not get file browser results. ' + err.message.toString())
+          })
+      },
+      parseJson () {
+        // console.log('incomingJson: ')
+        // console.log(this.jsonMsg)
+      },
+      browser_file_selected () { // fileBrowser
+        console.log(this.selected_file)
+      }
     }
   }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

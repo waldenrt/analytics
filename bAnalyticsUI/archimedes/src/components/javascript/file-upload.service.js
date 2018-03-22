@@ -7,4 +7,9 @@ function upload (formData) {
   return axios.post(url, formData)
 }
 
-export { upload }
+function fileList () {
+  const url = `${BASE_URL}/hdfsFileList`
+  return axios.get(url)
+}
+
+export { upload, fileList }
