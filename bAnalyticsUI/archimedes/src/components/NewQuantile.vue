@@ -48,30 +48,6 @@
                     <img src="../assets/images/balor_file_img.png" width="100%" height="100%" class="file_sample">
                   </v-card>
                 </v-dialog>
-                <!-- file_browser_dialog -->
-                <v-dialog v-model="dialog2" fullscreen transition="dialog-bottom-transition" :overlay=false>
-                  <div slot="activator">
-                    <div class="file">
-                      <div style="display:inline-block;"
-                      v-tooltip:right="{ html: 'File browser' }">
-                        <v-icon class="success--text" slot="activator">attachment</v-icon></div>
-                    </div>
-                  </div>
-                  <!-- file_browser_component -->
-                  <v-card>
-                    <v-toolbar dark class="primary">
-                      <v-btn light icon @click.native="dialog2 = false" dark>
-                        <v-icon>close</v-icon>
-                      </v-btn>
-                      <v-toolbar-title>File Browser</v-toolbar-title>
-                      <v-spacer></v-spacer>
-                      <v-toolbar-items>
-                        <v-btn light flat @click.native="dialog2 = false">Save</v-btn>
-                      </v-toolbar-items>
-                    </v-toolbar>
-                  </v-card>
-                  <!-- //file_browser_component -->
-                </v-dialog>
                 <v-layout xs12 class="pad_LR12">
                 <form enctype="multipart/form-data" style="width:100%;">
                   <input
@@ -321,7 +297,6 @@
           {text: 'Median (groups of 50%)', value: '.5'}
         ],
         dialog1: false,
-        dialog2: false,
         valid: true,
         uploadFieldName: '',
         uploadInProgress: false

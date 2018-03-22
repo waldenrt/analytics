@@ -118,26 +118,10 @@
 <script>
   import {upload} from './javascript/file-upload.service'
   import {submitJob} from './javascript/job.service'
-  import fileBrowser from './FileBrowser.vue'
 
   export default {
-    components: {
-      fileBrowser
-    },
     data () {
       return {
-        client_name: 'Default Client Name', // will be moved to fileBrowser.vue
-        file_items2: [ // fileBrowser
-          { filename: 'File#1', value: 'value1', model: 'model_01' },
-          { filename: 'File#2', value: 'value2', model: 'model_02' },
-          { filename: 'File#3', value: 'value3', model: 'model_03' },
-          { filename: 'File#4', value: 'value4', model: 'model_04' }
-        ],
-        column: null,
-        inserted_file: 'initial', // fileBrowser
-        radio1: '', // fileBrowser
-        radio2: '', // fileBrowser
-        selected_file: '',
         job_balor: '',
         select_balor: '',
         input_balor: '',
@@ -149,7 +133,6 @@
           {text: '.DSV (";" delimiter)', value: ';'}
         ],
         dialog1: false,
-        dialog2: false,
         valid: true,
         uploadedFile: '',
         uploadError: null,
