@@ -39,8 +39,9 @@ import LifecycleHistory from '@/components/LifecycleHistory'
 import BRelevant from '@/components/BRelevant'
 import NewBRelevant from '@/components/NewBRelevant'
 import BRelevantResults from '@/components/BRelevantResults'
-import BRelevantDetails from '@/components/BRelevantDetails'
 import BRelevantSummary from '@/components/BRelevantSummary'
+import BRelevantDetails from '@/components/BRelevantDetails'
+import BRelevantComparison from '@/components/BRelevantComparison'
 import BRelevantHistory from '@/components/BRelevantHistory'
 
 Vue.use(Router)
@@ -240,6 +241,11 @@ export default new Router({
                   path: 'Summary',
                   name: 'BRelevantSummary',
                   component: BRelevantSummary
+                },
+                {
+                  path: 'Comparison',
+                  name: 'BRelevantComparison',
+                  component: BRelevantComparison
                 }
               ]
             }

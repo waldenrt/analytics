@@ -15,6 +15,7 @@
             <v-tabs-slider></v-tabs-slider>
             <v-tabs-item ripple router to="/BRelevant/Summary">Summary</v-tabs-item>
             <v-tabs-item ripple router to="/BRelevant/Details">Details</v-tabs-item>
+            <v-tabs-item ripple router to="/BRelevant/Comparison">Comparison</v-tabs-item>
             <v-tabs-item ripple router to="/BRelevant">
               <v-icon class="white--text text-xs-center">history</v-icon>
             </v-tabs-item>
