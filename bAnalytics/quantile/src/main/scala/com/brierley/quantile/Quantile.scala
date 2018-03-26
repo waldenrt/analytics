@@ -33,6 +33,8 @@ object Quantile {
 
     val cols = orgFile.columns
 
+    // DISC_AMT is an optional column, so we need to check if its there.
+    // Also they can input 1-3 user defined columns, to make things eaiser in the rest of the engine, rename them to level1-3
     if (cols.contains("DISC_AMT")) {
       args.length match {
         case 8 => orgFile.select("STORE_ID", "CUST_ID", "TXN_DATE", "TXN_HEADER_ID", "TXN_DETAIL_ID", "ITEM_QTY", "ITEM_AMT", "DISC_AMT", args(7))
@@ -77,6 +79,7 @@ object Quantile {
   }
 
   def calcTimePeriod(dateDF: DataFrame, tp: Int): Try[DataFrame] = Try {
+    // This engine only deals with months, no weeks
     val trimDF = DateUtils.trimMonths(dateDF)
     val maxDateDF = trimDF.select(max("Date"))
       .withColumn("lastDay", last_day(col("max(Date)")))
@@ -85,6 +88,7 @@ object Quantile {
     val maxDate = maxDateDF.getAs[java.sql.Date](0)
     val lastDate = maxDateDF.getAs[java.sql.Date](1)
 
+    // if maxDate of file does not equal the last day of the month -- call UDF to calculate timePeriod
     if (maxDate != lastDate) {
       val result = trimDF
         .select("*")
@@ -98,7 +102,7 @@ object Quantile {
 
       //result.persist(StorageLevel.MEMORY_AND_DISK)
       (result)
-    } else {
+    } else { // maxDate in file does equal the end of the month so can calculate here without a UDF
       val result = trimDF
         .select("*")
         .withColumn("max(Date)", lit(maxDate))
@@ -127,6 +131,7 @@ object Quantile {
   }
 
   def baseAgg(tpDF: DataFrame, dimension: String): Try[DataFrame] = Try {
+    // calculate summary stats for the overall file
     dimension match {
       case "store" => tpDF.groupBy("TimePeriod", "AnchorDate", "STORE_ID")
         .agg(countDistinct("CUST_ID").alias("CUST_COUNT"),
@@ -150,7 +155,7 @@ object Quantile {
 
     val result = aggDF.select("*")
       .withColumn("PerRank", percent_rank().over(rankWindow))
-      .withColumn("Quant", lit(quant))
+      .withColumn("Quant", lit(quant)) // quant is the decimal represntation of how many buckets to group into
       .withColumn("Quantile", calcQuant(col("PerRank"), col("Quant")))
       .drop("PerRank")
       .drop("Quant")
@@ -206,6 +211,7 @@ object Quantile {
     }
   }
 
+  // create profile section of the avro message now, will be set in large avro message later
   def createProfileAvro(avgDF: DataFrame, dimension: String): Try[java.util.ArrayList[quantilePeriodResults]] = Try {
 
     val profileList = new util.ArrayList[quantilePeriodResults]()
@@ -263,6 +269,7 @@ object Quantile {
       profileList.add(pd)
     }
 
+    //flip timePeriods so that 1 is the oldes and n is the newest, also change anchor date to string
     val invertedDF = avgDF
       .withColumn("TP", dense_rank().over(Window.orderBy(col("TimePeriod").desc)))
       .drop("TimePeriod")
@@ -288,6 +295,7 @@ object Quantile {
 
   def createProductDF(tpDF: DataFrame, quantDF: DataFrame, dimension: String): Try[DataFrame] = Try {
 
+    //simplify the dataframe with the quantile added to just include the columns required for product calculations
     dimension match {
       case "store" => {
         val simpleQuant = quantDF.select("TimePeriod", "STORE_ID", "Quantile")
@@ -313,12 +321,14 @@ object Quantile {
   }
 
   def aggProducts(prodDF: DataFrame): Try[DataFrame] = Try {
+    // top level summing that will then be ranked over a time period window
     val colNames = prodDF.columns
     if (colNames.contains("STORE_ID"))
       prodDF.drop("STORE_ID")
     if (colNames.contains("CUST_ID"))
       prodDF.drop("CUST_ID")
 
+    // make sure to get all levels of products that the user gave
     if (colNames.contains("Level3")) {
       val level3Agg = prodDF.groupBy("TimePeriod", "AnchorDate", "Quantile", "Level3")
         .agg(sum("ITEM_QTY").alias("Qty"), sum("ITEM_AMT").alias("Amt"))
@@ -365,10 +375,12 @@ object Quantile {
     val spendWindow = Window.partitionBy("TimePeriod", "AnchorDate", "Quantile", "Type")
       .orderBy(desc("Amt"))
 
+    // rank and rowNumber (for ties) products by spend within each unique [timePeriod, quantile and type]
     val rankDF = aggProdDF.select("*")
       .drop("Qty")
       .withColumn("Rank", rank.over(spendWindow))
       .withColumn("RowNum", row_number().over(spendWindow))
+
 
     val maxDF = rankDF
       .drop("AnchorDate")
@@ -377,6 +389,7 @@ object Quantile {
 
     val joinedDF = rankDF.join(maxDF, Seq("TimePeriod", "Quantile", "Type"))
 
+    // take only the top and bottom n products, the n is given by the user when they start the job
     val topDF = joinedDF
       .filter(col("RowNum") <= num)
       .withColumn("Position", lit("Top"))
@@ -394,6 +407,7 @@ object Quantile {
     val countWindow = Window.partitionBy("TimePeriod", "AnchorDate", "Quantile", "Type")
       .orderBy(desc("Qty"))
 
+    // rank and rowNumber (for ties) products by quantity within each unique [timePeriod, quantile and type]
     val rankDF = aggProdDF.select("*")
       .drop("Amt")
       .withColumn("Rank", rank.over(countWindow))
@@ -406,6 +420,7 @@ object Quantile {
 
     val joinedDF = rankDF.join(maxDF, Seq("TimePeriod", "Quantile", "Type"))
 
+    // take only the top and bottom n products, the n is given by the user when they start the job
     val topDF = joinedDF
       .filter(col("RowNum") <= num)
       .withColumn("Position", lit("Top"))
@@ -526,6 +541,7 @@ object Quantile {
 
     val TPWindow = Window.partitionBy("ID").orderBy("TimePeriod", "AnchorDate")
 
+    // fill in TPs that are missed
     val missingTPDF = baseDF
       .drop("CurrQuant")
       .withColumn("TPDiff", baseDF("TimePeriod") - lag(("TimePeriod"), 1).over(TPWindow))
@@ -539,12 +555,14 @@ object Quantile {
 
     val unionDF = baseDF.unionAll(missingTPDF)
 
+    // pull the previous quantile, this will pull null for any new customers in the current time period
     unionDF
       .withColumn("PrevQuant", lead(("CurrQuant"), 1).over(TPWindow))
       .filter(unionDF("CurrQuant") isNotNull)
   }
 
   def countTotals(migDF: DataFrame): Try[DataFrame] = Try {
+    // getting a dataframe that has unique TimePeriod and CurrQuant columns only
     val completeDF = migDF.groupBy("TimePeriod", "CurrQuant")
       .agg(count("ID"))
       .drop(col("count(ID)"))
@@ -646,6 +664,7 @@ object Quantile {
       }
     }
 
+    // Flip time periods so that oldest is Time Period 1 and newest is n
     val invertSumDF = sumDF
       .withColumnRenamed("TimePeriod", "TP")
       .withColumn("TimePeriod", dense_rank().over(Window.orderBy(col("TP").desc)))
@@ -673,6 +692,7 @@ object Quantile {
   def createQuantileAvro(profileAvro: java.util.ArrayList[quantilePeriodResults], prodAvro: java.util.ArrayList[quantileProductResults],
                          migrationAvro: java.util.ArrayList[quantileMigrationResults], statDF: DataFrame, dimension: String, jobKey: String): Try[QuantileResults] = Try {
 
+    //set overall stats and previously created portions
     val quantAvro = new QuantileResults()
     quantAvro.setJobKey(jobKey)
     quantAvro.setDimension(dimension)
@@ -742,6 +762,7 @@ object Quantile {
     val validQuants = List(.01, .05, .1, .2, .25, .5)
     val validPeriods = List(1, 3, 6, 12)
 
+    //validate incoming args from user
     if (!validQuants.contains(quantValue)) {
       sendQuantileError(jobKey, "Quantile", "MainMethod", s"Invalid quantile selected: $quantValue.", "User", propsOnly)
       System.exit(-1)
@@ -800,6 +821,7 @@ object Quantile {
 
     } yield finalAvro
 
+    // log before sending any avro messages to kafka just in case there is a connection issue
     avro match {
       case Success(avro) => {
         println(s"was a success: $avro")
