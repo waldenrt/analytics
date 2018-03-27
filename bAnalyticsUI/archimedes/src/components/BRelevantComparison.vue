@@ -20,19 +20,18 @@
               </v-btn>
             </v-card-title>
             <v-layout row wrap class="grey lighten-2 ml-0 mr-0">
-              <v-flex xs12 sm4 md4>
+              <v-flex xs12 sm4 md2>
                 <!-- data_row -->
                 <div class="panel_body mt-2 mb-2 pl-1 pr-1 pt-2 pb-2 elevation-1">
                   <p class="body-1 pa-0 mb-0 text-xs-center">{{ tpData.year }}</p>
-                  <h6 class="mb-0 text-xs-center">{{ tpData.num }}</h6>
+                  <h6 class="mb-0 text-xs-center info--text">{{ tpData.num }}</h6>
                 </div>
               </v-flex>
-              <v-flex xs12 sm4 md2
-                  v-for="item in tpData.quarters">
+              <v-flex xs12 sm4 md2 v-for="item in tpData.quarters">
                 <!-- data_row -->
                 <div class="panel_body mt-2 mb-2 pl-1 pr-1 pt-2 pb-2 elevation-1">
-                  <p class="body-1 pa-0 mb-0 text-xs-center">{{ item.name }}</p>
-                  <h6 class="mb-0 text-xs-center">{{ item.num }}</h6>
+                  <p class="body-1 pa-0 mb-0 text-xs-center">{{ item.name }}'{{ tpData.year }}</p>
+                  <h6 class="mb-0 text-xs-center info--text">{{ item.num }}</h6>
                 </div>
               </v-flex>
             </v-layout>
@@ -96,8 +95,114 @@
     <!-- =====ROW3===== -->
     <v-layout row wrap class="mb-5">
       <!-- Title of this Row -->
-      <v-flex xs12 class="mb-3 pl-4 pr-4">
-        <v-layout row wrap>
+      <v-flex xs12>
+        <v-layout row wrap class="pb-2">
+
+          <!-- col1 -->
+          <v-flex xs12 sm6 class="pt-3">
+            <v-card-title primary-title class="primary">
+              <h6 class="white--text text-xs-center mb-0 title_row">Product Bundles per Product Purchased & Time Periods</h6>
+            </v-card-title>
+            <v-layout wrap row class="grey lighten-2 ml-0 mr-0">
+              <!--Dropdown1-->
+              <v-flex xs12>
+                <v-card flat class="pt-0 pb-0 grey lighten-2">
+                  <v-layout row wrap>
+                    <v-flex xs12>
+                      <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                        Time Period Legend:
+                      </div>
+                    </v-flex>
+                    <v-flex xs12 class="pb-2">
+                      <v-card class="white pa-2">
+                        <div class="legend accent"></div>
+                        <div class="inliner padR5">2017</div>
+                        <div class="legend warning"></div>
+                        <div class="inliner padR5">Q1'2017</div>
+                        <div class="legend error"></div>
+                        <div class="inliner padR5">Q2'2017</div>
+                        <div class="legend info"></div>
+                        <div class="inliner padR5">Q3'2017</div>
+                        <div class="legend success"></div>
+                        <div class="inliner padR5">Q4'2017</div>
+                      </v-card>
+                    </v-flex>
+                  </v-layout>
+                </v-card>
+              </v-flex>
+              <!--//Dropdown1-->
+            </v-layout>
+            <v-layout row wrap>
+              <v-flex xs12>
+                  <v-card flat class="white pa-3">
+                    <img src="http://via.placeholder.com/350x150?text=Chart1" width="100%" height="600px">
+                  </v-card>
+              </v-flex>
+            </v-layout>
+          </v-flex>
+          <!-- //col1 -->
+
+          <!-- col2 -->
+          <v-flex xs12 sm6 class="pt-3">
+            <v-card-title primary-title class="primary">
+              <h6 class="white--text text-xs-center mb-0 title_row">Product Bundles Appearances Across Time Periods</h6>
+            </v-card-title>
+            <v-layout wrap row class="grey lighten-2 ml-0 mr-0">
+              <!--Dropdown1-->
+              <v-flex xs6>
+                <v-card flat class="pt-0 pb-0 grey lighten-2">
+                  <v-layout row wrap>
+                    <v-flex xs12>
+                      <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                        Occurs in ALL Time Periods:
+                      </div>
+                    </v-flex>
+                    <v-flex xs12 class="pb-2">
+                      <v-card class="white pa-2">
+                        <div class="inliner error--text pr-1">X</div>
+                        <div class="inliner padR5">FALSE</div>
+                        <div class="inliner success--text pr-1">&#10003;</div>
+                        <div class="inliner">TRUE</div>
+                      </v-card>
+                    </v-flex>
+                  </v-layout>
+                </v-card>
+              </v-flex>
+              <!--//Dropdown1-->
+              <!--Dropdown2-->
+              <v-flex xs6>
+                <v-card flat class="pt-0 pb-0 grey lighten-2">
+                  <v-layout row wrap>
+                    <v-flex xs12>
+                      <div class="primary--text text-xs-left pl-0 pr-0 pb-0 pt-2">
+                        Rules in ALL Time Periods:
+                      </div>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-select v-model="tp"
+                                v-bind:items="tpArray"
+                                label="Select Time Period"
+                                single-line
+                                v-on:input="setTP()"
+                                class="pl-1 pt-1 mt-0 mb-2 white elevation-1"
+                                hide-details>
+                      </v-select>
+                    </v-flex>
+                  </v-layout>
+                </v-card>
+              </v-flex>
+              <!--//Dropdown2-->
+            </v-layout>
+            <v-layout row wrap>
+              <v-flex xs12>
+                  <v-card flat class="white pa-3">
+                    <img src="http://via.placeholder.com/350x150?text=Chart2" width="100%" height="600px">
+                  </v-card>
+              </v-flex>
+            </v-layout>
+          </v-flex>
+          <!-- //col2 -->
+
         </v-layout>
       </v-flex>
       <!--// Title of this Row -->
@@ -153,7 +258,7 @@
     border-bottom-left-radius: 2px;
   }
 
-  .panel_body p, .panel_body h6 {
-    color:#354052;
-  }
+  .panel_body p, .panel_body h6 { color:#354052; }
+
+  .title_row { margin:0 auto; }
 </style>
