@@ -61,7 +61,7 @@
               </v-flex>
               <!--//Dropdown1-->
               <!--Dropdown2-->
-              <v-flex xs12 sm4 md2>
+              <v-flex xs12 sm4 md3>
                 <v-card flat class="grey lighten-2">
                   <v-layout row wrap>
                     <v-flex xs12>
@@ -134,7 +134,7 @@
             </v-layout>
             <v-layout row wrap>
               <v-flex xs12>
-                  <v-card flat class="white pa-3">
+                  <v-card class="white pa-3">
                     <img src="http://via.placeholder.com/350x150?text=Chart1" width="100%" height="600px">
                   </v-card>
               </v-flex>
@@ -195,7 +195,7 @@
             </v-layout>
             <v-layout row wrap>
               <v-flex xs12>
-                  <v-card flat class="white pa-3">
+                  <v-card class="white pa-3">
                     <img src="http://via.placeholder.com/350x150?text=Chart2" width="100%" height="600px">
                   </v-card>
               </v-flex>
