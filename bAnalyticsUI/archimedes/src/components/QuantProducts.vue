@@ -182,14 +182,16 @@
               <th class="info white--text">Quantiles</th>
               <th class="info white--text">Top Products<br/>Total Spend</th>
             </tr>
-            <tr v-for="item in custItems" v-bind:key="item.Quantile">
-              <td class="pa-2">
-                <div class="text-xs-center" v-text="item.Quantile"></div>
-              </td>
-              <td class="pa-2">
-                <div class="text-xs-center" v-text="item.total"></div>
-              </td>
-            </tr>
+            <div class="white" style="width:100%;">
+              <tr v-for="item in custItems" v-bind:key="item.Quantile">
+                <td class="pa-2">
+                  <div class="text-xs-center" v-text="item.Quantile"></div>
+                </td>
+                <td class="pa-2">
+                  <div class="text-xs-center" v-text="item.total"></div>
+                </td>
+              </tr>
+            </div>
           </table>
           <!--//Total Spend Table-->
         </v-card>
