@@ -11,6 +11,7 @@
       <module>bAnalyticsMicroserviceBalor</module>
       <module>bAnalyticsMicroserviceLifecycle</module>
       <module>bAnalyticsMicroserviceQuantile</module>
+      <module>bAnalyticsMicroservicebRelevent</module>
   </modules>
 
   <properties>
