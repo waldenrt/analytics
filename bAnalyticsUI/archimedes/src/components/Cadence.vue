@@ -1,6 +1,7 @@
 <template>
   <v-container fluid class="cadence pl-3 pr-3">
     <!-- =====ROW1===== -->
+    <HelpNavBalor ref="helpNav"></HelpNavBalor>
     <v-layout row wrap class="mb-4">
       <!--+++++col1+++++-->
       <v-flex xs12 sm6 md3 lg3 order-xs2 order-md1 fill-height>
@@ -9,13 +10,23 @@
         <v-flex xs12 fill-height>
         <v-card class="white">
           <v-card-title primary-title class="primary">
-            <h6 v-if="cadWeeks" class="white--text text-xs-left mb-0 truncate1">Cadence Raw Data (Weeks)</h6>
-            <h6 v-else class="white--text text-xs-left mb-0 truncate1">Cadence Raw Data (Days)</h6>
+            <div class="truncate1">
+              <h6 v-if="cadWeeks" class="white--text text-xs-left mb-0">Cadence Raw Data <span class="body-1">(Weeks)</span></h6>
+              <h6 v-else class="white--text text-xs-left mb-0">Cadence Raw Data <span class="body-1">(Days)</span></h6>
+            </div>
+            <v-spacer></v-spacer>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
           <v-divider class="primary pb-0 pl-3 pr-3"></v-divider>
             <div class="constrainer">
               <div class="scrolltable">
-                <div class="tbl_header grey lighten-2 pt-2 pb-2 elevation-1">
+                <div class="tbl_header grey lighten-2 pt-2 pb-2">
                 <table cellpadding="0" cellspacing="0">
                     <thead>
                       <tr>
@@ -49,9 +60,17 @@
       <v-flex xs12 sm12 md6 lg7 order-xs1 order-md2 fill-height>
         <v-card fill-height class="white pa-0" style="height:100%">
           <v-card-title primary-title class="primary">
-            <h6 class="white--text text-xs-left mb-0">Purchase Cadence Distribution</h6>
+              <h6 class="white--text text-xs-left mb-0">Purchase Cadence Distribution</h6>
+            <v-spacer></v-spacer>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
-          <v-layout row wrap class="mb-3 pa-3">
+          <v-layout row wrap class="mb-3 pl-2 pr-2 pb-2 pt-2">
             <v-flex xs12 fill-height>
               <!--Chart-->
                 <annotated-bar-chart
@@ -72,7 +91,17 @@
             <div class="white elevation-1">
             <v-card class="white elevation-0">
               <v-card-title primary-title class="primary white--text">
-                <h6 class="text-xs-left mb-0 white--text">Cadence Summary</h6>
+                <div class="truncate1">
+                  <h6 class="text-xs-left mb-0 white--text">Cadence Summary</h6>
+                </div>
+                <v-spacer></v-spacer>
+                <v-btn
+                    @click.native="getHelpSection()"
+                    icon slot="activator"
+                    class="success--text"
+                    style="height:auto !important;">
+                      <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+                </v-btn>
               </v-card-title>
               <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
                   <!-- cadence_sum_items -->
@@ -97,13 +126,15 @@
 <script>
   import AnnotatedBarChart from './balorCharts/AnnotatedBarChart'
   import {cadence} from './javascript/balor.service'
+  import HelpNavBalor from './HelpNavBalor.vue'
 
   var numeral = require('numeral')
 
   export default {
     name: 'cadence',
     components: {
-      AnnotatedBarChart
+      AnnotatedBarChart,
+      HelpNavBalor
     },
     data () {
       return {
@@ -149,6 +180,10 @@
       }
     },
     methods: {
+      getHelpSection: function () {
+        var hpNav = this.$refs.helpNav.$refs.helpNav
+        hpNav.value = !hpNav.value
+      },
       getResults () {
         cadence(this.jobId)
           .then((response) => {
@@ -307,22 +342,13 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .sum_brd1 {
-    border-right: 7px solid #D63809;
-  }
+  .sum_brd1 {border-right:7px solid #D63809;}
 
-  .summary td:last-child {
-    margin-left: 5px;
-    text-align: right;
-  }
+  .summary td:last-child {margin-left:5px; text-align:right;}
 
-  .cad_sum div {
-    margin: 0 auto;
-  }
+  .cad_sum div {margin:0 auto;}
 
-  .card_height {
-    min-height: 165px;
-  }
+  .card_height {min-height:165px;}
 
   .card_pad {
     padding-top: 20px;
@@ -359,7 +385,7 @@
   .bar_chart {
     position: relative !important;
     margin: 0 auto !important;
-    height: 499px !important;
+    height: 515px !important;
     width: 100% !important;
   }
 
@@ -380,8 +406,9 @@
     -webkit-flex-direction: column;
   }
   .scrolltable .tbl_header table, .scrolltable .tbl_body table {
-    width:90%;
+    width:100%;
     margin:0 auto;
+    margin-right:0;
   }
   .scrolltable > .tbl_body {
     width: -webkit-fit-content;
@@ -392,6 +419,7 @@
     flex: 1;
     -webkit-flex: 1;
   }
+  .scrolltable tr:hover {background-color:#eee;}
 
   .panel {
     height: 530px;

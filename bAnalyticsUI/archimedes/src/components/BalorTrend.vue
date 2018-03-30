@@ -1,13 +1,21 @@
 <template>
   <v-container fluid class="balorTrend pl-3 pr-3">
-
     <!-- =====ROW1===== -->
+    <HelpNavBalor ref="helpNav"></HelpNavBalor>
     <v-layout row wrap class="pa-0 mb-0">
       <!-- BALOR Trendline -->
-      <v-flex xs12 sm8 md9 lg10>
+      <v-flex xs12 sm8 md9 lg10 class="mb-3">
         <v-card class="white">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">BALOR Period Trendline</h6>
+            <v-spacer></v-spacer>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
           <v-layout row wrap>
             <!--slider-->
@@ -31,13 +39,14 @@
       </v-flex>
       <!--// BALOR Trendline -->
       <!-- BALOR Summary -->
-      <v-flex xs12 sm4 md3 lg2>
+      <v-flex xs12 sm4 md3 lg2 class="mb-3">
         <v-layout row wrap>
-          <v-flex xs12 class="pb-3">
+          <v-flex xs12>
             <div class="white elevation-1">
             <v-card class="white elevation-0">
-              <v-card-title primary-title class="primary white--text">
-                <h6 class="text-xs-left mb-0 white--text truncate1">BALOR Summary</h6>
+              <v-card-title primary-title class="primary">
+                <h6 class="text-xs-left mb-0 white--text">BALOR Summary</h6>
+                <v-spacer></v-spacer>
               </v-card-title>
               <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
                   <!-- data_row -->
@@ -86,9 +95,9 @@
     <!-- //=====ROW1===== -->
 
     <!-- =====ROW2===== -->
-    <v-layout row wrap class="mb-3">
+    <v-layout row wrap>
       <!-- PieCharts & Ratio Lines -->
-      <v-flex xs12 sm8 md9 lg10 fill-height>
+      <v-flex xs12 sm8 md9 lg10 class="mb-3">
         <v-card class="white">
 
           <!-- SELECTION ROW -->
@@ -96,7 +105,14 @@
             <v-flex xs12>
               <v-card class="pa-0 ma-0 grey lighten-2">
                 <v-card-title primary-title class="primary">
-                  <h6 class="white--text text-xs-left mb-0">BALOR Composition and Metrics for Period:</h6>
+                  <h6 class="white--text text-xs-left mb-0">BALOR Composition and Metrics per Period:</h6>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                      v-on:click.native="getHelpSection()"
+                      icon slot="activator"
+                      class="success--text" style="height:auto !important;">
+                      <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+                  </v-btn>
                 </v-card-title>
                 <v-layout row wrap>
                   <!--Dropdown1-->
@@ -114,8 +130,8 @@
                                     label="Select Time Period"
                                     single-line
                                     v-on:input="setTP()"
-                                    style="width:175px;"
                                     class="pl-1 pt-1 mt-1 mb-2 white elevation-1"
+                                    style="width:175px;"
                                     hide-details
                                     id="selection">
                           </v-select>
@@ -138,8 +154,6 @@
               <v-layout row wrap>
                 <v-flex xs12>
                   <v-card flat class="white pa-3">
-                    <div class="legend legend_color1"></div>
-                    <div class="inliner padR5">Lapsed</div>
                     <div class="legend legend_color2"></div>
                     <div class="inliner padR5">New</div>
                     <div class="legend legend_color3"></div>
@@ -187,12 +201,20 @@
       </v-flex>
       <!-- //PieCharts & Ratio Lines -->
       <!-- Retention Summary -->
-      <v-flex xs12 sm4 md3 lg2>
+      <v-flex xs12 sm4 md3 lg2 class="mb-3">
         <v-layout row wrap>
-          <v-flex xs12 class="pb-3">
+          <v-flex xs12>
             <v-card class="white ret_sum_height">
               <v-card-title primary-title class="primary white--text">
                 <h6 class="text-xs-left mb-0 white--text truncate1">Rentention Summary</h6>
+                <v-spacer></v-spacer>
+                <v-btn
+                    @click.native="getHelpSection()"
+                    icon slot="activator"
+                    class="success--text"
+                    style="height:auto !important;">
+                      <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+                </v-btn>
               </v-card-title>
               <div class="pl-2 pr-2 pb-2 pt-1 elevation-0 panel">
                   <!-- data_row -->
@@ -214,8 +236,9 @@
         <v-card class="white">
           <v-layout row wrap>
             <v-flex xs12>
-              <v-card-title primary-title class="white">
-                <h6 class="primary--text text-xs-left mb-0">BALOR Trend Raw Data</h6>
+              <v-card-title primary-title class="info">
+                <h6 class="white--text text-xs-left mb-0">BALOR Trend Raw Data</h6>
+                <v-spacer></v-spacer>
               </v-card-title>
               <v-data-table
                   v-bind:headers="headers"
@@ -224,22 +247,22 @@
                   class="elevation-1"
               >
                 <template slot="items" scope="props">
-                  <td>{{ props.item.timePeriod }}</td>
-                  <td class="text-xs-right">{{ props.item.custBalor }}</td>
-                  <td class="text-xs-right">{{ props.item.spendBalor }}</td>
-                  <td class="text-xs-right">{{ props.item.txnBalor }}</td>
-                  <td class="text-xs-right">{{ props.item.newCustCount }}</td>
-                  <td class="text-xs-right">{{ props.item.newTxnAmt }}</td>
-                  <td class="text-xs-right">{{ props.item.newTxnCount }}</td>
-                  <td class="text-xs-right">{{ props.item.reactCustCount }}</td>
-                  <td class="text-xs-right">{{ props.item.reactTxnAmt }}</td>
-                  <td class="text-xs-right">{{ props.item.reactTxnCount }}</td>
-                  <td class="text-xs-right">{{ props.item.returnCustCount }}</td>
-                  <td class="text-xs-right">{{ props.item.returnTxnAmt }}</td>
-                  <td class="text-xs-right">{{ props.item.returnTxnCount }}</td>
-                  <td class="text-xs-right">{{ props.item.lapsedCustCount }}</td>
-                  <td class="text-xs-right">{{ props.item.lapsedTxnAmt }}</td>
-                  <td class="text-xs-right">{{ props.item.lapsedTxnCount }}</td>
+                  <td class="">{{ props.item.timePeriod }}</td>
+                  <td class=" text-xs-right">{{ props.item.custBalor }}</td>
+                  <td class=" text-xs-right">{{ props.item.spendBalor }}</td>
+                  <td class=" text-xs-right">{{ props.item.txnBalor }}</td>
+                  <td class=" text-xs-right">{{ props.item.newCustCount }}</td>
+                  <td class=" text-xs-right">{{ props.item.newTxnAmt }}</td>
+                  <td class=" text-xs-right">{{ props.item.newTxnCount }}</td>
+                  <td class=" text-xs-right">{{ props.item.reactCustCount }}</td>
+                  <td class=" text-xs-right">{{ props.item.reactTxnAmt }}</td>
+                  <td class=" text-xs-right">{{ props.item.reactTxnCount }}</td>
+                  <td class=" text-xs-right">{{ props.item.returnCustCount }}</td>
+                  <td class=" text-xs-right">{{ props.item.returnTxnAmt }}</td>
+                  <td class=" text-xs-right">{{ props.item.returnTxnCount }}</td>
+                  <td class=" text-xs-right">{{ props.item.lapsedCustCount }}</td>
+                  <td class=" text-xs-right">{{ props.item.lapsedTxnAmt }}</td>
+                  <td class=" text-xs-right">{{ props.item.lapsedTxnCount }}</td>
                 </template>
               </v-data-table>
             </v-flex>
@@ -248,10 +271,7 @@
       </v-flex>
     </v-layout>
     <!-- //=====ROW3===== -->
-
   </v-container>
-
-
 </template>
 
 <script>
@@ -259,6 +279,7 @@
   import PieCharts from './balorCharts/PieCharts.js'
   import noUiSlider from 'noUiSlider'
   import {summary} from './javascript/balor.service'
+  import HelpNavBalor from './HelpNavBalor.vue'
 
   var numeral = require('numeral')
 
@@ -266,32 +287,29 @@
     name: 'balorTrend',
     components: {
       BalorTrendLine,
-      PieCharts
+      PieCharts,
+      HelpNavBalor
     },
     data () {
       return {
+        HelpNavBalorData: HelpNavBalor.data,
         headers: [
-          {
-            text: 'Time Period',
-            left: true,
-            sortable: true,
-            value: 'timePeriod'
-          },
+          {text: 'Time Period', value: 'timePeriod', left: true, sortable: true},
           {text: 'Customer BALOR Ratio', value: 'custBalor'},
           {text: 'Spend BALOR Ratio', value: 'spendBalor'},
-          {text: 'Txn BALOR Ratio', value: 'txnBalor'},
-          {text: 'New Cust Count', value: 'newCustCount'},
-          {text: 'New Total Sales', value: 'newTxnAmt'},
-          {text: 'New Txn Count', value: 'newTxnCount'},
-          {text: 'Reactivated Cust Count', value: 'reactCustCount'},
-          {text: 'Reactivated Total Sales', value: 'reactTxnAmt'},
-          {text: 'Reactivated Txn Count', value: 'reactTxnCount'},
-          {text: 'Returning Cust Count', value: 'returnCustCount'},
-          {text: 'Returning Total Sales', value: 'returnTxnAmt'},
-          {text: 'Returning Txn Count', value: 'returnTxnCount'},
-          {text: 'Lapsed Cust Count', value: 'lapsedCustCount'},
-          {text: 'Lapsed Total Sales', value: 'lapsedTxnAmt'},
-          {text: 'Lapsed Txn Count', value: 'lapsedTxnCount'}
+          {text: 'Transaction BALOR Ratio', value: 'txnBalor'},
+          {text: 'New Customer Count', value: 'newCustCount'},
+          {text: 'New Total Spend', value: 'newTxnAmt'},
+          {text: 'New Transaction Count', value: 'newTxnCount'},
+          {text: 'Reactivated Customer Count', value: 'reactCustCount'},
+          {text: 'Reactivated Total Spend', value: 'reactTxnAmt'},
+          {text: 'Reactivated Transaction Count', value: 'reactTxnCount'},
+          {text: 'Returning Customer Count', value: 'returnCustCount'},
+          {text: 'Returning Total Spend', value: 'returnTxnAmt'},
+          {text: 'Returning Transaction Count', value: 'returnTxnCount'},
+          {text: 'Lapsed Customer Count', value: 'lapsedCustCount'},
+          {text: 'Lapsed Total Spend', value: 'lapsedTxnAmt'},
+          {text: 'Lapsed Transaction Count', value: 'lapsedTxnCount'}
         ],
         retentionItems: [],
         sumItems: {},
@@ -405,6 +423,10 @@
       }
     },
     methods: {
+      getHelpSection: function () {
+        var hpNav = this.$refs.helpNav.$refs.helpNav
+        hpNav.value = !hpNav.value
+      },
       getResults () {
         summary(this.jobId)
           .catch(err => {
@@ -543,9 +565,9 @@
         this.retentionItems = [
           {name: 'Retention', vals: numeral(this.jsonMsg.timePeriods[this.tp - 1].retention.retention).format('0.00') + '%'},
           {name: 'Retention Growth', vals: numeral(this.jsonMsg.timePeriods[this.tp - 1].retention.retentionGrowth).format('0.00') + '%'},
-          {name: 'Retention Sales Lift', vals: numeral(this.jsonMsg.timePeriods[this.tp - 1].retention.ttlSalesLift).format('0.00')},
+          {name: 'Retention Sales Lift', vals: numeral((this.jsonMsg.timePeriods[this.tp - 1].retention.ttlSalesLift) / 100).format('0.00')},
           {name: 'Retained Customer Sales from Prior Period', vals: numeral(ttlSales).format('$0,0.00')},
-          {name: 'Retention Transaction Lift', vals: numeral(this.jsonMsg.timePeriods[this.tp - 1].retention.ttlTxnLift).format('0.00')},
+          {name: 'Retention Transaction Lift', vals: numeral((this.jsonMsg.timePeriods[this.tp - 1].retention.ttlTxnLift) / 100).format('0.00')},
           {name: 'Retained Customer Txns from Prior Period', vals: numeral(ttlTxns).format('0,0')}
         ]
       },
@@ -555,12 +577,10 @@
         this.custData = {
           datasets: [{
             data: [
-              this.jsonMsg.timePeriods[tp].lapsedCustCount,
               this.jsonMsg.timePeriods[tp].newCustCount,
               this.jsonMsg.timePeriods[tp].returnCustCount,
               this.jsonMsg.timePeriods[tp].reactCustCount],
             backgroundColor: [
-              '#D63A09',
               '#8EAC1D',
               '#F7970E',
               '#0087AA'
@@ -568,7 +588,6 @@
             label: 'Customers'
           }],
           labels: [
-            'Lapsed',
             'New',
             'Returning',
             'Reactivated'
@@ -640,12 +659,10 @@
         this.custData = {
           datasets: [{
             data: [
-              this.jsonMsg.timePeriods[this.tp - 1].lapsedCustCount,
               this.jsonMsg.timePeriods[this.tp - 1].newCustCount,
               this.jsonMsg.timePeriods[this.tp - 1].returnCustCount,
               this.jsonMsg.timePeriods[this.tp - 1].reactCustCount],
             backgroundColor: [
-              '#D63A09',
               '#8EAC1D',
               '#F7970E',
               '#0087AA'
@@ -653,7 +670,6 @@
             label: 'Customers'
           }],
           labels: [
-            'Lapsed',
             'New',
             'Returning',
             'Reactivated'
@@ -724,17 +740,11 @@
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-  .inliner {
-    display: inline-block;
-  }
+  .inliner {display: inline-block;}
 
-  .sum_brd1 {
-    border-right: 7px solid #D63809;
-  }
+  .sum_brd1 {border-right: 7px solid #D63809;}
 
-  .sum_brd2 {
-    border-right: 7px solid #f7970e;
-  }
+  .sum_brd2 {border-right: 7px solid #f7970e;}
 
   .summary td:last-child {
     margin-left: 5px;
@@ -747,13 +757,9 @@
     height: 396px !important;
   }
 
-  .pie_ratio_height {
-    height:372px !important;
-  }
+  .pie_ratio_height {height:372px !important;}
 
-  .ret_sum_height {
-    height:500px !important;
-  }
+  .ret_sum_height {height:501px !important;}
 
   .pie_chart1 {
     position: relative;
@@ -767,13 +773,9 @@
     /*height: 20vw !important;*/
   }
 
-  .left_float {
-    float: left;
-  }
+  .left_float {float: left;}
 
-  .right_float {
-    float: right;
-  }
+  .right_float {float: right;}
 
   .legend {
     display: inline-block;
@@ -782,37 +784,19 @@
     margin-right: 5px;
   }
 
-  .legend_color1 {
-    background-color: #D63809;
-  }
+  .legend_color2 {background-color: #8EAC1D;}
 
-  .legend_color2 {
-    background-color: #8EAC1D;
-  }
+  .legend_color3 {background-color: #F7970E;}
 
-  .legend_color3 {
-    background-color: #F7970E;
-  }
+  .legend_color4 {background-color: #0087AA;}
 
-  .legend_color4 {
-    background-color: #0087AA;
-  }
+  .padR5 {padding-right: 5px;}
 
-  .padR5 {
-    padding-right: 5px;
-  }
+  .tabs__item {padding: 0 !important;}
 
-  .tabs__item {
-    padding: 0 !important;
-  }
+  .tabs__container a {padding: 0;}
 
-  .tabs__container a {
-    padding: 0;
-  }
-
-  .panel {
-    overflow: auto;
-  }
+  .panel {overflow: auto;}
 
   .panel .panel_body {
     border: 1px solid #E6EAEE;
@@ -834,22 +818,17 @@
     text-overflow: ellipsis;
   }
   /* Smartphones (portrait and landscape) ----------- */
-  @media only screen and (min-device-width: 481px) and (max-device-width: 960px) {
+  @media only screen and (min-width: 481px) and (max-width: 960px) {
     /* Styles */
-    .pie_ratio_height {
-      height:auto !important;
-    }
-    .ret_sum_height {
-      height:820px !important;
-    }
+    .pie_ratio_height {height:auto !important;}
+    .ret_sum_height {height:820px !important;}
   }
 
   /* Smartphones (portrait and landscape) ----------- */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  @media only screen and (min-width: 320px) and (max-width: 480px) {
     /* Styles */
-
-    .padT15_mob {
-      padding-top: 15px;
-    }
+    .pie_ratio_height {height:auto !important;}
+    .ret_sum_height {height:auto !important;}
+    .padT15_mob {padding-top: 15px;}
   }
 </style>

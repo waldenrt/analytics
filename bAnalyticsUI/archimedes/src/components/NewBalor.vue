@@ -35,16 +35,20 @@
                 <!--FILE-LOADER-->
                 <div class="xs12 pb-3">
                   <label class="body-2">Select file for analysis</label>
-                  <v-dialog v-model="dialog" width="550px">
+                  <!-- sample_file_image_dialog -->
+                  <v-dialog v-model="dialog1" width="550px">
                     <div slot="activator">
                       <div class="file">
-                        <v-icon class="warning--text" slot="activator">note</v-icon>
+                        <div style="display:inline-block;"
+                        v-tooltip:right="{ html: 'Sample File Image' }">
+                          <v-icon class="warning--text" slot="activator">note</v-icon></div>
                       </div>
                     </div>
                     <v-card>
                       <img src="../assets/images/balor_file_img.png" width="100%" height="100%" class="file_sample">
                     </v-card>
                   </v-dialog>
+
                   <v-layout xs12 class="pad_LR12">
                     <form enctype="multipart/form-data" style="width:100%;">
                       <input
@@ -128,7 +132,7 @@
           {text: '.DSV ("|" delimiter)', value: '|'},
           {text: '.DSV (";" delimiter)', value: ';'}
         ],
-        dialog: false,
+        dialog1: false,
         valid: true,
         uploadedFile: '',
         uploadError: null,

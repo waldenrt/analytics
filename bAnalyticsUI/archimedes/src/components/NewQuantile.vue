@@ -35,16 +35,19 @@
               <!--FILE-LOADER-->
               <div class="xs12 pb-3">
                 <label class="body-2">Select file for analysis</label>
-                <div class="file">
-                  <v-dialog v-model="dialog" width="1000px">
-                    <div slot="activator">
-                      <div class="inliner"><v-icon class="warning--text" slot="activator">note</v-icon></div>
+                <!-- sample_file_image_dialog -->
+                <v-dialog v-model="dialog1" width="550px">
+                  <div slot="activator">
+                    <div class="file">
+                      <div style="display:inline-block;"
+                      v-tooltip:right="{ html: 'Sample File Image' }">
+                        <v-icon class="warning--text" slot="activator">note</v-icon></div>
                     </div>
-                    <v-card style="width:1000px;">
-                      <img src="../assets/images/pareto_file_img.png" width="100%" height="100%" class="file_sample">
-                    </v-card>
-                  </v-dialog>
-                </div>
+                  </div>
+                  <v-card>
+                    <img src="../assets/images/balor_file_img.png" width="100%" height="100%" class="file_sample">
+                  </v-card>
+                </v-dialog>
                 <v-layout xs12 class="pad_LR12">
                 <form enctype="multipart/form-data" style="width:100%;">
                   <input
@@ -267,7 +270,7 @@
         job_pareto: '',
         select_delimiter: '',
         select_tp: '',
-        select_paretoValue: {text: 'Decile (groups of 10%)', value: '.1'},
+        select_paretoValue: {},
         numProds: '',
         product1: '',
         product2: '',
@@ -293,7 +296,7 @@
           {text: 'Quartiles (groups of 25%)', value: '.25'},
           {text: 'Median (groups of 50%)', value: '.5'}
         ],
-        dialog: false,
+        dialog1: false,
         valid: true,
         uploadFieldName: '',
         uploadInProgress: false
@@ -352,7 +355,7 @@
           'delimiter': this.select_delimiter,
           'args': [
             {'name': 'timePeriod', 'value': this.select_tp},
-            {'name': 'quantValue', 'value': this.select_paretoValue.value},
+            {'name': 'quantValue', 'value': this.select_paretoValue},
             {'name': 'numProds', 'value': this.numProds},
             {'name': 'dimension', 'value': this.dim_radio},
             {'name': 'productColumns', 'value': prodColumns}

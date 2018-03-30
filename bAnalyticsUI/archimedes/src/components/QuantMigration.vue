@@ -1,15 +1,24 @@
 <template>
   <v-container fluid class="quantileMigration pl-3 pr-3 mb-3">
     <!-- =====ROW1===== -->
+    <HelpNavQuantile ref="helpNav"></HelpNavQuantile>
     <v-layout row wrap class="pt-0 mt-0">
       <v-flex xs12>
         <v-card class="pa-0 ma-0 grey lighten-2">
           <v-card-title primary-title class="primary">
             <h6 class="white--text text-xs-left mb-0">Customer Pareto Migration</h6>
+            <v-spacer></v-spacer>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
           <v-layout row wrap>
             <!--Dropdown1-->
-            <v-flex xs6 sm4>
+            <v-flex xs6 sm4 md2>
               <v-card flat class="pl-2 pr-2 pt-0 pb-0 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
@@ -33,7 +42,7 @@
             </v-flex>
             <!--//Dropdown1-->
             <!--Dropdown2-->
-            <v-flex xs6 sm4>
+            <v-flex xs6 sm4 md2>
               <v-card flat class="pl-2 pr-2 grey lighten-2">
                 <v-layout row wrap>
                   <v-flex xs12>
@@ -131,54 +140,87 @@
           <div class="x_axis caption text-xs-center">Customer Post Period Quantile</div>
           <table cellpadding="0" cellspacing="0" class="quantTbl subheading pt-2 pl-5 pr-3">
             <thead>
-              <td class="text-xs-center"></td>
-              <td class="text-xs-center">1</td>
-              <td class="text-xs-center">2</td>
-              <td class="text-xs-center">3</td>
-              <td class="text-xs-center">4</td>
-              <td class="text-xs-center">5</td>
-              <td class="text-xs-center">6</td>
-              <td class="text-xs-center">7</td>
-              <td class="text-xs-center">8</td>
-              <td class="text-xs-center">9</td>
-              <td class="text-xs-center">10</td>
+              <tr>
+                <td class="text-xs-center"></td>
+                <template v-for="(item, i) in tableMigItems">
+                  <td class="text-xs-center">{{i + 1}}</td>
+                </template>
+              </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in tableMigItems" v-bind:key="item.text" class="tRow">
-                <td class="text-xs-center" v-text="item.from"></td>
-                <td class="text-xs-center" :style="createTblColor[index][0]" v-text="item.key1"></td>
-                <td class="text-xs-center" :style="createTblColor[index][1]" v-text="item.key2"></td>
-                <td class="text-xs-center" :style="createTblColor[index][2]" v-text="item.key3"></td>
-                <td class="text-xs-center" :style="createTblColor[index][3]" v-text="item.key4"></td>
-                <td class="text-xs-center" :style="createTblColor[index][4]" v-text="item.key5"></td>
-                <td class="text-xs-center" :style="createTblColor[index][5]" v-text="item.key6"></td>
-                <td class="text-xs-center" :style="createTblColor[index][6]" v-text="item.key7"></td>
-                <td class="text-xs-center" :style="createTblColor[index][7]" v-text="item.key8"></td>
-                <td class="text-xs-center" :style="createTblColor[index][8]" v-text="item.key9"></td>
-                <td class="text-xs-center" :style="createTblColor[index][9]" v-text="item.key10"></td>
-              </tr>
+              <!-- 2 groups - MEDIAN - 50% each -->
+              <template v-if="tableMigItems.length === 2">
+                <tr v-for="(item, index) in tableMigItems" v-bind:key="item.text" class="tRow">
+                  <td class="text-xs-center" v-text="item.from" :width="64"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][0]" v-text="item.key1"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][1]" v-text="item.key2"></td>
+                </tr>
+              </template>
+              <!-- 4 groups - QUARTILES - 25% each -->
+              <template v-if="tableMigItems.length === 4">
+                <tr v-for="(item, index) in tableMigItems" v-bind:key="item.text" class="tRow">
+                  <td class="text-xs-center" v-text="item.from" :width="64"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][0]" v-text="item.key1"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][1]" v-text="item.key2"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][2]" v-text="item.key3"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][3]" v-text="item.key4"></td>
+                </tr>
+              </template>
+              <!-- 5 groups - QUINTILES - 20% each -->
+              <template v-if="tableMigItems.length === 5">
+                <tr v-for="(item, index) in tableMigItems" v-bind:key="item.text" class="tRow">
+                  <td class="text-xs-center" v-text="item.from" :width="64"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][0]" v-text="item.key1"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][1]" v-text="item.key2"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][2]" v-text="item.key3"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][3]" v-text="item.key4"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][4]" v-text="item.key5"></td>
+                </tr>
+              </template>
+              <!-- 10 groups - DECILES - 10% each -->
+              <template v-if="tableMigItems.length === 10">
+                <tr v-for="(item, index) in tableMigItems" v-bind:key="item.text" class="tRow">
+                  <td class="text-xs-center" v-text="item.from" :width="64"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][0]" v-text="item.key1"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][1]" v-text="item.key2"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][2]" v-text="item.key3"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][3]" v-text="item.key4"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][4]" v-text="item.key5"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][5]" v-text="item.key6"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][6]" v-text="item.key7"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][7]" v-text="item.key8"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][8]" v-text="item.key9"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][9]" v-text="item.key10"></td>
+                </tr>
+              </template>
+              <!-- 20 groups - VENTILES - 5% each -->
+              <template v-if="tableMigItems.length === 20">
+                <tr v-for="(item, index) in tableMigItems" v-bind:key="item.text" class="tRow">
+                  <td class="text-xs-center" v-text="item.from" :width="64"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][0]" v-text="item.key1"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][1]" v-text="item.key2"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][2]" v-text="item.key3"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][3]" v-text="item.key4"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][4]" v-text="item.key5"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][5]" v-text="item.key6"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][6]" v-text="item.key7"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][7]" v-text="item.key8"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][8]" v-text="item.key9"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][9]" v-text="item.key10"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][10]" v-text="item.key11"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][11]" v-text="item.key12"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][12]" v-text="item.key13"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][13]" v-text="item.key14"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][14]" v-text="item.key15"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][15]" v-text="item.key16"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][16]" v-text="item.key17"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][17]" v-text="item.key18"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][18]" v-text="item.key19"></td>
+                  <td class="text-xs-center" :style="createTblColor[index][19]" v-text="item.key20"></td>
+                </tr>
+              </template>
             </tbody>
           </table>
-<!--        <v-data-table
-            :headers="quantHeaders"
-            :items="tableMigItems"
-            class="pl-5 pr-3 text-xs-center"
-            :style="createTblColor"
-            hide-actions>
-            <template slot="items" scope="props">
-              <td>{{ props.item.from }}</td>
-              <td>{{ props.item.key1 }}</td>
-              <td>{{ props.item.key2 }}</td>
-              <td>{{ props.item.key3 }}</td>
-              <td>{{ props.item.key4 }}</td>
-              <td>{{ props.item.key5 }}</td>
-              <td>{{ props.item.key6 }}</td>
-              <td>{{ props.item.key7 }}</td>
-              <td>{{ props.item.key8 }}</td>
-              <td>{{ props.item.key9 }}</td>
-              <td>{{ props.item.key10 }}</td>
-            </template>
-        </v-data-table>-->
         </v-card>
       </v-flex>
     </v-layout>
@@ -189,13 +231,20 @@
       <v-flex xs12 md6 class="mb-3">
       <!--table-->
         <v-card class="white w_100">
-          <v-card-title primary-title class="white">
-            <h6 class="text-xs-center mb-0 primary--text">Period-over-Period Retention Rate</h6>
+          <v-card-title primary-title class="info">
+            <h6 class="text-xs-center mb-0 white--text">Quantile Retention Rate <span class="body-1">(Period over Period)</span></h6>
+            <v-spacer></v-spacer>
+            <v-btn
+                @click.native="getHelpSection()"
+                icon slot="activator"
+                class="success--text"
+                style="height:auto !important;">
+                  <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+            </v-btn>
           </v-card-title>
-          <v-divider class="primary pb-0"></v-divider>
-              <div style="width:100%;" class="pb-3">
+              <div style="width:100%;" class="mb-3">
                 <table cellpadding="0" cellspacing="0" width="100%" class="ret_table">
-                  <tr class="grey lighten-2 elevation-1">
+                  <tr class="grey lighten-2 elevation-1" :height="75">
                     <td class="pt-1 pb-1 grey lighten-2 primary--text">Quantile</td>
                     <!--<td class="pt-1 pb-1">Prior Customers</td>-->
                     <td class="pt-1 pb-1 grey lighten-2 primary--text">Retained<br />Customers</td>
@@ -238,8 +287,16 @@
             <v-layout row wrap class="pt-0 mt-0">
               <v-flex xs12 class="pa-0 ma-0">
                 <v-card class="pa-0 ma-0 grey lighten-2">
-                  <v-card-title primary-title class="white">
-                    <h6 class="primary--text text-xs-left mb-0">Post Period [Quantile] Composition</h6>
+                  <v-card-title primary-title class="info">
+                    <h6 class="white--text text-xs-left mb-0">Post Period Quantile Composition <span class="body-1">(Period over Period)</span></h6>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        @click.native="getHelpSection()"
+                        icon slot="activator"
+                        class="success--text"
+                        style="height:auto !important;">
+                          <v-icon class="pa-0 ma-0 white--text icon_help">help_outline</v-icon>
+                    </v-btn>
                   </v-card-title>
                   <v-layout row wrap>
                     <!--Dropdown1-->
@@ -251,10 +308,10 @@
                               Select Post Period Segment for Analysis:
                             </div>
                           </v-flex>
-                          <v-flex xs12>
+                          <v-flex xs12 md6 lg4>
                               <v-select v-bind:items="quantArray"
                                         v-model="quantileSelect"
-                                        label="Select Quantile\"
+                                        label="Select Quantile"
                                         single-line
                                         bottom
                                         hide-details
@@ -290,6 +347,7 @@
 <script>
   import BarChart from './balorCharts/BarChart'
   import {quantMig} from './javascript/quantile.service'
+  import HelpNavQuantile from './HelpNavQuantile.vue'
 
   // [JF] initiates numeral.js library in this vue component. must use together with numeral() or numeral().format()
   var numeral = require('numeral')
@@ -297,7 +355,8 @@
   export default {
     name: 'quantMigration',
     components: {
-      BarChart
+      BarChart,
+      HelpNavQuantile
     },
     data () {
       return {
@@ -329,7 +388,38 @@
         sumItems: [],
         sumItemsArray: [],
         quantbars: {},
-        tableBGcolor: {}
+        barBGcolors: {
+          colors1: [
+            'rgb(182, 201, 182)', 'rgb(145, 229, 129)', 'rgb(129, 225, 110)', 'rgb(113, 221, 91)', 'rgb(96, 217, 72)', 'rgb(80, 213, 54)', 'rgb(69, 201, 42)', 'rgb(62, 183, 38)', 'rgb(56, 164, 34)', 'rgb(49, 145, 30)'
+          ],
+          colors2: [
+            'rgb(255, 150, 150)', 'rgb(182, 201, 182)', 'rgb(145, 229, 129)', 'rgb(129, 225, 110)', 'rgb(113, 221, 91)', 'rgb(96, 217, 72)', 'rgb(80, 213, 54)', 'rgb(69, 201, 42)', 'rgb(62, 183, 38)', 'rgb(56, 164, 34)'
+          ],
+          colors3: [
+            'rgb(255, 122, 122)', 'rgb(255, 150, 150)', 'rgb(182, 201, 182)', 'rgb(145, 229, 129)', 'rgb(129, 225, 110)', 'rgb(113, 221, 91)', 'rgb(96, 217, 72)', 'rgb(80, 213, 54)', 'rgb(69, 201, 42)', 'rgb(62, 183, 38)'
+          ],
+          colors4: [
+            'rgb(255, 93, 93)', 'rgb(255, 122, 122)', 'rgb(255, 150, 150)', 'rgb(182, 201, 182)', 'rgb(145, 229, 129)', 'rgb(129, 225, 110)', 'rgb(113, 221, 91)', 'rgb(96, 217, 72)', 'rgb(80, 213, 54)', 'rgb(69, 201, 42)'
+          ],
+          colors5: [
+            'rgb(255, 65, 65)', 'rgb(255, 93, 93)', 'rgb(255, 122, 122)', 'rgb(255, 150, 150)', 'rgb(182, 201, 182)', 'rgb(145, 229, 129)', 'rgb(129, 225, 110)', 'rgb(113, 221, 91)', 'rgb(96, 217, 72)', 'rgb(80, 213, 54)'
+          ],
+          colors6: [
+            'rgb(255, 36, 36)', 'rgb(255, 65, 65)', 'rgb(255, 93, 93)', 'rgb(255, 122, 122)', 'rgb(255, 150, 150)', 'rgb(182, 201, 182)', 'rgb(145, 229, 129)', 'rgb(129, 225, 110)', 'rgb(113, 221, 91)', 'rgb(96, 217, 72)'
+          ],
+          colors7: [
+            'rgb(255, 8, 8)', 'rgb(255, 36, 36)', 'rgb(255, 65, 65)', 'rgb(255, 93, 93)', 'rgb(255, 122, 122)', 'rgb(255, 150, 150)', 'rgb(182, 201, 182)', 'rgb(145, 229, 129)', 'rgb(129, 225, 110)', 'rgb(113, 221, 91)'
+          ],
+          colors8: [
+            'rgb(236, 0, 0)', 'rgb(255, 8, 8)', 'rgb(255, 36, 36)', 'rgb(255, 65, 65)', 'rgb(255, 93, 93)', 'rgb(255, 122, 122)', 'rgb(255, 150, 150)', 'rgb(182, 201, 182)', 'rgb(145, 229, 129)', 'rgb(129, 225, 110)'
+          ],
+          colors9: [
+            'rgb(207, 0, 0)', 'rgb(236, 0, 0)', 'rgb(255, 8, 8)', 'rgb(255, 36, 36)', 'rgb(255, 65, 65)', 'rgb(255, 93, 93)', 'rgb(255, 122, 122)', 'rgb(255, 150, 150)', 'rgb(182, 201, 182)', 'rgb(145, 229, 129)'
+          ],
+          colors10: [
+            'rgb(179, 0, 0)', 'rgb(207, 0, 0)', 'rgb(236, 0, 0)', 'rgb(255, 8, 8)', 'rgb(255, 36, 36)', 'rgb(255, 65, 65)', 'rgb(255, 93, 93)', 'rgb(255, 122, 122)', 'rgb(255, 150, 150)', 'rgb(182, 201, 182)'
+          ]
+        }
       }
     },
     computed: {
@@ -384,6 +474,10 @@
     //  this.createTblColor()
     },
     methods: {
+      getHelpSection: function () {
+        var hpNav = this.$refs.helpNav.$refs.helpNav
+        hpNav.value = !hpNav.value
+      },
       getResults () {
         quantMig(this.jobId)
           .catch(err => {
@@ -428,20 +522,77 @@
         // this.tableMigItems = JSON.parse(JSON.stringify(tpConverted))[this.tpSelect - 1]
         this.quantMigItems = JSON.parse(JSON.stringify(tpConverted))
         var tempMig = []
-        for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
-          tempMig.push({
-            'from': this.quantMigItems[this.tpSelect - 1][i].from,
-            'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
-            'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
-            'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
-            'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0'),
-            'key5': numeral(this.quantMigItems[this.tpSelect - 1][i].key5).format('0,0'),
-            'key6': numeral(this.quantMigItems[this.tpSelect - 1][i].key6).format('0,0'),
-            'key7': numeral(this.quantMigItems[this.tpSelect - 1][i].key7).format('0,0'),
-            'key8': numeral(this.quantMigItems[this.tpSelect - 1][i].key8).format('0,0'),
-            'key9': numeral(this.quantMigItems[this.tpSelect - 1][i].key9).format('0,0'),
-            'key10': numeral(this.quantMigItems[this.tpSelect - 1][i].key10).format('0,0')
-          })
+        if (this.quantMigItems.length === 10) {
+          for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+            tempMig.push({
+              'from': this.quantMigItems[this.tpSelect - 1][i].from,
+              'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+              'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
+              'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
+              'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0'),
+              'key5': numeral(this.quantMigItems[this.tpSelect - 1][i].key5).format('0,0'),
+              'key6': numeral(this.quantMigItems[this.tpSelect - 1][i].key6).format('0,0'),
+              'key7': numeral(this.quantMigItems[this.tpSelect - 1][i].key7).format('0,0'),
+              'key8': numeral(this.quantMigItems[this.tpSelect - 1][i].key8).format('0,0'),
+              'key9': numeral(this.quantMigItems[this.tpSelect - 1][i].key9).format('0,0'),
+              'key10': numeral(this.quantMigItems[this.tpSelect - 1][i].key10).format('0,0')
+            })
+          }
+        } else if (this.quantMigItems.length === 2) {
+          for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+            tempMig.push({
+              'from': this.quantMigItems[this.tpSelect - 1][i].from,
+              'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+              'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0')
+            })
+          }
+        } else if (this.quantMigItems.length === 4) {
+          for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+            tempMig.push({
+              'from': this.quantMigItems[this.tpSelect - 1][i].from,
+              'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+              'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
+              'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
+              'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0')
+            })
+          }
+        } else if (this.quantMigItems.length === 5) {
+          for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+            tempMig.push({
+              'from': this.quantMigItems[this.tpSelect - 1][i].from,
+              'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+              'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
+              'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
+              'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0'),
+              'key5': numeral(this.quantMigItems[this.tpSelect - 1][i].key5).format('0,0')
+            })
+          }
+        } else if (this.quantMigItems.length === 20) {
+          for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+            tempMig.push({
+              'from': this.quantMigItems[this.tpSelect - 1][i].from,
+              'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+              'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
+              'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
+              'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0'),
+              'key5': numeral(this.quantMigItems[this.tpSelect - 1][i].key5).format('0,0'),
+              'key6': numeral(this.quantMigItems[this.tpSelect - 1][i].key6).format('0,0'),
+              'key7': numeral(this.quantMigItems[this.tpSelect - 1][i].key7).format('0,0'),
+              'key8': numeral(this.quantMigItems[this.tpSelect - 1][i].key8).format('0,0'),
+              'key9': numeral(this.quantMigItems[this.tpSelect - 1][i].key9).format('0,0'),
+              'key10': numeral(this.quantMigItems[this.tpSelect - 1][i].key10).format('0,0'),
+              'key11': numeral(this.quantMigItems[this.tpSelect - 1][i].key11).format('0,0'),
+              'key12': numeral(this.quantMigItems[this.tpSelect - 1][i].key12).format('0,0'),
+              'key13': numeral(this.quantMigItems[this.tpSelect - 1][i].key13).format('0,0'),
+              'key14': numeral(this.quantMigItems[this.tpSelect - 1][i].key14).format('0,0'),
+              'key15': numeral(this.quantMigItems[this.tpSelect - 1][i].key15).format('0,0'),
+              'key16': numeral(this.quantMigItems[this.tpSelect - 1][i].key16).format('0,0'),
+              'key17': numeral(this.quantMigItems[this.tpSelect - 1][i].key17).format('0,0'),
+              'key18': numeral(this.quantMigItems[this.tpSelect - 1][i].key18).format('0,0'),
+              'key19': numeral(this.quantMigItems[this.tpSelect - 1][i].key19).format('0,0'),
+              'key20': numeral(this.quantMigItems[this.tpSelect - 1][i].key20).format('0,0')
+            })
+          }
         }
         this.tableCounts = JSON.parse(JSON.stringify(tpConverted))
         this.tpArray = tempTP
@@ -540,20 +691,77 @@
       selectView () {
         if (this.viewType === 'Counts') {
           var tempFormatted = []
-          for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
-            tempFormatted.push({
-              'from': this.quantMigItems[this.tpSelect - 1][i].from,
-              'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
-              'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
-              'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
-              'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0'),
-              'key5': numeral(this.quantMigItems[this.tpSelect - 1][i].key5).format('0,0'),
-              'key6': numeral(this.quantMigItems[this.tpSelect - 1][i].key6).format('0,0'),
-              'key7': numeral(this.quantMigItems[this.tpSelect - 1][i].key7).format('0,0'),
-              'key8': numeral(this.quantMigItems[this.tpSelect - 1][i].key8).format('0,0'),
-              'key9': numeral(this.quantMigItems[this.tpSelect - 1][i].key9).format('0,0'),
-              'key10': numeral(this.quantMigItems[this.tpSelect - 1][i].key10).format('0,0')
-            })
+          if (this.tableMigItems.length === 10) {
+            for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+              tempFormatted.push({
+                'from': this.quantMigItems[this.tpSelect - 1][i].from,
+                'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+                'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
+                'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
+                'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0'),
+                'key5': numeral(this.quantMigItems[this.tpSelect - 1][i].key5).format('0,0'),
+                'key6': numeral(this.quantMigItems[this.tpSelect - 1][i].key6).format('0,0'),
+                'key7': numeral(this.quantMigItems[this.tpSelect - 1][i].key7).format('0,0'),
+                'key8': numeral(this.quantMigItems[this.tpSelect - 1][i].key8).format('0,0'),
+                'key9': numeral(this.quantMigItems[this.tpSelect - 1][i].key9).format('0,0'),
+                'key10': numeral(this.quantMigItems[this.tpSelect - 1][i].key10).format('0,0')
+              })
+            }
+          } else if (this.tableMigItems.length === 2) {
+            for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+              tempFormatted.push({
+                'from': this.quantMigItems[this.tpSelect - 1][i].from,
+                'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+                'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0')
+              })
+            }
+          } else if (this.tableMigItems.length === 4) {
+            for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+              tempFormatted.push({
+                'from': this.quantMigItems[this.tpSelect - 1][i].from,
+                'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+                'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
+                'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
+                'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0')
+              })
+            }
+          } else if (this.tableMigItems.length === 5) {
+            for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+              tempFormatted.push({
+                'from': this.quantMigItems[this.tpSelect - 1][i].from,
+                'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+                'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
+                'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
+                'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0'),
+                'key5': numeral(this.quantMigItems[this.tpSelect - 1][i].key5).format('0,0')
+              })
+            }
+          } else if (this.tableMigItems.length === 20) {
+            for (let i = 0; i < this.quantMigItems[this.tpSelect - 1].length; i++) {
+              tempFormatted.push({
+                'from': this.quantMigItems[this.tpSelect - 1][i].from,
+                'key1': numeral(this.quantMigItems[this.tpSelect - 1][i].key1).format('0,0'),
+                'key2': numeral(this.quantMigItems[this.tpSelect - 1][i].key2).format('0,0'),
+                'key3': numeral(this.quantMigItems[this.tpSelect - 1][i].key3).format('0,0'),
+                'key4': numeral(this.quantMigItems[this.tpSelect - 1][i].key4).format('0,0'),
+                'key5': numeral(this.quantMigItems[this.tpSelect - 1][i].key5).format('0,0'),
+                'key6': numeral(this.quantMigItems[this.tpSelect - 1][i].key6).format('0,0'),
+                'key7': numeral(this.quantMigItems[this.tpSelect - 1][i].key7).format('0,0'),
+                'key8': numeral(this.quantMigItems[this.tpSelect - 1][i].key8).format('0,0'),
+                'key9': numeral(this.quantMigItems[this.tpSelect - 1][i].key9).format('0,0'),
+                'key10': numeral(this.quantMigItems[this.tpSelect - 1][i].key10).format('0,0'),
+                'key11': numeral(this.quantMigItems[this.tpSelect - 1][i].key11).format('0,0'),
+                'key12': numeral(this.quantMigItems[this.tpSelect - 1][i].key12).format('0,0'),
+                'key13': numeral(this.quantMigItems[this.tpSelect - 1][i].key13).format('0,0'),
+                'key14': numeral(this.quantMigItems[this.tpSelect - 1][i].key14).format('0,0'),
+                'key15': numeral(this.quantMigItems[this.tpSelect - 1][i].key15).format('0,0'),
+                'key16': numeral(this.quantMigItems[this.tpSelect - 1][i].key16).format('0,0'),
+                'key17': numeral(this.quantMigItems[this.tpSelect - 1][i].key17).format('0,0'),
+                'key18': numeral(this.quantMigItems[this.tpSelect - 1][i].key18).format('0,0'),
+                'key19': numeral(this.quantMigItems[this.tpSelect - 1][i].key19).format('0,0'),
+                'key20': numeral(this.quantMigItems[this.tpSelect - 1][i].key20).format('0,0')
+              })
+            }
           }
           this.tableMigItems = tempFormatted
         } else if (this.viewType === 'Percentages') {
@@ -562,6 +770,29 @@
       },
 
       selectQuantile () {
+        // changes the post period quant comp bars when time period is selected [JF]
+        var barColorArray = []
+        if (this.quantileSelect === 1) {
+          barColorArray = this.barBGcolors.colors1
+        } else if (this.quantileSelect === 2) {
+          barColorArray = this.barBGcolors.colors2
+        } else if (this.quantileSelect === 3) {
+          barColorArray = this.barBGcolors.colors3
+        } else if (this.quantileSelect === 4) {
+          barColorArray = this.barBGcolors.colors4
+        } else if (this.quantileSelect === 5) {
+          barColorArray = this.barBGcolors.colors5
+        } else if (this.quantileSelect === 6) {
+          barColorArray = this.barBGcolors.colors6
+        } else if (this.quantileSelect === 7) {
+          barColorArray = this.barBGcolors.colors7
+        } else if (this.quantileSelect === 8) {
+          barColorArray = this.barBGcolors.colors8
+        } else if (this.quantileSelect === 9) {
+          barColorArray = this.barBGcolors.colors9
+        } else if (this.quantileSelect === 10) {
+          barColorArray = this.barBGcolors.colors10
+        }
         var keyArray = ['key1', 'key2', 'key3', 'key4', 'key5', 'key6', 'key7', 'key8', 'key9', 'key10']
         this.quantbars = {
           labels: this.quantArray,
@@ -578,7 +809,7 @@
               this.quantMigItems[this.tpSelect - 1][8][keyArray[this.quantileSelect - 1]],
               this.quantMigItems[this.tpSelect - 1][9][keyArray[this.quantileSelect - 1]]
             ],
-            backgroundColor: '#F7970E'
+            backgroundColor: barColorArray
           }]
         }
       }
@@ -589,111 +820,69 @@
 
 <style scoped>
   .mob_break {display: none;}
-  .card_width { width: 100% !important; }
-  .ret_table {
-    height: 360px !important;
-    text-align: center;
-  }
+  .card_width { width:100% !important; }
+  .ret_table {height:378px !important; text-align:center;}
   .pareto_chart2 {
-    position: relative !important;
-    margin: 0 auto !important;
-    height: 279px !important;
+    position:relative !important;
+    margin:0 auto !important;
+    height:279px !important;
   }
-  .w_100 { width: 100%; }
+  .w_100 {width:100%;}
   .y_axis {
-    display: inline-block;
-    position: relative;
-    left: -60px;
-    top: 400px;
+    display:inline-block;
+    position:relative;
+    left:-60px;
+    top:400px;
     /*background-color: red;*/
     /* Rotate div */
-    -ms-transform: rotate(270deg); /* IE 9 */
-    -webkit-transform: rotate(270deg); /* Safari 3-8 */
-    transform: rotate(270deg);
-    z-index: 1;
+    -ms-transform:rotate(270deg); /* IE 9 */
+    -webkit-transform:rotate(270deg); /* Safari 3-8 */
+    transform:rotate(270deg);
+    z-index:1;
   }
-  .quantTbl {
-    width:100%;
-    margin:0 auto;
-  }
-  .quantTbl td {
-    padding:20px;
-    font-weight: bold;
-  }
-  .quantTbl thead td {
-    background-color:#ffeaeb;
-  }
-  .quantTbl thead td:first-child {
-    background-color:inherit;
-  }
-  .quantTbl .tRow td:first-child {
-    background-color:#e7eeda;
-  }
+  .quantTbl {width:100%; margin:0 auto;}
+  .quantTbl td {padding:5px; font-weight:bold;}
+  .quantTbl thead td {background-color:#ffeaeb;}
+  .quantTbl thead td:first-child {background-color:inherit;}
+  .quantTbl .tRow td:first-child {background-color:#e7eeda;}
 
-  .mob_break2 {
-    display:none;
-  }
+  .ret_table tr:hover {background-color:#eee;}
+
+  .mob_break1, .mob_break2 {display:none;}
 
 
   @media (max-width: 768px) {
-    .quantTbl .tRow td:first-child {
-      width:30px;
-      padding: 5px;
-    }
-    .quantTbl td {
-      padding:10px;
-      font-size:13px;
-    }
-    .quantTbl thead td {
-      padding: 5px 10px;
-    }
+    .quantTbl .tRow td:first-child {width:30px; padding:5px;}
+    .quantTbl td {padding:10px; font-size:13px;}
+    .quantTbl thead td {padding:5px 10px;}
   }
   /* Smartphones (portrait and landscape) ----------- */
-  @media only screen and (min-device-width: 481px) and (max-device-width: 960px) {
+  @media only screen and (min-width: 481px) and (max-width: 960px) {
     /* Styles */
-    .mob_break1 {
-      display:block;
-    }
-    .mob_break2 {
-      display:none;
-    }
+    .mob_break1 {display:block;}
+    .mob_break2 {display:none;}
   }
 
   /* Smartphones (portrait and landscape) ----------- */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  @media only screen and (min-width: 320px) and (max-width: 480px) {
     /* Styles */
-    .mob_break1 {
-      display:none;
-    }
-    .mob_break2 {
-      display:block;
-    }
+    .mob_break1 {display:none;}
+    .mob_break2 {display:block;}
   }
   /* Smartphones (portrait and landscape) ----------- */
-  @media only screen and (min-device-width: 100px) and (max-device-width: 320px) {
+  @media only screen and (min-width: 100px) and (max-width: 320px) {
     /* Styles */
-    .scrolltable {
-      width: 320px !important;
-      overflow-x: scroll;
-    }
-    .mob_break2 {
-      display:block;
-    }
+    .scrolltable {width:320px !important; overflow-x:scroll;}
+    .mob_break2 {display:block;}
   }
   /* Smartphones (portrait and landscape) ----------- */
-  @media only screen and (min-device-width: 321px) and (max-device-width: 375px) {
+  @media only screen and (min-width: 321px) and (max-width: 375px) {
     /* Styles */
-    .scrolltable {
-      width: 375px !important;
-      overflow-x: scroll;
-    }
+    .scrolltable {width:375px !important; overflow-x:scroll;}
   }
   /* Smartphones (portrait and landscape) ----------- */
-  @media only screen and (min-device-width: 376px) and (max-device-width: 425px) {
+  @media only screen and (min-width: 376px) and (max-width: 425px) {
     /* Styles */
-    .scrolltable {
-      width: 425px !important;
-      overflow-x: scroll;
-    }
+    .scrolltable {width:425px !important; overflow-x:scroll;}
   }
 </style>
