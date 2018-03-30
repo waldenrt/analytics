@@ -19,6 +19,9 @@ class AuthServiceRoute(authService:AuthService)
   val route = pathPrefix("Auth") {
     (path("authenticate") & post & entity(as[UserAuth])) {userAuth =>
       complete(authenticate(userAuth).map(_.toJson))
-    }
+    } ~
+      (path("signup") & post & entity(as[UserSignUp])) {userSignUp =>
+        complete(signUp(userSignUp).map(_.toJson))
+      }
   }
 }

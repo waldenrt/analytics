@@ -13,6 +13,8 @@
         <module>bAnalyticsRestfulServicesQuantile</module>
         <module>bAnalyticsRestfulServicesLifeCycle</module>
         <module>bAnalyticsRestfulServicesJobs</module>
+        <module>bAnalyticsRestfulServicesAuth</module>
+        <module>bAnalyticsRestfulServicesUtils</module>
     </modules>
 
 

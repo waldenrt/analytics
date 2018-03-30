@@ -1,6 +1,6 @@
 package com.brierley.banalyticsrestfulservices.banalyticsrestfulservicesauth.utils
 
-import org.apache.hadoop.hbase.client.{ConnectionFactory, Get, Result}
+import org.apache.hadoop.hbase.client.{ConnectionFactory, Get, Result, Table}
 import org.apache.hadoop.hbase.util.Bytes
 import org.apache.hadoop.hbase.{HBaseConfiguration, TableName}
 
@@ -24,5 +24,9 @@ class DatabaseService extends Config {
 
     result
 
+  }
+
+  def getTableRef(tableName: String): Table = {
+    db.getTable(TableName.valueOf(tableName))
   }
 }

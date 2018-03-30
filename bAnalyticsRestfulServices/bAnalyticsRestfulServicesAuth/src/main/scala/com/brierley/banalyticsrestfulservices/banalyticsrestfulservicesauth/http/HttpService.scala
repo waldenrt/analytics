@@ -13,8 +13,9 @@ class HttpService(jobService:AuthService
   val authRouter = new AuthServiceRoute(jobService)
 
   val routes =
-    pathPrefix("api"/"v1") {
+    pathPrefix("api" / "v1") {
       corseHandler {
         authRouter.route
       }
     }
+}

@@ -91,6 +91,13 @@
             <artifactId>hbase-client</artifactId>
             <version>1.2.0-cdh5.9.0</version>
         </dependency>
+
+        <!--JWT Token Library-->
+        <dependency>
+            <groupId>com.pauldijou</groupId>
+            <artifactId>jwt-core_2.11</artifactId>
+            <version>0.15.0</version>
+        </dependency>
     </dependencies>
 
     <pluginRepositories>

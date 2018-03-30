@@ -6,14 +6,23 @@ case class UserSignUp(firstName:String,
                       lastName:String,
                       emailAddress:String,
                       powerUser:Boolean,
-                      userId:String,
-                      userPassword:String)
+                      admin:Boolean,
+                      userPassword:String,
+                      clients:List[ClientInfo])
+
 case class ClientInfo(name:String, enabled:Boolean)
+
 case class User(firstName:String,
                 lastName:String,
                 emailAddress:String,
                 powerUser:Boolean,
-                clients:List[ClientInfo])
+                admin:Boolean,
+                clients:List[ClientInfo],
+                tokens:Token)
+
+case class Token(authToken: String,
+                 refreshToken: String)
+
 case class UserAuthReturn(  isError: String,
                               data: User,
                               developerMessage:String,
@@ -23,3 +32,13 @@ case class UserAuthReturn(  isError: String,
                               httpStatusCode:Int,
                               errors:String
                            )
+
+case class UserSignUpReturn(  isError: String,
+                              data: UserSignUp,
+                              developerMessage:String,
+                              userMessage:String,
+                              moreInfo:String,
+                              responseCode:Int,
+                              httpStatusCode:Int,
+                              errors:String
+                         )
