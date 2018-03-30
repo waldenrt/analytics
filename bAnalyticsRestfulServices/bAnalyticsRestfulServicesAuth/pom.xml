@@ -98,6 +98,13 @@
             <artifactId>jwt-core_2.11</artifactId>
             <version>0.15.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.57</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <pluginRepositories>
@@ -110,7 +117,6 @@
 
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
-        <testSourceDirectory>src/test/scala</testSourceDirectory>
         <plugins>
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
@@ -139,7 +145,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>false</addClasspath>
-                            <mainClass>com.brierley.banalyticsrestfulservices.banalyticsrestfulservicesquantile.QuantileMain
+                            <mainClass>com.brierley.banalyticsrestfulservices.banalyticsrestfulservicesauth.AuthMain
                             </mainClass>
                         </manifest>
                     </archive>
@@ -178,12 +184,25 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <shadedClassifierName>allinone</shadedClassifierName>
                             <artifactSet>
                                 <includes>
                                     <include>*:*</include>
                                 </includes>
+                                <excludes>
+                                    <exclude>org.bouncycastle:*:*:*</exclude>
+                                </excludes>
                             </artifactSet>
                             <transformers>
                                 <transformer
@@ -193,7 +212,8 @@
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>com.brierley.banalyticsrestfulservices.banalyticsrestfulservicesquantile.QuantileMain</Main-Class>
+                                        <Main-Class>com.brierley.banalyticsrestfulservices.banalyticsrestfulservicesauth.AuthMain</Main-Class>
+                                        <Class-Path>./lib/bcprov-jdk15on-1.57.jar</Class-Path>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>
